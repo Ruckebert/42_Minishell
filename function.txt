@@ -1,0 +1,66 @@
+Rough Summary:
+
+Terminal and Readline Library Functions
+readline - Reads a line from the terminal, with support for editing.
+rl_clear_history - Clears the history of commands entered in the readline library.
+rl_on_new_line - Updates the internal state of the readline library to indicate that a new line is being read.
+rl_replace_line - Replaces the current line in the readline buffer with a new one.
+rl_redisplay - Redraws the readline prompt and buffer on the terminal.
+add_history - Adds the current line to the history list for readline.
+
+Standard Input/Output and Memory Functions
+printf - Formats and prints output to the standard output (terminal).
+malloc - Allocates memory dynamically on the heap.
+free - Deallocates memory previously allocated with malloc.
+write - Writes data to a file descriptor, commonly used for output to files or the terminal.
+
+File Handling Functions
+access - Checks a file’s accessibility, such as if it exists or has certain permissions.
+open - Opens a file and returns a file descriptor.
+read - Reads data from a file descriptor.
+close - Closes an open file descriptor.
+
+Process Control Functions
+fork - Creates a new process by duplicating the calling process.
+wait, waitpid, wait3, wait4 - Waits for a child process to change state (e.g., to finish execution).
+signal - Sets up a handler for a specific signal.
+sigaction - More advanced control over signal handling than signal.
+sigemptyset, sigaddset - Manipulates signal sets (emptying and adding signals).
+kill - Sends a signal to a process, often used to terminate it.
+exit - Terminates a process.
+
+Directory and Path Functions
+getcwd - Retrieves the current working directory.
+chdir - Changes the current working directory.
+stat, lstat, fstat - Retrieves information about a file, such as its size and permissions.
+unlink - Deletes a file by removing its directory entry.
+
+Executing Programs
+execve - Replaces the current process with a new one, specified by a filename.
+
+File Descriptor Functions
+dup, dup2 - Duplicates file descriptors, often for redirecting standard input/output.
+pipe - Creates a unidirectional data channel (pipe) used for inter-process communication.
+
+Directory Traversal Functions
+opendir - Opens a directory for reading.
+readdir - Reads directory entries from an open directory stream.
+closedir - Closes a directory stream.
+Error and Status Functions
+strerror - Returns a string describing the error code passed to it.
+perror - Prints a description of the last error that occurred.
+
+Terminal Control Functions
+isatty - Checks if a file descriptor refers to a terminal.
+ttyname - Returns the name of the terminal associated with a file descriptor.
+ttyslot - Returns the index of the current terminal in the list of terminals.
+
+Terminal and I/O Control Functions
+ioctl - Controls device parameters, often used for terminals and other I/O devices.
+getenv - Retrieves the value of an environment variable.
+
+Terminal Settings and Control Functions
+tcsetattr, tcgetattr - Set and get terminal attributes (e.g., input mode).
+tgetent, tgetflag, tgetnum, tgetstr - Retrieve information from the terminal capability database (termcap).
+tgoto - Generates cursor movement strings for terminals.
+tputs - Sends a string to the terminal with optional padding.
