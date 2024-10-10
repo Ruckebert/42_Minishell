@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/10 14:55:45 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/10 15:42:35 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,34 @@ void	cd_com(t_data *core)
 void	pwd()
 {
 
+}
+
+void	env(t_data *core)
+{
+	int i;
+	
+	i = 0;
+	while (core->env[i] != NULL)
+	{
+		ft_printf("%s\n",core->env[i]);
+		i++;
+	}
+	return ;
+}
+
+void	export(t_data *core)
+{
+	env(core); //To do: This occurs if the export does not have any arguments
+}
+
+void	unset()
+{
+	
+}
+
+void	echo()
+{
+
+
+	
 }
