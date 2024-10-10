@@ -1,12 +1,13 @@
 
 NAME = minishell
 
-SOURCE = main.c
+SOURCE = main.c builtins.c
+
 OBJECTS = $(SOURCE:.c=.o)
 
 CFLAGS = -Wall -Werror -Wextra -g
 
-COMP = cc
+COMP = cc -lreadline
 
 RM = rm -f
 
