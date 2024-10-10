@@ -6,89 +6,83 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/08 11:12:03 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/10 15:01:04 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*read_line(char *argv[])
+int		execute_args(char *line, t_data *core)
 {
-	return (NULL);
+	if (ft_strlen(line) == 0)
+		return (-1);
+	else if (ft_strncmp(line, "pwd", ft_strlen(line)) == 0)
+	{
+		core->direct = getcwd(NULL, 0);
+		ft_printf("%s\n", core->direct);
+	}
+	else if (ft_strncmp(line, "cd", 2) == 0)
+		cd_com(core);
+	else if (ft_strncmp(line, "exit", ft_strlen(line)) == 0)
+		return (0);
+	return (-1);
 }
 
-char	**split_line(char *line, int argc)
+char **copy_env(char **env, t_data *core)
 {
-	//This is the Parse
-	//the parse brekas down the input into various tokens
-	
-	char **tokens;
-	int i = 0;
-	
-	tokens = ft_split(line, ' ');
+	char **new_env;
+	int count;
+	int i;
 
-	//The Idea behind this While Loop is to assign the input with its corseponding token 
-	//These tokens are just a placeholder
-	while (i < argc)
+	if (env == NULL || *env == NULL)
+		exit(1);
+	
+	count = 0;
+	while (env[count] != NULL)
+		count++;
+	
+	new_env = malloc((count + 1) * sizeof(char *));
+	if (!new_env)
+		exit(1);
+	
+	i = 0;
+	while (i < count)
 	{
-		if (tokens[i] == "WORD")
-		{
-		}
-		else if (tokens[i] == "ASIGN_WORD")
-		{
-		}
-		else if (tokens[i] == "RED_IN")
-		{
-		}
-		else if (tokens[i] == "RED_OUT")
-		{
-		}
-		else if (tokens[i] == "PIPE")
-		{
-		}
-		else if (tokens[i] == "HERE_DOC")
-		{
-		}
-		else if (tokens[i] == "APPEND")
-		{
-		}
-		else if (tokens[i] == "OR")
-		{
-		}
-		else if (tokens[i] == "AND")
-		{
-		}
+		new_env[i] = ft_strdup(env[i]);
+		if (ft_strncmp(new_env[i], "USER=", 5) == 0)
+			core->user = ft_strdup(env[i] + 5);
+		if	(ft_strncmp(new_env[i], "HOME=", 5) == 0)
+			core->direct = ft_strdup(env[i] + 5);
+		if (!new_env[i])
+			exit(1); //If this fails free everything before
 		i++;
 	}
-	return (tokens);
+	new_env[count] = NULL;
+	return (new_env);
 }
 
-int		execute_args(char **args)
+int main(int argc, char *argv[], char **env)
 {
-	if (args[0] == NULL)
-		return (-1);
-		
-	pipex();
-	return (0);
-}
+	t_data core;
+	int status = -1;
 
-int main(int argc, char *argv[])
-{
+	if (argc == -1)
+		exit(1);
+	core.env = copy_env(env, &core);
+	(void)argc;
+	(void)argv;
+
 	if (isatty(STDIN_FILENO) == 1)
 	{
-		//Minishell DEMO
-		char *line;
-		char **args;
-		int status = -1;
-		
+		chdir(core.direct);
 		while (status == -1)
 		{
+
 			ft_printf("PeePeeShell$ ");
-			line = read_line(argv); //Reads the line
-			args = split_line(line, argc); //Parse
-			status = execute_args(args); //Executor
-			free(line);
-			free(args);
+			ft_printf("%s ", core.user);
+			core.line = readline("Input > ");
+			status = execute_args(core.line, &core); //Executor
+			free(core.line);
 			if (status >= 0)
 				exit(status);
 		}

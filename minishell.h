@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/08 10:23:05 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:55:18 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
-# include "pipex/pipex.h"
+# include "pipex.h"
 
 // All allowed functions are in these headers 
 #include <unistd.h>
@@ -32,5 +32,17 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <curses.h>
+
+typedef struct s_data
+{
+	char	*user;
+	char	*direct;
+	char	*line;
+	char	**env;
+	
+}	t_data;
+
+/*Builtins*/
+void	cd_com(t_data *core);
 
 #endif
