@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/10 15:42:35 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/11 09:05:44 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,5 @@ void	export(t_data *core)
 
 void	unset()
 {
-	
-}
-
-void	echo()
-{
-
-
 	
 }

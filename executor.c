@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/10 13:57:41 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/11 11:12:51 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 void	path_finder2(t_var *vars, char **envp, char *argv, int i)
 {
+	pid_t exe;
+	int	status;
+	int command_found = 0;
+	
 	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
 		i++;
 	if (!envp[i])
@@ -34,9 +38,35 @@ void	path_finder2(t_var *vars, char **envp, char *argv, int i)
 		if (vars->full_comm == NULL)
 			error_handler();
 		free(vars->comm);
-		execve(vars->full_comm, vars->cmd, envp);
-		free(vars->full_comm);
+		
+		//Creates a child process to execute the command
+		exe = fork();
+		if (exe < 0)
+		{
+			perror("fork");
+			free(vars->full_comm);
+			continue ;
+		}
+		else if (exe == 0)
+		{
+			if (execve(vars->full_comm, vars->cmd, envp) == -1)
+			{
+				free(vars->full_comm);
+				exit(1);
+			}
+		}
+		else
+		{
+			waitpid(exe, &status, 0);
+			free(vars->full_comm);
+			if (status != 0)
+				continue ;
+			command_found = 1;
+			break ;
+		}
 	}
+	if (!command_found) //To do: Put this command into the path_finder_error also change the name
+		write(2, "Error: Command not found\n", 19);
 	path_finder_error(vars->store, vars->cmd);
 }
 
@@ -194,14 +224,15 @@ void	mutilpe_pipe(t_var *vars, int argc, char *argv[], char **envp)
 	}
 }
 
-int	executor(int argc, char *argv[], char **envp)
+int	executor(int argc, char *argv[], t_data *core)
 {
+	
 	int		fd[2];
 	t_var	vars;
 
 	if (argc == 1) //No Pipes just command
 	{
-		path_finder2(&vars, envp, argv[1], 0);//
+		path_finder2(&vars, core->env, argv[0], 0);//
 	}
 	if (argc == 5) //Singe Pipe
 	{
@@ -215,18 +246,13 @@ int	executor(int argc, char *argv[], char **envp)
 			return (1);
 		}
 		if (vars.childid == 0)
-			child_pros(&vars, argv, envp, fd);
+			child_pros(&vars, argv, core->env, fd);
 		else
-			parent_pros(&vars, argv, envp, fd);
+			parent_pros(&vars, argv, core->env, fd);
 	}
 	else if (argc > 5) // Mutli Pipe
 	{
-		mutilpe_pipe(&vars, argc, argv, envp);
-	}
-	else
-	{
-		ft_putendl_fd("Error: Bad Arguments and wrong format", 2);
-		return (1);
+		mutilpe_pipe(&vars, argc, argv, core->env);
 	}
 	return (0);
 }

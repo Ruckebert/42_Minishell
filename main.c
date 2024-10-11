@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/10 15:39:41 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/11 10:59:32 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,21 @@ char **copy_env(char **env, t_data *core)
 	return (new_env);
 }
 
+int test(t_data *core)
+{
+	char **split_cmd = ft_split(core->line, ' ');
+	int i = 0;
+	
+	while (split_cmd[i])
+	{
+		ft_printf("%s\n", split_cmd[i]);
+		i++;
+	}
+	ft_printf("%d\n", i);
+	executor(i, split_cmd, core);
+	return (0);
+}
+
 int main(int argc, char *argv[], char **env)
 {
 	t_data core;
@@ -83,6 +98,7 @@ int main(int argc, char *argv[], char **env)
 			core.line = readline("Input > ");
 			add_history(core.line);
 			status = execute_args(core.line, &core); //Executor
+			test(&core);
 			free(core.line);
 			if (status >= 0)
 				exit(status);

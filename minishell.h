@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/10 14:55:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/11 10:54:24 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,7 @@ typedef struct s_data
 
 /*Builtins*/
 void	cd_com(t_data *core);
+
+int		executor(int argc, char *argv[], t_data *core);
 
 #endif
