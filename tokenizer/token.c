@@ -53,23 +53,31 @@ void	ft_lstadd_back(t_token **lst, t_token *new)
 
 #include <stdio.h>
 
-int whichsep(char *word)
+int whichtoken(char *word)
 {
-    if (word[1] != '\0') 
-	    return 0;
-
-    if (word[0] == '<')
-        return 1;
-    else if (word[0] == '>')
-        return 2;
-    else if (word[0] == '|')
-        return 3;
-    else if (word[0] == '"')
-        return 4;
-    else if (word[0] == '\'')
-        return 5; 
+	if (word[1] != '\0') 
+		return 0;
+	if (word[0] == '<')
+		return 1;
+	else if (word[0] == '>')
+		return 2;
+	else if (word[0] == '|')
+		return 3;
+	else if (word[0] == '"')
+		return 4;
+	else if (word[0] == '\'')
+		return 5; 
 	else 
 		return (1919);
+}
+
+int isquote(char *c)
+{
+	if (*c == '\'')
+		return (2);
+	if (*c == '"')
+		return (1);
+	return (0);
 }
 
 int issep(char *c)
@@ -81,13 +89,30 @@ int issep(char *c)
 	return (0);
 }
 
+int searchquote(char *str)
+{
+	int i;
+	char quote_type = *str;
+
+	i = 1;
+	while (str[i] != '\0' && str[i] != quote_type)
+		i++;
+	if (str[i] == quote_type)
+		i++;  // Include the closing quote
+	return (i);
+}
+
 int searchsep(char *str)
 {
 	int i;
 
 	i = 0;
 	while(!(issep(&str[i])) && str[i] != '\0')
+	{
+		if(isquote(&str[i]))
+			return(i);
 		i++;
+	}
 	return (i);
 }
 
@@ -96,81 +121,54 @@ int searchsep(char *str)
 	
 // }
 
-// void tokenize(t_data *core)
-// {
-// 	t_token	*token;
-// 	t_token *newtoken;
-// 	char	*word;
-// 	int		pos;
-// 	int		oldpos;
 
-// 	oldpos = 0;
-// 	pos = 0;
-// 	while (core->line[oldpos] != '\0')
-// 	{
-// 		if (issep(&core->line[pos]))
-// 		{
-// 			word = malloc(2);
-// 			word[0] = core->line[pos];
-// 			word[1] = '\0';
-// 			newtoken = ft_lstnew(word);
-// 			ft_lstadd_back(&token, newtoken);
-// 			newtoken->type = whichsep(&core->line[pos]);
-// 			pos++;
-// 		}
-// 		else
-// 		{
-// 			pos = searchsep(&core->line[oldpos]);
-// 			word = malloc (pos - oldpos);
-// 			ft_strlcpy(word, &(core->line[oldpos]), pos);
-// 			newtoken = ft_lstnew(word);
-// 			ft_lstadd_back(&token, newtoken);
-// 			newtoken->type = whichsep(&core->line[pos]);
-// 			oldpos = pos;
-// 		}
-// 		printlist(token);
-// 	}
-// }
+void tokenize(t_data *core)
+{
+	t_token	*token;
+	t_token *newtoken;
+	char	*word;
+	int		pos;
+	int		oldpos;
 
-// int	main(int argc, char **argv)
-// {
-// 	t_token	*token;
-// 	char	**nopipe;
-// 	char	**words;
-// 	int		i;
-// 	int		j;
-// 	t_token *newtoken;
-	
-// 	i = 0;
-// 	j = 0;
-// 	nopipe = NULL;
-// 	words = NULL;
-// 	token = NULL;
-// 	nopipe = ft_split(argv[1], '|');
-// 	while (nopipe[i])
-// 	{
-// 		printf("NOPIPE ARRAY:%s\n\n",nopipe[i]);	
-// 		words = ft_split(nopipe[i], ' ');
-// 		while (words[j])
-// 		{
-// 			printf("WORDS ARRAY:%s\n\n",words[j]);	
-// 			newtoken = ft_lstnew(words[j]);
-// 			ft_lstadd_back(&token, newtoken);
-// 			j++;
-// 			newtoken->type = add_tokentype(newtoken->word);
-// 		}
-// 		//free words
-// 		if(nopipe[i+1] != NULL)
-// 		{
-// 			newtoken = ft_lstnew("|");
-// 			ft_lstadd_back(&token, newtoken);
-// 			newtoken->type = 9;
-// 		}
-// 		j = 0;
-// 		i++;
-// 	}
-// 	//free nopipe
-// 	printlist(token);
-// 	printlist_type(token);
-// //printCharPointerArray(res);
-// }
+	//Gameplan:
+	//walk till you reach seperator or a quote
+	//if quote go until next quote and copy everything until next quote
+	//else if seperator copy it
+	//else copy the token until quote seperator or space
+	oldpos = 0;
+	pos = 0;
+	token = NULL;
+	while (core->line[pos] != '\0')
+	{
+		oldpos = pos;
+		if (!(issep(&core->line[pos])) && !(isquote(&core->line[pos])))
+		{
+			pos += searchsep(&core->line[oldpos]);
+			word = malloc (pos - oldpos + 1);
+			if(word == NULL)
+				perror("Malloc failed");
+			word[pos - oldpos] = '\0';
+			ft_strlcpy(word, &(core->line[oldpos]), pos - oldpos + 1);
+		}
+		else if (issep(&core->line[pos]))
+		{
+			word = malloc(2);
+			word[0] = core->line[pos];
+			word[1] = '\0';
+			pos++;
+		}
+		else if (isquote(&core->line[pos]))
+		{
+			pos += searchquote(&core->line[pos]);
+			word = malloc (pos - oldpos + 1);
+			if(word == NULL)
+				perror("Malloc failed");
+			word[pos - oldpos] = '\0';
+			ft_strlcpy(word, &(core->line[oldpos]), pos - oldpos + 1);
+		}
+		newtoken = ft_lstnew(word);
+		ft_lstadd_back(&token, newtoken);
+		newtoken->type = whichtoken(&core->line[pos]);
+	}
+	printlist(token);
+}

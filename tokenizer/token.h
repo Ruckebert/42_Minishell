@@ -26,7 +26,10 @@ typedef struct s_token
 	struct s_token	**head;
 }	t_token;
 
-//for split
+typedef struct s_quote {
+    char *content;   // The quoted content
+    int position;    // The position where the quoted content should be placed in the tokenized list
+} t_quote;
 
 //for testing
 void printCharPointerArray(char **arr);
