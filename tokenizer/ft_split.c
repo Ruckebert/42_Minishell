@@ -6,11 +6,11 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:11:56 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/10 13:33:55 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/11 13:14:35 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
+#include "../minishell.h"
 
 static void	ft_freeme(char **array, char *str, int i)
 {

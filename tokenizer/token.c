@@ -6,11 +6,11 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/11 11:24:31 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/11 15:16:24 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
+#include "../minishell.h"
 
 t_token	*ft_lstnew(char *word)
 {
@@ -53,100 +53,124 @@ void	ft_lstadd_back(t_token **lst, t_token *new)
 
 #include <stdio.h>
 
-int add_tokentype(char *word)
+int whichsep(char *word)
 {
-    if (word[1] != '\0') // Ensure only single characters are checked
-        return 0;
+    if (word[1] != '\0') 
+	    return 0;
 
-    if (word[0] == '~')
-        return 1;  // Home directory
-    else if (word[0] == '`')
-        return 2;  // Command substitution (archaic)
-    else if (word[0] == '#')
-        return 3;  // Comment
-    else if (word[0] == '$')
-        return 4;  // Variable expression
-    else if (word[0] == '&')
-        return 5;  // Background job
-    else if (word[0] == '*')
-        return 6;  // String wildcard
-    else if (word[0] == '(')
-        return 7;  // Start subshell
-    else if (word[0] == ')')
-        return 8;  // End subshell
-    else if (word[0] == '\\')
-        return 9;  // Quote next character
-    else if (word[0] == '|')
-        return 10; // Pipe
-    else if (word[0] == '[')
-        return 11; // Start character-set wildcard
-    else if (word[0] == ']')
-        return 12; // End character-set wildcard
-    else if (word[0] == '{')
-        return 13; // Start command block
-    else if (word[0] == '}')
-        return 14; // End command block
-    else if (word[0] == ';')
-        return 15; // Shell command separator
-    else if (word[0] == '\'')
-        return 16; // Strong quote
-    else if (word[0] == '"')
-        return 17; // Weak quote
-    else if (word[0] == '<')
-        return 18; // Input redirect
+    if (word[0] == '<')
+        return 1;
     else if (word[0] == '>')
-        return 19; // Output redirect
-    else if (word[0] == '/')
-        return 20; // Pathname directory separator
-    else if (word[0] == '?')
-        return 21; // Single-character wildcard
-    else if (word[0] == '!')
-        return 22; // Pipeline logical NOT
-    else
-        return 0;  // If no match, return 0
+        return 2;
+    else if (word[0] == '|')
+        return 3;
+    else if (word[0] == '"')
+        return 4;
+    else if (word[0] == '\'')
+        return 5; 
+	else 
+		return (1919);
 }
 
-int	main(int argc, char **argv)
+int issep(char *c)
 {
-	t_token	*token;
-	char	**nopipe;
-	char	**words;
-	int		i;
-	int		j;
-	t_token *newtoken;
-//	char	str[]= "echo \"hello\" \" \" |cat -e > myfile | test" ;
-	
-	i = 0;
-	j = 0;
-	nopipe = NULL;
-	words = NULL;
-	token = NULL;
-	//argv[1] = str;
-	nopipe = ft_split(argv[1], '|');
-	while (nopipe[i])
-	{
-		printf("NOPIPE ARRAY:%s\n\n",nopipe[i]);	
-		words = ft_split(nopipe[i], ' ');
-		while (words[j])
-		{
-			printf("WORDS ARRAY:%s\n\n",words[j]);	
-			newtoken = ft_lstnew(words[j]);
-			ft_lstadd_back(&token, newtoken);
-			j++;
-			newtoken->type = add_tokentype(newtoken->word);
-		}
-		//free words
-		if(nopipe[i+1] != NULL)
-		{
-			newtoken = ft_lstnew("|");
-			ft_lstadd_back(&token, newtoken);
-			newtoken->type = 9;
-		}
-		j = 0;
-		i++;
-	}
-	//free nopipe
-	printlist(token);
-	printlist_type(token);
-//printCharPointerArray(res);
+	if ((*c == '<' && *(c + 1) == '<')|| (*c == '>' && *(c + 1) == '>') )
+		return (2);
+	if (*c == '<' || *c == '>' ||  *c == '|')
+		return (1);
+	return (0);
 }
+
+int searchsep(char *str)
+{
+	int i;
+
+	i = 0;
+	while(!(issep(&str[i])) && str[i] != '\0')
+		i++;
+	return (i);
+}
+
+// void addsep(t_data *core, t_token *token)
+// {
+	
+// }
+
+// void tokenize(t_data *core)
+// {
+// 	t_token	*token;
+// 	t_token *newtoken;
+// 	char	*word;
+// 	int		pos;
+// 	int		oldpos;
+
+// 	oldpos = 0;
+// 	pos = 0;
+// 	while (core->line[oldpos] != '\0')
+// 	{
+// 		if (issep(&core->line[pos]))
+// 		{
+// 			word = malloc(2);
+// 			word[0] = core->line[pos];
+// 			word[1] = '\0';
+// 			newtoken = ft_lstnew(word);
+// 			ft_lstadd_back(&token, newtoken);
+// 			newtoken->type = whichsep(&core->line[pos]);
+// 			pos++;
+// 		}
+// 		else
+// 		{
+// 			pos = searchsep(&core->line[oldpos]);
+// 			word = malloc (pos - oldpos);
+// 			ft_strlcpy(word, &(core->line[oldpos]), pos);
+// 			newtoken = ft_lstnew(word);
+// 			ft_lstadd_back(&token, newtoken);
+// 			newtoken->type = whichsep(&core->line[pos]);
+// 			oldpos = pos;
+// 		}
+// 		printlist(token);
+// 	}
+// }
+
+// int	main(int argc, char **argv)
+// {
+// 	t_token	*token;
+// 	char	**nopipe;
+// 	char	**words;
+// 	int		i;
+// 	int		j;
+// 	t_token *newtoken;
+	
+// 	i = 0;
+// 	j = 0;
+// 	nopipe = NULL;
+// 	words = NULL;
+// 	token = NULL;
+// 	nopipe = ft_split(argv[1], '|');
+// 	while (nopipe[i])
+// 	{
+// 		printf("NOPIPE ARRAY:%s\n\n",nopipe[i]);	
+// 		words = ft_split(nopipe[i], ' ');
+// 		while (words[j])
+// 		{
+// 			printf("WORDS ARRAY:%s\n\n",words[j]);	
+// 			newtoken = ft_lstnew(words[j]);
+// 			ft_lstadd_back(&token, newtoken);
+// 			j++;
+// 			newtoken->type = add_tokentype(newtoken->word);
+// 		}
+// 		//free words
+// 		if(nopipe[i+1] != NULL)
+// 		{
+// 			newtoken = ft_lstnew("|");
+// 			ft_lstadd_back(&token, newtoken);
+// 			newtoken->type = 9;
+// 		}
+// 		j = 0;
+// 		i++;
+// 	}
+// 	//free nopipe
+// 	printlist(token);
+// 	printlist_type(token);
+// //printCharPointerArray(res);
+// }

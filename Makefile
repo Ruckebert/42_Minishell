@@ -3,7 +3,11 @@ NAME = minishell
 
 SOURCE = main.c builtins.c
 
+SOURCETOK = ./tokenizer/testing.c ./tokenizer/token.c
+
 OBJECTS = $(SOURCE:.c=.o)
+
+OBJECTSTOK = $(SOURCETOK:.c=.o)
 
 CFLAGS = -Wall -Werror -Wextra -g
 
@@ -16,13 +20,13 @@ all: ${NAME}
 .c.o:
 	-cc ${CFLAGS} -c $< -o ${<:.c=.o} 
 
-${NAME}: ${OBJECTS} 
+${NAME}: ${OBJECTS} ${OBJECTSTOK}
 		${MAKE} -C ./libft --no-print-directory
-		${COMP} ${CFLAGS} ${OBJECTS} ./libft/libft.a -o ${NAME}
+		${COMP} ${CFLAGS} ${OBJECTS} ${OBJECTSTOK} ./libft/libft.a -o ${NAME}
 
 clean: 
 	${MAKE} -C ./libft --no-print-directory fclean
-	${RM} ${OBJECTS}
+	${RM} ${OBJECTS} ${OBJECTSTOK}
 
 fclean: clean
 	${RM} ${NAME}

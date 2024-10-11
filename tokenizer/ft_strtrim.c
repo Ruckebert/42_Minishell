@@ -6,11 +6,11 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:06:02 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/10 13:52:42 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/11 13:14:32 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
+#include "../minishell.h"
 
 static int	ft_isset(char a, char const *set)
 {

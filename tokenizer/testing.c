@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include "token.h"
+#include "../minishell.h"
 
 void printCharPointerArray(char **arr) 
 {
@@ -16,7 +15,6 @@ void print_words(t_token *head)
 {
     t_token *current = head;
 
-    // Traverse the list and print each word
     while (current != NULL)
     {
         if (current->word != NULL)
@@ -34,7 +32,7 @@ void printlist(t_token *head)
     curr = head;
     while(curr)
     {
-        printf("%s\n", curr->word);
+        printf("\nWORD:%s\n", curr->word);
         curr = curr->next;
     }
 }
