@@ -53,22 +53,22 @@ void	ft_lstadd_back(t_token **lst, t_token *new)
 
 #include <stdio.h>
 
-int whichtoken(char *word)
+int whichtoken(char c)
 {
-	if (word[1] != '\0') 
-		return 0;
-	if (word[0] == '<')
+	if (c == '<')
 		return 1;
-	else if (word[0] == '>')
+	else if (c == '>')
 		return 2;
-	else if (word[0] == '|')
+	else if (c == '|')
 		return 3;
-	else if (word[0] == '"')
+	else if (c == '"')
 		return 4;
-	else if (word[0] == '\'')
-		return 5; 
+	else if (c == '\'')
+		return 5;
+	else if (c == '-')
+		return 6;
 	else 
-		return (1919);
+		return (0);
 }
 
 int isquote(char *c)
@@ -82,8 +82,6 @@ int isquote(char *c)
 
 int issep(char *c)
 {
-	if ((*c == '<' && *(c + 1) == '<')|| (*c == '>' && *(c + 1) == '>') )
-		return (2);
 	if (*c == '<' || *c == '>' ||  *c == '|')
 		return (1);
 	return (0);
@@ -107,7 +105,7 @@ int searchsep(char *str)
 	int i;
 
 	i = 0;
-	while(!(issep(&str[i])) && str[i] != '\0')
+	while(!(issep(&str[i])) && str[i] != '\0' && str[i] != ' ')
 	{
 		if(isquote(&str[i]))
 			return(i);
@@ -116,13 +114,22 @@ int searchsep(char *str)
 	return (i);
 }
 
-// void addsep(t_data *core, t_token *token)
-// {
-	
-// }
-
-
-void tokenize(t_data *core)
+int	is_myspace(char *c)
+{
+	if(*c == ' ')
+		return (1);
+	return (0);
+}
+/*
+void	remove_spaces(t_token *token)
+{
+	while (isspace(token->word[i]))
+		i++;
+	if (ft_strlen(token->word) == i)
+		//rm lstelem
+}
+*/
+void	tokenize(t_data *core)
 {
 	t_token	*token;
 	t_token *newtoken;
@@ -140,6 +147,8 @@ void tokenize(t_data *core)
 	token = NULL;
 	while (core->line[pos] != '\0')
 	{
+		while (is_myspace(&core->line[pos]))
+			pos++;
 		oldpos = pos;
 		if (!(issep(&core->line[pos])) && !(isquote(&core->line[pos])))
 		{
@@ -168,7 +177,8 @@ void tokenize(t_data *core)
 		}
 		newtoken = ft_lstnew(word);
 		ft_lstadd_back(&token, newtoken);
-		newtoken->type = whichtoken(&core->line[pos]);
+		newtoken->type = whichtoken(core->line[oldpos]);
 	}
 	printlist(token);
 }
+
