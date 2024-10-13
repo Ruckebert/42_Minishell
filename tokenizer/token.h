@@ -19,20 +19,23 @@
 typedef struct s_token
 {
 	char			*word;
-	char			*op;
 	int				type;
 	struct s_token	*next;
 	struct s_token	*prev;
-	struct s_token	**head;
 }	t_token;
 
-typedef struct s_quote {
-    char *content;   // The quoted content
-    int position;    // The position where the quoted content should be placed in the tokenized list
-} t_quote;
-
+//isneeded
+int	is_myspace(char *c);
+int	issep(char *c);
+int	isquote(char *c);
+int	searchquote(char *str);
+int	searchsep(char *str);
+t_token	*ft_lstnew(char *word);
+t_token	*ft_lstlast(t_token *lst);
+void	ft_lstadd_back(t_token **lst, t_token *new);
 //for testing
 void printCharPointerArray(char **arr);
 void printlist_type(t_token *head);
 void printlist(t_token *head);
+void	free_token_list(t_token *head);
 #endif

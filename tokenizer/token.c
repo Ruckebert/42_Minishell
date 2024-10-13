@@ -12,48 +12,7 @@
 
 #include "../minishell.h"
 
-t_token	*ft_lstnew(char *word)
-{
-	t_token	*elem;
-
-	elem = malloc(sizeof(t_token));
-	if (!elem)
-		return (NULL);
-	elem->word = word;
-	elem->next = NULL;
-	return (elem);
-}
-
-t_token	*ft_lstlast(t_token *lst)
-{
-	t_token	*temp;
-
-	if (!lst)
-		return (NULL);
-	temp = lst;
-	while (temp->next != NULL)
-		temp = temp->next;
-	return (temp);
-}
-
-void	ft_lstadd_back(t_token **lst, t_token *new)
-{
-	t_token	*end;
-
-	if (!new)
-		return ;
-	if (*lst == NULL)
-		*lst = new;
-	else
-	{
-		end = ft_lstlast(*lst);
-		end->next = new;
-	}
-}
-
-#include <stdio.h>
-
-int whichtoken(char c)
+int	whichtoken(char c)
 {
 	if (c == '<')
 		return 1;
@@ -71,64 +30,43 @@ int whichtoken(char c)
 		return (0);
 }
 
-int isquote(char *c)
+char	*getword(int *pos, int *oldpos, t_data *core)
 {
-	if (*c == '\'')
-		return (2);
-	if (*c == '"')
-		return (1);
-	return (0);
+	char	*word;
+	
+	*pos += searchsep(&core->line[*oldpos]);
+	word = malloc (*pos - *oldpos + 1);
+	if(word == NULL)
+		perror("Malloc failed");
+	word[*pos - *oldpos] = '\0';
+	ft_strlcpy(word, &(core->line[*oldpos]), *pos - *oldpos + 1);
+	return (word);
 }
 
-int issep(char *c)
+char	*getsep(int *pos, t_data *core)
 {
-	if (*c == '<' || *c == '>' ||  *c == '|')
-		return (1);
-	return (0);
+	char *word;
+
+	word = malloc(2);
+	word[0] = core->line[*pos];
+	word[1] = '\0';
+	(*pos)++;
+	return (word);
 }
 
-int searchquote(char *str)
+char	*getquote(int *pos, int *oldpos, t_data *core)
 {
-	int i;
-	char quote_type = *str;
-
-	i = 1;
-	while (str[i] != '\0' && str[i] != quote_type)
-		i++;
-	if (str[i] == quote_type)
-		i++;  // Include the closing quote
-	return (i);
+	char	*word;
+	
+	*pos += searchquote(&core->line[*pos]);
+	word = malloc (*pos - *oldpos + 1);
+	if(word == NULL)
+		perror("Malloc failed");
+	word[*pos - *oldpos] = '\0';
+	ft_strlcpy(word, &(core->line[*oldpos]), *pos - *oldpos + 1);
+	return (word);
 }
 
-int searchsep(char *str)
-{
-	int i;
-
-	i = 0;
-	while(!(issep(&str[i])) && str[i] != '\0' && str[i] != ' ')
-	{
-		if(isquote(&str[i]))
-			return(i);
-		i++;
-	}
-	return (i);
-}
-
-int	is_myspace(char *c)
-{
-	if(*c == ' ')
-		return (1);
-	return (0);
-}
-/*
-void	remove_spaces(t_token *token)
-{
-	while (isspace(token->word[i]))
-		i++;
-	if (ft_strlen(token->word) == i)
-		//rm lstelem
-}
-*/
 void	tokenize(t_data *core)
 {
 	t_token	*token;
@@ -142,7 +80,6 @@ void	tokenize(t_data *core)
 	//if quote go until next quote and copy everything until next quote
 	//else if seperator copy it
 	//else copy the token until quote seperator or space
-	oldpos = 0;
 	pos = 0;
 	token = NULL;
 	while (core->line[pos] != '\0')
@@ -151,34 +88,17 @@ void	tokenize(t_data *core)
 			pos++;
 		oldpos = pos;
 		if (!(issep(&core->line[pos])) && !(isquote(&core->line[pos])))
-		{
-			pos += searchsep(&core->line[oldpos]);
-			word = malloc (pos - oldpos + 1);
-			if(word == NULL)
-				perror("Malloc failed");
-			word[pos - oldpos] = '\0';
-			ft_strlcpy(word, &(core->line[oldpos]), pos - oldpos + 1);
-		}
+			word = getword(&pos, &oldpos, core);
 		else if (issep(&core->line[pos]))
-		{
-			word = malloc(2);
-			word[0] = core->line[pos];
-			word[1] = '\0';
-			pos++;
-		}
+			word = getsep(&pos, core);
 		else if (isquote(&core->line[pos]))
-		{
-			pos += searchquote(&core->line[pos]);
-			word = malloc (pos - oldpos + 1);
-			if(word == NULL)
-				perror("Malloc failed");
-			word[pos - oldpos] = '\0';
-			ft_strlcpy(word, &(core->line[oldpos]), pos - oldpos + 1);
-		}
+			word = getquote(&pos, &oldpos, core);
 		newtoken = ft_lstnew(word);
 		ft_lstadd_back(&token, newtoken);
 		newtoken->type = whichtoken(core->line[oldpos]);
 	}
 	printlist(token);
+	free_token_list(token);
+
 }
 
