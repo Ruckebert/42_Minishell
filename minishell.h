@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/11 10:54:24 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/11 15:01:47 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,17 @@
 #include <termios.h>
 #include <curses.h>
 
+//Dummy Struct for executor
+typedef struct s_command
+{
+	char	*name;
+	char	**args;
+	char	*input_file;
+	char	*output_file;
+	int		arg_count;
+	
+}	t_command;
+
 typedef struct s_data
 {
 	char	*user;
@@ -45,6 +56,6 @@ typedef struct s_data
 /*Builtins*/
 void	cd_com(t_data *core);
 
-int		executor(int argc, char *argv[], t_data *core);
+int		executor(t_command *cmd, t_data *core);
 
 #endif
