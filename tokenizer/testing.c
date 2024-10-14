@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include "token.h"
+#include "../minishell.h"
 
 void printCharPointerArray(char **arr) 
 {
@@ -16,7 +15,6 @@ void print_words(t_token *head)
 {
     t_token *current = head;
 
-    // Traverse the list and print each word
     while (current != NULL)
     {
         if (current->word != NULL)
@@ -24,7 +22,7 @@ void print_words(t_token *head)
         current = current->next;
     }
 }
-
+/*
 void printlist(t_token *head)
 {
     t_token *curr;
@@ -34,11 +32,11 @@ void printlist(t_token *head)
     curr = head;
     while(curr)
     {
-        printf("%s\n", curr->word);
+        printf("\nWORD:%s\n", curr->word);
         curr = curr->next;
     }
 }
-
+*/
 
 void printlist_type(t_token *head)
 {
@@ -52,4 +50,42 @@ void printlist_type(t_token *head)
         printf("%i\n", curr->type);
         curr = curr->next;
     }
+}
+
+
+void printlist(t_token *head)
+{
+    t_token *curr;
+
+    if (!head)
+        return;
+
+    // Print table header
+    printf("%-20s | %s\n", "WORD", "TYPE");
+    printf("----------------------|------\n");
+
+    // Traverse and print each token in table format
+    curr = head;
+    while (curr)
+    {
+        // %-20s ensures the word is left-aligned with 20 characters space
+        printf("%-20s | %i\n", curr->word, curr->type);
+        curr = curr->next;
+    }
+}
+
+void	free_token_list(t_token *head)
+{
+	t_token	*tmp;
+
+	while (head != NULL)
+	{
+		tmp = head;        // Store current node
+		head = head->next; // Move to next node
+		// Free the fields
+		if (tmp->word != NULL)
+			free(tmp->word);
+		// Free the node itself
+		free(tmp);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/10 15:01:04 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/11 13:54:36 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int main(int argc, char *argv[], char **env)
 			ft_printf("PeePeeShell$ ");
 			ft_printf("%s ", core.user);
 			core.line = readline("Input > ");
-			status = execute_args(core.line, &core); //Executor
+			tokenize(&core);
+//			status = execute_args(core.line, &core); //Executor
 			free(core.line);
 			if (status >= 0)
 				exit(status);

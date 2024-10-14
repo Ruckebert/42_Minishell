@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/10 14:55:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/11 13:51:37 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft/libft.h"
 # include "pipex.h"
+# include "tokenizer/token.h"
 
 // All allowed functions are in these headers 
 #include <unistd.h>
@@ -44,5 +45,8 @@ typedef struct s_data
 
 /*Builtins*/
 void	cd_com(t_data *core);
+
+//Tokenizer
+void tokenize(t_data *core);
 
 #endif

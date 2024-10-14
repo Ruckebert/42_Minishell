@@ -6,147 +6,99 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/11 11:24:31 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/11 15:16:24 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
+#include "../minishell.h"
 
-t_token	*ft_lstnew(char *word)
+int	whichtoken(char c)
 {
-	t_token	*elem;
-
-	elem = malloc(sizeof(t_token));
-	if (!elem)
-		return (NULL);
-	elem->word = word;
-	elem->next = NULL;
-	return (elem);
+	if (c == '<')
+		return 1;
+	else if (c == '>')
+		return 2;
+	else if (c == '|')
+		return 3;
+	else if (c == '"')
+		return 4;
+	else if (c == '\'')
+		return 5;
+	else if (c == '-')
+		return 6;
+	else 
+		return (0);
 }
 
-t_token	*ft_lstlast(t_token *lst)
+char	*getword(int *pos, int *oldpos, t_data *core)
 {
-	t_token	*temp;
-
-	if (!lst)
-		return (NULL);
-	temp = lst;
-	while (temp->next != NULL)
-		temp = temp->next;
-	return (temp);
+	char	*word;
+	
+	*pos += searchsep(&core->line[*oldpos]);
+	word = malloc (*pos - *oldpos + 1);
+	if(word == NULL)
+		perror("Malloc failed");
+	word[*pos - *oldpos] = '\0';
+	ft_strlcpy(word, &(core->line[*oldpos]), *pos - *oldpos + 1);
+	return (word);
 }
 
-void	ft_lstadd_back(t_token **lst, t_token *new)
+char	*getsep(int *pos, t_data *core)
 {
-	t_token	*end;
+	char *word;
 
-	if (!new)
-		return ;
-	if (*lst == NULL)
-		*lst = new;
-	else
-	{
-		end = ft_lstlast(*lst);
-		end->next = new;
-	}
+	word = malloc(2);
+	word[0] = core->line[*pos];
+	word[1] = '\0';
+	(*pos)++;
+	return (word);
 }
 
-#include <stdio.h>
-
-int add_tokentype(char *word)
+char	*getquote(int *pos, int *oldpos, t_data *core)
 {
-    if (word[1] != '\0') // Ensure only single characters are checked
-        return 0;
-
-    if (word[0] == '~')
-        return 1;  // Home directory
-    else if (word[0] == '`')
-        return 2;  // Command substitution (archaic)
-    else if (word[0] == '#')
-        return 3;  // Comment
-    else if (word[0] == '$')
-        return 4;  // Variable expression
-    else if (word[0] == '&')
-        return 5;  // Background job
-    else if (word[0] == '*')
-        return 6;  // String wildcard
-    else if (word[0] == '(')
-        return 7;  // Start subshell
-    else if (word[0] == ')')
-        return 8;  // End subshell
-    else if (word[0] == '\\')
-        return 9;  // Quote next character
-    else if (word[0] == '|')
-        return 10; // Pipe
-    else if (word[0] == '[')
-        return 11; // Start character-set wildcard
-    else if (word[0] == ']')
-        return 12; // End character-set wildcard
-    else if (word[0] == '{')
-        return 13; // Start command block
-    else if (word[0] == '}')
-        return 14; // End command block
-    else if (word[0] == ';')
-        return 15; // Shell command separator
-    else if (word[0] == '\'')
-        return 16; // Strong quote
-    else if (word[0] == '"')
-        return 17; // Weak quote
-    else if (word[0] == '<')
-        return 18; // Input redirect
-    else if (word[0] == '>')
-        return 19; // Output redirect
-    else if (word[0] == '/')
-        return 20; // Pathname directory separator
-    else if (word[0] == '?')
-        return 21; // Single-character wildcard
-    else if (word[0] == '!')
-        return 22; // Pipeline logical NOT
-    else
-        return 0;  // If no match, return 0
+	char	*word;
+	
+	*pos += searchquote(&core->line[*pos]);
+	word = malloc (*pos - *oldpos + 1);
+	if(word == NULL)
+		perror("Malloc failed");
+	word[*pos - *oldpos] = '\0';
+	ft_strlcpy(word, &(core->line[*oldpos]), *pos - *oldpos + 1);
+	return (word);
 }
 
-int	main(int argc, char **argv)
+void	tokenize(t_data *core)
 {
 	t_token	*token;
-	char	**nopipe;
-	char	**words;
-	int		i;
-	int		j;
 	t_token *newtoken;
-//	char	str[]= "echo \"hello\" \" \" |cat -e > myfile | test" ;
-	
-	i = 0;
-	j = 0;
-	nopipe = NULL;
-	words = NULL;
+	char	*word;
+	int		pos;
+	int		oldpos;
+
+	//Gameplan:
+	//walk till you reach seperator or a quote
+	//if quote go until next quote and copy everything until next quote
+	//else if seperator copy it
+	//else copy the token until quote seperator or space
+	pos = 0;
 	token = NULL;
-	//argv[1] = str;
-	nopipe = ft_split(argv[1], '|');
-	while (nopipe[i])
+	while (core->line[pos] != '\0')
 	{
-		printf("NOPIPE ARRAY:%s\n\n",nopipe[i]);	
-		words = ft_split(nopipe[i], ' ');
-		while (words[j])
-		{
-			printf("WORDS ARRAY:%s\n\n",words[j]);	
-			newtoken = ft_lstnew(words[j]);
-			ft_lstadd_back(&token, newtoken);
-			j++;
-			newtoken->type = add_tokentype(newtoken->word);
-		}
-		//free words
-		if(nopipe[i+1] != NULL)
-		{
-			newtoken = ft_lstnew("|");
-			ft_lstadd_back(&token, newtoken);
-			newtoken->type = 9;
-		}
-		j = 0;
-		i++;
+		while (is_myspace(&core->line[pos]))
+			pos++;
+		oldpos = pos;
+		if (!(issep(&core->line[pos])) && !(isquote(&core->line[pos])))
+			word = getword(&pos, &oldpos, core);
+		else if (issep(&core->line[pos]))
+			word = getsep(&pos, core);
+		else if (isquote(&core->line[pos]))
+			word = getquote(&pos, &oldpos, core);
+		newtoken = ft_lstnew(word);
+		ft_lstadd_back(&token, newtoken);
+		newtoken->type = whichtoken(core->line[oldpos]);
 	}
-	//free nopipe
 	printlist(token);
-	printlist_type(token);
-//printCharPointerArray(res);
+	free_token_list(token);
+
 }
+
