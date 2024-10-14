@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/11 15:01:47 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/14 11:27:08 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_command
 	
 }	t_command;
 
+/*Core Data Struct*/
 typedef struct s_data
 {
 	char	*user;
@@ -53,9 +54,21 @@ typedef struct s_data
 	
 }	t_data;
 
+/*Utils/Free*/
+
 /*Builtins*/
 void	cd_com(t_data *core);
 
+/*Environment Functions*/
+char	**copy_env(char **env, t_data *core);
+void	pwd_update(t_data *core);
+void	envi_update(char *old_pwd, t_data *core);
+
+/*Lexer Functions AKA Tokenizer*/
+
+/*Parser Functions*/
+
+/*Executor Functions*/
 int		executor(t_command *cmd, t_data *core);
 
 #endif

@@ -1,7 +1,7 @@
 
 NAME = minishell
 
-SOURCE = main.c builtins.c executor.c executor_utils.c
+SOURCE = main.c builtins.c executor.c executor_utils.c environment.c
 
 OBJECTS = $(SOURCE:.c=.o)
 

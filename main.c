@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/11 15:26:24 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/14 11:39:12 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,52 +26,6 @@ int		execute_args(char *line, t_data *core)
 	else if (ft_strncmp(line, "exit", ft_strlen(line)) == 0)
 		return (0);
 	return (-1);
-}
-
-char **copy_env(char **env, t_data *core)
-{
-	char **new_env;
-	int count;
-	int i;
-
-	if (env == NULL || *env == NULL)
-		exit(1);
-	
-	count = 0;
-	while (env[count] != NULL)
-		count++;
-	
-	new_env = malloc((count + 1) * sizeof(char *));
-	if (!new_env)
-		exit(1);
-	
-	i = 0;
-	while (i < count)
-	{
-		/*if (ft_strncmp(new_env[i], "OLDPWD=", 7) == 0) To Do: Change the OldPWD to home environemtn when copying the environment
-			new_env[i] = ft_strdup(env);
-		else*/
-		/*if (ft_strncmp(new_env[i], "SHELLVL=", 7) == 0) To Do: Increase the Shell Lvl by one
-		{
-			ft_atoi() + 1
-			str = itoa()
-			if (str)
-				return (NULL);
-			str_comb
-			new_env[i] = new_shelllvl;
-		}
-		else*/
-		new_env[i] = ft_strdup(env[i]);
-		if (ft_strncmp(new_env[i], "USER=", 5) == 0)
-			core->user = ft_strdup(env[i] + 5);
-		if	(ft_strncmp(new_env[i], "HOME=", 5) == 0)
-			core->direct = ft_strdup(env[i] + 5);
-		if (!new_env[i])
-			exit(1); //If this fails free everything before
-		i++;
-	}
-	new_env[count] = NULL;
-	return (new_env);
 }
 
 int test(t_data *core)
@@ -95,6 +49,15 @@ int test(t_data *core)
 	
 	//ft_printf("%d\n", i);
 	executor(&cmd, core);
+	
+	i = 0;
+	while (split_cmd[i] != NULL)
+	{
+		free(split_cmd[i]);
+		i++;
+	}
+	free(split_cmd);
+	
 	return (0);
 }
 
@@ -104,20 +67,22 @@ int main(int argc, char *argv[], char **env)
 	int status = -1;
 
 	if (argc == -1)
-		exit(1);
+		exit(2);
 	core.env = copy_env(env, &core);
+	if (core.env == NULL)
+		return (2);
 	(void)argc;
 	(void)argv;
 
 	if (isatty(STDIN_FILENO) == 1)
 	{
 		chdir(core.direct);
+		pwd_update(&core);
 		while (status == -1)
 		{
-
 			ft_printf("PeePeeShell$ ");
 			ft_printf("%s ", core.user);
-			core.line = readline("Input > ");
+			core.line = readline("> ");
 			add_history(core.line);
 			status = execute_args(core.line, &core); //Executor
 			test(&core);
@@ -125,10 +90,6 @@ int main(int argc, char *argv[], char **env)
 			if (status >= 0)
 				exit(status);
 		}
-	}
-	else
-	{
-		//No Minishell
 	}
 	return (0);
 }

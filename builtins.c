@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/11 15:29:14 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/14 11:38:50 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,36 @@
 
 // All Builtins Manipulate the Environment that is why we have to build them seperately. :0 
 
-void	cd_com(t_data *core)
+void	cd_com(t_data *core) // To Do: In the case something fails i have not free anything 
 {
-	
-	/*if (ft_strncmp(core->line, "cd -", 4) == 0) //To Do: Update the OldPWD
+	char *old_pwd;
+
+	old_pwd = getcwd(NULL, 0);
+	if (ft_strncmp(core->line, "cd -", 4) == 0)
 	{
 		int i = 0;
 		while (core->env[i])
 		{
-			if (ft_strncmp(core->env[i], "OLDPWD=", 8) == 0)
+			if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
 			{
-				core->direct = ft_strdup(core->line + 8);
+				free(core->direct);
+				core->direct = ft_strdup(core->env[i] + 7);
 				break ;
 			}
-			i++;	
+			i++;
 		}
 		chdir(core->direct);
+		envi_update(old_pwd, core);
 		return ;
-	}*/
+	}
 	
+	free(core->direct);
 	core->direct = ft_strdup(core->line + 3);
 	if (access(core->direct, sizeof(char)) == 0)
+	{
 		chdir(core->direct);
+		envi_update(old_pwd, core);
+	}
 	else
 		ft_printf("cd: no such file or directory: %s\n", core->direct);
 	return ;
@@ -44,16 +52,12 @@ void	cd_com(t_data *core)
 void	pwd(t_data *core)
 {
 	core->direct = getcwd(NULL, 0);
+	if (!core->direct)
+	{ //A Basic free if it fails 
+		free(core->direct);
+		return ;
+	}
 	ft_printf("%s\n", core->direct);
-	
-	/*int i = 0; To Do: Update the PWD with the current Directory
-	while (core->env[i])
-	{
-		if (ft_strncmp(core->env[i], "PWD=", 4) == 0)
-			core->user = ft_strdup(core->env[i] + 4);
-		i++;
-	}*/
-	
 }
 
 void	env(t_data *core)
@@ -77,4 +81,10 @@ void	export(t_data *core)
 void	unset()
 {
 	
+}
+
+void	exit_com() //To Do: Exit command should free everything and then exit;
+{
+	
+	exit(1);
 }
