@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/10 15:01:04 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/11 15:26:24 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,19 @@ char **copy_env(char **env, t_data *core)
 	i = 0;
 	while (i < count)
 	{
+		/*if (ft_strncmp(new_env[i], "OLDPWD=", 7) == 0) To Do: Change the OldPWD to home environemtn when copying the environment
+			new_env[i] = ft_strdup(env);
+		else*/
+		/*if (ft_strncmp(new_env[i], "SHELLVL=", 7) == 0) To Do: Increase the Shell Lvl by one
+		{
+			ft_atoi() + 1
+			str = itoa()
+			if (str)
+				return (NULL);
+			str_comb
+			new_env[i] = new_shelllvl;
+		}
+		else*/
 		new_env[i] = ft_strdup(env[i]);
 		if (ft_strncmp(new_env[i], "USER=", 5) == 0)
 			core->user = ft_strdup(env[i] + 5);
@@ -59,6 +72,30 @@ char **copy_env(char **env, t_data *core)
 	}
 	new_env[count] = NULL;
 	return (new_env);
+}
+
+int test(t_data *core)
+{
+	t_command cmd;
+	
+	char **split_cmd = ft_split(core->line, ' ');
+	int i = 0;
+	
+	while (split_cmd[i] != NULL)
+	{
+		ft_printf("%s\n", split_cmd[i]);
+		i++;
+	}
+	
+	cmd.args = split_cmd;
+	cmd.name = split_cmd[0];
+	cmd.arg_count = i;
+	cmd.input_file = NULL;
+	cmd.output_file = NULL;
+	
+	//ft_printf("%d\n", i);
+	executor(&cmd, core);
+	return (0);
 }
 
 int main(int argc, char *argv[], char **env)
@@ -81,7 +118,9 @@ int main(int argc, char *argv[], char **env)
 			ft_printf("PeePeeShell$ ");
 			ft_printf("%s ", core.user);
 			core.line = readline("Input > ");
+			add_history(core.line);
 			status = execute_args(core.line, &core); //Executor
+			test(&core);
 			free(core.line);
 			if (status >= 0)
 				exit(status);
