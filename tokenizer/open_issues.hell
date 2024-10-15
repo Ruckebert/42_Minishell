@@ -1,0 +1,13 @@
+1)
+How do i recognize if something is a flag or should be part of the word?
+example:
+echo -m "test"
+gives me -m test because -m is not a flag for echo.
+example2:
+echo -n "test" | cat -m 
+gives me an error because -m doesnt exist
+
+2)
+Tokenizing not correct for <<, >> and =something because i tokenize special chars as single chars and need to pull them together and change the type.
+
+incomplete list, duuh.
