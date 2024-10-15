@@ -6,15 +6,15 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 10:15:07 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/11 10:54:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/15 10:23:51 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "libft/libft.h"
-# include "minishell.h"
+# include "../libft/libft.h"
+# include "../minishell.h"
 
 # include <unistd.h>
 # include <string.h>

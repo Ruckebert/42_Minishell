@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/14 11:27:08 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/15 10:27:41 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
-# include "pipex.h"
+# include "executor/pipex.h"
+# include "get_next_line/get_next_line.h"
 
 // All allowed functions are in these headers 
 #include <unistd.h>
@@ -41,6 +42,8 @@ typedef struct s_command
 	char	*input_file;
 	char	*output_file;
 	int		arg_count;
+	int		here_doc;
+	char	*here_doc_delimiter;
 	
 }	t_command;
 
@@ -58,6 +61,7 @@ typedef struct s_data
 
 /*Builtins*/
 void	cd_com(t_data *core);
+void	pwd(t_data *core);
 
 /*Environment Functions*/
 char	**copy_env(char **env, t_data *core);

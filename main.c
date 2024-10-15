@@ -6,28 +6,29 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/14 11:39:12 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:04:49 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		execute_args(char *line, t_data *core)
+//Builtin Commands
+
+int		builtin_cmds(char *line, t_data *core)
 {
 	if (ft_strlen(line) == 0)
 		return (-1);
 	else if (ft_strncmp(line, "pwd", ft_strlen(line)) == 0)
-	{
-		core->direct = getcwd(NULL, 0);
-		ft_printf("%s\n", core->direct);
-	}
+		pwd(core);
 	else if (ft_strncmp(line, "cd", 2) == 0)
 		cd_com(core);
 	else if (ft_strncmp(line, "exit", ft_strlen(line)) == 0)
-		return (0);
+		exit (1);
 	return (-1);
 }
 
+//Simply a Test Function to test certain things for the executor
+//It needs alot of work though :(
 int test(t_data *core)
 {
 	t_command cmd;
@@ -37,12 +38,14 @@ int test(t_data *core)
 	
 	while (split_cmd[i] != NULL)
 	{
-		ft_printf("%s\n", split_cmd[i]);
+		//ft_printf("%s\n", split_cmd[i]);
 		i++;
 	}
 	
 	cmd.args = split_cmd;
 	cmd.name = split_cmd[0];
+	cmd.here_doc = 0;
+	cmd.here_doc_delimiter = NULL;
 	cmd.arg_count = i;
 	cmd.input_file = NULL;
 	cmd.output_file = NULL;
@@ -84,7 +87,7 @@ int main(int argc, char *argv[], char **env)
 			ft_printf("%s ", core.user);
 			core.line = readline("> ");
 			add_history(core.line);
-			status = execute_args(core.line, &core); //Executor
+			status = builtin_cmds(core.line, &core);
 			test(&core);
 			free(core.line);
 			if (status >= 0)
