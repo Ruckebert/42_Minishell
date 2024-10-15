@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/15 10:27:41 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/15 14:23:23 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_data
 	char	*direct;
 	char	*line;
 	char	**env;
+	char	**export_env;
 	
 }	t_data;
 
