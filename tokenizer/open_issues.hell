@@ -7,7 +7,11 @@ example2:
 echo -n "test" | cat -m 
 gives me an error because -m doesnt exist
 
+CHECK ACCESS COMMAND FOR THIS
+
 2)
 Tokenizing not correct for <<, >> and =something because i tokenize special chars as single chars and need to pull them together and change the type.
 
 incomplete list, duuh.
+
+3) implement escape char
