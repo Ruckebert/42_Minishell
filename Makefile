@@ -3,7 +3,7 @@ NAME = minishell
 
 SOURCE = main.c builtins.c
 
-SOURCETOK = ./tokenizer/testing.c ./tokenizer/token.c
+SOURCETOK = ./tokenizer/testing.c ./tokenizer/token.c ./tokenizer/lsthelper.c ./tokenizer/tokenhelper.c
 
 OBJECTS = $(SOURCE:.c=.o)
 
