@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/15 14:49:51 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:09:20 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,9 @@ void	checker(int *fd)
 // All Mutiple Pipe
 //
 
+
+//To Do: Fix Mutilpe Pipes its bad XD
+//Okay Funny thing is that it does create new files my guess something happens with the mutilpe file inputs which causes the program to run endless but also its the input.
 void	first_pipe(t_var *vars, char *argv[], int fd)
 {
 	vars->fdin = open(argv[1], O_RDONLY);
@@ -275,11 +278,25 @@ void	mutilpe_pipe(t_var *vars, int argc, char *argv[], char **envp)
 			//For some reason its not accepting the format of the closing_cmds
 			//To Do: Test and Fix all of it honestly XD
 			//closing_cmds(cmds, fd);
+			j = 0;
+			while (j < cmds - 1)
+			{
+				close(fd[j][0]);
+				close(fd[j][1]);
+				j++;
+			}
 			path_finder(vars, envp, argv[i + 2], 0);
 		}
 		i++;
 	}
 	//closing_cmds(cmds, fd);
+	j = 0;
+	while (j < cmds - 1)
+	{
+		close(fd[j][0]);
+		close(fd[j][1]);
+		j++;
+	}
 	j = -1;
 	while (++j < cmds)
 		waitpid(vars->childid, NULL, 0);
@@ -352,10 +369,12 @@ int	executor(t_command *cmd, t_data *core)
 	}
 	else if (cmd->input_file)
 	{
+		//Child Process
 		file_input(cmd, &vars, fd);
 	}
 	else if (cmd->output_file)
 	{
+		//Child Process
 		file_output(cmd, &vars, fd);
 	}
 

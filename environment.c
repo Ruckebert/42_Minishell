@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/15 14:24:31 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:21:39 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ char **copy_env(char **env, t_data *core)
 	
 	new_env = malloc((count + 1) * sizeof(char *));
 	if (!new_env)
+		exit(2);
+	core->export_env = malloc((count + 1) * sizeof(char *));
+	if (!core->export_env)
 		exit(2);
 	
 	i = 0;
@@ -76,7 +79,6 @@ char **copy_env(char **env, t_data *core)
 	new_env[count] = NULL;
 	return (new_env);
 }
-
 
 //To Do: Free if anything fails
 void pwd_update(t_data *core)

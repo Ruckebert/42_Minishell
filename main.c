@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/15 11:04:49 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:38:41 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int		builtin_cmds(char *line, t_data *core)
 		cd_com(core);
 	else if (ft_strncmp(line, "exit", ft_strlen(line)) == 0)
 		exit (1);
+	else if (ft_strncmp(line, "export", 6) == 0)
+		export(core);
 	return (-1);
 }
 
@@ -32,7 +34,7 @@ int		builtin_cmds(char *line, t_data *core)
 int test(t_data *core)
 {
 	t_command cmd;
-	
+
 	char **split_cmd = ft_split(core->line, ' ');
 	int i = 0;
 	
