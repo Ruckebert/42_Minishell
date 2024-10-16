@@ -1,3 +1,5 @@
+!!HANDLE $ sign
+
 1)
 How do i recognize if something is a flag or should be part of the word?
 example:
@@ -15,3 +17,5 @@ Tokenizing not correct for <<, >> and =something because i tokenize special char
 incomplete list, duuh.
 
 3) implement escape char
+
+

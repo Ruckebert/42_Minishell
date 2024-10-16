@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/16 10:57:38 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:51:08 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	isquote(char *c)
 
 int	issep(char *c)
 {
-	if (*c == '<' || *c == '>' ||  *c == '|' || *c == '=')
+	if (*c == '<' || *c == '>' ||  *c == '|' || *c == '=' || *c == '$')
 		return (1);
 	return (0);
 }
@@ -37,7 +37,7 @@ int	searchquote(char *str)
 	while (str[i] != '\0' && str[i] != quote_type)
 		i++;
 	if (str[i] == quote_type)
-		i++;  // Include the closing quote
+		i++;
 	return (i);
 }
 

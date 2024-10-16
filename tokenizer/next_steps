@@ -1,0 +1,4 @@
+1) covert 2x> to >> and 2x< to <<
+2) variable expansion
+3) What is the format execve needs args? argv[0] is name argv[x] is all flags and argv[y] is all input?
+4) write the struct for the executer

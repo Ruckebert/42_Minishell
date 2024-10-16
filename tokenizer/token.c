@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/11 15:16:24 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:51:53 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	whichtoken(char c)
 		return 6;
 	else if (c == '=')
 		return 7;
+	else if (c == '$')
+		return 8;
 	else
 		return (0);
 }
@@ -79,11 +81,6 @@ char	*getquote(int *pos, int *oldpos, t_data *core, t_token *token)
 	return (word);
 }
 
-	//Gameplan:
-	//walk till you reach seperator or a quote
-	//if quote go until next quote and copy everything until next quote
-	//else if seperator copy it
-	//else copy the token until quote seperator or space
 void	tokenize(t_data *core)
 {
 	t_token	*token;
@@ -106,6 +103,8 @@ void	tokenize(t_data *core)
 		else if (isquote(&core->line[pos]))
 			word = getquote(&pos, &oldpos, core, token);
 		newtoken = ft_lstnew(word);
+		if(core->line[oldpos - 1] == ' ')
+			newtoken->leading_space = 1;
 		ft_lstadd_back(&token, newtoken);
 		newtoken->type = whichtoken(core->line[oldpos]);
 	}

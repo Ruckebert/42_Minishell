@@ -52,7 +52,6 @@ void printlist_type(t_token *head)
     }
 }
 
-
 void printlist(t_token *head)
 {
     t_token *curr;
@@ -61,15 +60,17 @@ void printlist(t_token *head)
         return;
 
     // Print table header
-    printf("%-20s | %s\n", "WORD", "TYPE");
-    printf("----------------------|------\n");
+    printf("%-20s | %-4s | %s\n", "WORD", "TYPE", "LEADING_SPACE");
+    printf("----------------------|------|--------------\n");
 
     // Traverse and print each token in table format
     curr = head;
     while (curr)
     {
         // %-20s ensures the word is left-aligned with 20 characters space
-        printf("%-20s | %i\n", curr->word, curr->type);
+        // %-4d ensures the type is left-aligned with 4 characters space
+        // %d prints the leading_space value
+        printf("%-20s | %-4i | %i\n", curr->word, curr->type, curr->leading_space);
         curr = curr->next;
     }
 }

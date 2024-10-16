@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:32 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/11 15:06:27 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/16 13:26:12 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ typedef struct s_token
 {
 	char			*word;
 	int				type;
+	int				leading_space;
 	struct s_token	*next;
 	struct s_token	*prev;
+
 }	t_token;
 
 //isneeded
