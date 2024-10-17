@@ -113,6 +113,56 @@ void	combine_double_redirect(t_token	*token)
 	}
 }
 
+void	open_doublequote(t_token *curr)
+{
+	t_token	*newnext;
+	t_token	*discard;
+	char	*fusedword;
+	char	*temp1;
+	char	*temp2;
+
+	temp2 = NULL;
+	newnext = curr->next->next;
+	discard = curr->next;
+	if (curr->next->leading_space == 0)
+	{
+		temp2 = malloc (ft_strlen(curr->next->word));
+		ft_strlcpy(temp2, &(curr->next->word[1]), ft_strlen(&(curr->next->word[1])));
+		fusedword = ft_strjoin(curr->word, temp2);
+		free(temp2);
+		
+	}
+	if (curr->next->leading_space == 1)
+	{
+		temp1 = ft_strjoin(curr->word, " ");
+		temp2 = malloc(ft_strlen(curr->next->word) - 1);
+		ft_strlcpy(temp2, &(curr->next->word[1]), ft_strlen(&(curr->next->word[1])));
+		fusedword = ft_strjoin(temp1, temp2);
+		free(temp1);
+		free(temp2);
+	}
+	free(curr->word);
+	curr->word = fusedword;
+	free(curr->next->word);
+	free(discard);
+	curr->next = newnext;
+}
+
+void	handle_doublequote(t_token *token)
+{
+	t_token	*curr;
+
+	curr = token;
+	while (curr && curr->next)
+	{
+		if (curr->next->type == 4)
+		{
+			open_doublequote(curr);	
+		}
+		curr = curr->next;	
+	}
+}
+
 void	tokenize(t_data *core)
 {
 	t_token	*token;
@@ -137,10 +187,14 @@ void	tokenize(t_data *core)
 		newtoken = ft_lstnew(word);
 		if(core->line[oldpos - 1] == ' ')
 			newtoken->leading_space = 1;
+		else
+			newtoken->leading_space = 0;
 		ft_lstadd_back(&token, newtoken);
 		newtoken->type = whichtoken(core->line[oldpos]);
 	}
 	combine_double_redirect(token);
+	printlist(token);
+	handle_doublequote(token);
 	printlist(token);
 	free_token_list(token);
 }

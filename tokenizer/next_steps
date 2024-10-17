@@ -1,4 +1,6 @@
-1) covert 2x> to >> and 2x< to <<
-2) variable expansion
-3) What is the format execve needs args? argv[0] is name argv[x] is all flags and argv[y] is all input?
-4) write the struct for the executer
+DONE! covert 2x> to >> and 2x< to <<
+2) remove quotes
+2a) since variables in " need to be expanded first fuse double quote words with previous token then expand variables then fuse ' words because they should not be expanded
+3) variable expansion
+4) What is the format execve needs args? argv[0] is name argv[x] is all flags and argv[y] is all input?
+5) write the struct for the executer
