@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/17 10:33:50 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/17 13:01:25 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	env(t_data *core);
 void	cd_com(t_data *core);
 void	pwd(t_data *core);
 void	export(t_data *core);
+void	unset(t_data *core);
 
 /*Environment Functions*/
 char	**copy_env(char **env, t_data *core);

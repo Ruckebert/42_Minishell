@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/17 10:42:33 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:09:04 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 		k = 0;
 		while (env[k])
 		{
+			//To Do: Change this so it just looks at the begining not the assigned varaible after =
 			if (ft_strcmp(temp[k], argv[j + 1]) == 0)
 			{
 				temp[k] = ft_strdup(argv[j + 1]);
@@ -201,7 +202,6 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 }
 void	export(t_data *core)
 {
-	//Add a function to check whether or not the variable already exists or not
 	int i = 0;
 	int count = 0;
 	char **temp;
@@ -210,7 +210,6 @@ void	export(t_data *core)
 	count = environment_export(core);
 	bubble_sort(core);
 
-	//Made to Check arguements 
 	i = count + 1;
 	count = 0;
 	while (argv[count])
@@ -243,36 +242,82 @@ void	export(t_data *core)
 		i++;
 	}
 	free(argv);
-	write(1, "1", 1);
 }
 
 
 //Time For Unset Yay
-
+char	**unset_env_exo(t_data *core, char **env, int i, char **argv)
+{
+	int count = environment_export(core);
+	char **temp;
+	int found = 0;
+	
+	temp = malloc(((count - i) + 1) * sizeof(char *));
+	if (!temp)
+		exit(write(1, "Malloc Error", 13));
+		
+	i = 0;
+	while (env[i])
+	{
+		int j = 0;
+		found = 0;
+		while (argv[j])
+		{
+			if (ft_strcmp(env[i], argv[j]) == 0)
+			{
+				found = 1;
+				break ;
+			}
+			j++;
+		}
+		if (!found)
+			temp[i] = ft_strdup(env[i]);
+		else
+			i++;
+		i++;
+	}
+	temp[i] = NULL;
+	return (temp);
+}
 
 void	unset(t_data *core)
 {
-	//Unset removes a variable in the environment and export environment
-	//However if it is invaild nothing happens
+	//Done it works
+	//To Do: Add the changes in the environment not export environment
 	char	**argv = ft_split(core->line, ' ');
-	//int		i;
+	int		i = 0;
+	char	**temp;
 	
 	ft_printf("%s\n", argv[1]);
-
-	/*This is wrong but it has the right idea
+	while (argv[i])
+		i++;
+	if (i == 1)
+		return ;
+	temp = unset_env_exo(core, core->export_env, i, argv);
+	i = 0;
+	while (core->export_env[i])
+	{
+		if (!core->export_env[i])
+			free(core->export_env[i]);
+		i++;
+	}
+	free(core->export_env);
+	core->export_env = temp;
+	//To Do: Fix the seg fault for the environment
+	/*temp = unset_env_exo(core, core->env, i, argv);
+	i = 0;
 	while (core->env[i])
 	{
-		if (ft_strncmp(core->env[i], argv[1],ft_strlen(argv[1])) == 0)
-		{
-			//In this case you remove it in both the export environment and environment
-			free(core->direct);
-			core->direct = ft_strdup(core->env[i] + 7);
-			break ;
-		}
+		if (!core->env[i])
+			free(core->env[i]);
 		i++;
-	}*/
+	}
+	free(core->env);
+	core->env = temp;*/
 }
 
+
+//Builtins that still need work
 void	echo_cmd(t_data *core)
 {
 	char	**argv = ft_split(core->line, ' ');
