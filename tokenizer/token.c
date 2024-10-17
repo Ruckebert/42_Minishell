@@ -81,6 +81,38 @@ char	*getquote(int *pos, int *oldpos, t_data *core, t_token *token)
 	return (word);
 }
 
+void	substitute_redir(t_token *curr,char str[3])
+{
+	t_token	*newnext;
+	t_token	*discard;
+	char	*newredir;
+
+	newnext = curr->next->next;
+	free(curr->next->word);
+	discard = curr->next;
+	curr->next = newnext;
+	free(discard);
+	newredir = malloc(3);
+	curr->word = newredir;
+	strlcpy(curr->word, str, 3);
+	curr->type = curr->type * 10;
+}
+
+void	combine_double_redirect(t_token	*token)
+{
+	t_token	*curr;
+
+	curr = token;
+	while (curr && curr->next)
+	{
+		if (!ft_strncmp(curr->word, "<\0",2)  && !ft_strncmp(curr->next->word, "<\0",2))
+			substitute_redir(curr,"<<\0");
+		else if (!ft_strncmp(curr->word, ">\0",2)  && !ft_strncmp(curr->next->word, ">\0",2))
+			substitute_redir(curr,">>\0");
+		curr = curr->next;
+	}
+}
+
 void	tokenize(t_data *core)
 {
 	t_token	*token;
@@ -108,6 +140,7 @@ void	tokenize(t_data *core)
 		ft_lstadd_back(&token, newtoken);
 		newtoken->type = whichtoken(core->line[oldpos]);
 	}
+	combine_double_redirect(token);
 	printlist(token);
 	free_token_list(token);
 }
