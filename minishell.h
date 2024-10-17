@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/16 09:56:30 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/17 10:33:50 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_data
 /*Utils/Free*/
 
 /*Builtins*/
+void	env(t_data *core);
 void	cd_com(t_data *core);
 void	pwd(t_data *core);
 void	export(t_data *core);

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/16 11:38:41 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/17 10:33:36 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int		builtin_cmds(char *line, t_data *core)
 		exit (1);
 	else if (ft_strncmp(line, "export", 6) == 0)
 		export(core);
+	else if (ft_strncmp(line, "env", 3) == 0)
+		env(core);
 	return (-1);
 }
 

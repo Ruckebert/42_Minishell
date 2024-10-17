@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/16 15:57:06 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/17 10:42:33 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,29 @@ void	pwd(t_data *core)
 
 void	env(t_data *core)
 {
-	//The Env should print everything with an = and if it doesnt it will not
 	int i;
+	int j;
 	
 	i = 0;
 	while (core->env[i] != NULL)
 	{
-		ft_printf("%s\n",core->env[i]);
+		j = 0;
+		while (core->env[i][j])
+		{
+			if (core->env[i][j] == '=')
+			{
+				ft_printf("%s\n",core->env[i]);
+				break ;
+			}
+			j++;
+		}
 		i++;
 	}
 	return ;
 }
+
+
+//All Functions needed for Export 
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -120,7 +132,6 @@ int		environment_export(t_data *core)
 	count = 0;
 	if (core->export_env[0] == NULL)
 	{
-		write(1, "2", 1);
 		while (core->env[count])
 		{
 			core->export_env[count] = ft_strdup(core->env[count]);
@@ -152,6 +163,7 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 {
 	int j;
 	int i;
+	int k;
 	char **temp;
 	temp = malloc((argc + count) * sizeof(char *));
 	if (!temp)
@@ -164,11 +176,25 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 		i++;
 	}
 	j = 0;
-	while (j < count)
+	while (j >= 0)
 	{
-		temp[i] = ft_strdup(argv[j + 1]);
-		i++;
-		j++;
+		int found = 0;
+		k = 0;
+		while (env[k])
+		{
+			if (ft_strcmp(temp[k], argv[j + 1]) == 0)
+			{
+				temp[k] = ft_strdup(argv[j + 1]);
+				found = 1;
+			}
+			k++;
+		}
+		if (!found)
+		{
+			temp[i] = ft_strdup(argv[j + 1]);
+			i++;
+		}
+		j--;
 	}
 	temp[i] = NULL;
 	return (temp);
@@ -193,23 +219,7 @@ void	export(t_data *core)
 	if (count == 1)
 		print_exo_env(core);
 	else if (count > 1)
-	{
-		int j = 0;
-		
-		while (j < count - 1)
-		{
-			i = 0;
-			while (core->export_env[i])
-			{
-				if (ft_strcmp(core->export_env[i], argv[j + 1]) == 0)
-				{	//Issue Does not Duplicate it anymore
-					core->export_env[i] = ft_strdup(argv[j + 1]);
-				}
-				i++;
-			}
-			j++;
-		}
-		
+	{	
 		temp = new_exo_env(core->export_env, argv, i, count);
 		if (!temp)
 			exit(write(2, "Error: Enviornment is Not Sexy Enough\n", 39));
@@ -235,6 +245,10 @@ void	export(t_data *core)
 	free(argv);
 	write(1, "1", 1);
 }
+
+
+//Time For Unset Yay
+
 
 void	unset(t_data *core)
 {
