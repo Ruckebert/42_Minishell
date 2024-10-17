@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/17 16:09:04 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:20:38 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	pwd(t_data *core)
 {
 	core->direct = getcwd(NULL, 0);
 	if (!core->direct)
-	{ //A Basic free if it fails 
+	{
 		free(core->direct);
 		return ;
 	}
@@ -209,7 +209,6 @@ void	export(t_data *core)
 	
 	count = environment_export(core);
 	bubble_sort(core);
-
 	i = count + 1;
 	count = 0;
 	while (argv[count])
@@ -255,7 +254,6 @@ char	**unset_env_exo(t_data *core, char **env, int i, char **argv)
 	temp = malloc(((count - i) + 1) * sizeof(char *));
 	if (!temp)
 		exit(write(1, "Malloc Error", 13));
-		
 	i = 0;
 	while (env[i])
 	{
