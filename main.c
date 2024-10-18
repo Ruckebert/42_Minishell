@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/17 13:05:02 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/18 10:57:12 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int main(int argc, char *argv[], char **env)
 			core.line = readline("> ");
 			add_history(core.line);
 			status = builtin_cmds(core.line, &core);
-			test(&core);
+			//test(&core);
 			free(core.line);
 			if (status >= 0)
 				exit(status);

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/17 16:20:38 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:24:52 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	cd_com(t_data *core) // To Do: In the case something fails i have not free 
 		ft_printf("cd: %s: no such file or directory\n", core->direct);
 	return ;
 }
+
 
 void	pwd(t_data *core)
 {
@@ -124,7 +125,6 @@ void	bubble_sort(t_data *core)
 	}
 }
 
-
 int		environment_export(t_data *core)
 {
 	int count;
@@ -159,11 +159,54 @@ void	print_exo_env(t_data *core)
 	}
 }
 
+int	len_env_var(char **argv, int j)
+{
+	int i;
+	
+	i = 0;
+	while (argv[j][i])
+	{
+		if (argv[j][i] == '=')
+			break ;
+		i++;
+	}
+	return (i);
+}
+
+int	len_env_var_unset(char **argv, int j);
+
+int	check_dup_exo(char **env, char **argv, char **temp, int j)
+{
+	int k;
+	int found;
+	int var_len;
+	int	env_len;
+	
+	k = 0;
+	found = 0;
+	var_len = 0;
+	env_len = 0;
+	while (env[k])
+	{
+		var_len = len_env_var(argv, j);
+		env_len = len_env_var_unset(temp, k);
+		if (var_len == env_len)
+		{
+			if (ft_strncmp(temp[k], argv[j], var_len) == 0)
+			{
+				temp[k] = ft_strdup(argv[j]);
+				found = 1;
+			}
+		}
+		k++;
+	}
+	return (found);
+}
 char	**new_exo_env(char **env, char **argv, int argc, int count)
 {
 	int j;
 	int i;
-	int k;
+	int found;
 	char **temp;
 	temp = malloc((argc + count) * sizeof(char *));
 	if (!temp)
@@ -175,27 +218,17 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 		temp[i] = ft_strdup(env[i]);
 		i++;
 	}
-	j = 0;
-	while (j >= 0)
+	j = 1;
+	while (argv[j])
 	{
-		int found = 0;
-		k = 0;
-		while (env[k])
-		{
-			//To Do: Change this so it just looks at the begining not the assigned varaible after =
-			if (ft_strcmp(temp[k], argv[j + 1]) == 0)
-			{
-				temp[k] = ft_strdup(argv[j + 1]);
-				found = 1;
-			}
-			k++;
-		}
+		found = 0;
+		found = check_dup_exo(env, argv, temp, j);
 		if (!found)
 		{
-			temp[i] = ft_strdup(argv[j + 1]);
+			temp[i] = ft_strdup(argv[j]);
 			i++;
 		}
-		j--;
+		j++;
 	}
 	temp[i] = NULL;
 	return (temp);
@@ -213,7 +246,6 @@ void	export(t_data *core)
 	count = 0;
 	while (argv[count])
 		count++;
-
 	if (count == 1)
 		print_exo_env(core);
 	else if (count > 1)
@@ -227,8 +259,7 @@ void	export(t_data *core)
 		i = 0;
 		while (core->export_env[i]) //I think i free nothing 
 		{
-			if (!core->export_env[i])
-				free(core->export_env[i]);
+			free(core->export_env[i]);
 			i++;
 		}
 		free(core->export_env);
@@ -243,9 +274,47 @@ void	export(t_data *core)
 	free(argv);
 }
 
+//All Unset Functions
+//To Do: Delete this function and replace it with the other one
+int	len_env_var_unset(char **argv, int j)
+{
+	int i;
+	
+	i = 0;
+	while (argv[j][i])
+	{
+		if (argv[j][i] == '=')
+			break ;
+		i++;
+	}
+	return (i);
+}
 
-//Time For Unset Yay
-char	**unset_env_exo(t_data *core, char **env, int i, char **argv)
+int		finder(int found, int i, char **argv, char **env)
+{
+	int argc;
+	int var_len = 0;
+	int	env_len = 0;
+
+	argc = 1;
+	while (argv[argc])
+	{
+		var_len = len_env_var_unset(argv, argc);
+		env_len = len_env_var_unset(env, i);
+		if (var_len == env_len)
+		{
+			if (ft_strncmp(env[i], argv[argc], var_len) == 0)
+			{
+				found = 1;
+				break ;
+			}
+		}
+		argc++;
+	}
+	return (found);
+}
+
+char	**unset_exo(t_data *core, char **env, int i, char **argv)
 {
 	int count = environment_export(core);
 	char **temp;
@@ -255,43 +324,62 @@ char	**unset_env_exo(t_data *core, char **env, int i, char **argv)
 	if (!temp)
 		exit(write(1, "Malloc Error", 13));
 	i = 0;
+	int k = 0;
 	while (env[i])
 	{
-		int j = 0;
 		found = 0;
-		while (argv[j])
-		{
-			if (ft_strcmp(env[i], argv[j]) == 0)
-			{
-				found = 1;
-				break ;
-			}
-			j++;
-		}
+		found = finder(found, i, argv, env);
 		if (!found)
-			temp[i] = ft_strdup(env[i]);
-		else
-			i++;
+		{
+			temp[k] = ft_strdup(env[i]);
+			k++;
+		}	
 		i++;
 	}
-	temp[i] = NULL;
+	temp[k] = NULL;
+	return (temp);
+}
+
+char	**unset_env(t_data *core, char **env, int i, char **argv)
+{
+	int new_env;
+	int found = 0;
+	char **temp;
+	temp = malloc(((environment_export(core) - i) +  1) * sizeof(char *));
+	if (!temp)
+		exit(1);
+
+	new_env = 0;
+	i = 0;
+	while (env[i])
+	{
+		found = 0;
+		found = finder(found, i, argv, env);
+		if (!found)
+		{
+			temp[new_env] = ft_strdup(env[i]);
+			new_env++;
+		}
+		i++;
+	}
+	temp[new_env] = NULL;
 	return (temp);
 }
 
 void	unset(t_data *core)
 {
-	//Done it works
-	//To Do: Add the changes in the environment not export environment
-	char	**argv = ft_split(core->line, ' ');
-	int		i = 0;
+	char	**argv;
 	char	**temp;
+	int		i;
 	
-	ft_printf("%s\n", argv[1]);
+	i = 0;
+	argv = ft_split(core->line, ' ');
 	while (argv[i])
 		i++;
 	if (i == 1)
 		return ;
-	temp = unset_env_exo(core, core->export_env, i, argv);
+	temp = unset_exo(core, core->export_env, i, argv);
+	core->env = unset_env(core, core->env, i, argv);
 	i = 0;
 	while (core->export_env[i])
 	{
@@ -301,17 +389,6 @@ void	unset(t_data *core)
 	}
 	free(core->export_env);
 	core->export_env = temp;
-	//To Do: Fix the seg fault for the environment
-	/*temp = unset_env_exo(core, core->env, i, argv);
-	i = 0;
-	while (core->env[i])
-	{
-		if (!core->env[i])
-			free(core->env[i]);
-		i++;
-	}
-	free(core->env);
-	core->env = temp;*/
 }
 
 
@@ -322,7 +399,8 @@ void	echo_cmd(t_data *core)
 	ft_printf("%s\n", argv[1]);
 }
 
-void	exit_com() //To Do: Exit command should free everything and then exit;
+//To Do: Exit command should free everything and then exit;
+void	exit_com()
 {
 	exit(1);
 }
