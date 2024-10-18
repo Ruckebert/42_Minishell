@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/16 15:51:53 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:25:39 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,9 @@ void	substitute_redir(t_token *curr,char str[3])
 	free(discard);
 	newredir = malloc(3);
 	curr->word = newredir;
-	strlcpy(curr->word, str, 3);
+	ft_strlcpy(curr->word, str, 3);
+	if (newnext)
+		newnext->prev = curr;
 	curr->type = curr->type * 10;
 }
 
@@ -113,57 +115,7 @@ void	combine_double_redirect(t_token	*token)
 	}
 }
 
-void	open_doublequote(t_token *curr)
-{
-	t_token	*newnext;
-	t_token	*discard;
-	char	*fusedword;
-	char	*temp1;
-	char	*temp2;
-
-	temp2 = NULL;
-	newnext = curr->next->next;
-	discard = curr->next;
-	if (curr->next->leading_space == 0)
-	{
-		temp2 = malloc (ft_strlen(curr->next->word));
-		ft_strlcpy(temp2, &(curr->next->word[1]), ft_strlen(&(curr->next->word[1])));
-		fusedword = ft_strjoin(curr->word, temp2);
-		free(temp2);
-		
-	}
-	if (curr->next->leading_space == 1)
-	{
-		temp1 = ft_strjoin(curr->word, " ");
-		temp2 = malloc(ft_strlen(curr->next->word) - 1);
-		ft_strlcpy(temp2, &(curr->next->word[1]), ft_strlen(&(curr->next->word[1])));
-		fusedword = ft_strjoin(temp1, temp2);
-		free(temp1);
-		free(temp2);
-	}
-	free(curr->word);
-	curr->word = fusedword;
-	free(curr->next->word);
-	free(discard);
-	curr->next = newnext;
-}
-
-void	handle_doublequote(t_token *token)
-{
-	t_token	*curr;
-
-	curr = token;
-	while (curr && curr->next)
-	{
-		if (curr->next->type == 4)
-		{
-			open_doublequote(curr);	
-		}
-		curr = curr->next;	
-	}
-}
-
-void	tokenize(t_data *core)
+t_token	*tokenize(t_data *core)
 {
 	t_token	*token;
 	t_token *newtoken;
@@ -194,8 +146,6 @@ void	tokenize(t_data *core)
 	}
 	combine_double_redirect(token);
 	printlist(token);
-	handle_doublequote(token);
-	printlist(token);
-	free_token_list(token);
+	return(token);
 }
 

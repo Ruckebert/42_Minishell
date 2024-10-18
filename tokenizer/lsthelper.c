@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   lsthelper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/11 15:16:24 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:21:07 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_token	*ft_lstnew(char *word)
 		return (NULL);
 	elem->word = word;
 	elem->next = NULL;
+	elem->prev = NULL;
 	return (elem);
 }
 
@@ -41,12 +42,15 @@ void	ft_lstadd_back(t_token **lst, t_token *new)
 	t_token	*end;
 
 	if (!new)
-		return ;
+		return;
 	if (*lst == NULL)
+	{
 		*lst = new;
+	}
 	else
 	{
 		end = ft_lstlast(*lst);
 		end->next = new;
+		new->prev = end;
 	}
 }

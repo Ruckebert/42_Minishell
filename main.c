@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 08:22:29 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/18 08:56:20 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ char **copy_env(char **env, t_data *core)
 int main(int argc, char *argv[], char **env)
 {
 	t_data core;
+	t_token *token;
+	
 	int status = -1;
 
 	if (argc == -1)
@@ -81,8 +83,8 @@ int main(int argc, char *argv[], char **env)
 			ft_printf("PeePeeShell$ ");
 			ft_printf("%s ", core.user);
 			core.line = readline("Input > ");
-			tokenize(&core);
-			parse(&core, env);
+			token = tokenize(&core);
+			parse(&core, env, token);
 			status = execute_args(core.line, &core); //Executor
 			free(core.line);
 			if (status >= 0)
