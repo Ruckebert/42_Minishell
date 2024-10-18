@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 12:40:59 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:40:59 by aruckenb         ###   ########.fr       */       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int test(t_data *core)
 int main(int argc, char *argv[], char **env)
 {
 	t_data core;
+	t_token *token;
+	
 	int status = -1;
 
 	if (argc == -1)
@@ -95,6 +97,8 @@ int main(int argc, char *argv[], char **env)
 			ft_printf("%s ", core.user);
 			core.line = readline("> ");
 			add_history(core.line);
+      token = tokenize(&core);
+			parse(&core, env, token);
 			status = builtin_cmds(core.line, &core);
 			//test(&core);
 			free(core.line);
