@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/18 12:45:15 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:02:18 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void parse(t_data *core, char **env, t_token *token)
 	handle_doublequote(token);
 //	printlist_both(token);
 	expand_var(token, env);
-	printlist(token);
+//	printlist(token);
 //	printlist(token);
 //	handle_singlequote();
 	
