@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/18 13:02:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/18 14:24:15 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	open_doublequote(t_token *curr)
+void	open_singlequote(t_token *curr)
 {
 	t_token	*newnext;
 	t_token	*discard;
@@ -47,7 +47,7 @@ void	open_doublequote(t_token *curr)
 	curr->next = newnext;
 }
 
-void	handle_doublequote(t_token *token)
+void	handle_singlequote(t_token *token)
 {
 	t_token	*curr;
 
@@ -56,7 +56,7 @@ void	handle_doublequote(t_token *token)
 	{
 		if (curr->next->type == 4)
 		{
-			open_doublequote(curr);	
+			open_singlequote(curr);	
 		}
 		curr = curr->next;	
 	}
@@ -100,7 +100,7 @@ void fuse_node_word(t_token *curr, char *new_word)
 	free(oldword);
 }
 
-char *get_env_var(char *var, char **env)
+char *get_env_var(char *var, char **env, int *exists)
 {
 	int     i;
 	char    *res;
@@ -115,14 +115,42 @@ char *get_env_var(char *var, char **env)
 			valuestart = ft_strlen(var) + 1;
 			res = malloc(ft_strlen(&env[i][valuestart]) + 1);
 			if (!res) 
-				return NULL;
+				return (NULL);
 			ft_strlcpy(res, &env[i][valuestart], ft_strlen(&env[i][valuestart]) + 1);
+			*exists = 1;
 			return (res);
 		}
 		i++;
 	}
-	printf("Variable not found");//TODO:free and return properly
+	*exists = 0;//TODO:free and return properly
 	return (NULL);
+}
+
+int is_expandable(t_token *curr, char **env)
+{
+	int exists;
+	char *temp;
+	 
+	exists = 377;
+	temp = get_env_var(curr->next->word, env, &exists);
+	free(temp);
+	
+	return (exists);
+	
+}
+
+void remove_next_token(t_token *current)
+{
+	t_token *to_remove;
+	
+	if (current == NULL || current->next == NULL)
+	return;
+	to_remove = current->next;
+	current->next = to_remove->next;
+	if (to_remove->next != NULL)
+		to_remove->next->prev = current;
+	free(to_remove->word);
+	free(to_remove);
 }
 
 
@@ -130,35 +158,41 @@ void expand_var(t_token *token, char **env)
 {
 	char	*value;
 	t_token	*curr;
+	int	exists;
 	
 	curr = token;
 	while (curr && curr->next)
 	{
-		if (curr->type == 8 && curr->next->leading_space == 0)//there is a case here where $sth doesnt exist so it should expand to nothing (i guess)
+		if (curr->type == 8 && curr->next->leading_space == 0)
 		{
 			if(!strncmp(curr->next->word,"?\0", 2))
 			{
 					// handle $? token
 			}
-			else 
+			else if (is_expandable(curr, env))
 			{
-				value = get_env_var(curr->next->word, env);
+				value = get_env_var(curr->next->word, env,&exists);
 				substitute_node_word(curr, value);
 				if (curr->leading_space == 0)
 					fuse_node_word(curr->prev, value);
 			}
-				
+			else
+			{
+				curr = curr->prev;
+				remove_next_token(curr);
+				remove_next_token(curr);
+			}
 		}
 		curr = curr->next;
 	}
 }
 
-void parse(t_data *core, char **env, t_token *token)
+void parse(t_data *core, t_token *token)
 {
-	(void) core;
-	handle_doublequote(token);
 //	printlist_both(token);
-	expand_var(token, env);
+	expand_var(token, core->env);
+	printlist(token);
+//	handle_singlequote(token);
 //	printlist(token);
 //	printlist(token);
 //	handle_singlequote();

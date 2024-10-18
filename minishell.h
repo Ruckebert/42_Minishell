@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 12:40:48 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:12:10 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,12 @@ void	envi_update(char *old_pwd, t_data *core);
 /*Executor Functions*/
 int		executor(t_command *cmd, t_data *core);
 
+
+
+
+
 //all parser functions!
-void parse(t_data *core, char **env, t_token * token);
+void parse(t_data *core, t_token * token);
 
 //all tokenizer functions!
 t_token *tokenize(t_data *core);
