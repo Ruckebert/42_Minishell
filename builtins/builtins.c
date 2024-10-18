@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 13:53:21 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/18 14:25:24 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,18 +149,26 @@ void	unset(t_data *core)
 }
 
 //To Do: Requires Struct From parser for completion 
-char	echo_cmd(t_data *core)
+char	*echo_cmd(t_data *core)
 {
 	char	**argv = ft_split(core->line, ' ');
 	int	i;
+	int no;
 	
 	i = 1;
+	no = 0;
+	/*if (ft_strcmp(argv[i], "-n") == 0)
+	{
+		no = 1;
+		i++;
+	}*/
 	while (argv[i])
 	{
 		ft_printf("%s ", argv[i]);
 		i++;
 	}
-	ft_printf("\n");
+	if (no == 0)
+		ft_printf("\n");
 	return (core->line);
 }
 
