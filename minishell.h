@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 12:40:48 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:04:24 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,20 @@ typedef struct s_data
 	
 }	t_data;
 
+typedef struct s_token
+{
+	char			*word;
+	int				type;
+	int				leading_space;
+	struct s_token	*next;
+	struct s_token	*prev;
+
+}	t_token;
+
+/*Environment Functions*/
+char	**copy_env(char **env, t_data *core);
+void	pwd_update(t_data *core);
+void	envi_update(char *old_pwd, t_data *core);
 
 /*Utils/Free*/
 int		ft_strcmp(char *s1, char *s2);
@@ -73,16 +87,6 @@ int		finder(int found, int i, char **argv, char **env);
 char	**unset_exo(t_data *core, char **env, int i, char **argv);
 char	**unset_env(t_data *core, char **env, int i, char **argv);
 
-typedef struct s_token
-{
-	char			*word;
-	int				type;
-	int				leading_space;
-	struct s_token	*next;
-	struct s_token	*prev;
-
-}	t_token;
-
 /*Builtins*/
 void	env(t_data *core);
 void	cd_com(t_data *core);
@@ -90,11 +94,6 @@ void	pwd(t_data *core);
 void	export(t_data *core);
 void	unset(t_data *core);
 void	echo_cmd(t_data *core);
-
-/*Environment Functions*/
-char	**copy_env(char **env, t_data *core);
-void	pwd_update(t_data *core);
-void	envi_update(char *old_pwd, t_data *core);
 
 /*Lexer Functions AKA Tokenizer*/
 
