@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 13:04:24 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:07:42 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void parse(t_data *core, char **env, t_token * token);
 
 //all tokenizer functions!
 t_token *tokenize(t_data *core);
+
 //isneeded
 int	is_myspace(char *c);
 int	issep(char *c);
@@ -116,6 +117,7 @@ int	searchsep(char *str);
 t_token	*ft_lstnew(char *word);
 t_token	*ft_lstlast(t_token *lst);
 void	ft_lstadd_back(t_token **lst, t_token *new);
+
 //for testing
 void printlist_both(t_token *head);
 void printCharPointerArray(char **arr);

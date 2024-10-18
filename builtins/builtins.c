@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 12:10:36 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:53:21 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,11 +148,20 @@ void	unset(t_data *core)
 	core->export_env = temp;
 }
 
-//Builtins that still need work
-void	echo_cmd(t_data *core)
+//To Do: Requires Struct From parser for completion 
+char	echo_cmd(t_data *core)
 {
 	char	**argv = ft_split(core->line, ' ');
-	ft_printf("%s\n", argv[1]);
+	int	i;
+	
+	i = 1;
+	while (argv[i])
+	{
+		ft_printf("%s ", argv[i]);
+		i++;
+	}
+	ft_printf("\n");
+	return (core->line);
 }
 
 //To Do: Exit command should free everything and then exit;
