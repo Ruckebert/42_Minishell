@@ -6,59 +6,70 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 08:56:20 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:40:59 by aruckenb         ###   ########.fr       */       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		execute_args(char *line, t_data *core)
+//Builtin Commands
+
+int		builtin_cmds(char *line, t_data *core)
 {
 	if (ft_strlen(line) == 0)
 		return (-1);
 	else if (ft_strncmp(line, "pwd", ft_strlen(line)) == 0)
-	{
-		core->direct = getcwd(NULL, 0);
-		ft_printf("%s\n", core->direct);
-	}
+		pwd(core);
 	else if (ft_strncmp(line, "cd", 2) == 0)
 		cd_com(core);
 	else if (ft_strncmp(line, "exit", ft_strlen(line)) == 0)
-		return (0);
+		exit (1);
+	else if (ft_strncmp(line, "export", 6) == 0)
+		export(core);
+	else if (ft_strncmp(line, "unset", 4) == 0)
+		unset(core);
+	else if (ft_strncmp(line, "env", 3) == 0)
+		env(core);
+	else if (ft_strncmp(line, "echo", 4) == 0)
+		echo_cmd(core);
 	return (-1);
 }
 
-char **copy_env(char **env, t_data *core)
+//Simply a Test Function to test certain things for the executor
+//It needs alot of work though :(
+int test(t_data *core)
 {
-	char **new_env;
-	int count;
-	int i;
+	t_command cmd;
 
-	if (env == NULL || *env == NULL)
-		exit(1);
+	char **split_cmd = ft_split(core->line, ' ');
+	int i = 0;
 	
-	count = 0;
-	while (env[count] != NULL)
-		count++;
-	
-	new_env = malloc((count + 1) * sizeof(char *));
-	if (!new_env)
-		exit(1);
-	
-	i = 0;
-	while (i < count)
+	while (split_cmd[i] != NULL)
 	{
-		new_env[i] = ft_strdup(env[i]);
-		if (ft_strncmp(new_env[i], "USER=", 5) == 0)
-			core->user = ft_strdup(env[i] + 5);
-		if	(ft_strncmp(new_env[i], "HOME=", 5) == 0)
-			core->direct = ft_strdup(env[i] + 5);
-		if (!new_env[i])
-			exit(1); //If this fails free everything before
+		//ft_printf("%s\n", split_cmd[i]);
 		i++;
 	}
-	new_env[count] = NULL;
-	return (new_env);
+	
+	cmd.args = split_cmd;
+	cmd.name = split_cmd[0];
+	cmd.here_doc = 0;
+	cmd.here_doc_delimiter = NULL;
+	cmd.arg_count = i;
+	cmd.input_file = NULL;
+	cmd.output_file = NULL;
+	
+	//ft_printf("%d\n", i);
+	executor(&cmd, core);
+	
+	i = 0;
+	while (split_cmd[i] != NULL)
+	{
+		free(split_cmd[i]);
+		i++;
+	}
+	free(split_cmd);
+	
+	return (0);
 }
 
 int main(int argc, char *argv[], char **env)
@@ -69,31 +80,31 @@ int main(int argc, char *argv[], char **env)
 	int status = -1;
 
 	if (argc == -1)
-		exit(1);
+		exit(2);
 	core.env = copy_env(env, &core);
+	if (core.env == NULL)
+		return (2);
 	(void)argc;
 	(void)argv;
 
 	if (isatty(STDIN_FILENO) == 1)
 	{
 		chdir(core.direct);
+		pwd_update(&core);
 		while (status == -1)
 		{
-
 			ft_printf("PeePeeShell$ ");
 			ft_printf("%s ", core.user);
-			core.line = readline("Input > ");
-			token = tokenize(&core);
+			core.line = readline("> ");
+			add_history(core.line);
+      token = tokenize(&core);
 			parse(&core, env, token);
-			status = execute_args(core.line, &core); //Executor
+			status = builtin_cmds(core.line, &core);
+			//test(&core);
 			free(core.line);
 			if (status >= 0)
 				exit(status);
 		}
-	}
-	else
-	{
-		//No Minishell
 	}
 	return (0);
 }
