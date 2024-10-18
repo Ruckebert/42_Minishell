@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/17 13:01:25 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:13:23 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,19 @@ typedef struct s_data
 }	t_data;
 
 /*Utils/Free*/
+int		ft_strcmp(char *s1, char *s2);
+int		len_env_var(char **argv, int j);
+int		environment_export(t_data *core);
+
+/*Builtin Functions*/
+void	bubble_sort(t_data *core);
+void	print_exo_env(t_data *core);
+char	**new_exo_env(char **env, char **argv, int argc, int count);
+int		check_dup_exo(char **env, char **argv, char **temp, int j);
+int		finder(int found, int i, char **argv, char **env);
+char	**unset_exo(t_data *core, char **env, int i, char **argv);
+char	**unset_env(t_data *core, char **env, int i, char **argv);
+
 
 /*Builtins*/
 void	env(t_data *core);
