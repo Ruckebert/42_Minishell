@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:05:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 10:57:12 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:40:59 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int		builtin_cmds(char *line, t_data *core)
 		unset(core);
 	else if (ft_strncmp(line, "env", 3) == 0)
 		env(core);
+	else if (ft_strncmp(line, "echo", 4) == 0)
+		echo_cmd(core);
 	return (-1);
 }
 
