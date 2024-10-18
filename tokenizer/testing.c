@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include "token.h"
+#include "../minishell.h"
 
 void printCharPointerArray(char **arr) 
 {
@@ -16,7 +15,6 @@ void print_words(t_token *head)
 {
     t_token *current = head;
 
-    // Traverse the list and print each word
     while (current != NULL)
     {
         if (current->word != NULL)
@@ -24,7 +22,7 @@ void print_words(t_token *head)
         current = current->next;
     }
 }
-
+/*
 void printlist(t_token *head)
 {
     t_token *curr;
@@ -34,11 +32,11 @@ void printlist(t_token *head)
     curr = head;
     while(curr)
     {
-        printf("%s\n", curr->word);
+        printf("\nWORD:%s\n", curr->word);
         curr = curr->next;
     }
 }
-
+*/
 
 void printlist_type(t_token *head)
 {
@@ -52,4 +50,83 @@ void printlist_type(t_token *head)
         printf("%i\n", curr->type);
         curr = curr->next;
     }
+}
+
+void printlist(t_token *head)
+{
+    t_token *curr;
+
+    if (!head)
+        return;
+
+    // Print table header
+    printf("%-20s | %-4s | %s\n", "WORD", "TYPE", "LEADING_SPACE");
+    printf("----------------------|------|--------------\n");
+
+    // Traverse and print each token in table format
+    curr = head;
+    while (curr)
+    {
+        // %-20s ensures the word is left-aligned with 20 characters space
+        // %-4d ensures the type is left-aligned with 4 characters space
+        // %d prints the leading_space value
+        printf("%-20s | %-4i | %i\n", curr->word, curr->type, curr->leading_space);
+        curr = curr->next;
+    }
+    printf("\n\n");
+}
+
+void printlist_both(t_token *head)
+{
+    t_token *curr;
+    t_token *last;
+
+    if (!head)
+        return;
+
+    // Print table header
+    printf("FORWARD PRINT\n");
+    printf("%-20s | %-4s | %s\n", "WORD", "TYPE", "LEADING_SPACE");
+    printf("----------------------|------|--------------\n");
+
+    // Traverse and print each token in table format (forward direction)
+    curr = head;
+    while (curr)
+    {
+        printf("%-20s | %-4i | %i\n", curr->word, curr->type, curr->leading_space);
+        if (!curr->next)
+            last = curr; // Keep track of the last element for reverse traversal
+        curr = curr->next;
+    }
+
+    // Print table header for reverse printing
+    printf("\nBACKWARD PRINT\n");
+    printf("%-20s | %-4s | %s\n", "WORD", "TYPE", "LEADING_SPACE");
+    printf("----------------------|------|--------------\n");
+
+    // Traverse and print each token in table format (backward direction)
+    curr = last;
+    while (curr)
+    {
+        printf("%-20s | %-4i | %i\n", curr->word, curr->type, curr->leading_space);
+        curr = curr->prev;
+    }
+    printf("\n\n");
+}
+
+
+void	free_token_list(t_token *head)
+{
+	t_token	*tmp;
+
+	while (head != NULL)
+	{
+		tmp = head;        // Store current node
+		head = head->next; // Move to next node
+		// Free the fields
+		if (tmp->word != NULL)
+			free(tmp->word);
+		// Free the node itself
+		free(tmp);
+	}
 }
