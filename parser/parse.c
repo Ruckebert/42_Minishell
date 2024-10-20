@@ -100,7 +100,7 @@ void fuse_node_word(t_token *curr, char *new_word)
 	free(oldword);
 }
 
-char *get_env_var(char *var, char **env, int *exists)
+char *get_env_var(char *var, char **env)
 {
 	int     i;
 	char    *res;
@@ -117,26 +117,28 @@ char *get_env_var(char *var, char **env, int *exists)
 			if (!res) 
 				return (NULL);
 			ft_strlcpy(res, &env[i][valuestart], ft_strlen(&env[i][valuestart]) + 1);
-			*exists = 1;
 			return (res);
 		}
 		i++;
 	}
-	*exists = 0;//TODO:free and return properly
+	//TODO:free and return properly
 	return (NULL);
 }
 
-int is_expandable(t_token *curr, char **env)
+int is_expandable(char *var, char **env)
 {
-	int exists;
-	char *temp;
-	 
-	exists = 377;
-	temp = get_env_var(curr->next->word, env, &exists);
-	free(temp);
-	
-	return (exists);
-	
+    int i;
+
+    i = 0;
+    while (env[i])
+    {
+        if (!strncmp(var, env[i], ft_strlen(var)) && env[i][ft_strlen(var)] == '=')
+        {
+            return (1);
+        }
+        i++;
+    }
+    return (0);
 }
 
 void remove_next_token(t_token *current)
@@ -157,7 +159,6 @@ void expand_var(t_token *token, char **env)
 {
 	char	*value;
 	t_token	*curr;
-	int	exists;
 	
 	curr = token;
 	while (curr && curr->next)
@@ -168,18 +169,21 @@ void expand_var(t_token *token, char **env)
 			{
 					// handle $? token
 			}
-			else if (is_expandable(curr, env))
+			else 
 			{
-				value = get_env_var(curr->next->word, env,&exists);
-				substitute_node_word(curr, value);
-				if (curr->leading_space == 0)
-					fuse_node_word(curr->prev, value);
-			}
-			else
-			{
-				curr = curr->prev;
-				remove_next_token(curr);
-				remove_next_token(curr);
+				if (is_expandable(curr->next->word, env))
+				{
+					value = get_env_var(curr->next->word, env);
+					substitute_node_word(curr, value);
+					if (curr->leading_space == 0)
+						fuse_node_word(curr->prev, value);
+				}
+				else
+				{
+					curr = curr->prev;
+					remove_next_token(curr);
+					remove_next_token(curr);
+				}
 			}
 		}
 		curr = curr->next;
@@ -212,7 +216,6 @@ char	*parse_var_name(t_token *curr)
 			len++;
 		res = malloc(len + 1);
 		strlcpy(res, start, len + 1);
-		printf("Envvar:%s\nstrlenvar:%ld\n", res, ft_strlen(res));
 		return(res);
 	}
 	else
@@ -226,8 +229,10 @@ void parsearound_var(t_token *curr, char **env, char *var)
 	char	*aftervar;
 	int	i;
 	char	*res;
+	char	*varvalue;
 
 	(void) env;
+	(void) res;
 	i = 0;
 	beforevar = NULL;
 	aftervar = NULL;
@@ -235,12 +240,34 @@ void parsearound_var(t_token *curr, char **env, char *var)
 		i++;
 	beforevar = malloc (i + 1);
 	strlcpy(beforevar, curr->word, i + 1);
-	printf("Beforevar:%s\n", beforevar);
 	temp = ft_strlen(&curr->word[i + ft_strlen(var) + 1]);
-//TODO:get var substitution and strjoin apropriately
 	aftervar = malloc (temp + 1);
 	strlcpy(aftervar, &curr->word[i + ft_strlen(var) + 1], temp + 1);
-	printf("aftervar:%s\n", aftervar);
+	if (!is_expandable(var, env))
+	{
+		res = ft_strjoin(beforevar, aftervar);
+		free(beforevar);
+		free(aftervar);
+		free(curr->word);
+		curr->word = res;
+		if (ft_strlen(res) == 0)
+		{
+			curr = curr->prev;
+			remove_next_token(curr);
+		}
+	}
+	else
+	{
+		varvalue = get_env_var(var, env);
+		res = ft_strjoin(beforevar, varvalue);
+		free(beforevar);
+		free(varvalue);
+		beforevar = res;
+		res = ft_strjoin(beforevar, aftervar);
+		free(beforevar);
+		free(aftervar);
+		curr->word = res;
+	}
 
 }
 
