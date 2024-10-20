@@ -12,56 +12,6 @@
 
 #include "../minishell.h"
 
-void	open_singlequote(t_token *curr)
-{
-	t_token	*newnext;
-	t_token	*discard;
-	char	*fusedword;
-	char	*temp1;
-	char	*temp2;
-
-	temp2 = NULL;
-	newnext = curr->next->next;
-	discard = curr->next;
-	if (curr->next->leading_space == 0)
-	{
-		temp2 = malloc (ft_strlen(curr->next->word));
-		ft_strlcpy(temp2, &(curr->next->word[1]), ft_strlen(&(curr->next->word[1])));
-		fusedword = ft_strjoin(curr->word, temp2);
-		free(temp2);
-		
-	}
-	if (curr->next->leading_space == 1)
-	{
-		temp1 = ft_strjoin(curr->word, " ");
-		temp2 = malloc(ft_strlen(curr->next->word) - 1);
-		ft_strlcpy(temp2, &(curr->next->word[1]), ft_strlen(&(curr->next->word[1])));
-		fusedword = ft_strjoin(temp1, temp2);
-		free(temp1);
-		free(temp2);
-	}
-	free(curr->word);
-	curr->word = fusedword;
-	free(curr->next->word);
-	free(discard);
-	curr->next = newnext;
-}
-
-void	handle_singlequote(t_token *token)
-{
-	t_token	*curr;
-
-	curr = token;
-	while (curr && curr->next)
-	{
-		if (curr->next->type == 4)
-		{
-			open_singlequote(curr);	
-		}
-		curr = curr->next;	
-	}
-}
-
 void substitute_node_word(t_token *curr, char *new_word)
 {
 	t_token *next_node;
@@ -293,6 +243,35 @@ void expand_var_in_doublequote(t_token *token, char **env)
 	}
 }
 
+void remove_singlequotes(t_token *token)
+{
+	t_token	*curr;
+
+	curr = token;
+	while (curr)
+	{
+		if (curr->type == 5)
+		{
+			remove_quotes(curr);
+		}
+		curr = curr->next;
+	}
+}
+
+void	fuse_all_0space_nodes(t_token *token)
+{
+	t_token	*curr;
+
+	curr = token;
+	while(curr)
+	{
+		if ((curr->type == 4 || curr->type == 5) && curr->leading_space)
+		{
+			//use fusenodes func here, maybe rewrite it because its terrible
+		}
+	}
+}
+
 void parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
@@ -300,6 +279,9 @@ void parse(t_data *core, t_token *token)
 	printlist(token);
 	expand_var_in_doublequote(token, core->env);
 	printlist(token);
+	remove_singlequotes(token);
+	printlist(token);
+	fuse_all_0space_nodes(token);
 //	handle_singlequote(token);
 //	printlist(token);
 //	printlist(token);
