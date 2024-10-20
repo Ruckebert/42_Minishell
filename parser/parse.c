@@ -144,7 +144,7 @@ void remove_next_token(t_token *current)
 	t_token *to_remove;
 	
 	if (current == NULL || current->next == NULL)
-	return;
+		return;
 	to_remove = current->next;
 	current->next = to_remove->next;
 	if (to_remove->next != NULL)
@@ -152,7 +152,6 @@ void remove_next_token(t_token *current)
 	free(to_remove->word);
 	free(to_remove);
 }
-
 
 void expand_var(t_token *token, char **env)
 {
@@ -187,10 +186,92 @@ void expand_var(t_token *token, char **env)
 	}
 }
 
+void remove_quotes(t_token *curr)
+{
+	char *temp;
+
+	temp = malloc(ft_strlen(curr->word) - 1);
+
+	ft_strlcpy(temp, &curr->word[1], ft_strlen(curr->word) - 1);
+	free(curr->word);
+	curr->word = temp;
+}
+
+char	*parse_var_name(t_token *curr)
+{
+	char	*start;
+	int	len;
+	char	*res;
+
+	len = 0;
+	start = ft_strchr(curr->word, '$');
+	start++;
+	if (*start != ' ')
+	{
+		while (start[len] != ' ' && start[len] != '\0')
+			len++;
+		res = malloc(len + 1);
+		strlcpy(res, start, len + 1);
+		printf("Envvar:%s\nstrlenvar:%ld\n", res, ft_strlen(res));
+		return(res);
+	}
+	else
+		return (NULL);
+}
+
+void parsearound_var(t_token *curr, char **env, char *var)
+{
+	int	temp;
+	char	*beforevar;
+	char	*aftervar;
+	int	i;
+	char	*res;
+
+	(void) env;
+	i = 0;
+	beforevar = NULL;
+	aftervar = NULL;
+	while (curr->word[i] != '$')
+		i++;
+	beforevar = malloc (i + 1);
+	strlcpy(beforevar, curr->word, i + 1);
+	printf("Beforevar:%s\n", beforevar);
+	temp = ft_strlen(&curr->word[i + ft_strlen(var) + 1]);
+//TODO:get var substitution and strjoin apropriately
+	aftervar = malloc (temp + 1);
+	strlcpy(aftervar, &curr->word[i + ft_strlen(var) + 1], temp + 1);
+	printf("aftervar:%s\n", aftervar);
+
+}
+
+void expand_var_in_doublequote(t_token *token, char **env)
+{
+	(void) env;
+	t_token *curr;
+	char	*var;
+
+	curr = token;
+	while (curr)
+	{
+		if (curr->type == 4)
+		{
+			remove_quotes(curr);
+			if (ft_strchr(curr->word, '$') != NULL)
+			{
+				var = parse_var_name(curr);
+				parsearound_var(curr, env, var);
+			}
+		}
+		curr = curr->next;
+	}
+}
+
 void parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
 	expand_var(token, core->env);
+	printlist(token);
+	expand_var_in_doublequote(token, core->env);
 	printlist(token);
 //	handle_singlequote(token);
 //	printlist(token);
