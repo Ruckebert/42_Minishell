@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 14:25:24 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/21 10:35:06 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,29 @@ char	*echo_cmd(t_data *core)
 }
 
 //To Do: Exit command should free everything and then exit;
-void	exit_com()
+void	exit_com(t_data *core)
 {
+	int i = 0;
+	while (core->env[i])
+		i++;
+	int count = 0;
+	while (count <= i)
+	{
+		free(core->env[count]);
+		count++;
+	}
+	free(core->env);
+	count = 0;
+	while (count <= i)
+	{
+		free(core->export_env[count]);
+		count++;
+	}
+	free(core->export_env);
+
+	free(core->user);
+	free(core->direct);
+	free(core->line);
+	rl_clear_history();
 	exit(1);
 }

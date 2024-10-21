@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 14:14:19 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/21 10:03:13 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		builtin_cmds(char *line, t_data *core)
 	else if (ft_strncmp(line, "cd", 2) == 0)
 		cd_com(core);
 	else if (ft_strncmp(line, "exit", ft_strlen(line)) == 0)
-		exit (1);
+		exit_com(core);
 	else if (ft_strncmp(line, "export", 6) == 0)
 		export(core);
 	else if (ft_strncmp(line, "unset", 4) == 0)

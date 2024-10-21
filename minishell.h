@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 14:13:51 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/21 10:03:26 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	pwd(t_data *core);
 void	export(t_data *core);
 void	unset(t_data *core);
 char	*echo_cmd(t_data *core);
+void	exit_com(t_data *core);
 
 /*Lexer Functions AKA Tokenizer*/
 
