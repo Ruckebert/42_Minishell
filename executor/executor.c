@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/16 11:09:20 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:40:45 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	path_finder2(t_var *vars, char **envp, char *argv, int i)
 	vars->store = ft_split(envp[i] + 5, ':');
 	if (!vars->store)
 		error_handler();
+	//I dont think ill need to do this
+	//Remove
 	vars->cmd = ft_split(argv, ' ');
 	if (!vars->cmd)
 		error_handler_split(vars->store);
@@ -70,6 +72,7 @@ void	path_finder2(t_var *vars, char **envp, char *argv, int i)
 		vars->comm = ft_strjoin(vars->store[i], "/");
 		if (vars->comm == NULL)
 			error_handler();
+		//Instead of cmd it will be the first argv 
 		vars->full_comm = ft_strjoin(vars->comm, vars->cmd[0]);
 		if (vars->full_comm == NULL)
 			error_handler();

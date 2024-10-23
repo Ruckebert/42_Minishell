@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 10:36:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/04/29 10:30:33 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/23 12:40:26 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ char	*ft_strdup(const char *src)
 
 	if (!src)
 		return (0);
-	len = ft_strlen(src);
-	len++;
+	len = ft_strlen(src) + 1;
 	characterstring = (char *)malloc(len);
 	if (characterstring == NULL)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 12:16:37 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:15:29 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,15 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 	while (env[i])
 	{
 		temp[i] = ft_strdup(env[i]);
+		if (!temp[i])
+		{
+			while(i >= 0)
+			{
+				free(temp[i]);
+				i--;
+			}
+			return (free(temp), NULL);
+		}
 		i++;
 	}
 	j = 1;
@@ -101,6 +110,15 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 		if (!found)
 		{
 			temp[i] = ft_strdup(argv[j]);
+			if (!temp[i])
+			{
+				while(i >= 0)
+				{
+					free(temp[i]);
+					i--;
+				}
+				return (free(temp), NULL);
+			}
 			i++;
 		}
 		j++;
