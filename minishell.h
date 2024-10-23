@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 13:12:10 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:05:59 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,15 @@ typedef struct s_data
 	
 }	t_data;
 
+typedef struct s_cmdtable
+{
+	char	**args;
+	int		has_pipe_after;
+	int		redir_type;
+	char	*redir;
+	struct s_cmdtable *next;
+	struct s_cmdtable *prev;
+}	t_cmdtable;
 
 /*Utils/Free*/
 int		ft_strcmp(char *s1, char *s2);
@@ -109,7 +118,7 @@ int		executor(t_command *cmd, t_data *core);
 
 //all parser functions!
 void parse(t_data *core, t_token * token);
-
+void prep_nodes_for_exec(t_token *token);
 //all tokenizer functions!
 t_token *tokenize(t_data *core);
 //isneeded

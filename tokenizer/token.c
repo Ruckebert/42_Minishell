@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/18 13:17:09 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:34:10 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,12 @@ t_token	*tokenize(t_data *core)
 
 	pos = 0;
 	token = NULL;
+
+	newtoken = ft_lstnew("START");
+	ft_lstadd_back(&token, newtoken);
+	newtoken->type = 9999;
+	newtoken->leading_space = 20;
+
 	while (core->line[pos] != '\0')
 	{
 		while (is_myspace(&core->line[pos]))
@@ -144,8 +150,14 @@ t_token	*tokenize(t_data *core)
 		ft_lstadd_back(&token, newtoken);
 		newtoken->type = whichtoken(core->line[oldpos]);
 	}
+
+	newtoken = ft_lstnew("END");
+	ft_lstadd_back(&token, newtoken);
+	newtoken->type = 9999;
+	newtoken->leading_space = 20;
+
 	combine_double_redirect(token);
-	printlist(token);
+//	printlist(token);
 	return(token);
 }
 

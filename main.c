@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 14:29:16 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:32:25 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int main(int argc, char *argv[], char **env)
 			add_history(core.line);
       		token = tokenize(&core);
 			parse(&core, token);
-			status = builtin_cmds(core.line, &core);
+			//status = builtin_cmds(core.line, &core);
 			//test(&core);
 			free(core.line);
 			if (status >= 0)

@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/18 14:24:15 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:33:02 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ char	*parse_var_name(t_token *curr)
 		while (start[len] != ' ' && start[len] != '\0')
 			len++;
 		res = malloc(len + 1);
-		strlcpy(res, start, len + 1);
+		ft_strlcpy(res, start, len + 1);
 		return(res);
 	}
 	else
@@ -189,10 +189,10 @@ void parsearound_var(t_token *curr, char **env, char *var)
 	while (curr->word[i] != '$')
 		i++;
 	beforevar = malloc (i + 1);
-	strlcpy(beforevar, curr->word, i + 1);
+	ft_strlcpy(beforevar, curr->word, i + 1);
 	temp = ft_strlen(&curr->word[i + ft_strlen(var) + 1]);
 	aftervar = malloc (temp + 1);
-	strlcpy(aftervar, &curr->word[i + ft_strlen(var) + 1], temp + 1);
+	ft_strlcpy(aftervar, &curr->word[i + ft_strlen(var) + 1], temp + 1);
 	if (!is_expandable(var, env))
 	{
 		res = ft_strjoin(beforevar, aftervar);
@@ -258,6 +258,30 @@ void remove_singlequotes(t_token *token)
 	}
 }
 
+void fuse_node_with_next(t_token *curr)
+{
+    t_token *next_node;
+    t_token *discard;
+    char    *oldword;
+
+    if (!curr || !curr->next) 
+        return;
+
+    oldword = curr->word;
+    next_node = curr->next->next;
+
+    if (next_node)
+        next_node->prev = curr;
+
+    discard = curr->next;
+    curr->next = next_node;
+
+    curr->word = ft_strjoin(oldword, discard->word);
+    free(oldword);
+    free(discard->word);
+    free(discard);
+}
+
 void	fuse_all_0space_nodes(t_token *token)
 {
 	t_token	*curr;
@@ -265,23 +289,28 @@ void	fuse_all_0space_nodes(t_token *token)
 	curr = token;
 	while(curr)
 	{
-		if ((curr->type == 4 || curr->type == 5) && curr->leading_space)
+		if ((curr->type == 4 || curr->type == 5) && curr->leading_space == 0)
 		{
-			//use fusenodes func here, maybe rewrite it because its terrible
+			fuse_node_with_next(curr);
 		}
+		curr = curr->next;
 	}
 }
+
+
 
 void parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
 	expand_var(token, core->env);
-	printlist(token);
+//	printlist(token);
 	expand_var_in_doublequote(token, core->env);
-	printlist(token);
+//	printlist(token);
 	remove_singlequotes(token);
-	printlist(token);
+//	printlist(token);
 	fuse_all_0space_nodes(token);
+	printlist(token);
+	prep_nodes_for_exec(token);
 //	handle_singlequote(token);
 //	printlist(token);
 //	printlist(token);
