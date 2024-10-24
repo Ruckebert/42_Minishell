@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/24 12:43:47 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:49:46 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,6 @@ void find_builtins(t_cmdtable *cmd)
 			curr->isbuiltin = 0;
 		curr = curr->next;
 	}
-	
 }
 
 void prep_nodes_for_exec(t_token *token)
@@ -194,5 +193,7 @@ void prep_nodes_for_exec(t_token *token)
 			curr = get_args(newcmd,curr);
 	}
 	find_builtins(cmd);
-	print_cmdtable(cmd);
+	free_token_list(token);
+//	print_cmdtable(cmd);
+//	free_cmdtable(&cmd);
 }

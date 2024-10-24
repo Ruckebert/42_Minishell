@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/23 13:33:02 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:51:09 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,7 +309,7 @@ void parse(t_data *core, t_token *token)
 	remove_singlequotes(token);
 //	printlist(token);
 	fuse_all_0space_nodes(token);
-	printlist(token);
+//	printlist(token);
 	prep_nodes_for_exec(token);
 //	handle_singlequote(token);
 //	printlist(token);

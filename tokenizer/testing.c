@@ -124,14 +124,40 @@ void	free_token_list(t_token *head)
 		tmp = head;        // Store current node
 		head = head->next; // Move to next node
 		// Free the fields
-		if (tmp->word != NULL)
-			free(tmp->word);
+	//	if (tmp->word != NULL)
+	//		free(tmp->word);
 		// Free the node itself
 		free(tmp);
 	}
 }
 
-#include <stdio.h>
+void free_cmdtable(t_cmdtable **head)
+{
+    t_cmdtable *tmp;
+    int i;
+
+    while (*head != NULL)
+    {
+        tmp = *head;
+        *head = (*head)->next;
+
+        // Free args
+        i = 0;
+        while (tmp->args[i])
+        {
+            free(tmp->args[i]);
+            i++;
+        }
+        free(tmp->args);
+
+        // Free redir
+        if (tmp->redir)
+            free(tmp->redir);
+
+        // Free node
+        free(tmp);
+    }
+}
 
 void print_cmdtable(t_cmdtable *cmd)
 {

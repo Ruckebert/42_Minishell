@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/24 12:22:23 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:42:59 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,4 +138,5 @@ void printlist_type(t_token *head);
 void printlist(t_token *head);
 void	free_token_list(t_token *head);
 void print_cmdtable(t_cmdtable *cmd);
+void free_cmdtable(t_cmdtable **head);
 #endif
