@@ -5,17 +5,3 @@
    obj:*libreadline.so.*
    ...
 }
-{
-   <env_supp>
-   Memcheck:Leak
-   ...
-   fun:copy_env
-   ...
-}
-{
-   <env_supp>
-   Memcheck:Leak
-   ...
-   fun:pwd_update
-   ...
-}
