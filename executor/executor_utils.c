@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:09:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/11 10:49:51 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:44:17 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,18 @@ void	free_split(char **split)
 	free(split);
 }
 
-void	path_finder_error(char **store, char **cmd)
+void	path_finder_error(char **cmd)
 {
-	free_split(store);
-	free_split(cmd);
+	int i = 0;
+	
+	if (cmd)
+	{
+		while(cmd[i])	
+		{
+			free(cmd[i]);
+			i++;
+		}
+		free(cmd[i]);
+	}
+	//free_split(cmd);
 }

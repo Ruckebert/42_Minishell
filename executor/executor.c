@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/24 13:46:44 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:49:56 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,57 +41,16 @@ void	path_finder(t_var *vars, char **envp, char **argv, int i)
 		execve(vars->full_comm, argv, envp);
 		free(vars->full_comm);
 	}
-	path_finder_error(vars->store, argv);
+	path_finder_error(argv);
 }
-
+//OG Pathfinder
 void	path_finder2(t_var *vars, char **envp, char **argv, int i)
-{
-	pid_t pid;
-
-	i = 0;
-    while (envp[i] && !ft_strnstr(envp[i], "PATH=", 5))
-        i++;
-    if (!envp[i])
-        error_handler();
-
-    vars->store = ft_split(envp[i] + 5, ':');
-    if (!vars->store)
-        error_handler();
-
-    i = 0;
-    while (vars->store[i])
-    {
-        vars->comm = ft_strjoin(vars->store[i], "/");
-        if (vars->comm == NULL)
-            error_handler();
-	
-        vars->full_comm = ft_strjoin(vars->comm, argv[0]);
-        if (vars->full_comm == NULL)
-            error_handler();
-
-        // Fork a new process
-		if (access(vars->full_comm, X_OK) == 0)
-		{
-        	pid = fork();
-        	if (pid == -1)
-            	error_handler();
-        	else if (pid == 0)
-				execve(vars->full_comm, argv, envp);
-		}
-        free(vars->comm);
-        free(vars->full_comm);
-		i++;
-    }
-}
-// To Do: Find out why using this path_finder crashes it when using pipes
-/*void	path_finder2(t_var *vars, char **envp, char **argv, int i)
 {
 	pid_t exe;
 	int	status;
 	int command_found = 0;
 	
-	i = 0;
-	while (envp[i] && !ft_strnstr(envp[i], "PATH=", 5))
+	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
 		i++;
 	if (!envp[i])
 		error_handler();
@@ -104,7 +63,6 @@ void	path_finder2(t_var *vars, char **envp, char **argv, int i)
 		vars->comm = ft_strjoin(vars->store[i], "/");
 		if (vars->comm == NULL)
 			error_handler();
-		//Instead of cmd it will be the first argv 
 		vars->full_comm = ft_strjoin(vars->comm, argv[0]);
 		if (vars->full_comm == NULL)
 			error_handler();
@@ -120,38 +78,34 @@ void	path_finder2(t_var *vars, char **envp, char **argv, int i)
 		}
 		else if (exe == 0)
 		{
-			if (access(vars->full_comm, X_OK) == 0)
-				execve(vars->full_comm, argv, envp);
-			else
-				exit (1);
+			if (execve(vars->full_comm, argv, envp) == -1)
+			{
+				free(vars->full_comm);
+				exit(1);
+			}
 		}
 		else
 		{
 			waitpid(exe, &status, 0);
 			free(vars->full_comm);
-			if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
-			{
-				command_found = 1;
-				break ;
-			}
+			if (status != 0)
+				continue ;
+			command_found = 1;
+			break ;
 		}
 	}
 	if (!command_found) //To do: Put this command into the path_finder_error also change the name
 		write(2, "Error: Command not found\n", 26);
-	path_finder_error(vars->store, vars->cmd);
-}*/
+	//path_finder_error(argv);
+}
 
-//
 //
 //
 // 		Pathfinders Above
 //
 //
 //
-
-//
 //Piping the Child and leting the Parents wait ü
-//
 
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
 
