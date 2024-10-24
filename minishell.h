@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/21 10:03:26 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/24 09:41:46 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,17 @@
 #include <termios.h>
 #include <curses.h>
 
-//Dummy Struct for executor
-typedef struct s_command
+//New Dummy Struct
+typedef struct s_cmdtable
 {
-	char	*name;
-	char	**args;
-	char	*input_file;
-	char	*output_file;
-	int		arg_count;
-	int		here_doc;
-	char	*here_doc_delimiter;
-	
-}	t_command;
+    char    **args;
+    int     has_pipe_after;
+    int     redir_type;
+    char    *redir;
+    struct s_cmdtable *next;
+    struct s_cmdtable *prev;
+
+}    t_cmdtable;
 
 /*Core Data Struct*/
 typedef struct s_data
@@ -101,7 +100,7 @@ void	exit_com(t_data *core);
 /*Parser Functions*/
 
 /*Executor Functions*/
-int		executor(t_command *cmd, t_data *core);
+int		executor(t_cmdtable *cmd, t_data *core);
 
 //all parser functions!
 void parse(t_data *core, char **env, t_token * token);

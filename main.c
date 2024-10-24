@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/21 10:03:13 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/24 12:54:50 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,38 @@
 //It needs alot of work though :(
 int test(t_data *core)
 {
-	t_command cmd;
+	t_cmdtable cmd1;
+	t_cmdtable cmd2;
 
-	char **split_cmd = ft_split(core->line, ' ');
-	int i = 0;
+  // First command "cat infile"
+    char one[] = "cat";
+    char two[] = "infile";
+    
+    cmd1.args = malloc (sizeof(char*) * 3);
+    cmd1.args[0] = one;
+    cmd1.args[1] = two;
+    cmd1.args[2] = NULL;
+    cmd1.has_pipe_after = 1;  // There's a pipe after this command
+    cmd1.redir_type = 0;
+    cmd1.redir = NULL;
+    cmd1.next = &cmd2;        // Point to the next command in the pipeline
+    cmd1.prev = NULL;
+
+    // Second command "grep searchterm"
+    char three[] = "grep";
+    char four[] = "Poop";
+    
+    cmd2.args = malloc (sizeof(char*) * 3);
+    cmd2.args[0] = three;
+    cmd2.args[1] = four;
+    cmd2.args[2] = NULL;
+    cmd2.has_pipe_after = 0;  // No pipe after this command
+    cmd2.redir_type = 0;
+    cmd2.redir = NULL;
+    cmd2.next = NULL;         // This is the last command
+    cmd2.prev = &cmd1;        // Point back to the previous command
 	
-	while (split_cmd[i] != NULL)
-	{
-		//ft_printf("%s\n", split_cmd[i]);
-		i++;
-	}
-	
-	cmd.args = split_cmd;
-	cmd.name = split_cmd[0];
-	cmd.here_doc = 0;
-	cmd.here_doc_delimiter = NULL;
-	cmd.arg_count = i;
-	cmd.input_file = NULL;
-	cmd.output_file = NULL;
-	
-	//ft_printf("%d\n", i);
-	executor(&cmd, core);
-	
-	i = 0;
-	while (split_cmd[i] != NULL)
-	{
-		free(split_cmd[i]);
-		i++;
-	}
-	free(split_cmd);
-	
+	executor(&cmd1, core);
 	return (0);
 }
 
@@ -76,7 +78,7 @@ int		builtin_cmds(char *line, t_data *core)
 int main(int argc, char *argv[], char **env)
 {
 	t_data core;
-	t_token *token;
+	//t_token *token;
 	
 	int status = -1;
 
@@ -98,7 +100,7 @@ int main(int argc, char *argv[], char **env)
 			ft_printf("%s ", core.user);
 			core.line = readline("> ");
 			add_history(core.line);
-      		token = tokenize(&core);
+      		//token = tokenize(&core);
 			//parse(&core, env, token);
 			status = builtin_cmds(core.line, &core);
 			free(core.line);
