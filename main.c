@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/18 12:59:34 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:12:34 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ int main(int argc, char *argv[], char **env)
 			core.line = readline("> ");
 			add_history(core.line);
       		token = tokenize(&core);
-			parse(&core, env, token);
-			status = builtin_cmds(core.line, &core);
+			parse(&core, token);
+			//status = builtin_cmds(core.line, &core);
 			//test(&core);
 			free(core.line);
 			if (status >= 0)

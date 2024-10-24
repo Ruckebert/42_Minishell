@@ -124,9 +124,99 @@ void	free_token_list(t_token *head)
 		tmp = head;        // Store current node
 		head = head->next; // Move to next node
 		// Free the fields
-		if (tmp->word != NULL)
-			free(tmp->word);
+	//	if (tmp->word != NULL)
+	//		free(tmp->word);
 		// Free the node itself
 		free(tmp);
 	}
+}
+
+void free_cmdtable(t_cmdtable **head)
+{
+    t_cmdtable *tmp;
+    int i;
+
+    while (*head != NULL)
+    {
+        tmp = *head;
+        *head = (*head)->next;
+
+        // Free args
+        i = 0;
+        while (tmp->args[i])
+        {
+            free(tmp->args[i]);
+            i++;
+        }
+        free(tmp->args);
+
+        // Free redir
+        if (tmp->redir)
+            free(tmp->redir);
+
+        // Free node
+        free(tmp);
+    }
+}
+
+void print_cmdtable(t_cmdtable *cmd)
+{
+    int i;
+    t_cmdtable *current = cmd;
+
+    printf("-------------------------------------------------------------------------------------------\n");
+    printf("| %-5s | %-20s | %-10s | %-15s | %-10s | %-10s |\n", 
+           "Node", "Arguments", "Builtin", "Redir Type", "Redir", "Pipe After");
+    printf("-------------------------------------------------------------------------------------------\n");
+
+    int node_num = 1;
+    while (current != NULL)
+    {
+        // Print node number
+        printf("| %-5d | ", node_num);
+
+        // Print arguments
+        if (current->args)
+        {
+            printf("[");
+            for (i = 0; current->args[i] != NULL; i++)
+            {
+                if (current->args[i] == NULL)  // Safety check for NULL values
+                {
+                    printf("NULL");
+                    break;
+                }
+                printf("%s", current->args[i]);
+                if (current->args[i + 1] != NULL)
+                    printf(", ");
+            }
+            printf("] ");
+        }
+        else
+        {
+            printf("No Args           ");
+        }
+
+        // Print whether it is a built-in command
+        printf("| %-10d | ", current->isbuiltin);
+
+        // Print redir_type and redir values
+        printf("| %-15d | %-10s | ", current->redir_type, current->redir ? current->redir : "No Redir");
+
+        // Print whether it has a pipe after
+        printf("%-10s |\n", current->has_pipe_after ? "Yes" : "No");
+
+        // Print divider line
+        printf("-------------------------------------------------------------------------------------------\n");
+
+        // Safety check before moving to the next node
+        if (current->next == current)  // Prevent self-referencing nodes
+        {
+            printf("Error: Self-referencing node detected. Aborting to prevent infinite loop.\n");
+            break;
+        }
+
+        current = current->next;
+        node_num++;
+    }
 }
