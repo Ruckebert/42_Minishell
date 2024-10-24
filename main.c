@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/23 13:32:25 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/24 12:57:32 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int test(t_data *core)
 int main(int argc, char *argv[], char **env)
 {
 	t_data core;
-	t_token *token;
+	//t_token *token;
 	
 	int status = -1;
 
@@ -97,8 +97,8 @@ int main(int argc, char *argv[], char **env)
 			ft_printf("%s ", core.user);
 			core.line = readline("> ");
 			add_history(core.line);
-      		token = tokenize(&core);
-			parse(&core, token);
+      		//token = tokenize(&core);
+			//parse(&core, token);
 			//status = builtin_cmds(core.line, &core);
 			//test(&core);
 			free(core.line);

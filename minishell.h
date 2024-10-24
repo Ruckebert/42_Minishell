@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/23 13:05:59 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/24 12:22:23 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_cmdtable
 	int		has_pipe_after;
 	int		redir_type;
 	char	*redir;
+	int		isbuiltin;
 	struct s_cmdtable *next;
 	struct s_cmdtable *prev;
 }	t_cmdtable;
@@ -136,4 +137,5 @@ void printCharPointerArray(char **arr);
 void printlist_type(t_token *head);
 void printlist(t_token *head);
 void	free_token_list(t_token *head);
+void print_cmdtable(t_cmdtable *cmd);
 #endif
