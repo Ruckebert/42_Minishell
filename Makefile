@@ -5,7 +5,7 @@ SOURCE = main.c executor/here_doc_shit.c executor/multi_pipe.c builtins/builtins
 
 SOURCETOK = ./tokenizer/testing.c ./tokenizer/token.c ./tokenizer/lsthelper.c ./tokenizer/tokenhelper.c
 
-SOURCEPARSE = ./parser/parse.c
+SOURCEPARSE = ./parser/parse.c ./parser/prep_exec.c
 
 OBJECTS = $(SOURCE:.c=.o)
 

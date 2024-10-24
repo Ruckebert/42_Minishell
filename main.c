@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
 /*   Updated: 2024/10/24 16:21:23 by aruckenb         ###   ########.fr       */
@@ -39,9 +39,10 @@ int main(int argc, char *argv[], char **env)
 			ft_printf("%s ", core.user);
 			core.line = readline("> ");
 			add_history(core.line);
-      		//token = tokenize(&core);
-			//parse(&core, env, token);
+      	token = tokenize(&core);
+			parse(&core, token);
 			status = builtin_cmds(core.line, &core);
+			test(&core);
 			free(core.line);
 			if (status >= 0)
 				exit(status);

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/24 09:41:46 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:42:59 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,6 @@
 #include <termios.h>
 #include <curses.h>
 
-//New Dummy Struct
-typedef struct s_cmdtable
-{
-    char    **args;
-    int     has_pipe_after;
-    int     redir_type;
-    char    *redir;
-    struct s_cmdtable *next;
-    struct s_cmdtable *prev;
-
-}    t_cmdtable;
 
 /*Core Data Struct*/
 typedef struct s_data
@@ -56,6 +45,7 @@ typedef struct s_data
 	char	**export_env;
 	
 }	t_data;
+
 
 typedef struct s_token
 {
@@ -71,6 +61,17 @@ typedef struct s_token
 char	**copy_env(char **env, t_data *core);
 void	pwd_update(t_data *core);
 void	envi_update(char *old_pwd, t_data *core);
+
+typedef struct s_cmdtable
+{
+	char	**args;
+	int		has_pipe_after;
+	int		redir_type;
+	char	*redir;
+	int		isbuiltin;
+	struct s_cmdtable *next;
+	struct s_cmdtable *prev;
+}	t_cmdtable;
 
 /*Utils/Free*/
 int		ft_strcmp(char *s1, char *s2);
@@ -103,7 +104,8 @@ void	exit_com(t_data *core);
 int		executor(t_cmdtable *cmd, t_data *core);
 
 //all parser functions!
-void parse(t_data *core, char **env, t_token * token);
+void parse(t_data *core, t_token * token);
+void prep_nodes_for_exec(t_token *token);
 
 //all tokenizer functions!
 t_token *tokenize(t_data *core);
@@ -124,4 +126,6 @@ void printCharPointerArray(char **arr);
 void printlist_type(t_token *head);
 void printlist(t_token *head);
 void	free_token_list(t_token *head);
+void print_cmdtable(t_cmdtable *cmd);
+void free_cmdtable(t_cmdtable **head);
 #endif
