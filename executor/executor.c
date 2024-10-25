@@ -6,11 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/24 14:49:56 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:24:58 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
 //Note! that im not sure whether or not some of the error_handler from the original works with the new code
 //Note! 2 -> Alot of variables and variable inputs are gonna have to get changed when the data struct from the parser is somewhat complete
@@ -135,12 +135,11 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars, char **envp, int *fd)
 	close(fd[0]);
 	if (cmd->redir_type == 2)
 		file_output(cmd, vars, fd);
-	path_finder2(vars, envp, cmd->args, 0);
+	path_finder(vars, envp, cmd->args, 0);
 }
 
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd)
 {
-	write(1, "3a", 2);
 	vars->fdin = open(cmd->next->redir, O_RDONLY);
 	if (vars->fdin == -1)
 		error_handler_fd(fd[1]);
@@ -165,11 +164,30 @@ void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
 	close(vars->fdout);
 }
 
+void	builtin_cmds(t_cmdtable *cmd, t_data *core)
+{
+	if (cmd->isbuiltin == 1)
+		echo_cmd(core); //This will need the cmd
+	else if (cmd->isbuiltin == 2)
+		cd_com(cmd, core);
+	else if (cmd->isbuiltin == 3)
+		pwd(core);
+	else if (cmd->isbuiltin == 4)
+		export(cmd, core);
+	else if (cmd->isbuiltin == 5)
+		unset(core); //This will need the cmd
+	else if (cmd->isbuiltin == 6)
+		env(core);
+	else if (cmd->isbuiltin == 7)
+		exit_com(core);
+}
+
 //the Command Data Struct is only temporay
 int	executor(t_cmdtable *cmd, t_data *core)
 {
 	int		fd[2];
 	t_var	vars;
+	pid_t second;
 
 	//To Do: Add a Here_Doc and Append
 	/*if (cmd->redir_type == 3) //THis would be the here_doc
@@ -182,37 +200,78 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	{
 		i++;
 	}
-
+	
 	//To Do: Add or Find a way to include the inputs for the cmds
 	if (cmd->has_pipe_after != 1) //No Pipes just command, only cmd does not take any params idk why
 	{
-		path_finder2(&vars, core->env, cmd->args, 0);
+		if (cmd->isbuiltin != 0)
+			builtin_cmds(cmd, core);
+		else
+		{
+			second = fork();
+			if (second == -1)
+			{
+				perror("Error While Forking");
+				close(fd[0]);
+				close(fd[1]);
+				return (1);
+			}
+			if (second == 0)
+				path_finder(&vars, core->env, cmd->args, 0);
+			else
+				waitpid(second, NULL, 0);
+		}
 	}
 	else if (cmd->has_pipe_after == 1 && cmd->next->has_pipe_after != 1) //Singe Pipe
 	{
-		//This Kinda Works but only with the old pathfinder using the new pathfinder causes a segfault
-		if (pipe(fd) == -1)
-		{
-			perror("Pipe Failure");
-			exit(1);
-		}
-		vars.childid = fork();
-		if (vars.childid == -1)
+		second = fork();
+		if (second == -1)
 		{
 			perror("Error While Forking");
 			close(fd[0]);
 			close(fd[1]);
 			return (1);
 		}
-		if (vars.childid == 0)
-			child_pros(cmd, &vars, core->env, fd);
-		else
+		if (second == 0)
 		{
-			waitpid(vars.childid, NULL, 0);
-			parent_pros(cmd->next, &vars, core->env, fd);
+			if (pipe(fd) == -1)
+			{
+				perror("Pipe Failure");
+				exit(1);
+			}
+			vars.childid = fork();
+			if (vars.childid == -1)
+			{
+				perror("Error While Forking");
+				close(fd[0]);
+				close(fd[1]);
+				return (1);
+			}
+			if (vars.childid == 0)
+				child_pros(cmd, &vars, core->env, fd);
+			else
+			{
+				waitpid(vars.childid, NULL, 0);
+				parent_pros(cmd->next, &vars, core->env, fd);
+			}
 		}
+		else
+			waitpid(second, NULL, 0);
 	}
-	else if (i > 5) // Mutli Pipe
-		mutilpe_pipe(&vars, i, cmd->args, core->env);
+	else if (cmd->has_pipe_after == 1 && cmd->next->has_pipe_after == 1) // Mutli Pipe
+	{
+		second = fork();
+		if (second == -1)
+		{
+			perror("Error While Forking");
+			close(fd[0]);
+			close(fd[1]);
+			return (1);
+		}
+		if (second == 0)
+			multi_pipe(&vars, cmd, core->env);
+		else
+			waitpid(second, NULL, 0);
+	}
 	return (0);
 }

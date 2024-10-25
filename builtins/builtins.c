@@ -6,14 +6,14 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/23 13:36:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:17:23 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 // All Builtins Manipulate the Environment that is why we have to build them seperately. :0 
-void	cd_com(t_data *core)
+void	cd_com(t_cmdtable *cmd, t_data *core)
 {
 	char *old_pwd;
 
@@ -37,7 +37,7 @@ void	cd_com(t_data *core)
 		return ;
 	}
 	free(core->direct);
-	core->direct = ft_strdup(core->line + 3);
+	core->direct = ft_strdup(cmd->args[1]);
 	if (access(core->direct, sizeof(char)) == 0)
 	{
 		chdir(core->direct);
@@ -82,27 +82,26 @@ void	env(t_data *core)
 	return ;
 }
 
-void	export(t_data *core)
+void	export(t_cmdtable *cmd, t_data *core)
 {
 	int i = 0;
 	int count = 0;
 	char **temp;
-	char **argv = ft_split(core->line, ' ');
 	
 	count = environment_export(core);
 	bubble_sort(core);
 	i = count + 1;
 	count = 0;
-	while (argv[count])
+	while (cmd->args[count])
 		count++;
 	if (count == 1)
 		print_exo_env(core);
 	else if (count > 1)
 	{	
-		temp = new_exo_env(core->export_env, argv, i, count);
+		temp = new_exo_env(core->export_env, cmd->args, i, count);
 		if (!temp)
 			exit(write(2, "Error: Enviornment is Not Sexy Enough\n", 39));
-		core->env = new_exo_env(core->env, argv, i, count);
+		core->env = new_exo_env(core->env, cmd->args, i, count);
 		if (!core->env)
 			exit(write(2, "Error: Enviornment is Not Sexy Enough\n", 39));
 		i = 0;
@@ -114,13 +113,6 @@ void	export(t_data *core)
 		free(core->export_env);
 		core->export_env = temp;
 	}
-	i = 0;
-	while (argv[i])
-	{
-		free(argv[i]);
-		i++;
-	}
-	free(argv);
 }
 
 void	unset(t_data *core)

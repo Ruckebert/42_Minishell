@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/24 14:49:46 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/25 12:58:06 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void find_builtins(t_cmdtable *cmd)
 	}
 }
 
-void prep_nodes_for_exec(t_token *token)
+t_cmdtable *prep_nodes_for_exec(t_token *token)
 {
 	t_cmdtable	*cmd;
 	t_token		*curr;
@@ -194,6 +194,7 @@ void prep_nodes_for_exec(t_token *token)
 	}
 	find_builtins(cmd);
 	free_token_list(token);
+	return (cmd);
 //	print_cmdtable(cmd);
 //	free_cmdtable(&cmd);
 }
