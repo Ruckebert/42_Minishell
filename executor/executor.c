@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/25 13:24:58 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:03:46 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	here_doc(t_cmdtable *cmd, int *fd);
 //Old Pathfinder works but exits the program
 void	path_finder(t_var *vars, char **envp, char **argv, int i)
 {
-	while (envp[i] && !ft_strnstr(envp[i], "PATH=", 5))
+	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
 		i++;
 	if (!envp[i])
 		error_handler();
@@ -41,7 +41,7 @@ void	path_finder(t_var *vars, char **envp, char **argv, int i)
 		execve(vars->full_comm, argv, envp);
 		free(vars->full_comm);
 	}
-	path_finder_error(argv);
+	//path_finder_error(argv);
 }
 //OG Pathfinder
 void	path_finder2(t_var *vars, char **envp, char **argv, int i)
@@ -140,26 +140,32 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars, char **envp, int *fd)
 
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd)
 {
-	vars->fdin = open(cmd->next->redir, O_RDONLY);
+	vars->fdin = open(cmd->redir, O_RDONLY);
 	if (vars->fdin == -1)
 		error_handler_fd(fd[1]);
-	if (dup2(vars->fdin, STDIN_FILENO) == -1)
+	if (cmd->args[0] != NULL) //Before Duplicating check if theirs a file 
 	{
-		close(vars->fdin);
-		error_handler_fd(fd[1]);
+		if (dup2(vars->fdin, STDIN_FILENO) == -1)
+		{
+			close(vars->fdin);
+			error_handler_fd(fd[1]);
+		}
 	}
 	close(vars->fdin);
 }
 
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
 {
-	vars->fdout = open(cmd->next->redir, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	vars->fdout = open(cmd->redir, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (vars->fdout == -1)
 		error_handler_fd(fd[0]);
-	if (dup2(vars->fdout, STDOUT_FILENO) == -1)
+	if (cmd->args[0] != NULL) //Before Duplicating check if theirs a file
 	{
-		close(vars->fdout);
-		error_handler_fd(fd[0]);
+		if (dup2(vars->fdout, STDOUT_FILENO) == -1)
+		{
+			close(vars->fdout);
+			error_handler_fd(fd[0]);
+		}
 	}
 	close(vars->fdout);
 }
@@ -167,7 +173,7 @@ void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
 void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 {
 	if (cmd->isbuiltin == 1)
-		echo_cmd(core); //This will need the cmd
+		echo_cmd(cmd, core);
 	else if (cmd->isbuiltin == 2)
 		cd_com(cmd, core);
 	else if (cmd->isbuiltin == 3)
@@ -175,11 +181,19 @@ void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 	else if (cmd->isbuiltin == 4)
 		export(cmd, core);
 	else if (cmd->isbuiltin == 5)
-		unset(core); //This will need the cmd
+		unset(cmd, core);
 	else if (cmd->isbuiltin == 6)
 		env(core);
 	else if (cmd->isbuiltin == 7)
 		exit_com(core);
+}
+
+void redirctions(t_cmdtable *cmd, t_var *vars, int *fd)
+{
+	if (cmd->redir_type == 1)
+		file_input(cmd, vars, fd);
+	else if (cmd->redir_type == 2)
+		file_output(cmd, vars, fd);
 }
 
 //the Command Data Struct is only temporay
@@ -201,7 +215,6 @@ int	executor(t_cmdtable *cmd, t_data *core)
 		i++;
 	}
 	
-	//To Do: Add or Find a way to include the inputs for the cmds
 	if (cmd->has_pipe_after != 1) //No Pipes just command, only cmd does not take any params idk why
 	{
 		if (cmd->isbuiltin != 0)
@@ -217,7 +230,11 @@ int	executor(t_cmdtable *cmd, t_data *core)
 				return (1);
 			}
 			if (second == 0)
+			{
+				if (cmd->redir_type != 0)
+					redirctions(cmd, &vars, fd);
 				path_finder(&vars, core->env, cmd->args, 0);
+			}
 			else
 				waitpid(second, NULL, 0);
 		}

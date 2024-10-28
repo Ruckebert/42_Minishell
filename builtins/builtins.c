@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/25 13:17:23 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:17:09 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ void	export(t_cmdtable *cmd, t_data *core)
 	}
 }
 
-void	unset(t_data *core)
+
+void	unset(t_cmdtable *cmd, t_data *core)
 {
 	char	**argv;
 	char	**temp;
@@ -123,6 +124,8 @@ void	unset(t_data *core)
 	
 	i = 0;
 	argv = ft_split(core->line, ' ');
+	if (strcmp(cmd->args[0], argv[0]) == 0)
+		i = 0;
 	while (argv[i])
 		i++;
 	if (i == 1)
@@ -140,47 +143,76 @@ void	unset(t_data *core)
 	core->export_env = temp;
 }
 
-//To Do: Requires Struct From parser for completion 
-char	*echo_cmd(t_data *core)
+
+/*void	unset(t_cmdtable *cmd, t_data *core)
 {
-	char	**argv = ft_split(core->line, ' ');
+	//Ask Martin how he splits the input VARS for unset
+	Yeh for some reason 
+	char	**temp;
+	int		i;
+	
+	i = 0;
+	while (cmd->args[i])
+	{
+		ft_printf("%s\n", cmd->args[i]);
+		i++;
+	}
+	if (i == 1)
+		return ;
+	temp = unset_exo(core, core->export_env, i, cmd->args);
+	core->env = unset_env(core, core->env, i, cmd->args);
+	i = 0;
+	while (core->export_env[i])
+	{
+		if (!core->export_env[i])
+			free(core->export_env[i]);
+		i++;
+	}
+	free(core->export_env);
+	core->export_env = temp;
+}*/
+
+//To Do: Requires Struct From parser for completion 
+char	*echo_cmd(t_cmdtable *cmd, t_data *core)
+{
 	int	i;
 	int no;
 	
 	i = 1;
 	no = 0;
-	/*if (ft_strcmp(argv[i], "-n") == 0)
+	if (ft_strcmp(cmd->args[i], "-n") == 0)
 	{
 		no = 1;
 		i++;
-	}*/
-	while (argv[i])
-	{
-		ft_printf("%s ", argv[i]);
-		i++;
 	}
+	while (cmd->args[i])
+	{
+		ft_printf("%s ", cmd->args[i]);
+		i++;
+	} //Idk if they should join together and then return that string
 	if (no == 0)
 		ft_printf("\n");
 	return (core->line);
 }
 
 //To Do: Exit command should free everything and then exit;
+//Need to free the cmd and everything in it
 void	exit_com(t_data *core)
 {
 	int i = 0;
 	while (core->env[i])
 		i++;
 	int count = 0;
-	while (count <= i)
+	while (count < i)
 	{
 		free(core->env[count]);
 		count++;
 	}
 	free(core->env);
 	count = 0;
-	while (count <= i)
+	while (core->export_env[count])
 	{
-		//free(core->export_env[count]);
+		free(core->export_env[count]);
 		count++;
 	}
 	free(core->export_env);

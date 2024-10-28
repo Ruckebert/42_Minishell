@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/25 13:17:55 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:19:37 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
-# include "get_next_line/get_next_line.h"
 
 // All allowed functions are in these headers 
 #include <unistd.h>
@@ -116,8 +115,8 @@ void	env(t_data *core);
 void	cd_com(t_cmdtable *cmd, t_data *core);
 void	pwd(t_data *core);
 void	export(t_cmdtable *cmd, t_data *core);
-void	unset(t_data *core);
-char	*echo_cmd(t_data *core);
+void	unset(t_cmdtable *cmd, t_data *core);
+char	*echo_cmd(t_cmdtable *cmd, t_data *core);
 void	exit_com(t_data *core);
 
 /*Executor Functions*/
