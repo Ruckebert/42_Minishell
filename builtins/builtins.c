@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/28 13:17:09 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:36:35 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,13 +173,18 @@ void	unset(t_cmdtable *cmd, t_data *core)
 }*/
 
 //To Do: Requires Struct From parser for completion 
-char	*echo_cmd(t_cmdtable *cmd, t_data *core)
+void	echo_cmd(t_cmdtable *cmd, t_data *core)
 {
 	int	i;
 	int no;
 	
 	i = 1;
 	no = 0;
+
+	if (core->line == NULL) //A temporay statement to compile
+		return ;
+
+		
 	if (ft_strcmp(cmd->args[i], "-n") == 0)
 	{
 		no = 1;
@@ -189,10 +194,9 @@ char	*echo_cmd(t_cmdtable *cmd, t_data *core)
 	{
 		ft_printf("%s ", cmd->args[i]);
 		i++;
-	} //Idk if they should join together and then return that string
+	}
 	if (no == 0)
 		ft_printf("\n");
-	return (core->line);
 }
 
 //To Do: Exit command should free everything and then exit;

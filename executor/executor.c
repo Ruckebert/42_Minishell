@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/28 13:03:46 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:29:59 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,27 @@ void	path_finder2(t_var *vars, char **envp, char **argv, int i)
 //
 //Piping the Child and leting the Parents wait ü
 
+void	builtin_cmds(t_cmdtable *cmd, t_data *core)
+{
+	if (cmd->isbuiltin == 1)
+		echo_cmd(cmd, core);
+	else if (cmd->isbuiltin == 2)
+		cd_com(cmd, core);
+	else if (cmd->isbuiltin == 3)
+		pwd(core);
+	else if (cmd->isbuiltin == 4)
+		export(cmd, core);
+	else if (cmd->isbuiltin == 5)
+		unset(cmd, core);
+	else if (cmd->isbuiltin == 6)
+		env(core);
+	else if (cmd->isbuiltin == 7)
+		exit_com(core);
+}
+
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
 
-void	child_pros(t_cmdtable *cmd, t_var *vars, char **envp, int *fd)
+void	child_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 {
 	close(fd[0]);
 	if (cmd->redir_type == 4)
@@ -121,13 +139,16 @@ void	child_pros(t_cmdtable *cmd, t_var *vars, char **envp, int *fd)
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 			error_handler_fd(fd[1]);
 		close(fd[1]);
-		path_finder(vars, envp, cmd->args, 0);
+		if (cmd->isbuiltin != 0)
+			builtin_cmds(cmd, core);
+		else
+			path_finder(vars, core->env, cmd->args, 0);
 	}
 }
 
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
 
-void	parent_pros(t_cmdtable *cmd, t_var *vars, char **envp, int *fd)
+void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 {
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
@@ -135,7 +156,10 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars, char **envp, int *fd)
 	close(fd[0]);
 	if (cmd->redir_type == 2)
 		file_output(cmd, vars, fd);
-	path_finder(vars, envp, cmd->args, 0);
+	if (cmd->isbuiltin != 0)
+		builtin_cmds(cmd, core);
+	else
+		path_finder(vars, core->env, cmd->args, 0);
 }
 
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd)
@@ -168,24 +192,6 @@ void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
 		}
 	}
 	close(vars->fdout);
-}
-
-void	builtin_cmds(t_cmdtable *cmd, t_data *core)
-{
-	if (cmd->isbuiltin == 1)
-		echo_cmd(cmd, core);
-	else if (cmd->isbuiltin == 2)
-		cd_com(cmd, core);
-	else if (cmd->isbuiltin == 3)
-		pwd(core);
-	else if (cmd->isbuiltin == 4)
-		export(cmd, core);
-	else if (cmd->isbuiltin == 5)
-		unset(cmd, core);
-	else if (cmd->isbuiltin == 6)
-		env(core);
-	else if (cmd->isbuiltin == 7)
-		exit_com(core);
 }
 
 void redirctions(t_cmdtable *cmd, t_var *vars, int *fd)
@@ -265,11 +271,11 @@ int	executor(t_cmdtable *cmd, t_data *core)
 				return (1);
 			}
 			if (vars.childid == 0)
-				child_pros(cmd, &vars, core->env, fd);
+				child_pros(cmd, &vars, core, fd);
 			else
 			{
 				waitpid(vars.childid, NULL, 0);
-				parent_pros(cmd->next, &vars, core->env, fd);
+				parent_pros(cmd->next, &vars, core, fd);
 			}
 		}
 		else

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/28 13:19:37 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:35:12 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	cd_com(t_cmdtable *cmd, t_data *core);
 void	pwd(t_data *core);
 void	export(t_cmdtable *cmd, t_data *core);
 void	unset(t_cmdtable *cmd, t_data *core);
-char	*echo_cmd(t_cmdtable *cmd, t_data *core);
+void	echo_cmd(t_cmdtable *cmd, t_data *core);
 void	exit_com(t_data *core);
 
 /*Executor Functions*/

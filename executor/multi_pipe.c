@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/28 13:04:36 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:26:11 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, char **envp)
 	i = 0;
 	t_cmdtable *current_cmd = cmd;
 
-	// Fork each command in the pipeline
 	while (current_cmd)
 	{
 		vars->childid = fork();
