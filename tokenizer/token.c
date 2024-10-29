@@ -179,10 +179,10 @@ t_token	*tokenize(t_data *core)
 		else if (isquote(&core->line[pos]))
 			word = getquote(&pos, &oldpos, core, token);
 		newtoken = ft_lstnew(word);
-		if(core->line[oldpos - 1] == ' ')
+		if(token->next != NULL && core->line[oldpos - 1] == ' ')
 			newtoken->leading_space = 1;
 		else
-			newtoken->leading_space = 0;
+			newtoken->leading_space = 0;			
 		ft_lstadd_back(&token, newtoken);
 		newtoken->type = whichtoken(core->line[oldpos]);
 	}
