@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/23 13:19:03 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 10:44:31 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void pwd_update(t_data *core)
 void	envi_update(char *old_pwd, t_data *core)
 {
 	int i;
+	char *temp;
 
 	i = 0;
 	core->direct = getcwd(NULL, 0);
@@ -142,8 +143,9 @@ void	envi_update(char *old_pwd, t_data *core)
 	{
 		if (ft_strncmp(core->env[i], "PWD=", 4) == 0)
 		{
-			core->env[i] = ft_substr(core->env[i], 0, 4);
-			core->env[i] = ft_strjoin(core->env[i], core->direct);
+			temp = ft_substr(core->env[i], 0, 4);
+			core->env[i] = ft_strjoin(temp, core->direct);
+			free(temp);
 		}
 		else if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
 		{

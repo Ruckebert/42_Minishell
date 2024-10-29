@@ -6,11 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:09:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/24 14:44:17 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:01:42 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
 void	error_handler(void)
 {

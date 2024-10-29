@@ -6,11 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/24 14:49:56 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:29:59 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
 //Note! that im not sure whether or not some of the error_handler from the original works with the new code
 //Note! 2 -> Alot of variables and variable inputs are gonna have to get changed when the data struct from the parser is somewhat complete
@@ -21,7 +21,7 @@ void	here_doc(t_cmdtable *cmd, int *fd);
 //Old Pathfinder works but exits the program
 void	path_finder(t_var *vars, char **envp, char **argv, int i)
 {
-	while (envp[i] && !ft_strnstr(envp[i], "PATH=", 5))
+	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
 		i++;
 	if (!envp[i])
 		error_handler();
@@ -41,7 +41,7 @@ void	path_finder(t_var *vars, char **envp, char **argv, int i)
 		execve(vars->full_comm, argv, envp);
 		free(vars->full_comm);
 	}
-	path_finder_error(argv);
+	//path_finder_error(argv);
 }
 //OG Pathfinder
 void	path_finder2(t_var *vars, char **envp, char **argv, int i)
@@ -107,9 +107,27 @@ void	path_finder2(t_var *vars, char **envp, char **argv, int i)
 //
 //Piping the Child and leting the Parents wait ü
 
+void	builtin_cmds(t_cmdtable *cmd, t_data *core)
+{
+	if (cmd->isbuiltin == 1)
+		echo_cmd(cmd, core);
+	else if (cmd->isbuiltin == 2)
+		cd_com(cmd, core);
+	else if (cmd->isbuiltin == 3)
+		pwd(core);
+	else if (cmd->isbuiltin == 4)
+		export(cmd, core);
+	else if (cmd->isbuiltin == 5)
+		unset(cmd, core);
+	else if (cmd->isbuiltin == 6)
+		env(core);
+	else if (cmd->isbuiltin == 7)
+		exit_com(core);
+}
+
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
 
-void	child_pros(t_cmdtable *cmd, t_var *vars, char **envp, int *fd)
+void	child_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 {
 	close(fd[0]);
 	if (cmd->redir_type == 4)
@@ -121,13 +139,16 @@ void	child_pros(t_cmdtable *cmd, t_var *vars, char **envp, int *fd)
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 			error_handler_fd(fd[1]);
 		close(fd[1]);
-		path_finder(vars, envp, cmd->args, 0);
+		if (cmd->isbuiltin != 0)
+			builtin_cmds(cmd, core);
+		else
+			path_finder(vars, core->env, cmd->args, 0);
 	}
 }
 
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
 
-void	parent_pros(t_cmdtable *cmd, t_var *vars, char **envp, int *fd)
+void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 {
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
@@ -135,34 +156,50 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars, char **envp, int *fd)
 	close(fd[0]);
 	if (cmd->redir_type == 2)
 		file_output(cmd, vars, fd);
-	path_finder2(vars, envp, cmd->args, 0);
+	if (cmd->isbuiltin != 0)
+		builtin_cmds(cmd, core);
+	else
+		path_finder(vars, core->env, cmd->args, 0);
 }
 
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd)
 {
-	write(1, "3a", 2);
-	vars->fdin = open(cmd->next->redir, O_RDONLY);
+	vars->fdin = open(cmd->redir, O_RDONLY);
 	if (vars->fdin == -1)
 		error_handler_fd(fd[1]);
-	if (dup2(vars->fdin, STDIN_FILENO) == -1)
+	if (cmd->args[0] != NULL) //Before Duplicating check if theirs a file 
 	{
-		close(vars->fdin);
-		error_handler_fd(fd[1]);
+		if (dup2(vars->fdin, STDIN_FILENO) == -1)
+		{
+			close(vars->fdin);
+			error_handler_fd(fd[1]);
+		}
 	}
 	close(vars->fdin);
 }
 
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
 {
-	vars->fdout = open(cmd->next->redir, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	vars->fdout = open(cmd->redir, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (vars->fdout == -1)
 		error_handler_fd(fd[0]);
-	if (dup2(vars->fdout, STDOUT_FILENO) == -1)
+	if (cmd->args[0] != NULL) //Before Duplicating check if theirs a file
 	{
-		close(vars->fdout);
-		error_handler_fd(fd[0]);
+		if (dup2(vars->fdout, STDOUT_FILENO) == -1)
+		{
+			close(vars->fdout);
+			error_handler_fd(fd[0]);
+		}
 	}
 	close(vars->fdout);
+}
+
+void redirctions(t_cmdtable *cmd, t_var *vars, int *fd)
+{
+	if (cmd->redir_type == 1)
+		file_input(cmd, vars, fd);
+	else if (cmd->redir_type == 2)
+		file_output(cmd, vars, fd);
 }
 
 //the Command Data Struct is only temporay
@@ -170,6 +207,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 {
 	int		fd[2];
 	t_var	vars;
+	pid_t second;
 
 	//To Do: Add a Here_Doc and Append
 	/*if (cmd->redir_type == 3) //THis would be the here_doc
@@ -182,37 +220,81 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	{
 		i++;
 	}
-
-	//To Do: Add or Find a way to include the inputs for the cmds
+	
 	if (cmd->has_pipe_after != 1) //No Pipes just command, only cmd does not take any params idk why
 	{
-		path_finder2(&vars, core->env, cmd->args, 0);
+		if (cmd->isbuiltin != 0)
+			builtin_cmds(cmd, core);
+		else
+		{
+			second = fork();
+			if (second == -1)
+			{
+				perror("Error While Forking");
+				close(fd[0]);
+				close(fd[1]);
+				return (1);
+			}
+			if (second == 0)
+			{
+				if (cmd->redir_type != 0)
+					redirctions(cmd, &vars, fd);
+				path_finder(&vars, core->env, cmd->args, 0);
+			}
+			else
+				waitpid(second, NULL, 0);
+		}
 	}
 	else if (cmd->has_pipe_after == 1 && cmd->next->has_pipe_after != 1) //Singe Pipe
 	{
-		//This Kinda Works but only with the old pathfinder using the new pathfinder causes a segfault
-		if (pipe(fd) == -1)
-		{
-			perror("Pipe Failure");
-			exit(1);
-		}
-		vars.childid = fork();
-		if (vars.childid == -1)
+		second = fork();
+		if (second == -1)
 		{
 			perror("Error While Forking");
 			close(fd[0]);
 			close(fd[1]);
 			return (1);
 		}
-		if (vars.childid == 0)
-			child_pros(cmd, &vars, core->env, fd);
-		else
+		if (second == 0)
 		{
-			waitpid(vars.childid, NULL, 0);
-			parent_pros(cmd->next, &vars, core->env, fd);
+			if (pipe(fd) == -1)
+			{
+				perror("Pipe Failure");
+				exit(1);
+			}
+			vars.childid = fork();
+			if (vars.childid == -1)
+			{
+				perror("Error While Forking");
+				close(fd[0]);
+				close(fd[1]);
+				return (1);
+			}
+			if (vars.childid == 0)
+				child_pros(cmd, &vars, core, fd);
+			else
+			{
+				waitpid(vars.childid, NULL, 0);
+				parent_pros(cmd->next, &vars, core, fd);
+			}
 		}
+		else
+			waitpid(second, NULL, 0);
 	}
-	else if (i > 5) // Mutli Pipe
-		mutilpe_pipe(&vars, i, cmd->args, core->env);
+	else if (cmd->has_pipe_after == 1 && cmd->next->has_pipe_after == 1) // Mutli Pipe
+	{
+		second = fork();
+		if (second == -1)
+		{
+			perror("Error While Forking");
+			close(fd[0]);
+			close(fd[1]);
+			return (1);
+		}
+		if (second == 0)
+			multi_pipe(&vars, cmd, core->env);
+		else
+			waitpid(second, NULL, 0);
+	}
 	return (0);
 }

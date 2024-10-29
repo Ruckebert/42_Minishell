@@ -6,14 +6,14 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/23 13:36:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:36:35 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 // All Builtins Manipulate the Environment that is why we have to build them seperately. :0 
-void	cd_com(t_data *core)
+void	cd_com(t_cmdtable *cmd, t_data *core)
 {
 	char *old_pwd;
 
@@ -37,7 +37,7 @@ void	cd_com(t_data *core)
 		return ;
 	}
 	free(core->direct);
-	core->direct = ft_strdup(core->line + 3);
+	core->direct = ft_strdup(cmd->args[1]);
 	if (access(core->direct, sizeof(char)) == 0)
 	{
 		chdir(core->direct);
@@ -82,27 +82,26 @@ void	env(t_data *core)
 	return ;
 }
 
-void	export(t_data *core)
+void	export(t_cmdtable *cmd, t_data *core)
 {
 	int i = 0;
 	int count = 0;
 	char **temp;
-	char **argv = ft_split(core->line, ' ');
 	
 	count = environment_export(core);
 	bubble_sort(core);
 	i = count + 1;
 	count = 0;
-	while (argv[count])
+	while (cmd->args[count])
 		count++;
 	if (count == 1)
 		print_exo_env(core);
 	else if (count > 1)
 	{	
-		temp = new_exo_env(core->export_env, argv, i, count);
+		temp = new_exo_env(core->export_env, cmd->args, i, count);
 		if (!temp)
 			exit(write(2, "Error: Enviornment is Not Sexy Enough\n", 39));
-		core->env = new_exo_env(core->env, argv, i, count);
+		core->env = new_exo_env(core->env, cmd->args, i, count);
 		if (!core->env)
 			exit(write(2, "Error: Enviornment is Not Sexy Enough\n", 39));
 		i = 0;
@@ -114,16 +113,10 @@ void	export(t_data *core)
 		free(core->export_env);
 		core->export_env = temp;
 	}
-	i = 0;
-	while (argv[i])
-	{
-		free(argv[i]);
-		i++;
-	}
-	free(argv);
 }
 
-void	unset(t_data *core)
+
+void	unset(t_cmdtable *cmd, t_data *core)
 {
 	char	**argv;
 	char	**temp;
@@ -131,6 +124,8 @@ void	unset(t_data *core)
 	
 	i = 0;
 	argv = ft_split(core->line, ' ');
+	if (strcmp(cmd->args[0], argv[0]) == 0)
+		i = 0;
 	while (argv[i])
 		i++;
 	if (i == 1)
@@ -148,47 +143,80 @@ void	unset(t_data *core)
 	core->export_env = temp;
 }
 
-//To Do: Requires Struct From parser for completion 
-char	*echo_cmd(t_data *core)
+
+/*void	unset(t_cmdtable *cmd, t_data *core)
 {
-	char	**argv = ft_split(core->line, ' ');
+	//Ask Martin how he splits the input VARS for unset
+	Yeh for some reason 
+	char	**temp;
+	int		i;
+	
+	i = 0;
+	while (cmd->args[i])
+	{
+		ft_printf("%s\n", cmd->args[i]);
+		i++;
+	}
+	if (i == 1)
+		return ;
+	temp = unset_exo(core, core->export_env, i, cmd->args);
+	core->env = unset_env(core, core->env, i, cmd->args);
+	i = 0;
+	while (core->export_env[i])
+	{
+		if (!core->export_env[i])
+			free(core->export_env[i]);
+		i++;
+	}
+	free(core->export_env);
+	core->export_env = temp;
+}*/
+
+//To Do: Requires Struct From parser for completion 
+void	echo_cmd(t_cmdtable *cmd, t_data *core)
+{
 	int	i;
 	int no;
 	
 	i = 1;
 	no = 0;
-	/*if (ft_strcmp(argv[i], "-n") == 0)
+
+	if (core->line == NULL) //A temporay statement to compile
+		return ;
+
+		
+	if (ft_strcmp(cmd->args[i], "-n") == 0)
 	{
 		no = 1;
 		i++;
-	}*/
-	while (argv[i])
+	}
+	while (cmd->args[i])
 	{
-		ft_printf("%s ", argv[i]);
+		ft_printf("%s ", cmd->args[i]);
 		i++;
 	}
 	if (no == 0)
 		ft_printf("\n");
-	return (core->line);
 }
 
 //To Do: Exit command should free everything and then exit;
+//Need to free the cmd and everything in it
 void	exit_com(t_data *core)
 {
 	int i = 0;
 	while (core->env[i])
 		i++;
 	int count = 0;
-	while (count <= i)
+	while (count < i)
 	{
 		free(core->env[count]);
 		count++;
 	}
 	free(core->env);
 	count = 0;
-	while (count <= i)
+	while (core->export_env[count])
 	{
-		//free(core->export_env[count]);
+		free(core->export_env[count]);
 		count++;
 	}
 	free(core->export_env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/24 16:29:41 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:17:40 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int main(int argc, char *argv[], char **env)
 {
 	t_data core;
 	t_token *token;
+	t_cmdtable *cmd;
 	
 	int status = -1;
 
@@ -40,9 +41,8 @@ int main(int argc, char *argv[], char **env)
 			core.line = readline("> ");
 			add_history(core.line);
     	  	token = tokenize(&core);
-			parse(&core, token);
-			//status = builtin_cmds(core.line, &core);
-			//test(&core);
+			cmd = parse(&core, token);
+			executor(cmd, &core);
 			free(core.line);
 			if (status >= 0)
 				exit(status);

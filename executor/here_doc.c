@@ -6,12 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/24 12:41:43 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:01:46 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-
+#include "../minishell.h"
 void	here_doc(t_cmdtable *cmd, int *fd)
 {
 	fd[0] = 1;

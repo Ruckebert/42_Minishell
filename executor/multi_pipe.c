@@ -6,49 +6,38 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/24 12:41:08 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:26:11 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
 //To Do: Fix Mutilpe Pipes its bad XD
 //Okay Funny thing is that it does create new files my guess something happens with the mutilpe file inputs which causes the program to run endless but also its the input.
-void	first_pipe(t_var *vars, char *argv[], int fd)
+void	first_pipe(t_var *vars, t_cmdtable *cmd, int fd)
 {
-	vars->fdin = open(argv[1], O_RDONLY);
-	if (vars->fdin == -1)
-		error_handler_fd(fd); //Note that the errohandler will need a change
-	if (dup2(vars->fdin, STDIN_FILENO) == -1)
+	if (cmd->redir_type == 4)
 	{
-		close(vars->fdin);
-		error_handler_fd(fd);
+		//here_doc(cmd, fd);
 	}
-	if (dup2(fd, STDOUT_FILENO) == -1)
-	{
-		close(vars->fdin);
-		error_handler_fd(fd);
+	else
+	{	
+		if (cmd->redir_type == 1)
+			file_input(cmd, vars, &fd);
+		if (dup2(fd, STDOUT_FILENO) == -1)
+			error_handler_fd(fd);
+		close(fd);
 	}
-	close(vars->fdin);
 }
 
-void	last_pipe(t_var *vars, int argc, char *argv[], int fd)
+
+void	last_pipe(t_var *vars, t_cmdtable *cmd, int fd)
 {
-	vars->fdout = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (vars->fdout == -1)
-		error_handler_fd(fd);
 	if (dup2(fd, STDIN_FILENO) == -1)
-	{
-		close(vars->fdout);
-		error_handler_fd(fd); // change the errorhandler
-	}
-	if (dup2(vars->fdout, STDOUT_FILENO) == -1)
-	{
-		close(vars->fdout);
 		error_handler_fd(fd);
-	}
-	close(vars->fdout);
-	
+	close(fd);
+	if (cmd->redir_type == 2)
+		file_output(cmd, vars, &fd);
 }
 
 void	closing_cmds(int cmds, int **fd)
@@ -61,12 +50,20 @@ void	closing_cmds(int cmds, int **fd)
 		j++;
 	}
 }
-void	mutilpe_pipe(t_var *vars, int argc, char *argv[], char **envp)
+void	multi_pipe(t_var *vars, t_cmdtable *cmd, char **envp)
 {
-	int cmds = argc - 3;
+	int		cmds = 0;
+	t_cmdtable *tmp = cmd;
+	int		i = 0;
+	int		j = 0;
+	
+	while (tmp)
+	{
+		cmds++;
+		tmp = tmp->next;
+	}
+
 	int fd[cmds - 1][2];
-	int i = 0;
-	int j = 0;
 
 	while (i < cmds - 1)
 	{
@@ -82,29 +79,35 @@ void	mutilpe_pipe(t_var *vars, int argc, char *argv[], char **envp)
 		}	
 		i++;
 	}
+
 	i = 0;
-	while (i < cmds)
+	t_cmdtable *current_cmd = cmd;
+
+	while (current_cmd)
 	{
 		vars->childid = fork();
 		if (vars->childid == -1)
 			error_handler();
+
 		if (vars->childid == 0)
 		{
 			if (i == 0)
-				first_pipe(vars, argv, fd[i][1]);
+				first_pipe(vars, cmd, fd[i][1]);
 			else if (i == cmds - 1)
-				last_pipe(vars, argc, argv, fd[i - 1][0]);
+				last_pipe(vars, cmd, fd[i - 1][0]);
 			else
 			{
 				if (dup2(fd[i - 1][0], STDIN_FILENO) == -1)
 					error_handler_fd(fd[i - 1][0]);
+				if (cmd->redir_type == 1)
+					file_output(cmd, vars, &fd[i - 1][0]);
 				if (dup2(fd[i][1], STDOUT_FILENO) == -1)
 					error_handler_fd(fd[i][1]);
+				if (cmd->redir_type == 2)
+					file_input(cmd, vars, &fd[i][1]);
 			}
 
-			//For some reason its not accepting the format of the closing_cmds
-			//To Do: Test and Fix all of it honestly XD
-			//closing_cmds(cmds, fd);
+
 			j = 0;
 			while (j < cmds - 1)
 			{
@@ -112,11 +115,13 @@ void	mutilpe_pipe(t_var *vars, int argc, char *argv[], char **envp)
 				close(fd[j][1]);
 				j++;
 			}
-			path_finder(vars, envp, argv, 0);
+			path_finder(vars, envp, current_cmd->args, 0);
+			exit(0); 
 		}
+		current_cmd = current_cmd->next;
 		i++;
 	}
-	//closing_cmds(cmds, fd);
+
 	j = 0;
 	while (j < cmds - 1)
 	{
@@ -124,6 +129,7 @@ void	mutilpe_pipe(t_var *vars, int argc, char *argv[], char **envp)
 		close(fd[j][1]);
 		j++;
 	}
+
 	j = -1;
 	while (++j < cmds)
 		waitpid(vars->childid, NULL, 0);

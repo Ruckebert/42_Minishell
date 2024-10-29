@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/23 13:15:29 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:36:21 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 		if (!found)
 		{
 			temp[i] = ft_strdup(argv[j]);
+			//ft_printf("%s\n", temp[i]);
 			if (!temp[i])
 			{
 				while(i >= 0)
