@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/25 13:17:40 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 10:25:22 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int main(int argc, char *argv[], char **env)
 	
 	int status = -1;
 
+	token = NULL;
 	if (argc == -1)
 		exit(2);
 	core.env = copy_env(env, &core);
@@ -41,8 +42,11 @@ int main(int argc, char *argv[], char **env)
 			core.line = readline("> ");
 			add_history(core.line);
     	  	token = tokenize(&core);
-			cmd = parse(&core, token);
-			executor(cmd, &core);
+			if(token)
+			{	
+				cmd = parse(&core, token);
+				executor(cmd, &core);
+			}
 			free(core.line);
 			if (status >= 0)
 				exit(status);
