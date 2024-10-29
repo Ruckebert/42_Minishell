@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 13:47:17 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:58:00 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,10 +176,11 @@ void	exit_com(t_data *core)
 	while (core->env[i])
 		i++;
 	int count = 0;
-	while (count < i)
+	while (core->env[count])
 	{
 		free(core->env[count]);
 		count++;
+
 	}
 	free(core->env);
 	if (core->export_env != NULL)
