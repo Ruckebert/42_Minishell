@@ -16,4 +16,5 @@ Syntax
 
 
 
+DONE:
 < < combines into << in tokenizer! same for > >
