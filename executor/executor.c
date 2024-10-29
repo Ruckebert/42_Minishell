@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 14:31:55 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:55:18 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ void	file_input(t_cmdtable *cmd, t_var *vars, int *fd)
 
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
 {
+	write(1, "1", 1);
 	vars->fdout = open(cmd->redir, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (vars->fdout == -1)
 		error_handler_fd(fd[0]);
@@ -201,6 +202,8 @@ void redirctions(t_cmdtable *cmd, t_var *vars, int *fd)
 		file_input(cmd, vars, fd);
 	else if (cmd->redir_type == 2)
 		file_output(cmd, vars, fd);
+	else if (cmd->redir_type == 10)
+		here_doc(cmd, fd);
 }
 
 //the Command Data Struct is only temporay
@@ -211,10 +214,6 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	pid_t second;
 
 	//To Do: Add a Here_Doc and Append
-	/*if (cmd->redir_type == 10) //THis would be the here_doc
-	{
-		here_doc(cmd, fd);
-	}*/
 	
 	int i = 0;
 	while (cmd->args[i])

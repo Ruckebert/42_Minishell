@@ -1,5 +1,8 @@
 Executor
 Here_doc and Append
+Here Doc prints everything if their is no command.
+
+
 Export "" ?? Ask someone about this?
 History Shift up and copy
 
