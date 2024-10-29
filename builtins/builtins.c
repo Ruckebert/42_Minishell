@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/28 15:36:35 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 11:37:34 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ void	unset(t_cmdtable *cmd, t_data *core)
 	core->export_env = temp;
 }
 
-
 /*void	unset(t_cmdtable *cmd, t_data *core)
 {
 	//Ask Martin how he splits the input VARS for unset
@@ -183,8 +182,6 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 
 	if (core->line == NULL) //A temporay statement to compile
 		return ;
-
-		
 	if (ft_strcmp(cmd->args[i], "-n") == 0)
 	{
 		no = 1;
@@ -192,11 +189,15 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 	}
 	while (cmd->args[i])
 	{
-		ft_printf("%s ", cmd->args[i]);
+		if (cmd->args[i + 1] == NULL)
+			ft_printf("%s", cmd->args[i]);
+		else
+			ft_printf("%s ", cmd->args[i]);
 		i++;
 	}
 	if (no == 0)
 		ft_printf("\n");
+	exit(0);
 }
 
 //To Do: Exit command should free everything and then exit;
