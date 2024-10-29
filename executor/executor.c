@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 13:50:03 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:31:55 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	here_doc(t_cmdtable *cmd, int *fd);
 //Old Pathfinder works but exits the program
 void	path_finder(t_var *vars, char **envp, char **argv, int i)
 {
+	if (argv[0] == NULL)
+		return ;
 	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
 		i++;
 	if (!envp[i])
@@ -209,7 +211,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	pid_t second;
 
 	//To Do: Add a Here_Doc and Append
-	/*if (cmd->redir_type == 3) //THis would be the here_doc
+	/*if (cmd->redir_type == 10) //THis would be the here_doc
 	{
 		here_doc(cmd, fd);
 	}*/
@@ -220,7 +222,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 		i++;
 	}
 	
-	if (cmd->has_pipe_after != 1) //No Pipes just command, only cmd does not take any params idk why
+	if (cmd->has_pipe_after != 1)
 	{
 		if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
 			builtin_cmds(cmd, core);
