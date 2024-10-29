@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 10:12:53 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 11:18:23 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,7 @@ void	path_finder2(t_var *vars, char **envp, char **argv, int i)
 
 void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 {
-	if (cmd->isbuiltin == 1)
-		echo_cmd(cmd, core);
-	else if (cmd->isbuiltin == 2)
+	if (cmd->isbuiltin == 2)
 		cd_com(cmd, core);
 	else if (cmd->isbuiltin == 3)
 		pwd(core);
@@ -140,7 +138,7 @@ void	child_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 			error_handler_fd(fd[1]);
 		close(fd[1]);
-		if (cmd->isbuiltin != 0)
+		if (cmd->isbuiltin == 1)
 			builtin_cmds(cmd, core);
 		else
 			path_finder(vars, core->env, cmd->args, 0);
@@ -224,7 +222,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	
 	if (cmd->has_pipe_after != 1) //No Pipes just command, only cmd does not take any params idk why
 	{
-		if (cmd->isbuiltin != 0)
+		if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
 			builtin_cmds(cmd, core);
 		else
 		{
@@ -240,7 +238,10 @@ int	executor(t_cmdtable *cmd, t_data *core)
 			{
 				if (cmd->redir_type != 0)
 					redirctions(cmd, &vars, fd);
-				path_finder(&vars, core->env, cmd->args, 0);
+				if (cmd->isbuiltin == 1)
+					echo_cmd(cmd, core);
+				else
+					path_finder(&vars, core->env, cmd->args, 0);
 			}
 			else
 				waitpid(second, NULL, 0);
