@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/25 12:58:06 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 09:51:45 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 	}
 	find_builtins(cmd);
 	free_token_list(token);
+	//print_cmdtable(cmd);
 	return (cmd);
-//	print_cmdtable(cmd);
 //	free_cmdtable(&cmd);
 }
