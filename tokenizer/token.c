@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/29 13:18:04 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:53:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ t_token	*tokenize(t_data *core)
 
 	combine_double_redirect(token);
 	combine_with_equal(token);
-	printlist(token);
+	//printlist(token);
 	return(token);
 }
 
