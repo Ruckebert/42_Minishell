@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 10:25:22 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:47:30 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int main(int argc, char *argv[], char **env)
 {
 	t_data core;
 	t_token *token;
-	t_cmdtable *cmd;
 	
 	int status = -1;
 
@@ -30,7 +29,7 @@ int main(int argc, char *argv[], char **env)
 		return (2);
 	(void)argc;
 	(void)argv;
-
+	core.export_env = NULL;
 	if (isatty(STDIN_FILENO) == 1)
 	{
 		chdir(core.direct);
@@ -44,8 +43,8 @@ int main(int argc, char *argv[], char **env)
     	  	token = tokenize(&core);
 			if(token)
 			{	
-				cmd = parse(&core, token);
-				executor(cmd, &core);
+				core.cmd = parse(&core, token);
+				executor(core.cmd, &core);
 			}
 			free(core.line);
 			if (status >= 0)

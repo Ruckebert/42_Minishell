@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 11:18:23 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:50:03 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	child_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 			error_handler_fd(fd[1]);
 		close(fd[1]);
 		if (cmd->isbuiltin == 1)
-			builtin_cmds(cmd, core);
+			echo_cmd(cmd);
 		else
 			path_finder(vars, core->env, cmd->args, 0);
 	}
@@ -155,8 +155,8 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 	close(fd[0]);
 	if (cmd->redir_type == 2)
 		file_output(cmd, vars, fd);
-	if (cmd->isbuiltin != 0)
-		builtin_cmds(cmd, core);
+	if (cmd->isbuiltin == 1)
+		echo_cmd(cmd);
 	else
 		path_finder(vars, core->env, cmd->args, 0);
 }
@@ -239,7 +239,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 				if (cmd->redir_type != 0)
 					redirctions(cmd, &vars, fd);
 				if (cmd->isbuiltin == 1)
-					echo_cmd(cmd, core);
+					echo_cmd(cmd);
 				else
 					path_finder(&vars, core->env, cmd->args, 0);
 			}
