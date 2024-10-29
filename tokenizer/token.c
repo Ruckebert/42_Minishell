@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/29 10:37:37 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/29 11:18:13 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,8 @@ t_token	*tokenize(t_data *core)
 	{
 		while (is_myspace(&core->line[pos]))
 			pos++;
+		if(core->line[pos] == '\0')
+			break;
 		oldpos = pos;
 		if (!(issep(&core->line[pos])) && !(isquote(&core->line[pos])))
 			word = getword(&pos, &oldpos, core, token);
@@ -159,7 +161,7 @@ t_token	*tokenize(t_data *core)
 	newtoken->leading_space = 20;
 
 	combine_double_redirect(token);
-	//printlist(token);
+	printlist(token);
 	return(token);
 }
 
