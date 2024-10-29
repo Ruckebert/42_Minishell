@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 11:37:34 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:47:17 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,38 +115,8 @@ void	export(t_cmdtable *cmd, t_data *core)
 	}
 }
 
-
 void	unset(t_cmdtable *cmd, t_data *core)
 {
-	char	**argv;
-	char	**temp;
-	int		i;
-	
-	i = 0;
-	argv = ft_split(core->line, ' ');
-	if (strcmp(cmd->args[0], argv[0]) == 0)
-		i = 0;
-	while (argv[i])
-		i++;
-	if (i == 1)
-		return ;
-	temp = unset_exo(core, core->export_env, i, argv);
-	core->env = unset_env(core, core->env, i, argv);
-	i = 0;
-	while (core->export_env[i])
-	{
-		if (!core->export_env[i])
-			free(core->export_env[i]);
-		i++;
-	}
-	free(core->export_env);
-	core->export_env = temp;
-}
-
-/*void	unset(t_cmdtable *cmd, t_data *core)
-{
-	//Ask Martin how he splits the input VARS for unset
-	Yeh for some reason 
 	char	**temp;
 	int		i;
 	
@@ -169,10 +139,10 @@ void	unset(t_cmdtable *cmd, t_data *core)
 	}
 	free(core->export_env);
 	core->export_env = temp;
-}*/
+}
 
 //To Do: Requires Struct From parser for completion 
-void	echo_cmd(t_cmdtable *cmd, t_data *core)
+void	echo_cmd(t_cmdtable *cmd)
 {
 	int	i;
 	int no;
@@ -180,8 +150,6 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 	i = 1;
 	no = 0;
 
-	if (core->line == NULL) //A temporay statement to compile
-		return ;
 	if (ft_strcmp(cmd->args[i], "-n") == 0)
 	{
 		no = 1;
@@ -214,16 +182,21 @@ void	exit_com(t_data *core)
 		count++;
 	}
 	free(core->env);
-	count = 0;
-	while (core->export_env[count])
+	if (core->export_env != NULL)
 	{
-		free(core->export_env[count]);
-		count++;
+		count = 0;
+		while (core->export_env[count])
+		{
+			free(core->export_env[count]);
+			count++;
+		}
+		free(core->export_env);
 	}
-	free(core->export_env);
 	free(core->user);
 	free(core->direct);
 	free(core->line);
+	if (core->cmd != NULL)
+		free_cmdtable(&core->cmd);
 	rl_clear_history();
 	exit(1);
 }

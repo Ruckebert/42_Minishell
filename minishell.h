@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/28 15:35:12 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:42:10 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,6 @@
 #include <termios.h>
 #include <curses.h>
 
-/*Core Data Struct*/
-typedef struct s_data
-{
-	char	*user;
-	char	*direct;
-	char	*line;
-	char	**env;
-	char	**export_env;
-	
-}	t_data;
-
-
-typedef struct s_token
-{
-	char			*word;
-	int				type;
-	int				leading_space;
-	struct s_token	*next;
-	struct s_token	*prev;
-
-}	t_token;
-
 //Cmd Parser Table
 typedef struct s_cmdtable
 {
@@ -66,6 +44,29 @@ typedef struct s_cmdtable
 	struct s_cmdtable *prev;
 
 }	t_cmdtable;
+
+/*Core Data Struct*/
+typedef struct s_data
+{
+	char	*user;
+	char	*direct;
+	char	*line;
+	char	**env;
+	char	**export_env;
+	t_cmdtable *cmd;
+
+}	t_data;
+
+
+typedef struct s_token
+{
+	char			*word;
+	int				type;
+	int				leading_space;
+	struct s_token	*next;
+	struct s_token	*prev;
+
+}	t_token;
 
 
 //Piping
@@ -116,7 +117,7 @@ void	cd_com(t_cmdtable *cmd, t_data *core);
 void	pwd(t_data *core);
 void	export(t_cmdtable *cmd, t_data *core);
 void	unset(t_cmdtable *cmd, t_data *core);
-void	echo_cmd(t_cmdtable *cmd, t_data *core);
+void	echo_cmd(t_cmdtable *cmd);
 void	exit_com(t_data *core);
 
 /*Executor Functions*/

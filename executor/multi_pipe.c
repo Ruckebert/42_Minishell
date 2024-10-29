@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 10:05:37 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:41:48 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,19 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, char **envp)
 		if (vars->childid == 0)
 		{
 			if (i == 0)
-				first_pipe(vars, cmd, fd[i][1]);
+				first_pipe(vars, current_cmd, fd[i][1]);
 			else if (i == cmds - 1)
-				last_pipe(vars, cmd, fd[i - 1][0]);
+				last_pipe(vars, current_cmd, fd[i - 1][0]);
 			else
 			{
 				if (dup2(fd[i - 1][0], STDIN_FILENO) == -1)
 					error_handler_fd(fd[i - 1][0]);
-				if (cmd->redir_type == 1)
-					file_output(cmd, vars, &fd[i - 1][0]);
+				if (current_cmd->redir_type == 1)
+					file_input(current_cmd, vars, &fd[i - 1][0]);
 				if (dup2(fd[i][1], STDOUT_FILENO) == -1)
 					error_handler_fd(fd[i][1]);
-				if (cmd->redir_type == 2)
-					file_input(cmd, vars, &fd[i][1]);
+				if (current_cmd->redir_type == 2)
+					file_output(current_cmd, vars, &fd[i][1]);
 			}
 			j = 0;
 			while (j < cmds - 1)
@@ -113,7 +113,10 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, char **envp)
 				close(fd[j][1]);
 				j++;
 			}
-			path_finder(vars, envp, current_cmd->args, 0);
+			if (current_cmd->isbuiltin == 1)
+				echo_cmd(current_cmd);
+			else
+				path_finder(vars, envp, current_cmd->args, 0);
 			exit(0); 
 		}
 		current_cmd = current_cmd->next;
