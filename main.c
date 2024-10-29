@@ -3,75 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/24 14:12:34 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:47:30 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Builtin Commands
-
-int		builtin_cmds(char *line, t_data *core)
-{
-	if (ft_strlen(line) == 0)
-		return (-1);
-	else if (ft_strncmp(line, "pwd", ft_strlen(line)) == 0)
-		pwd(core);
-	else if (ft_strncmp(line, "cd", 2) == 0)
-		cd_com(core);
-	else if (ft_strncmp(line, "exit", ft_strlen(line)) == 0)
-		exit (1);
-	else if (ft_strncmp(line, "export", 6) == 0)
-		export(core);
-	else if (ft_strncmp(line, "unset", 4) == 0)
-		unset(core);
-	else if (ft_strncmp(line, "env", 3) == 0)
-		env(core);
-	else if (ft_strncmp(line, "echo", 4) == 0)
-		echo_cmd(core);
-	return (-1);
-}
-
 //Simply a Test Function to test certain things for the executor
 //It needs alot of work though :(
-int test(t_data *core)
-{
-	t_command cmd;
-
-	char **split_cmd = ft_split(core->line, ' ');
-	int i = 0;
-	
-	while (split_cmd[i] != NULL)
-	{
-		//ft_printf("%s\n", split_cmd[i]);
-		i++;
-	}
-	
-	cmd.args = split_cmd;
-	cmd.name = split_cmd[0];
-	cmd.here_doc = 0;
-	cmd.here_doc_delimiter = NULL;
-	cmd.arg_count = i;
-	cmd.input_file = NULL;
-	cmd.output_file = NULL;
-	
-	//ft_printf("%d\n", i);
-	executor(&cmd, core);
-	
-	i = 0;
-	while (split_cmd[i] != NULL)
-	{
-		free(split_cmd[i]);
-		i++;
-	}
-	free(split_cmd);
-	
-	return (0);
-}
-
 int main(int argc, char *argv[], char **env)
 {
 	t_data core;
@@ -79,6 +21,7 @@ int main(int argc, char *argv[], char **env)
 	
 	int status = -1;
 
+	token = NULL;
 	if (argc == -1)
 		exit(2);
 	core.env = copy_env(env, &core);
@@ -86,7 +29,7 @@ int main(int argc, char *argv[], char **env)
 		return (2);
 	(void)argc;
 	(void)argv;
-
+	core.export_env = NULL;
 	if (isatty(STDIN_FILENO) == 1)
 	{
 		chdir(core.direct);
@@ -97,10 +40,12 @@ int main(int argc, char *argv[], char **env)
 			ft_printf("%s ", core.user);
 			core.line = readline("> ");
 			add_history(core.line);
-      		token = tokenize(&core);
-			parse(&core, token);
-			//status = builtin_cmds(core.line, &core);
-			//test(&core);
+    	  	token = tokenize(&core);
+			if(token)
+			{	
+				core.cmd = parse(&core, token);
+				executor(core.cmd, &core);
+			}
 			free(core.line);
 			if (status >= 0)
 				exit(status);

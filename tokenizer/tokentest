@@ -1,1 +1,1 @@
-echo "hello" |cat -e > myfile | test
+echo "hello" |cat -e > myfile | wc -m

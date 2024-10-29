@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/24 14:42:59 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:42:10 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
-# include "executor/pipex.h"
-# include "get_next_line/get_next_line.h"
 
 // All allowed functions are in these headers 
 #include <unistd.h>
@@ -34,30 +32,7 @@
 #include <termios.h>
 #include <curses.h>
 
-//Dummy Struct for executor
-typedef struct s_command
-{
-	char	*name;
-	char	**args;
-	char	*input_file;
-	char	*output_file;
-	int		arg_count;
-	int		here_doc;
-	char	*here_doc_delimiter;
-	
-}	t_command;
-
-/*Core Data Struct*/
-typedef struct s_data
-{
-	char	*user;
-	char	*direct;
-	char	*line;
-	char	**env;
-	char	**export_env;
-	
-}	t_data;
-
+//Cmd Parser Table
 typedef struct s_cmdtable
 {
 	char	**args;
@@ -67,7 +42,60 @@ typedef struct s_cmdtable
 	int		isbuiltin;
 	struct s_cmdtable *next;
 	struct s_cmdtable *prev;
+
 }	t_cmdtable;
+
+/*Core Data Struct*/
+typedef struct s_data
+{
+	char	*user;
+	char	*direct;
+	char	*line;
+	char	**env;
+	char	**export_env;
+	t_cmdtable *cmd;
+
+}	t_data;
+
+
+typedef struct s_token
+{
+	char			*word;
+	int				type;
+	int				leading_space;
+	struct s_token	*next;
+	struct s_token	*prev;
+
+}	t_token;
+
+
+//Piping
+typedef struct s_var
+{
+	char	**store;
+	char	**cmd;
+	char	*comm;
+	char	*full_comm;
+	int		fdin;
+	int		fdout;
+	int		childid;
+}	t_var;
+
+// Executor/pipex
+void	error_handler(void);
+void	error_handler_split(char **split);
+void	free_split(char **split);
+void	path_finder_error(char **cmd);
+void	error_handler_fd(int fd);
+void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
+void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
+void	multi_pipe(t_var *vars, t_cmdtable *cmd, char **envp);
+void	path_finder(t_var *vars, char **envp, char **argv, int i);
+
+/*Environment Functions*/
+char	**copy_env(char **env, t_data *core);
+void	pwd_update(t_data *core);
+void	envi_update(char *old_pwd, t_data *core);
 
 /*Utils/Free*/
 int		ft_strcmp(char *s1, char *s2);
@@ -83,45 +111,25 @@ int		finder(int found, int i, char **argv, char **env);
 char	**unset_exo(t_data *core, char **env, int i, char **argv);
 char	**unset_env(t_data *core, char **env, int i, char **argv);
 
-typedef struct s_token
-{
-	char			*word;
-	int				type;
-	int				leading_space;
-	struct s_token	*next;
-	struct s_token	*prev;
-
-}	t_token;
-
 /*Builtins*/
 void	env(t_data *core);
-void	cd_com(t_data *core);
+void	cd_com(t_cmdtable *cmd, t_data *core);
 void	pwd(t_data *core);
-void	export(t_data *core);
-void	unset(t_data *core);
-void	echo_cmd(t_data *core);
-
-/*Environment Functions*/
-char	**copy_env(char **env, t_data *core);
-void	pwd_update(t_data *core);
-void	envi_update(char *old_pwd, t_data *core);
-
-/*Lexer Functions AKA Tokenizer*/
-
-/*Parser Functions*/
+void	export(t_cmdtable *cmd, t_data *core);
+void	unset(t_cmdtable *cmd, t_data *core);
+void	echo_cmd(t_cmdtable *cmd);
+void	exit_com(t_data *core);
 
 /*Executor Functions*/
-int		executor(t_command *cmd, t_data *core);
-
-
-
-
+int		executor(t_cmdtable *cmd, t_data *core);
 
 //all parser functions!
-void parse(t_data *core, t_token * token);
-void prep_nodes_for_exec(t_token *token);
+t_cmdtable *parse(t_data *core, t_token * token);
+t_cmdtable *prep_nodes_for_exec(t_token *token);
+
 //all tokenizer functions!
 t_token *tokenize(t_data *core);
+
 //isneeded
 int	is_myspace(char *c);
 int	issep(char *c);
@@ -131,6 +139,7 @@ int	searchsep(char *str);
 t_token	*ft_lstnew(char *word);
 t_token	*ft_lstlast(t_token *lst);
 void	ft_lstadd_back(t_token **lst, t_token *new);
+void	ft_lstdelone(t_token *lst);
 //for testing
 void printlist_both(t_token *head);
 void printCharPointerArray(char **arr);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/24 14:51:09 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/29 09:41:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,7 @@ void	fuse_all_0space_nodes(t_token *token)
 
 
 
-void parse(t_data *core, t_token *token)
+t_cmdtable  *parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
 	expand_var(token, core->env);
@@ -310,7 +310,8 @@ void parse(t_data *core, t_token *token)
 //	printlist(token);
 	fuse_all_0space_nodes(token);
 //	printlist(token);
-	prep_nodes_for_exec(token);
+	//print_cmdtable(cmd);
+	return (prep_nodes_for_exec(token));
 //	handle_singlequote(token);
 //	printlist(token);
 //	printlist(token);

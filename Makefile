@@ -1,7 +1,7 @@
 
 NAME = minishell
 
-SOURCE = main.c builtins/builtins.c  builtins/builtin_utils.c  builtins/export.c  builtins/unset.c executor/executor.c executor/executor_utils.c environment.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
+SOURCE = main.c executor/here_doc.c executor/multi_pipe.c builtins/builtins.c  builtins/builtin_utils.c  builtins/export.c  builtins/unset.c executor/executor.c executor/executor_utils.c environment.c
 
 SOURCETOK = ./tokenizer/testing.c ./tokenizer/token.c ./tokenizer/lsthelper.c ./tokenizer/tokenhelper.c
 

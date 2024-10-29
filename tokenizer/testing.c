@@ -181,7 +181,7 @@ void print_cmdtable(t_cmdtable *cmd)
             printf("[");
             for (i = 0; current->args[i] != NULL; i++)
             {
-                if (current->args[i] == NULL)  // Safety check for NULL values
+                if (current->args[i] == NULL )  // Safety check for NULL values
                 {
                     printf("NULL");
                     break;
