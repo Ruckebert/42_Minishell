@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/28 15:26:11 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 10:05:37 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,6 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, char **envp)
 				if (cmd->redir_type == 2)
 					file_input(cmd, vars, &fd[i][1]);
 			}
-
-
 			j = 0;
 			while (j < cmds - 1)
 			{

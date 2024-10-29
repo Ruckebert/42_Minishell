@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/28 15:29:59 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 10:12:53 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	path_finder(t_var *vars, char **envp, char **argv, int i)
 		execve(vars->full_comm, argv, envp);
 		free(vars->full_comm);
 	}
+	ft_printf("%s: command not found\n", argv[0]);
 	//path_finder_error(argv);
 }
 //OG Pathfinder
