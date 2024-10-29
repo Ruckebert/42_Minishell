@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/29 13:18:04 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:14:01 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,10 +179,10 @@ t_token	*tokenize(t_data *core)
 		else if (isquote(&core->line[pos]))
 			word = getquote(&pos, &oldpos, core, token);
 		newtoken = ft_lstnew(word);
-		if(core->line[oldpos - 1] == ' ')
+		if(token->next != NULL && core->line[oldpos - 1] == ' ')
 			newtoken->leading_space = 1;
 		else
-			newtoken->leading_space = 0;
+			newtoken->leading_space = 0;			
 		ft_lstadd_back(&token, newtoken);
 		newtoken->type = whichtoken(core->line[oldpos]);
 	}

@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/29 10:37:49 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:30:14 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ t_token *get_args(t_cmdtable *cmd, t_token *token)
 		curr = curr->next;
 	}
 	cmd->args[i] = NULL;
+	cmd->has_pipe_after = 0;
 	return (curr);
 }
 
@@ -147,6 +148,8 @@ void find_builtins(t_cmdtable *cmd)
 	curr = cmd;
 	while(curr != NULL)
 	{
+		if (curr->args[0] != NULL)
+		{
 		if (!ft_strcmp(curr->args[0], "echo"))
 			curr->isbuiltin = 1;
 		else if (!ft_strcmp(curr->args[0], "cd"))
@@ -163,6 +166,7 @@ void find_builtins(t_cmdtable *cmd)
 			curr->isbuiltin = 7;
 		else
 			curr->isbuiltin = 0;
+		}
 		curr = curr->next;
 	}
 }
@@ -192,10 +196,12 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 		}
 		else
 			curr = get_args(newcmd,curr);
+
 	}
+	print_cmdtable(cmd);
 	find_builtins(cmd);
 	free_token_list(token);
-	//print_cmdtable(cmd);
+	
 	return (cmd);
 //	free_cmdtable(&cmd);
 }
