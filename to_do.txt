@@ -4,7 +4,9 @@ Here Doc prints everything if their is no command.
 
 
 Export "" ?? Ask someone about this?
+Yes export prints it with quotes
 History Shift up and copy
+Look in the history functions
 
 Leaks!
 

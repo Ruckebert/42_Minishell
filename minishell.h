@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 13:42:10 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:00:40 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	path_finder_error(char **cmd);
 void	error_handler_fd(int fd);
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
+void	here_doc(t_cmdtable *cmd, int *fd);
 void	multi_pipe(t_var *vars, t_cmdtable *cmd, char **envp);
 void	path_finder(t_var *vars, char **envp, char **argv, int i);
 

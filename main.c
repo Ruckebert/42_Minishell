@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 13:47:30 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:47:58 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int main(int argc, char *argv[], char **env)
 		return (2);
 	(void)argc;
 	(void)argv;
-	core.export_env = NULL;
+	core.export_env[0] = NULL;
 	if (isatty(STDIN_FILENO) == 1)
 	{
 		chdir(core.direct);

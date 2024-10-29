@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/28 10:44:31 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 16:01:20 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ char **copy_env(char **env, t_data *core)
 		else
 		{
 			new_env[i] = ft_strdup(env[i]);
+			
 			if (!new_env[i])
 				return (free_environment(new_env, i));
 		}
@@ -98,11 +99,10 @@ char **copy_env(char **env, t_data *core)
 		}
 		i++;
 	}
-	new_env[count] = NULL;
+	new_env[i] = NULL;
 	return (new_env);
 }
 
-//To Do: Free if anything fails
 void pwd_update(t_data *core)
 {
 	int i;
@@ -114,6 +114,7 @@ void pwd_update(t_data *core)
 		if (ft_strncmp(core->env[i], "PWD=", 4) == 0)
 		{
 			temp = ft_substr(core->env[i], 0, 4);
+			free(core->env[i]);
 			core->env[i] = ft_strjoin(temp, core->direct);
 			if (!core->env[i])
 			{
