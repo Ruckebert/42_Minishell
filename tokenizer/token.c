@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/29 11:18:13 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:18:04 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,37 @@ void	combine_double_redirect(t_token	*token)
 	}
 }
 
+void	combine_with_equal(t_token	*token)
+{
+	t_token	*curr;
+	char	*temp;
+	char	*res;
+	
+	curr = token;
+	while (curr && curr->next && curr->next->next)
+	{
+		if (!ft_strcmp(curr->next->word, "="))
+		{	
+			if(curr->next->leading_space == 0)
+			{
+				res = ft_strjoin(curr->word,curr->next->word);
+				if(curr->next->next->leading_space == 0)
+				{
+					curr = curr->next;
+					ft_lstdelone(curr->prev);
+					temp = res;
+					res = ft_strjoin(temp,curr->next->word);
+					free(curr->word);
+					curr->word = res;
+					ft_lstdelone(curr->next);
+					free(temp);
+				}
+			}
+		}
+		curr = curr->next;
+	}
+}
+
 t_token	*tokenize(t_data *core)
 {
 	t_token	*token;
@@ -128,6 +159,7 @@ t_token	*tokenize(t_data *core)
 
 	if (core->line[0] == '\0')
 		return (NULL);
+		
 	newtoken = ft_lstnew("START");
 	ft_lstadd_back(&token, newtoken);
 	newtoken->type = 9999;
@@ -161,6 +193,7 @@ t_token	*tokenize(t_data *core)
 	newtoken->leading_space = 20;
 
 	combine_double_redirect(token);
+	combine_with_equal(token);
 	printlist(token);
 	return(token);
 }

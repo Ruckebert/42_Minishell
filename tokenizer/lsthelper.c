@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/18 11:21:07 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:14:48 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,15 @@ void	ft_lstadd_back(t_token **lst, t_token *new)
 		end->next = new;
 		new->prev = end;
 	}
+}
+
+void	ft_lstdelone(t_token *lst)
+{
+	t_token *temp;
+	
+	temp = lst->prev;
+	lst->prev->next = lst->next;
+	lst->next->prev = temp;
+	free(lst->word);
+	free(lst);
 }
