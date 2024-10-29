@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/29 09:51:52 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/29 10:37:37 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ t_token	*tokenize(t_data *core)
 	pos = 0;
 	token = NULL;
 
+	if (core->line[0] == '\0')
+		return (NULL);
 	newtoken = ft_lstnew("START");
 	ft_lstadd_back(&token, newtoken);
 	newtoken->type = 9999;
