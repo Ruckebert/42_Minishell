@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
 /*   Updated: 2024/10/29 13:42:10 by aruckenb         ###   ########.fr       */
@@ -139,7 +139,7 @@ int	searchsep(char *str);
 t_token	*ft_lstnew(char *word);
 t_token	*ft_lstlast(t_token *lst);
 void	ft_lstadd_back(t_token **lst, t_token *new);
-
+void	ft_lstdelone(t_token *lst);
 //for testing
 void printlist_both(t_token *head);
 void printCharPointerArray(char **arr);
