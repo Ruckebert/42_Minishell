@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 12:38:27 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:04:56 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ void	here_doc(t_cmdtable *cmd, int *fd)
 	int tmp_fd[2];
 	
 	if (pipe(tmp_fd) == -1)
-	{
 		error_handler_fd(tmp_fd[1]);
-		return ;
-	}
 
 	while (1)
 	{
@@ -37,17 +34,15 @@ void	here_doc(t_cmdtable *cmd, int *fd)
 		write(tmp_fd[1], "\n", 1);
 		free(line);
 	}
-
 	close(tmp_fd[1]);
 
 	if (dup2(tmp_fd[0], STDIN_FILENO) == -1)
 	{
 		close(tmp_fd[0]);
 		error_handler_fd(fd[1]);
-		return;
 	}
-	close(tmp_fd[0]); 
-	
+	close(tmp_fd[0]);
+
 	if (cmd->args[0] == NULL)
 		exit(1);
 }

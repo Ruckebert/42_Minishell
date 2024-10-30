@@ -6,14 +6,12 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 12:37:59 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 14:59:47 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//To Do: Fix Mutilpe Pipes its bad XD
-//Okay Funny thing is that it does create new files my guess something happens with the mutilpe file inputs which causes the program to run endless but also its the input.
 void	first_pipe(t_var *vars, t_cmdtable *cmd, int fd)
 {
 	if (cmd->redir_type != 0)
@@ -22,7 +20,6 @@ void	first_pipe(t_var *vars, t_cmdtable *cmd, int fd)
 		error_handler_fd(fd);
 	close(fd);
 }
-
 
 void	last_pipe(t_var *vars, t_cmdtable *cmd, int fd)
 {
@@ -109,7 +106,6 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 				echo_cmd(current_cmd, core);
 			else
 				path_finder(vars, core, envp, current_cmd->args, 0);
-			exit(0); 
 		}
 		current_cmd = current_cmd->next;
 		i++;
@@ -126,4 +122,5 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	j = -1;
 	while (++j < cmds)
 		waitpid(vars->childid, NULL, 0);
+	exit_com(core);
 }

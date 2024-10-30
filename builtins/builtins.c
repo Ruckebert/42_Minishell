@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 14:25:30 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:48:18 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,10 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 	
 	i = 1;
 	no = 0;
-
-	if (ft_strcmp(cmd->args[i], "-n") == 0)
+	
+	if (cmd->args[i] == NULL)
+		no = 0;
+	else if (ft_strcmp(cmd->args[i], "-n") == 0)
 	{
 		no = 1;
 		i++;

@@ -1,12 +1,8 @@
 Executor
-Here_doc and Append
 Here Doc prints everything if their is no command.
+Here Doc and Varaible names
 
-
-Export "" ?? Ask someone about this?
-Yes export prints it with quotes
-History Shift up and copy
-Look in the history functions
+Exit Status
 
 Leaks!
 
@@ -14,6 +10,3 @@ Varaible expansion with quotes (If their is a command inside)
 Signals
 Syntax
 
-
-
-< < combines into << in tokenizer! same for > >
