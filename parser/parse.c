@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/30 15:49:38 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/30 17:50:31 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,32 @@ void fuse_node_word(t_token *curr, char *new_word)
 	t_token *next_node;
 	t_token *discard;
 	char	*oldword;
-	
+	int		firstspace_len;
+	char	*res;
+
+	firstspace_len = 0;
+	res = NULL;
 	oldword = curr->word;
 	if (!curr || !curr->next) 
 	    return;
 	next_node = curr->next->next;
 	if (next_node)
 		next_node->prev = curr;
+	
 	discard = curr->next;
 	curr->next = next_node;
 	free(discard->word);
 	free(discard);
-	curr->word = ft_strjoin(oldword,new_word);
-		free(oldword);
+	if (ft_strchr(new_word, ' ') != NULL)
+	{
+		res = ft_strchr(new_word, ' ');
+		firstspace_len = (res - new_word);
+		ft_strlcpy(res, new_word, firstspace_len + 1);
+		curr->word = ft_strjoin(oldword, res);
+	}	
+	else
+		curr->word = ft_strjoin(oldword,new_word);
+	free(oldword);
 }
 
 char *get_env_var(char *var, char **env)
@@ -121,11 +134,14 @@ void split_to_token(t_token *curr)
 	t_token	*newtoken;
 	char	**arr;
 	int		i;
-	
+	int		temp_leading_space;
+
+	temp_leading_space = 7777;
 	i = 0;
 	arr = ft_split(curr->word, ' ');
 
 	curr = curr->prev;
+	temp_leading_space = curr->next->leading_space;
 	ft_lstdelone(curr->next);
 	while(arr[i]!= NULL)
 	{	
@@ -133,7 +149,7 @@ void split_to_token(t_token *curr)
 		ft_lstadd_next(&curr, newtoken);
 		newtoken->type = 0;
 		if (i == 0)
-			newtoken->leading_space = curr->leading_space;
+			newtoken->leading_space = temp_leading_space;
 		else
 			newtoken->leading_space = 1;
 		i++;
@@ -343,18 +359,28 @@ fuse all 0space
 t_cmdtable  *parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
-//	expand_var(token, core->env);
-//	printlist(token);
-//	expand_var_in_doublequote(token, core->env);
-//	printlist(token);
-//	remove_singlequotes(token);
-//	printlist(token);
-//	fuse_all_0space_nodes(token);
-//	printlist(token);
+	expand_var(token, core->env);
+		printf("\033[0;31m1\033[0m\n");
+	printlist(token);
+
+	expand_var_in_doublequote(token, core->env);
+		printf("\033[0;31m2\033[0m\n");
+	printlist(token);
+
+	remove_singlequotes(token);
+		printf("\033[0;31m3\033[0m\n");
+	printlist(token);
+
+	fuse_all_0space_nodes(token);
+		printf("\033[0;31m4\033[0m\n");
+	printlist(token);
+
 	//print_cmdtable(cmd);
+	printf("\033[0;31mAFTER parse.c\033[0m\n");
+	printlist(token);
 	return (prep_nodes_for_exec(token));
 //	handle_singlequote(token);
-//	printlist(token);
+
 //	printlist(token);
 //	handle_singlequote();
 	

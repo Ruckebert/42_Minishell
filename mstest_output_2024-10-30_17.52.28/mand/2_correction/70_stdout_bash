@@ -1,0 +1,10 @@
+PWD=/home/marsenij/Documents/minishell
+LOGNAME=marsenij
+XAUTHORITY=/home/marsenij/.Xauthority
+XDG_GREETER_DATA_DIR=/var/lib/lightdm-data/marsenij
+LD_PRELOAD=/home/marsenij/42_minishell_tester/utils/libintercept/libintercept.so
+HOME=/home/marsenij
+USER=marsenij
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/home/marsenij/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+PATH=/bin:/usr/bin:/usr/sbin:/home/marsenij/.local/funcheck/host:/home/marsenij/bin:/home/marsenij/.local/funcheck/host:/home/marsenij/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/share/rust/cargo/bin
+OLDPWD=/home/marsenij/42_minishell_tester

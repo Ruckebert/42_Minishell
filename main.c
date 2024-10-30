@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 10:47:16 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:27:24 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ int main(int argc, char *argv[], char **env)
 		pwd_update(&core);
 		while (status == -1)
 		{
-			ft_printf("PeePeeShell$ ");
-			ft_printf("%s ", core.user);
-			core.line = readline("> ");
+			core.line = readline("PeePeeShell$ > ");
 			add_history(core.line);
     	  	token = tokenize(&core);
 			if(token)
