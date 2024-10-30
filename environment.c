@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 16:01:20 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 09:19:18 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	**shellvl(int i, char **env, char **new_env)
 char **copy_env(char **env, t_data *core)
 {
 	char **new_env;
-	char *temp;
+	//char *temp;
 	int count;
 	int i;
 
@@ -64,15 +64,15 @@ char **copy_env(char **env, t_data *core)
 	i = 0;
 	while (i < count)
 	{
-		if (ft_strncmp(env[i], "OLDPWD=", 7) == 0)
+		/*if (ft_strncmp(env[i], "OLDPWD=", 7) == 0)
 		{
 			temp = ft_substr(env[i], 0, 7);
 			new_env[i] = ft_strjoin(temp, core->direct);
 			if (!new_env[i])
 				return (free(temp), free_environment(new_env, i));
 			free(temp);
-		}
-		else if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
+		}*/
+		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
 		{
 			if (shellvl(i, env, new_env) == NULL)
 				return (NULL);
@@ -87,7 +87,7 @@ char **copy_env(char **env, t_data *core)
 	
 		if (ft_strncmp(new_env[i], "USER=", 5) == 0)
 		{
-			core->user = ft_strdup(env[i] + 5); //To Do: IDk if we should free if core->user is null but im pretty its a yes
+			core->user = ft_strdup(env[i] + 5);
 			if (!core->user)
 				return (free_environment(new_env, i));
 		}

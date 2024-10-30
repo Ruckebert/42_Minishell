@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 15:47:58 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 09:13:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,11 @@ int main(int argc, char *argv[], char **env)
 	core.export_env[0] = NULL;
 	if (isatty(STDIN_FILENO) == 1)
 	{
-		chdir(core.direct);
-		pwd_update(&core);
+		//chdir(core.direct);
+		//pwd_update(&core);
 		while (status == -1)
 		{
-			ft_printf("PeePeeShell$ ");
-			ft_printf("%s ", core.user);
-			core.line = readline("> ");
+			core.line = readline("PeePeeShell$ > ");
 			add_history(core.line);
     	  	token = tokenize(&core);
 			if(token)
