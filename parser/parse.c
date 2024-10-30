@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/29 09:41:07 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:06:06 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void fuse_node_word(t_token *curr, char *new_word)
 	free(discard->word);
 	free(discard);
 	curr->word = ft_strjoin(oldword,new_word);
-	free(oldword);
+		free(oldword);
 }
 
 char *get_env_var(char *var, char **env)
@@ -105,6 +105,17 @@ void remove_next_token(t_token *current)
 	free(to_remove);
 }
 
+void remove_quotes(t_token *curr)
+{
+	char *temp;
+
+	temp = malloc(ft_strlen(curr->word) - 1);
+
+	ft_strlcpy(temp, &curr->word[1], ft_strlen(curr->word) - 1);
+	free(curr->word);
+	curr->word = temp;
+}
+
 void expand_var(t_token *token, char **env)
 {
 	char	*value;
@@ -125,7 +136,11 @@ void expand_var(t_token *token, char **env)
 				{
 					value = get_env_var(curr->next->word, env);
 					substitute_node_word(curr, value);
-					if (curr->leading_space == 0)
+					if (curr->word[0] == '"' && curr->word[strlen(curr->word)] == '"')
+						remove_quotes(curr);		
+					if (strchr(curr->word, ' ') != NULL)
+			//			split_to_token
+					if (curr->leading_space == 0 && curr->prev->prev)
 						fuse_node_word(curr->prev, value);
 				}
 				else
@@ -140,16 +155,7 @@ void expand_var(t_token *token, char **env)
 	}
 }
 
-void remove_quotes(t_token *curr)
-{
-	char *temp;
 
-	temp = malloc(ft_strlen(curr->word) - 1);
-
-	ft_strlcpy(temp, &curr->word[1], ft_strlen(curr->word) - 1);
-	free(curr->word);
-	curr->word = temp;
-}
 
 char	*parse_var_name(t_token *curr)
 {
@@ -174,10 +180,10 @@ char	*parse_var_name(t_token *curr)
 
 void parsearound_var(t_token *curr, char **env, char *var)
 {
-	int	temp;
+	int		temp;
 	char	*beforevar;
 	char	*aftervar;
-	int	i;
+	int		i;
 	char	*res;
 	char	*varvalue;
 
@@ -236,7 +242,7 @@ void expand_var_in_doublequote(t_token *token, char **env)
 			if (ft_strchr(curr->word, '$') != NULL)
 			{
 				var = parse_var_name(curr);
-				parsearound_var(curr, env, var);
+				//parsearound_var(curr, env, var);
 			}
 		}
 		curr = curr->next;
@@ -297,6 +303,17 @@ void	fuse_all_0space_nodes(t_token *token)
 	}
 }
 
+/*
+Gameplan:
+expand normal variables
+
+
+
+remove singlequotes
+fuse all 0space
+
+
+*/
 
 
 t_cmdtable  *parse(t_data *core, t_token *token)
