@@ -6,14 +6,12 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 09:22:12 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:39:55 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Simply a Test Function to test certain things for the executor
-//It needs alot of work though :(
 int main(int argc, char *argv[], char **env)
 {
 	t_data core;

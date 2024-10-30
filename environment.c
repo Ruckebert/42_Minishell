@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 10:15:14 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:45:03 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,39 +39,14 @@ char	**shellvl(int i, char **env, char **new_env)
 	free(sub_temp);
 	return (new_env);
 }
-//To Do: Split Copy_Env 
-char **copy_env(char **env, t_data *core)
+
+char **environment_copy(char **env, char **new_env, t_data *core, int count)
 {
-	char **new_env;
-	//char *temp;
-	int count;
 	int i;
 
-	if (env == NULL || *env == NULL)
-		exit(1);
-	
-	count = 0;
-	while (env[count] != NULL)
-		count++;
-	
-	new_env = malloc((count + 1) * sizeof(char *));
-	if (!new_env)
-		exit(2);
-	core->export_env = malloc((count + 1) * sizeof(char *));
-	if (!core->export_env)
-		exit(2);
-	
 	i = 0;
 	while (i < count)
 	{
-		/*if (ft_strncmp(env[i], "OLDPWD=", 7) == 0)
-		{
-			temp = ft_substr(env[i], 0, 7);
-			new_env[i] = ft_strjoin(temp, core->direct);
-			if (!new_env[i])
-				return (free(temp), free_environment(new_env, i));
-			free(temp);
-		}*/
 		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
 		{
 			if (shellvl(i, env, new_env) == NULL)
@@ -83,7 +58,6 @@ char **copy_env(char **env, t_data *core)
 			if (!new_env[i])
 				return (free_environment(new_env, i));
 		}
-	
 		if (ft_strncmp(new_env[i], "USER=", 5) == 0)
 		{
 			core->user = ft_strdup(env[i] + 5);
@@ -102,6 +76,28 @@ char **copy_env(char **env, t_data *core)
 	return (new_env);
 }
 
+char **copy_env(char **env, t_data *core)
+{
+	char **new_env;
+	//char *temp;
+	int count;
+
+	if (env == NULL || *env == NULL)
+		exit(1);
+	
+	count = 0;
+	while (env[count] != NULL)
+		count++;
+	
+	new_env = malloc((count + 1) * sizeof(char *));
+	if (!new_env)
+		exit(2);
+	core->export_env = malloc((count + 1) * sizeof(char *));
+	if (!core->export_env)
+		exit(2);
+	return (environment_copy(env, new_env, core, count));
+}
+
 void pwd_update(t_data *core)
 {
 	int i;
@@ -116,15 +112,7 @@ void pwd_update(t_data *core)
 			free(core->env[i]);
 			core->env[i] = ft_strjoin(temp, core->direct);
 			if (!core->env[i])
-			{
-				while (i >= 0)
-				{
-					free(core->env[i]);
-					i++;
-				}
-				free(core->env);
-				return ;
-			} 
+				free_environment(core->env, i);
 			free(temp);
 		}
 		i++;

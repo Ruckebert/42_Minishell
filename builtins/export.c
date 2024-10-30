@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 11:13:17 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 14:33:31 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ void	print_exo_env(t_data *core)
 		{
 			if (core->export_env[i][j] == '=')
 			{
-				ft_printf("%c", core->export_env[i][j]);
-				ft_printf("\"");
+				ft_printf("%c\"", core->export_env[i][j]);
 				has_equal = 1;
 			}
 			else
@@ -115,6 +114,7 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 	int i;
 	int found;
 	char **temp;
+	
 	temp = malloc((argc + count) * sizeof(char *));
 	if (!temp)
 		exit(1);

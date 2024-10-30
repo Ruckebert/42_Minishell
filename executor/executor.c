@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 11:00:52 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 14:30:30 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 	ft_printf("%s: command not found\n", argv[0]);
 	free_split(vars->store);
 	exit_com(core);
-	//path_finder_error(argv);
 }
 
 void	builtin_cmds(t_cmdtable *cmd, t_data *core)
@@ -127,7 +126,6 @@ void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
 	close(vars->fdout);
 }
 
-//Check if this is correct
 void	file_append(t_cmdtable *cmd, t_var *vars, int *fd)
 {
 	vars->fdout = open(cmd->redir, O_WRONLY | O_APPEND | O_CREAT, 0644);
@@ -156,7 +154,77 @@ void	redirctions(t_cmdtable *cmd, t_var *vars, int *fd)
 		file_append(cmd, vars, fd);
 }
 
-//the Command Data Struct is only temporay
+void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
+{
+	int		fd[2];
+	pid_t second;
+
+	if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
+		builtin_cmds(cmd, core);
+	else
+	{
+		second = fork();
+		if (second == -1)
+		{
+			perror("Error While Forking");
+			close(fd[0]);
+			close(fd[1]);
+			return ;
+		}
+		if (second == 0)
+		{
+			if (cmd->redir_type != 0)
+				redirctions(cmd, vars, fd);
+			if (cmd->isbuiltin == 1)
+				echo_cmd(cmd, core);
+			else
+				path_finder(vars, core, core->env, cmd->args, 0);
+		}
+		else
+			waitpid(second, NULL, 0);
+	}
+}
+
+void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
+{
+	int		fd[2];
+	pid_t second;
+
+	second = fork();
+	if (second == -1)
+	{
+		perror("Error While Forking");
+		close(fd[0]);
+		close(fd[1]);
+		return ;
+	}
+	if (second == 0)
+	{
+		if (pipe(fd) == -1)
+		{
+			perror("Pipe Failure");
+			exit(1);
+		}
+		vars->childid = fork();
+		if (vars->childid == -1)
+		{
+			perror("Error While Forking");
+			close(fd[0]);
+			close(fd[1]);
+			return ;
+		}
+		if (vars->childid == 0)
+			child_pros(cmd, vars, core, fd);
+		else
+		{
+			waitpid(vars->childid, NULL, 0);
+			parent_pros(cmd->next, vars, core, fd);
+		}
+	}
+	else
+		waitpid(second, NULL, 0);	
+}
+
 int	executor(t_cmdtable *cmd, t_data *core)
 {
 	int		fd[2];
@@ -165,73 +233,11 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	int i = 0;
 	
 	while (cmd->args[i])
-	{
 		i++;
-	}
-	
 	if (cmd->has_pipe_after != 1)
-	{
-		if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
-			builtin_cmds(cmd, core);
-		else
-		{
-			second = fork();
-			if (second == -1)
-			{
-				perror("Error While Forking");
-				close(fd[0]);
-				close(fd[1]);
-				return (1);
-			}
-			if (second == 0)
-			{
-				if (cmd->redir_type != 0)
-					redirctions(cmd, &vars, fd);
-				if (cmd->isbuiltin == 1)
-					echo_cmd(cmd, core);
-				else
-					path_finder(&vars, core, core->env, cmd->args, 0);
-			}
-			else
-				waitpid(second, NULL, 0);
-		}
-	}
+		no_pipe_exe(cmd, core, &vars);
 	else if (cmd->has_pipe_after == 1 && cmd->next->has_pipe_after != 1) //Singe Pipe
-	{
-		second = fork();
-		if (second == -1)
-		{
-			perror("Error While Forking");
-			close(fd[0]);
-			close(fd[1]);
-			return (1);
-		}
-		if (second == 0)
-		{
-			if (pipe(fd) == -1)
-			{
-				perror("Pipe Failure");
-				exit(1);
-			}
-			vars.childid = fork();
-			if (vars.childid == -1)
-			{
-				perror("Error While Forking");
-				close(fd[0]);
-				close(fd[1]);
-				return (1);
-			}
-			if (vars.childid == 0)
-				child_pros(cmd, &vars, core, fd);
-			else
-			{
-				waitpid(vars.childid, NULL, 0);
-				parent_pros(cmd->next, &vars, core, fd);
-			}
-		}
-		else
-			waitpid(second, NULL, 0);
-	}
+		single_pipe_exe(cmd, core, &vars);
 	else if (cmd->has_pipe_after == 1 && cmd->next->has_pipe_after == 1) // Mutli Pipe
 	{
 		second = fork();

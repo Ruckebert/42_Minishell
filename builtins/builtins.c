@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 12:12:32 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 14:25:30 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,11 +137,6 @@ void	unset(t_cmdtable *cmd, t_data *core)
 	int		i;
 	
 	i = 0;
-	while (cmd->args[i])
-	{
-		ft_printf("%s\n", cmd->args[i]);
-		i++;
-	}
 	if (i == 1)
 		return ;
 	temp = unset_exo(core, core->export_env, i, cmd->args);
