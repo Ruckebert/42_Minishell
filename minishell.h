@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 15:00:40 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 10:58:48 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,9 @@ void	error_handler_fd(int fd);
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
 void	here_doc(t_cmdtable *cmd, int *fd);
-void	multi_pipe(t_var *vars, t_cmdtable *cmd, char **envp);
-void	path_finder(t_var *vars, char **envp, char **argv, int i);
+void	redirctions(t_cmdtable *cmd, t_var *vars, int *fd);
+void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp);
+void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i);
 
 /*Environment Functions*/
 char	**copy_env(char **env, t_data *core);
@@ -118,7 +119,7 @@ void	cd_com(t_cmdtable *cmd, t_data *core);
 void	pwd(t_data *core);
 void	export(t_cmdtable *cmd, t_data *core);
 void	unset(t_cmdtable *cmd, t_data *core);
-void	echo_cmd(t_cmdtable *cmd);
+void	echo_cmd(t_cmdtable *cmd, t_data *core);
 void	exit_com(t_data *core);
 
 /*Executor Functions*/

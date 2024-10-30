@@ -1,1 +1,4 @@
 valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./minishell
+
+Valgrind Child Suppressor 
+valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp --trace-children=yes --track-fds=yes ./minishell

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 09:19:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 10:15:14 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ char **copy_env(char **env, t_data *core)
 		else
 		{
 			new_env[i] = ft_strdup(env[i]);
-			
 			if (!new_env[i])
 				return (free_environment(new_env, i));
 		}
@@ -145,13 +144,16 @@ void	envi_update(char *old_pwd, t_data *core)
 		if (ft_strncmp(core->env[i], "PWD=", 4) == 0)
 		{
 			temp = ft_substr(core->env[i], 0, 4);
+			free(core->env[i]);
 			core->env[i] = ft_strjoin(temp, core->direct);
 			free(temp);
 		}
 		else if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
 		{
-			core->env[i] = ft_substr(core->env[i], 0, 7);
-			core->env[i] = ft_strjoin(core->env[i], old_pwd);
+			temp = ft_substr(core->env[i], 0, 7);
+			free(core->env[i]);
+			core->env[i] = ft_strjoin(temp, old_pwd);
+			free(temp);
 		}
 		i++;
 	}

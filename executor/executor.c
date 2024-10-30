@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 15:26:20 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:00:52 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 //Note! 2 -> Alot of variables and variable inputs are gonna have to get changed when the data struct from the parser is somewhat complete
 //Note! Note to self dont wear the blue sweater anymore
 
-void	path_finder(t_var *vars, char **envp, char **argv, int i)
+void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 {
 	if (argv[0] == NULL)
 		return ;
@@ -41,6 +41,8 @@ void	path_finder(t_var *vars, char **envp, char **argv, int i)
 		free(vars->full_comm);
 	}
 	ft_printf("%s: command not found\n", argv[0]);
+	free_split(vars->store);
+	exit_com(core);
 	//path_finder_error(argv);
 }
 
@@ -65,7 +67,7 @@ void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
 
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
 
-void	child_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
+void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 {
 	close(fd[0]);
 	if (cmd->redir_type != 0)
@@ -74,9 +76,9 @@ void	child_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 		error_handler_fd(fd[1]);
 	close(fd[1]);
 	if (cmd->isbuiltin == 1)
-		echo_cmd(cmd);
+		echo_cmd(cmd, core);
 	else
-		path_finder(vars, core->env, cmd->args, 0);
+		path_finder(vars, core, core->env, cmd->args, 0);
 }
 
 void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
@@ -88,9 +90,9 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 	if (cmd->redir_type != 0)
 		redirctions(cmd, vars, fd);
 	if (cmd->isbuiltin == 1)
-		echo_cmd(cmd);
+		echo_cmd(cmd, core);
 	else
-		path_finder(vars, core->env, cmd->args, 0);
+		path_finder(vars, core, core->env, cmd->args, 0);
 }
 
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd)
@@ -128,7 +130,7 @@ void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
 //Check if this is correct
 void	file_append(t_cmdtable *cmd, t_var *vars, int *fd)
 {
-	vars->fdout = open(cmd->redir, O_APPEND);
+	vars->fdout = open(cmd->redir, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (vars->fdout == -1)
 		error_handler_fd(fd[0]);
 	if (cmd->args[0] != NULL)
@@ -186,9 +188,9 @@ int	executor(t_cmdtable *cmd, t_data *core)
 				if (cmd->redir_type != 0)
 					redirctions(cmd, &vars, fd);
 				if (cmd->isbuiltin == 1)
-					echo_cmd(cmd);
+					echo_cmd(cmd, core);
 				else
-					path_finder(&vars, core->env, cmd->args, 0);
+					path_finder(&vars, core, core->env, cmd->args, 0);
 			}
 			else
 				waitpid(second, NULL, 0);
@@ -241,7 +243,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 			return (1);
 		}
 		if (second == 0)
-			multi_pipe(&vars, cmd, core->env);
+			multi_pipe(&vars, cmd, core, core->env);
 		else
 			waitpid(second, NULL, 0);
 	}

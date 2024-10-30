@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 09:13:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 09:22:12 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int main(int argc, char *argv[], char **env)
 			add_history(core.line);
     	  	token = tokenize(&core);
 			if(token)
-			{	
+			{
 				core.cmd = parse(&core, token);
 				executor(core.cmd, &core);
 			}
