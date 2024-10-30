@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 15:00:40 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:23:41 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ int		executor(t_cmdtable *cmd, t_data *core);
 //all parser functions!
 t_cmdtable *parse(t_data *core, t_token * token);
 t_cmdtable *prep_nodes_for_exec(t_token *token);
+void	ft_lstadd_next(t_token **lst, t_token *new);
 
 //all tokenizer functions!
 t_token *tokenize(t_data *core);

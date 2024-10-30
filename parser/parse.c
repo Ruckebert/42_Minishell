@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/30 12:06:06 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:49:38 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,32 @@ void remove_quotes(t_token *curr)
 	curr->word = temp;
 }
 
+void split_to_token(t_token *curr)
+{
+	t_token	*newtoken;
+	char	**arr;
+	int		i;
+	
+	i = 0;
+	arr = ft_split(curr->word, ' ');
+
+	curr = curr->prev;
+	ft_lstdelone(curr->next);
+	while(arr[i]!= NULL)
+	{	
+		newtoken = ft_lstnew(arr[i]);
+		ft_lstadd_next(&curr, newtoken);
+		newtoken->type = 0;
+		if (i == 0)
+			newtoken->leading_space = curr->leading_space;
+		else
+			newtoken->leading_space = 1;
+		i++;
+		curr = curr->next;
+	}
+	free (arr);
+}
+
 void expand_var(t_token *token, char **env)
 {
 	char	*value;
@@ -135,11 +161,9 @@ void expand_var(t_token *token, char **env)
 				if (is_expandable(curr->next->word, env))
 				{
 					value = get_env_var(curr->next->word, env);
-					substitute_node_word(curr, value);
-					if (curr->word[0] == '"' && curr->word[strlen(curr->word)] == '"')
-						remove_quotes(curr);		
+					substitute_node_word(curr, value);		
 					if (strchr(curr->word, ' ') != NULL)
-			//			split_to_token
+						split_to_token(curr);
 					if (curr->leading_space == 0 && curr->prev->prev)
 						fuse_node_word(curr->prev, value);
 				}
@@ -319,13 +343,13 @@ fuse all 0space
 t_cmdtable  *parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
-	expand_var(token, core->env);
+//	expand_var(token, core->env);
 //	printlist(token);
-	expand_var_in_doublequote(token, core->env);
+//	expand_var_in_doublequote(token, core->env);
 //	printlist(token);
-	remove_singlequotes(token);
+//	remove_singlequotes(token);
 //	printlist(token);
-	fuse_all_0space_nodes(token);
+//	fuse_all_0space_nodes(token);
 //	printlist(token);
 	//print_cmdtable(cmd);
 	return (prep_nodes_for_exec(token));

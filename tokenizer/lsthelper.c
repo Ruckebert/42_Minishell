@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/29 13:14:48 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:17:47 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,29 @@ void	ft_lstadd_back(t_token **lst, t_token *new)
 		end = ft_lstlast(*lst);
 		end->next = new;
 		new->prev = end;
+	}
+}
+
+void	ft_lstadd_next(t_token **lst, t_token *new)
+{
+	t_token	*curr;
+	t_token *tempn;
+	
+	curr = *lst;
+
+	if (!new)
+		return;
+	if (*lst == NULL)
+	{
+		*lst = new;
+	}
+	else
+	{
+		tempn = curr->next;
+		curr->next = new;
+		curr->next->next = tempn;
+		new->prev=curr;
+		tempn->prev = new;
 	}
 }
 
