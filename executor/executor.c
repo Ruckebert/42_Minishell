@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 14:30:30 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/31 11:48:50 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 {
+	core->exit_status = 1;
 	if (argv[0] == NULL)
 		return ;
 	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
@@ -42,6 +43,7 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 	}
 	ft_printf("%s: command not found\n", argv[0]);
 	free_split(vars->store);
+	core->exit_status = 127;
 	exit_com(core);
 }
 

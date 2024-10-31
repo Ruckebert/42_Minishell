@@ -6,12 +6,23 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 15:04:56 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/31 13:37:43 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-void	here_doc(t_cmdtable *cmd, int *fd)
+
+char *expander_env(t_data *core, char *line)
+{
+	char *var_start = ft_strchr(line, '$');
+	if (!var_start)
+		return (NULL);
+	
+	
+	
+}
+
+void	here_doc(t_cmdtable *cmd, t_data *core, int *fd)
 {
 	char *line;
 	int tmp_fd[2];
@@ -30,7 +41,15 @@ void	here_doc(t_cmdtable *cmd, int *fd)
 			free(line);
 			break;
 		}
-		write(tmp_fd[1], line, strlen(line));
+		
+		char *expand_line = expander_env(core);
+		if (expand_line)
+		{
+			write(tmp_fd[1], expand_line, strlen(expand_line));
+			free(expand_line);
+		}
+		else
+			write(tmp_fd[1], line, strlen(line));
 		write(tmp_fd[1], "\n", 1);
 		free(line);
 	}

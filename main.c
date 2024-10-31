@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 12:39:55 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/31 11:34:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int main(int argc, char *argv[], char **env)
 	int status = -1;
 
 	token = NULL;
+	core.exit_status = 0;
 	if (argc == -1)
 		exit(2);
 	core.env = copy_env(env, &core);

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 15:48:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/31 11:33:48 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 void	exit_com(t_data *core)
 {
 	int i = 0;
+
 	while (core->env[i])
 		i++;
 	simple_free(core->env);
@@ -197,5 +198,5 @@ void	exit_com(t_data *core)
 	if (core->cmd != NULL)
 		free_cmdtable(&core->cmd);
 	rl_clear_history();
-	exit(1);
+	exit(core->exit_status);
 }
