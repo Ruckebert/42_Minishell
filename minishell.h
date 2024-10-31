@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/31 11:33:02 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/31 14:56:14 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,19 +82,6 @@ typedef struct s_var
 	int		childid;
 }	t_var;
 
-// Executor/pipex
-void	error_handler(void);
-void	error_handler_split(char **split);
-void	free_split(char **split);
-void	path_finder_error(char **cmd);
-void	error_handler_fd(int fd);
-void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
-void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
-void	here_doc(t_cmdtable *cmd, int *fd);
-void	redirctions(t_cmdtable *cmd, t_var *vars, int *fd);
-void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp);
-void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i);
-
 /*Environment Functions*/
 char	**copy_env(char **env, t_data *core);
 void	pwd_update(t_data *core);
@@ -125,6 +112,18 @@ void	exit_com(t_data *core);
 
 /*Executor Functions*/
 int		executor(t_cmdtable *cmd, t_data *core);
+void	error_handler(void);
+void	error_handler_split(char **split);
+void	free_split(char **split);
+void	path_finder_error(char **cmd);
+void	error_handler_fd(int fd);
+void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
+void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
+void	here_doc(t_cmdtable *cmd, t_data *core, int *fd);
+void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
+void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp);
+void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i);
+
 
 //all parser functions!
 t_cmdtable *parse(t_data *core, t_token * token);
@@ -142,6 +141,7 @@ int	searchsep(char *str);
 t_token	*ft_lstnew(char *word);
 t_token	*ft_lstlast(t_token *lst);
 void	ft_lstadd_back(t_token **lst, t_token *new);
+
 void	ft_lstdelone(t_token *lst);
 //for testing
 void printlist_both(t_token *head);

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/31 11:48:50 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/31 14:53:35 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 {
-	core->exit_status = 1;
 	if (argv[0] == NULL)
 		return ;
 	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
@@ -62,7 +61,7 @@ void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 	else if (cmd->isbuiltin == 7)
 		exit_com(core);
 }
-void	redirctions(t_cmdtable *cmd, t_var *vars, int *fd);
+void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
 
@@ -72,7 +71,7 @@ void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 {
 	close(fd[0]);
 	if (cmd->redir_type != 0)
-		redirctions(cmd, vars, fd);
+		redirctions(cmd, core, vars, fd);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
 		error_handler_fd(fd[1]);
 	close(fd[1]);
@@ -89,7 +88,7 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 		error_handler_fd(fd[0]);
 	close(fd[0]);
 	if (cmd->redir_type != 0)
-		redirctions(cmd, vars, fd);
+		redirctions(cmd, core, vars, fd);
 	if (cmd->isbuiltin == 1)
 		echo_cmd(cmd, core);
 	else
@@ -144,14 +143,14 @@ void	file_append(t_cmdtable *cmd, t_var *vars, int *fd)
 	close(vars->fdout);
 }
 
-void	redirctions(t_cmdtable *cmd, t_var *vars, int *fd)
+void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
 	if (cmd->redir_type == 1)
 		file_input(cmd, vars, fd);
 	else if (cmd->redir_type == 2)
 		file_output(cmd, vars, fd);
 	else if (cmd->redir_type == 10)
-		here_doc(cmd, fd);
+		here_doc(cmd, core, fd);
 	else if (cmd->redir_type == 20)
 		file_append(cmd, vars, fd);
 }
@@ -176,7 +175,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 		if (second == 0)
 		{
 			if (cmd->redir_type != 0)
-				redirctions(cmd, vars, fd);
+				redirctions(cmd, core, vars, fd);
 			if (cmd->isbuiltin == 1)
 				echo_cmd(cmd, core);
 			else
@@ -184,6 +183,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 		}
 		else
 			waitpid(second, NULL, 0);
+		//Depending on what the wifexited and wifsignal return the corsoponding exit status
 	}
 }
 

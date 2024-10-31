@@ -6,28 +6,28 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 14:59:47 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/31 14:54:34 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	first_pipe(t_var *vars, t_cmdtable *cmd, int fd)
+void	first_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 {
 	if (cmd->redir_type != 0)
-		redirctions(cmd, vars, &fd);
+		redirctions(cmd, core, vars, &fd);
 	if (dup2(fd, STDOUT_FILENO) == -1)
 		error_handler_fd(fd);
 	close(fd);
 }
 
-void	last_pipe(t_var *vars, t_cmdtable *cmd, int fd)
+void	last_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 {
 	if (dup2(fd, STDIN_FILENO) == -1)
 		error_handler_fd(fd);
 	close(fd);
 	if (cmd->redir_type != 0)
-		redirctions(cmd, vars, &fd);
+		redirctions(cmd, core, vars, &fd);
 }
 
 void	closing_cmds(int cmds, int **fd)
@@ -81,19 +81,19 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 		if (vars->childid == 0)
 		{
 			if (i == 0)
-				first_pipe(vars, current_cmd, fd[i][1]);
+				first_pipe(vars, core, current_cmd, fd[i][1]);
 			else if (i == cmds - 1)
-				last_pipe(vars, current_cmd, fd[i - 1][0]);
+				last_pipe(vars, core, current_cmd, fd[i - 1][0]);
 			else
 			{
 				if (dup2(fd[i - 1][0], STDIN_FILENO) == -1)
 					error_handler_fd(fd[i - 1][0]);
 				if (current_cmd->redir_type != 2)
-					redirctions(cmd, vars, &fd[i - 1][0]);
+					redirctions(cmd, core, vars, &fd[i - 1][0]);
 				if (dup2(fd[i][1], STDOUT_FILENO) == -1)
 					error_handler_fd(fd[i][1]);
 				if (current_cmd->redir_type != 1)
-					redirctions(cmd, vars, &fd[i][1]);
+					redirctions(cmd, core, vars, &fd[i][1]);
 			}
 			j = 0;
 			while (j < cmds - 1)
