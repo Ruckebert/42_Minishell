@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/31 14:53:35 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/01 09:44:59 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,11 @@ void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 	close(fd[1]);
 	if (cmd->isbuiltin == 1)
 		echo_cmd(cmd, core);
+	else if (cmd->isbuiltin > 1)
+		builtin_cmds(cmd, core);
 	else
 		path_finder(vars, core, core->env, cmd->args, 0);
+	exit(0);
 }
 
 void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
@@ -91,8 +94,11 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 		redirctions(cmd, core, vars, fd);
 	if (cmd->isbuiltin == 1)
 		echo_cmd(cmd, core);
+	else if (cmd->isbuiltin > 1)
+		builtin_cmds(cmd, core);
 	else
 		path_finder(vars, core, core->env, cmd->args, 0);
+	exit(0);
 }
 
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd)

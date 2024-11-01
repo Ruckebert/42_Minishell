@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/31 11:33:48 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/01 11:29:08 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,28 @@ void	cd_com(t_cmdtable *cmd, t_data *core)
 	if (ft_strncmp(core->line, "cd -", 4) == 0)
 	{
 		cd_oldpwd(old_pwd, core);
+		return ;
+	}
+	if (cmd->args[1] == NULL)
+	{
+		int i;
+		i = 0;
+		
+		free(core->direct);
+		while (core->env[i])
+		{
+			if	(ft_strncmp(core->env[i], "HOME=", 5) == 0)
+			{
+				core->direct = ft_strdup(core->env[i] + 5);
+				if (!core->user)
+					return ;
+				break ;
+			}
+			i++;
+		}
+		chdir(core->direct);
+		envi_update(old_pwd, core);
+		free(old_pwd);
 		return ;
 	}
 	free(core->direct);

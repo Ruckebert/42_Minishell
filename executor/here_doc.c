@@ -6,34 +6,76 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/31 14:52:06 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/01 10:51:38 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char *expander_env(t_data *core, char *line)
+char *expander_env(t_data *core, char *line) 
 {
-	//Change this code up to just copy itll the variable and strjoin them together
-	//To Do: change this up
-	char *expanded_line = NULL;
-	char *var_start = ft_strchr(line, '$');
-	if (!var_start)
-		return (NULL);
-		
-	//int before_var_len = var_start - line;
-	char *var_name = var_start + 1;
-	char *env_value = getenv(var_name);
-	if (!env_value)
-		env_value = "";
-	expanded_line = ft_strjoin(var_start,env_value);
-	if (!expanded_line)
+    char *expanded_line = NULL;
+    char *var_start = NULL;
+    char *env_value = NULL;
+	char *var_name = NULL;
+	char *before_var = NULL;
+    int i = 0;
+	int j = 0;
+	core->exit_status = 1;
+
+    while (line[i]) {
+
+        if (line[i] == '$') 
+		{
+            if (i > 0) 
+			{
+                before_var = ft_substr(line, 0, i);
+                expanded_line = ft_strjoin(expanded_line, before_var);
+                free(before_var);
+            }
+            var_start = &line[i + 1];
+            j = 0;
+            while (var_start[j] && (ft_isalnum(var_start[j]) || var_start[j] == '_'))
+                j++;
+            var_name = ft_substr(var_start, 0, j);
+			if (!var_name)
+			{
+				free(var_start);
+				free(expanded_line);
+				exit(1);
+			}
+            env_value = getenv(var_name);
+            free(var_name);
+            if (!env_value) 
+                env_value = "";
+            expanded_line = ft_strjoin(expanded_line, env_value);
+			if (!expanded_line)
+			{
+				free(var_start);
+				free(expanded_line);
+				free(env_value);
+				exit(1);
+			}
+			i += j + 1;
+            line = &line[i];
+            i = 0;
+        } 
+		else 
+            i++;
+    }
+    if (*line)
 	{
-		core->exit_status = 1;
-		exit_com(core);
+        expanded_line = ft_strjoin(expanded_line, line);
+		if (!expanded_line)
+		{
+			free(var_start);
+			free(env_value);
+			exit (1);
+		}	
 	}
-	return (expanded_line);
+    return (expanded_line);
 }
+
 
 void	here_doc(t_cmdtable *cmd, t_data *core, int *fd)
 {
@@ -43,7 +85,7 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int *fd)
 	
 	if (pipe(tmp_fd) == -1)
 		error_handler_fd(tmp_fd[1]);
-
+	//if the cmd->redir has no quotes it should not expand so i dont know martin handles that in the parser
 	while (1)
 	{
 		line = readline("> ");
@@ -67,14 +109,12 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int *fd)
 		free(line);
 	}
 	close(tmp_fd[1]);
-
 	if (dup2(tmp_fd[0], STDIN_FILENO) == -1)
 	{
 		close(tmp_fd[0]);
 		error_handler_fd(fd[1]);
 	}
 	close(tmp_fd[0]);
-
 	if (cmd->args[0] == NULL)
 		exit(1);
 }
