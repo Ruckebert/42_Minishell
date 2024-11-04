@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/31 11:34:07 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:44:02 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int main(int argc, char *argv[], char **env)
 	(void)argc;
 	(void)argv;
 	core.export_env[0] = NULL;
-	if (isatty(STDIN_FILENO) == 1)
+	if ( isatty(STDIN_FILENO) == 1 /*true*/) //The isatty is the reason why the tester doesnt work
 	{
 		//chdir(core.direct);
 		//pwd_update(&core);
@@ -45,7 +45,7 @@ int main(int argc, char *argv[], char **env)
 			}
 			free(core.line);
 			if (status >= 0)
-				exit(status);
+				exit_com(&core);
 		}
 	}
 	return (0);

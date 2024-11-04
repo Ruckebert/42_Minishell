@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/01 11:29:08 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:36:40 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ void	cd_com(t_cmdtable *cmd, t_data *core)
 	char *old_pwd;
 
 	old_pwd = getcwd(NULL, 0);
+	if (cmd->args[2] != NULL)
+	{
+		write(2, "cd: too many arguments\n", 24);
+		core->exit_status = 1;
+		free(old_pwd);
+		return ;
+	}
 	if (ft_strncmp(core->line, "cd -", 4) == 0)
 	{
 		cd_oldpwd(old_pwd, core);

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/01 09:44:59 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/04 09:54:49 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,8 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 	int		fd[2];
 	pid_t second;
 
+	if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
+		builtin_cmds(cmd, core);
 	second = fork();
 	if (second == -1)
 	{
