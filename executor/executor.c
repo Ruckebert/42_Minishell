@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/04 09:54:49 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/06 10:44:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 		env(core);
 	else if (cmd->isbuiltin == 7)
 		exit_com(core);
+	return ;
 }
 void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 
@@ -191,6 +192,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 			waitpid(second, NULL, 0);
 		//Depending on what the wifexited and wifsignal return the corsoponding exit status
 	}
+	return ;
 }
 
 void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
@@ -198,7 +200,7 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 	int		fd[2];
 	pid_t second;
 
-	if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
+	if (cmd->isbuiltin == 4)
 		builtin_cmds(cmd, core);
 	second = fork();
 	if (second == -1)

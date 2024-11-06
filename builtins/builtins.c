@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/04 13:36:40 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:26:22 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,8 +214,63 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 //Need to free the cmd and everything in it
 void	exit_com(t_data *core)
 {
-	int i = 0;
-
+	int i = 1;
+	int j = 0;
+	
+	//I need to check whether or not the value is numerical or not
+	//I should only check that their is a single argument, if its more then one display too many arguments and do NOT exit
+	//So if the number is positive and not over 256 then just print that number out
+	//If the number is positive and is over subtract it with 256
+	//For negative numbers subtract it with 256
+	//If the number is 256 the exit status is 0  
+	
+	while (core->cmd->args[i])
+	{
+		j = 0;
+		while (core->cmd->args[i][j])
+		{
+			if (core->cmd->args[i][j] == '+' && j == 0)
+			{
+				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
+				{}
+				else
+				{
+					j = -1;
+					break ;
+				}
+			}
+			else if (core->cmd->args[i][j] == '-' && j == 0)
+			{
+				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
+				{}
+				else
+				{
+					j = -1;
+					break ;
+				}
+			}
+			else if (core->cmd->args[i][j] >= '0' && core->cmd->args[i][j] <= '9')
+			{}
+			else
+			{
+				j = -1;
+				break ;
+			}
+			j++;
+		}
+		if (j == -1)
+			break ;
+		i++;	
+	}
+	if (j != -1 && core->cmd->args[2] != NULL)
+	{
+		write(2, "exit: too many arguments\n", 26);
+		return ;
+	}
+	else if (j == -1)
+		write(2, "exit: numeric arugment required\n", 33);
+	
+	i = 0;
 	while (core->env[i])
 		i++;
 	simple_free(core->env);
