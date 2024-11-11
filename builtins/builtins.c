@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/06 15:26:22 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 10:24:34 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	cd_oldpwd(char *old_pwd, t_data *core)
 		i++;
 	}
 	ft_printf("%s\n", core->direct);
-	chdir(core->direct);
+	if (chdir(core->direct) == -1)
+		core->exit_status = 1;
 	envi_update(old_pwd, core);
 	free(old_pwd);
 }
@@ -67,7 +68,8 @@ void	cd_com(t_cmdtable *cmd, t_data *core)
 			}
 			i++;
 		}
-		chdir(core->direct);
+		if (chdir(core->direct) == -1)
+			core->exit_status = 1;
 		envi_update(old_pwd, core);
 		free(old_pwd);
 		return ;
@@ -76,7 +78,8 @@ void	cd_com(t_cmdtable *cmd, t_data *core)
 	core->direct = ft_strdup(cmd->args[1]);
 	if (access(core->direct, sizeof(char)) == 0)
 	{
-		chdir(core->direct);
+		if (chdir(core->direct) == -1)
+			core->exit_status = 1;
 		envi_update(old_pwd, core);
 	}
 	else
@@ -207,7 +210,7 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 	}
 	if (no == 0)
 		ft_printf("\n");
-	exit_com(core);
+	exit(core->exit_status);
 }
 
 //To Do: Exit command should free everything and then exit;
@@ -262,7 +265,11 @@ void	exit_com(t_data *core)
 			break ;
 		i++;	
 	}
-	if (j != -1 && core->cmd->args[2] != NULL)
+	if (j != -1 && core->cmd->args[1] == NULL)
+	{
+		
+	}
+	else if (j != -1 && core->cmd->args[2] != NULL)
 	{
 		write(2, "exit: too many arguments\n", 26);
 		return ;

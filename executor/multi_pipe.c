@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/31 14:54:34 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 10:20:50 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 {
 	t_cmdtable *tmp = cmd;
 	int		cmds = 0;
+	int		status = 0;
 	int		i = 0;
 	int		j = 0;
 	
@@ -121,6 +122,10 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 
 	j = -1;
 	while (++j < cmds)
-		waitpid(vars->childid, NULL, 0);
-	exit_com(core);
+	{
+		waitpid(vars->childid, &status, 0);
+		if (WIFEXITED(status))
+			core->exit_status = WEXITSTATUS(status);
+	}
+	exit(core->exit_status);
 }

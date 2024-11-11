@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/06 10:44:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 10:18:26 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,6 @@ void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 		exit_com(core);
 	return ;
 }
-void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
-
-void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
-
-void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
 
 void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 {
@@ -102,70 +97,18 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 	exit(0);
 }
 
-void	file_input(t_cmdtable *cmd, t_var *vars, int *fd)
+void	pipe_error(int *fd)
 {
-	vars->fdin = open(cmd->redir, O_RDONLY);
-	if (vars->fdin == -1)
-		error_handler_fd(fd[1]);
-	if (cmd->args[0] != NULL)
-	{
-		if (dup2(vars->fdin, STDIN_FILENO) == -1)
-		{
-			close(vars->fdin);
-			error_handler_fd(fd[1]);
-		}
-	}
-	close(vars->fdin);
-}
-
-void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
-{
-	vars->fdout = open(cmd->redir, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (vars->fdout == -1)
-		error_handler_fd(fd[0]);
-	if (cmd->args[0] != NULL)
-	{
-		if (dup2(vars->fdout, STDOUT_FILENO) == -1)
-		{
-			close(vars->fdout);
-			error_handler_fd(fd[0]);
-		}
-	}
-	close(vars->fdout);
-}
-
-void	file_append(t_cmdtable *cmd, t_var *vars, int *fd)
-{
-	vars->fdout = open(cmd->redir, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	if (vars->fdout == -1)
-		error_handler_fd(fd[0]);
-	if (cmd->args[0] != NULL)
-	{
-		if (dup2(vars->fdout, STDOUT_FILENO) == -1)
-		{
-			close(vars->fdout);
-			error_handler_fd(fd[0]);
-		}
-	}
-	close(vars->fdout);
-}
-
-void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
-{
-	if (cmd->redir_type == 1)
-		file_input(cmd, vars, fd);
-	else if (cmd->redir_type == 2)
-		file_output(cmd, vars, fd);
-	else if (cmd->redir_type == 10)
-		here_doc(cmd, core, fd);
-	else if (cmd->redir_type == 20)
-		file_append(cmd, vars, fd);
+	perror("Error While Forking");
+	close(fd[0]);
+	close(fd[1]);
 }
 
 void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 {
 	int		fd[2];
 	pid_t second;
+	int		status = 0;
 
 	if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
 		builtin_cmds(cmd, core);
@@ -174,9 +117,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 		second = fork();
 		if (second == -1)
 		{
-			perror("Error While Forking");
-			close(fd[0]);
-			close(fd[1]);
+			pipe_error(fd);
 			return ;
 		}
 		if (second == 0)
@@ -189,52 +130,63 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 				path_finder(vars, core, core->env, cmd->args, 0);
 		}
 		else
-			waitpid(second, NULL, 0);
-		//Depending on what the wifexited and wifsignal return the corsoponding exit status
+		{
+			waitpid(second, &status, 0);
+			if (WIFEXITED(status))
+				core->exit_status = WEXITSTATUS(status);
+		}
 	}
 	return ;
+}
+
+void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
+{
+	int status = 0;
+
+	if (pipe(fd) == -1)
+	{
+		perror("Pipe Failure");
+		return ;
+	}
+	vars->childid = fork();
+	if (vars->childid == -1)
+	{
+		pipe_error(fd);
+		return ;
+	}
+	if (vars->childid == 0)
+		child_pros(cmd, vars, core, fd);
+	else
+	{
+		waitpid(vars->childid, &status, 0);
+		if (WIFEXITED(status))
+			core->exit_status = WEXITSTATUS(status);
+		parent_pros(cmd->next, vars, core, fd);
+	}
 }
 
 void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 {
 	int		fd[2];
 	pid_t second;
+	int		status = 0;
 
 	if (cmd->isbuiltin == 4)
 		builtin_cmds(cmd, core);
 	second = fork();
 	if (second == -1)
 	{
-		perror("Error While Forking");
-		close(fd[0]);
-		close(fd[1]);
+		pipe_error(fd);
 		return ;
 	}
 	if (second == 0)
-	{
-		if (pipe(fd) == -1)
-		{
-			perror("Pipe Failure");
-			exit(1);
-		}
-		vars->childid = fork();
-		if (vars->childid == -1)
-		{
-			perror("Error While Forking");
-			close(fd[0]);
-			close(fd[1]);
-			return ;
-		}
-		if (vars->childid == 0)
-			child_pros(cmd, vars, core, fd);
-		else
-		{
-			waitpid(vars->childid, NULL, 0);
-			parent_pros(cmd->next, vars, core, fd);
-		}
-	}
+		child_parent_execution(cmd, core, vars, fd);
 	else
-		waitpid(second, NULL, 0);	
+	{
+		waitpid(second, &status, 0);
+		if (WIFEXITED(status))
+			core->exit_status = WEXITSTATUS(status);
+	}	
 }
 
 int	executor(t_cmdtable *cmd, t_data *core)
@@ -242,6 +194,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	int		fd[2];
 	t_var	vars;
 	pid_t second;
+	int	status = 0;
 	int i = 0;
 	
 	while (cmd->args[i])
@@ -255,15 +208,17 @@ int	executor(t_cmdtable *cmd, t_data *core)
 		second = fork();
 		if (second == -1)
 		{
-			perror("Error While Forking");
-			close(fd[0]);
-			close(fd[1]);
+			pipe_error(fd);
 			return (1);
 		}
 		if (second == 0)
 			multi_pipe(&vars, cmd, core, core->env);
 		else
+		{
 			waitpid(second, NULL, 0);
+			if (WIFEXITED(status))
+			core->exit_status = WEXITSTATUS(status);
+		}
 	}
 	return (0);
 }

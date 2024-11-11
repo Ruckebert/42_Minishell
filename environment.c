@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 12:45:03 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 10:03:21 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ char **environment_copy(char **env, char **new_env, t_data *core, int count)
 char **copy_env(char **env, t_data *core)
 {
 	char **new_env;
-	//char *temp;
 	int count;
 
 	if (env == NULL || *env == NULL)

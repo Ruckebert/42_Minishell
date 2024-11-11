@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/31 14:56:14 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 10:09:16 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,10 @@ int		executor(t_cmdtable *cmd, t_data *core);
 void	error_handler(void);
 void	error_handler_split(char **split);
 void	free_split(char **split);
-void	path_finder_error(char **cmd);
 void	error_handler_fd(int fd);
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
+void	file_append(t_cmdtable *cmd, t_var *vars, int *fd);
 void	here_doc(t_cmdtable *cmd, t_data *core, int *fd);
 void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp);

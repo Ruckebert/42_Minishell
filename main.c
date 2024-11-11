@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/04 14:44:02 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 10:10:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int main(int argc, char *argv[], char **env)
 	t_token *token;
 	
 	int status = -1;
-
+	
 	token = NULL;
 	core.exit_status = 0;
 	if (argc == -1)
@@ -44,8 +44,9 @@ int main(int argc, char *argv[], char **env)
 				executor(core.cmd, &core);
 			}
 			free(core.line);
+			printf("Exit Status: %d\n", core.exit_status);
 			if (status >= 0)
-				exit_com(&core);
+				exit(core.exit_status);
 		}
 	}
 	return (0);
