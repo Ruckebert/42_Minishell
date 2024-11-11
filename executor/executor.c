@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 10:18:26 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 12:50:17 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 		free(vars->full_comm);
 	}
 	ft_printf("%s: command not found\n", argv[0]);
-	free_split(vars->store);
+	free_split(vars->store); 
 	core->exit_status = 127;
-	exit_com(core);
+	exit(core->exit_status);
 }
 
 void	builtin_cmds(t_cmdtable *cmd, t_data *core)
@@ -107,7 +107,7 @@ void	pipe_error(int *fd)
 void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 {
 	int		fd[2];
-	pid_t second;
+	pid_t	second;
 	int		status = 0;
 
 	if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
@@ -141,7 +141,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 
 void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
-	int status = 0;
+	int	status = 0;
 
 	if (pipe(fd) == -1)
 	{
@@ -168,7 +168,7 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 {
 	int		fd[2];
-	pid_t second;
+	pid_t 	second;
 	int		status = 0;
 
 	if (cmd->isbuiltin == 4)
@@ -193,9 +193,9 @@ int	executor(t_cmdtable *cmd, t_data *core)
 {
 	int		fd[2];
 	t_var	vars;
-	pid_t second;
-	int	status = 0;
-	int i = 0;
+	pid_t 	second;
+	int		status = 0;
+	int 	i = 0;
 	
 	while (cmd->args[i])
 		i++;

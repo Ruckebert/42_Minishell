@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 14:33:31 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 10:53:27 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	print_exo_env(t_data *core)
 	int has_equal;
 	
 	i = 0;
-	has_equal = 0;
 	while (core->export_env[i])
 	{
 		ft_printf("declare -x ");
@@ -118,7 +117,6 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 	temp = malloc((argc + count) * sizeof(char *));
 	if (!temp)
 		exit(1);
-
 	i = 0;
 	while (env[i])
 	{

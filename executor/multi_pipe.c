@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 10:20:50 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:25:33 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,10 @@ void	closing_cmds(int cmds, int **fd)
 }
 void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 {
-	t_cmdtable *tmp = cmd;
 	int		cmds = 0;
 	int		status = 0;
 	int		i = 0;
 	int		j = 0;
-	
-	while (tmp)
-	{
-		cmds++;
-		tmp = tmp->next;
-	}
 
 	int fd[cmds - 1][2];
 

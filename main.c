@@ -6,19 +6,19 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 10:10:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:16:43 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char *argv[], char **env)
+int	main(int argc, char *argv[], char **env)
 {
-	t_data core;
-	t_token *token;
-	
-	int status = -1;
-	
+	t_data	core;
+	t_token	*token;
+	int status;
+
+	status = -1;
 	token = NULL;
 	core.exit_status = 0;
 	if (argc == -1)

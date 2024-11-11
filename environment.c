@@ -6,13 +6,13 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 10:03:21 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:20:52 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **free_environment(char **new_env, int i)
+char	**free_environment(char **new_env, int i)
 {
 	while (i > 0)
 		free(new_env[--i]);
@@ -22,10 +22,10 @@ char **free_environment(char **new_env, int i)
 
 char	**shellvl(int i, char **env, char **new_env)
 {
-	char *temp;
-	char *sub_temp;
-	int temp_num;
-	
+	char	*temp;
+	char	*sub_temp;
+	int		temp_num;
+
 	temp_num = ft_atoi(env[i] + 6);
 	temp_num++;
 	temp = ft_itoa(temp_num);
@@ -34,15 +34,16 @@ char	**shellvl(int i, char **env, char **new_env)
 	sub_temp = ft_substr(env[i], 0, 6);
 	new_env[i] = ft_strjoin(sub_temp, temp);
 	if (!new_env[i])
-		return (free(temp),free(sub_temp), free_environment(new_env, i), NULL);
+		return (free(temp), free(sub_temp),
+			free_environment(new_env, i), NULL);
 	free(temp);
 	free(sub_temp);
 	return (new_env);
 }
 
-char **environment_copy(char **env, char **new_env, t_data *core, int count)
+char	**environment_copy(char **env, char **new_env, t_data *core, int count)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < count)
@@ -64,7 +65,7 @@ char **environment_copy(char **env, char **new_env, t_data *core, int count)
 			if (!core->user)
 				return (free_environment(new_env, i));
 		}
-		if	(ft_strncmp(new_env[i], "HOME=", 5) == 0)
+		if (ft_strncmp(new_env[i], "HOME=", 5) == 0)
 		{
 			core->direct = ft_strdup(env[i] + 5);
 			if (!core->user)
@@ -83,11 +84,9 @@ char **copy_env(char **env, t_data *core)
 
 	if (env == NULL || *env == NULL)
 		exit(1);
-	
 	count = 0;
 	while (env[count] != NULL)
 		count++;
-	
 	new_env = malloc((count + 1) * sizeof(char *));
 	if (!new_env)
 		exit(2);

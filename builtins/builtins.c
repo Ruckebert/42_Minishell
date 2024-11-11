@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 10:24:34 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 12:46:16 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 void	cd_oldpwd(char *old_pwd, t_data *core)
 {
 	int i = 0;
+	
 	while (core->env[i])
 	{
 		if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
@@ -34,6 +35,47 @@ void	cd_oldpwd(char *old_pwd, t_data *core)
 	free(old_pwd);
 }
 
+void	cd_empty(char *old_pwd, t_data *core)
+{
+	int i;
+	i = 0;
+		
+	free(core->direct);
+	while (core->env[i])
+	{
+		if	(ft_strncmp(core->env[i], "HOME=", 5) == 0)
+		{
+			core->direct = ft_strdup(core->env[i] + 5);
+			if (!core->user)
+				return ;
+			break ;
+		}
+		i++;
+	}
+	if (chdir(core->direct) == -1)
+		core->exit_status = 1;
+	envi_update(old_pwd, core);
+	free(old_pwd);
+}
+
+void	normal_cd(char *old_pwd, t_cmdtable *cmd, t_data *core)
+{
+	free(core->direct);
+	core->direct = ft_strdup(cmd->args[1]);
+	if (access(core->direct, sizeof(char)) == 0)
+	{
+		if (chdir(core->direct) == -1)
+			core->exit_status = 1;
+		envi_update(old_pwd, core);
+	}
+	else
+	{
+		ft_printf("cd: %s: no such file or directory\n", core->direct);
+		core->exit_status = 1;
+	}
+	free(old_pwd);
+}
+
 void	cd_com(t_cmdtable *cmd, t_data *core)
 {
 	char *old_pwd;
@@ -46,45 +88,17 @@ void	cd_com(t_cmdtable *cmd, t_data *core)
 		free(old_pwd);
 		return ;
 	}
-	if (ft_strncmp(core->line, "cd -", 4) == 0)
+	if (cmd->args[1][0] == '-')
 	{
 		cd_oldpwd(old_pwd, core);
 		return ;
-	}
+}
 	if (cmd->args[1] == NULL)
 	{
-		int i;
-		i = 0;
-		
-		free(core->direct);
-		while (core->env[i])
-		{
-			if	(ft_strncmp(core->env[i], "HOME=", 5) == 0)
-			{
-				core->direct = ft_strdup(core->env[i] + 5);
-				if (!core->user)
-					return ;
-				break ;
-			}
-			i++;
-		}
-		if (chdir(core->direct) == -1)
-			core->exit_status = 1;
-		envi_update(old_pwd, core);
-		free(old_pwd);
+		cd_empty(old_pwd, core);
 		return ;
 	}
-	free(core->direct);
-	core->direct = ft_strdup(cmd->args[1]);
-	if (access(core->direct, sizeof(char)) == 0)
-	{
-		if (chdir(core->direct) == -1)
-			core->exit_status = 1;
-		envi_update(old_pwd, core);
-	}
-	else
-		ft_printf("cd: %s: no such file or directory\n", core->direct);
-	free(old_pwd);
+	normal_cd(old_pwd, cmd, core);
 	return ;
 }
 
@@ -184,7 +198,6 @@ void	unset(t_cmdtable *cmd, t_data *core)
 	core->export_env = temp;
 }
 
-//To Do: Requires Struct From parser for completion 
 void	echo_cmd(t_cmdtable *cmd, t_data *core)
 {
 	int	i;
@@ -265,6 +278,8 @@ void	exit_com(t_data *core)
 			break ;
 		i++;	
 	}
+
+	//checks whether or not all the requirements are met
 	if (j != -1 && core->cmd->args[1] == NULL)
 	{
 		
@@ -277,6 +292,7 @@ void	exit_com(t_data *core)
 	else if (j == -1)
 		write(2, "exit: numeric arugment required\n", 33);
 	
+	//Frees everything and exits
 	i = 0;
 	while (core->env[i])
 		i++;
