@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 10:57:23 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/13 12:08:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,15 @@ char *expander_env(t_data *core, char *line)
 	char *before_var = NULL;
     int i = 0;
 	int j = 0;
-	core->exit_status = 1;
+	core->exit_status = 1; //in case of an error change the exit status
 
-    while (line[i]) {
-
+    while (line[i]) 
+	{
         if (line[i] == '$') 
 		{
-            if (i > 0) 
-			{
-                before_var = ft_substr(line, 0, i);
-                expanded_line = ft_strjoin(expanded_line, before_var);
-                free(before_var);
-            }
+            before_var = ft_substr(line, 0, i);
+            expanded_line = ft_strjoin(expanded_line, before_var);
+            free(before_var);
             var_start = &line[i + 1];
             j = 0;
             while (var_start[j] && (ft_isalnum(var_start[j]) || var_start[j] == '_'))
@@ -115,6 +112,4 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int *fd)
 		error_handler_fd(fd[1]);
 	}
 	close(tmp_fd[0]);
-	if (cmd->args[0] == NULL)
-		exit(1);
 }

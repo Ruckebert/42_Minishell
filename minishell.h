@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 10:09:16 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:37:22 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,9 @@ char	**unset_env(t_data *core, char **env, int i, char **argv);
 
 /*Builtins*/
 void	env(t_data *core);
+void	cd_oldpwd(char *old_pwd, t_data *core);
+void	cd_empty(char *old_pwd, t_data *core);
+void	normal_cd(char *old_pwd, t_cmdtable *cmd, t_data *core);
 void	cd_com(t_cmdtable *cmd, t_data *core);
 void	pwd(t_data *core);
 void	export(t_cmdtable *cmd, t_data *core);
@@ -146,8 +149,8 @@ void	ft_lstdelone(t_token *lst);
 //for testing
 void printlist_both(t_token *head);
 void printCharPointerArray(char **arr);
-void printlist_type(t_token *head);
-void printlist(t_token *head);
+void	printlist_type(t_token *head);
+void	printlist(t_token *head);
 void	free_token_list(t_token *head);
 void print_cmdtable(t_cmdtable *cmd);
 void free_cmdtable(t_cmdtable **head);

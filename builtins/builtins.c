@@ -6,75 +6,13 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 12:46:16 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:40:24 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 // All Builtins Manipulate the Environment that is why we have to build them seperately. :0 
-
-void	cd_oldpwd(char *old_pwd, t_data *core)
-{
-	int i = 0;
-	
-	while (core->env[i])
-	{
-		if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
-		{
-			free(core->direct);
-			core->direct = ft_strdup(core->env[i] + 7);
-			break ;
-		}
-		i++;
-	}
-	ft_printf("%s\n", core->direct);
-	if (chdir(core->direct) == -1)
-		core->exit_status = 1;
-	envi_update(old_pwd, core);
-	free(old_pwd);
-}
-
-void	cd_empty(char *old_pwd, t_data *core)
-{
-	int i;
-	i = 0;
-		
-	free(core->direct);
-	while (core->env[i])
-	{
-		if	(ft_strncmp(core->env[i], "HOME=", 5) == 0)
-		{
-			core->direct = ft_strdup(core->env[i] + 5);
-			if (!core->user)
-				return ;
-			break ;
-		}
-		i++;
-	}
-	if (chdir(core->direct) == -1)
-		core->exit_status = 1;
-	envi_update(old_pwd, core);
-	free(old_pwd);
-}
-
-void	normal_cd(char *old_pwd, t_cmdtable *cmd, t_data *core)
-{
-	free(core->direct);
-	core->direct = ft_strdup(cmd->args[1]);
-	if (access(core->direct, sizeof(char)) == 0)
-	{
-		if (chdir(core->direct) == -1)
-			core->exit_status = 1;
-		envi_update(old_pwd, core);
-	}
-	else
-	{
-		ft_printf("cd: %s: no such file or directory\n", core->direct);
-		core->exit_status = 1;
-	}
-	free(old_pwd);
-}
 
 void	cd_com(t_cmdtable *cmd, t_data *core)
 {
@@ -88,14 +26,14 @@ void	cd_com(t_cmdtable *cmd, t_data *core)
 		free(old_pwd);
 		return ;
 	}
-	if (cmd->args[1][0] == '-')
-	{
-		cd_oldpwd(old_pwd, core);
-		return ;
-}
 	if (cmd->args[1] == NULL)
 	{
 		cd_empty(old_pwd, core);
+		return ;
+	}
+	else if (cmd->args[1][0] == '-')
+	{
+		cd_oldpwd(old_pwd, core);
 		return ;
 	}
 	normal_cd(old_pwd, cmd, core);
@@ -226,6 +164,7 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 	exit(core->exit_status);
 }
 
+//BTW Do not look at this?
 //To Do: Exit command should free everything and then exit;
 //Need to free the cmd and everything in it
 void	exit_com(t_data *core)
@@ -238,8 +177,8 @@ void	exit_com(t_data *core)
 	//So if the number is positive and not over 256 then just print that number out
 	//If the number is positive and is over subtract it with 256
 	//For negative numbers subtract it with 256
-	//If the number is 256 the exit status is 0  
-	
+	//If the number is 256 the exit status is 0
+
 	while (core->cmd->args[i])
 	{
 		j = 0;
@@ -248,7 +187,9 @@ void	exit_com(t_data *core)
 			if (core->cmd->args[i][j] == '+' && j == 0)
 			{
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
-				{}
+				{
+					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
+				}
 				else
 				{
 					j = -1;
@@ -258,7 +199,7 @@ void	exit_com(t_data *core)
 			else if (core->cmd->args[i][j] == '-' && j == 0)
 			{
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
-				{}
+					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
 				else
 				{
 					j = -1;
@@ -266,7 +207,7 @@ void	exit_com(t_data *core)
 				}
 			}
 			else if (core->cmd->args[i][j] >= '0' && core->cmd->args[i][j] <= '9')
-			{}
+				core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
 			else
 			{
 				j = -1;
@@ -282,7 +223,16 @@ void	exit_com(t_data *core)
 	//checks whether or not all the requirements are met
 	if (j != -1 && core->cmd->args[1] == NULL)
 	{
-		
+	}
+	else if (j != -1 && core->cmd->args[2] == NULL)
+	{
+		//IDk why but it doesnt work for negative numbers
+		//printf("%d\n", ft_atoi(core->cmd->args[1]));
+		//printf("%d\n", 256 % ft_atoi(core->cmd->args[1]));
+		if (ft_atoi(core->cmd->args[1]) < 0)
+			core->exit_status = 256 - (ft_atoi(core->cmd->args[1]) * -1);
+		else
+			core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
 	}
 	else if (j != -1 && core->cmd->args[2] != NULL)
 	{
@@ -290,7 +240,10 @@ void	exit_com(t_data *core)
 		return ;
 	}
 	else if (j == -1)
+	{
 		write(2, "exit: numeric arugment required\n", 33);
+		core->exit_status = 2; //Change to the correct exit status
+	}
 	
 	//Frees everything and exits
 	i = 0;
@@ -305,5 +258,6 @@ void	exit_com(t_data *core)
 	if (core->cmd != NULL)
 		free_cmdtable(&core->cmd);
 	rl_clear_history();
+	printf("Exit Status: %d\n", core->exit_status);
 	exit(core->exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 11:16:43 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/13 12:05:01 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int	main(int argc, char *argv[], char **env)
 	core.export_env[0] = NULL;
 	if ( isatty(STDIN_FILENO) == 1 /*true*/) //The isatty is the reason why the tester doesnt work
 	{
-		//chdir(core.direct);
-		//pwd_update(&core);
 		while (status == -1)
 		{
 			core.line = readline("PeePeeShell$ > ");
@@ -44,7 +42,7 @@ int	main(int argc, char *argv[], char **env)
 				executor(core.cmd, &core);
 			}
 			free(core.line);
-			printf("Exit Status: %d\n", core.exit_status);
+			//printf("Exit Status: %d\n", core.exit_status);
 			if (status >= 0)
 				exit(core.exit_status);
 		}

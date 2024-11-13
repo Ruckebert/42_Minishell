@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 12:50:17 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:43:09 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,10 +195,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	t_var	vars;
 	pid_t 	second;
 	int		status = 0;
-	int 	i = 0;
-	
-	while (cmd->args[i])
-		i++;
+
 	if (cmd->has_pipe_after != 1)
 		no_pipe_exe(cmd, core, &vars);
 	else if (cmd->has_pipe_after == 1 && cmd->next->has_pipe_after != 1) //Singe Pipe
@@ -207,17 +204,14 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	{
 		second = fork();
 		if (second == -1)
-		{
-			pipe_error(fd);
-			return (1);
-		}
+			return (pipe_error(fd), 1);
 		if (second == 0)
 			multi_pipe(&vars, cmd, core, core->env);
 		else
 		{
 			waitpid(second, NULL, 0);
 			if (WIFEXITED(status))
-			core->exit_status = WEXITSTATUS(status);
+				core->exit_status = WEXITSTATUS(status);
 		}
 	}
 	return (0);
