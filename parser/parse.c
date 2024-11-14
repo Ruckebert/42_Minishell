@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/30 17:50:31 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:49:33 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,8 +180,8 @@ void expand_var(t_token *token, char **env)
 					substitute_node_word(curr, value);		
 					if (strchr(curr->word, ' ') != NULL)
 						split_to_token(curr);
-					if (curr->leading_space == 0 && curr->prev->prev)
-						fuse_node_word(curr->prev, value);
+				//	if (curr->leading_space == 0 && curr->prev->prev)
+				//		fuse_node_word(curr->prev, value);
 				}
 				else
 				{
@@ -208,7 +208,7 @@ char	*parse_var_name(t_token *curr)
 	start++;
 	if (*start != ' ')
 	{
-		while (start[len] != ' ' && start[len] != '\0')
+		while (start[len] != ' ' && start[len] != '\0' && start[len] != '\'')
 			len++;
 		res = malloc(len + 1);
 		ft_strlcpy(res, start, len + 1);
@@ -282,7 +282,7 @@ void expand_var_in_doublequote(t_token *token, char **env)
 			if (ft_strchr(curr->word, '$') != NULL)
 			{
 				var = parse_var_name(curr);
-				//parsearound_var(curr, env, var);
+				parsearound_var(curr, env, var);
 			}
 		}
 		curr = curr->next;
@@ -335,49 +335,56 @@ void	fuse_all_0space_nodes(t_token *token)
 	curr = token;
 	while(curr)
 	{
-		if ((curr->type == 4 || curr->type == 5) && curr->leading_space == 0)
+		if ((curr->type == 8 || curr->type == 4 || curr->type == 5) && curr->leading_space == 0 && curr->prev->type !=9999)
 		{
-			fuse_node_with_next(curr);
+			fuse_node_with_next(curr->prev);
 		}
 		curr = curr->next;
 	}
 }
 
-/*
-Gameplan:
-expand normal variables
+void	remove_empty_quotes(t_token *token)
+{
+	t_token	*curr;
 
+	curr = token;
+	while(curr)
+	{
+		if((curr->type == 5 || curr->type == 4) && ft_strlen(curr->word) == 2)
+		{
+			if (curr->leading_space == 1 && curr->next->type != 9999)
+				curr->next->leading_space = 1;
+			ft_lstdelone(curr);
+		}
+		curr = curr->next;
+	}
 
-
-remove singlequotes
-fuse all 0space
-
-
-*/
+}
 
 
 t_cmdtable  *parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
+	remove_empty_quotes(token);
 	expand_var(token, core->env);
-		printf("\033[0;31m1\033[0m\n");
-	printlist(token);
+//		printf("\033[0;31m 1 \033[0m\n");
+//	printlist(token);
 
 	expand_var_in_doublequote(token, core->env);
-		printf("\033[0;31m2\033[0m\n");
-	printlist(token);
+//		printf("\033[0;31m 2 \033[0m\n");
+//	printlist(token);
 
 	remove_singlequotes(token);
-		printf("\033[0;31m3\033[0m\n");
-	printlist(token);
+//		printf("\033[0;31m 3 \033[0m\n");
+//	printlist(token);
 
 	fuse_all_0space_nodes(token);
-		printf("\033[0;31m4\033[0m\n");
-	printlist(token);
+//		printf("\033[0;31m 4 \033[0m\n");
+//	printlist(token);
 
 	//print_cmdtable(cmd);
-	printf("\033[0;31mAFTER parse.c\033[0m\n");
-	printlist(token);
+//	printf("\033[0;31mAFTER parse.c\033[0m\n");
+//	printlist(token);
 	return (prep_nodes_for_exec(token));
 //	handle_singlequote(token);
 

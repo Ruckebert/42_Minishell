@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 15:26:20 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/14 13:18:38 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ void	path_finder(t_var *vars, char **envp, char **argv, int i)
 		execve(vars->full_comm, argv, envp);
 		free(vars->full_comm);
 	}
-	ft_printf("%s: command not found\n", argv[0]);
+	write(2,argv[0],ft_strlen(argv[0]));
+	write(2,": command not found\n",20);
+	//printf("%s: command not found\n", argv[0]);
 	//path_finder_error(argv);
 }
 
