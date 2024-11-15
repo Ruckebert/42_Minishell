@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/15 10:58:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/15 16:01:06 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,12 @@ int	cmd_count(t_cmdtable *cmd)
 	//printf("Total:%d\n", total);
 	return (total);
 }
-
 void	first_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 {
-	if (cmd->redir_type == 10)
-		here_doc(cmd, core, STDIN_FILENO);
 	if (cmd->redir_type != 0 && cmd->redir_type != 10)
 		redirctions(cmd, core, vars, &fd);
+	if (cmd->redir_type == 10)
+		here_doc_tempfile(cmd, core, STDIN_FILENO);
 	if (dup2(fd, STDOUT_FILENO) == -1)
 		error_handler_fd(fd);
 }
@@ -73,6 +72,8 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	int		j = 0;
 
 	int fd[cmds - 1][2];
+	int childids[cmds];
+
 	while (i < cmds - 1)
 	{
 		if (pipe(fd[i]) == -1)
@@ -106,6 +107,8 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 			else if (i == cmds - 1) 
 			{
 				close(fd[i - 1][1]);
+				if (current_cmd->redir_type == 10)
+					here_doc(current_cmd, core, fd[i - 1][0]);
 				last_pipe(vars, core, current_cmd, fd[i - 1][0]);
 			}
 			else 
@@ -116,10 +119,10 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 					error_handler_fd(fd[i - 1][0]);
 				if (dup2(fd[i][1], STDOUT_FILENO) == -1)
 					error_handler_fd(fd[i][1]);
+				if (current_cmd->redir_type == 10)
+					here_doc_tempfile(current_cmd, core, STDIN_FILENO);
 				if (current_cmd->redir_type != 0 && current_cmd->redir_type != 10)
 					redirctions(current_cmd, core, vars, &fd[i][0]);
-				//if (cmd->redir_type == 10)
-				//	here_doc(cmd, core, fd[i - 1][0]);
 				close(fd[i - 1][0]);
 				close(fd[i][1]);
 			}
@@ -130,12 +133,15 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 				path_finder(vars, core, envp, current_cmd->args, 0);
 			exit(0);
 		}
+		childids[i] = vars->childid;
 		current_cmd = current_cmd->next;
 		i++;
 	}
 	closing_cmds_parent(cmds, fd);
 	j = -1;
 	while (++j < cmds)
-		waitpid(vars->childid, &status, 0);
+	{
+		waitpid(childids[j], &status, 0);
+	}
 	exit(core->exit_status);
 }

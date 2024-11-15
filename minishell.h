@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/15 10:12:04 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:50:17 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
 void	file_append(t_cmdtable *cmd, t_var *vars, int *fd);
 void	here_doc(t_cmdtable *cmd, t_data *core, int fd);
+void	here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd);
 void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp);
 void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i);

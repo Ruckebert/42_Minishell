@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/15 10:12:26 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/15 16:00:09 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,58 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int fd)
 		error_handler_fd(fd);
 	}
 	close(tmp_fd[0]);
+}
+
+void	here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
+{
+	char *line;
+	char *expand_line;
+	char filename[30];
+	//char *filename = NULL;
+	int tmp_fd;
+	int dedrandom;
+
+	dedrandom = open("/dev/urandom", O_RDONLY);
+	if (dedrandom == -1)
+		error_handler_fd(dedrandom);
+	if (read(dedrandom, filename, sizeof(filename)) == -1)
+		error_handler_fd(dedrandom);
+	close(dedrandom);
+
+	
+	tmp_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (tmp_fd == -1)
+		error_handler_fd(fd);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+			break;
+		if (ft_strncmp(line, cmd->redir, ft_strlen(cmd->redir)) == 0 && 
+			ft_strlen(line) == ft_strlen(cmd->redir))
+		{
+			free(line);
+			break;
+		}
+		expand_line = expander_env(core, line);
+		if (expand_line)
+		{
+			write(tmp_fd, expand_line, strlen(expand_line));
+			free(expand_line);
+		}
+		else
+			write(tmp_fd, line, strlen(line));
+		write(tmp_fd, "\n", 1);
+		free(line);
+	}
+	close(tmp_fd);
+	tmp_fd = open(filename, O_RDONLY);
+	if (tmp_fd == -1 || dup2(tmp_fd, fd) == -1)
+	{
+		unlink(filename);
+		close(tmp_fd);
+		error_handler_fd(fd);
+	}
+	close(tmp_fd);
+	unlink(filename);
 }
