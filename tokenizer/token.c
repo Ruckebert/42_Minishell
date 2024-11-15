@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/29 15:00:03 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/14 12:57:05 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,11 @@ void	combine_with_equal(t_token	*token)
 				if(curr->next->next->leading_space == 0)
 				{
 					curr = curr->next;
+					if(curr->next->word[0] == '"' || curr->next->word[0] == '\'')
+					{
+						temp = curr->next->word;
+						ft_strlcpy(curr->next->word, &temp[1],ft_strlen(&temp[1]));
+					}
 					ft_lstdelone(curr->prev);
 					temp = res;
 					res = ft_strjoin(temp,curr->next->word);
@@ -139,6 +144,12 @@ void	combine_with_equal(t_token	*token)
 					curr->word = res;
 					ft_lstdelone(curr->next);
 					free(temp);
+				}
+				else
+				{
+					free(curr->word);
+					ft_lstdelone(curr->next);
+					curr->word = res;
 				}
 			}
 		}
@@ -194,7 +205,9 @@ t_token	*tokenize(t_data *core)
 
 	combine_double_redirect(token);
 	combine_with_equal(token);
-	//printlist(token);
+//	printf("\033[0;31mAFTER token.c\033[0m\n");
+
+//	printlist(token);
 	return(token);
 }
 

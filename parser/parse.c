@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/31 11:24:42 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:49:33 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,31 @@ void fuse_node_word(t_token *curr, char *new_word)
 	t_token *next_node;
 	t_token *discard;
 	char	*oldword;
-	
+	int		firstspace_len;
+	char	*res;
+
+	firstspace_len = 0;
+	res = NULL;
 	oldword = curr->word;
 	if (!curr || !curr->next) 
 	    return;
 	next_node = curr->next->next;
 	if (next_node)
 		next_node->prev = curr;
+	
 	discard = curr->next;
 	curr->next = next_node;
 	free(discard->word);
 	free(discard);
-	curr->word = ft_strjoin(oldword,new_word);
+	if (ft_strchr(new_word, ' ') != NULL)
+	{
+		res = ft_strchr(new_word, ' ');
+		firstspace_len = (res - new_word);
+		ft_strlcpy(res, new_word, firstspace_len + 1);
+		curr->word = ft_strjoin(oldword, res);
+	}	
+	else
+		curr->word = ft_strjoin(oldword,new_word);
 	free(oldword);
 }
 
@@ -105,6 +118,46 @@ void remove_next_token(t_token *current)
 	free(to_remove);
 }
 
+void remove_quotes(t_token *curr)
+{
+	char *temp;
+
+	temp = malloc(ft_strlen(curr->word) - 1);
+
+	ft_strlcpy(temp, &curr->word[1], ft_strlen(curr->word) - 1);
+	free(curr->word);
+	curr->word = temp;
+}
+
+void split_to_token(t_token *curr)
+{
+	t_token	*newtoken;
+	char	**arr;
+	int		i;
+	int		temp_leading_space;
+
+	temp_leading_space = 7777;
+	i = 0;
+	arr = ft_split(curr->word, ' ');
+
+	curr = curr->prev;
+	temp_leading_space = curr->next->leading_space;
+	ft_lstdelone(curr->next);
+	while(arr[i]!= NULL)
+	{	
+		newtoken = ft_lstnew(arr[i]);
+		ft_lstadd_next(&curr, newtoken);
+		newtoken->type = 0;
+		if (i == 0)
+			newtoken->leading_space = temp_leading_space;
+		else
+			newtoken->leading_space = 1;
+		i++;
+		curr = curr->next;
+	}
+	free (arr);
+}
+
 void expand_var(t_token *token, char **env)
 {
 	char	*value;
@@ -124,9 +177,11 @@ void expand_var(t_token *token, char **env)
 				if (is_expandable(curr->next->word, env))
 				{
 					value = get_env_var(curr->next->word, env);
-					substitute_node_word(curr, value);
-					if (curr->leading_space == 0)
-						fuse_node_word(curr->prev, value);
+					substitute_node_word(curr, value);		
+					if (strchr(curr->word, ' ') != NULL)
+						split_to_token(curr);
+				//	if (curr->leading_space == 0 && curr->prev->prev)
+				//		fuse_node_word(curr->prev, value);
 				}
 				else
 				{
@@ -140,16 +195,7 @@ void expand_var(t_token *token, char **env)
 	}
 }
 
-void remove_quotes(t_token *curr)
-{
-	char *temp;
 
-	temp = malloc(ft_strlen(curr->word) - 1);
-
-	ft_strlcpy(temp, &curr->word[1], ft_strlen(curr->word) - 1);
-	free(curr->word);
-	curr->word = temp;
-}
 
 char	*parse_var_name(t_token *curr)
 {
@@ -162,7 +208,7 @@ char	*parse_var_name(t_token *curr)
 	start++;
 	if (*start != ' ')
 	{
-		while (start[len] != ' ' && start[len] != '\0')
+		while (start[len] != ' ' && start[len] != '\0' && start[len] != '\'')
 			len++;
 		res = malloc(len + 1);
 		ft_strlcpy(res, start, len + 1);
@@ -174,10 +220,10 @@ char	*parse_var_name(t_token *curr)
 
 void parsearound_var(t_token *curr, char **env, char *var)
 {
-	int	temp;
+	int		temp;
 	char	*beforevar;
 	char	*aftervar;
-	int	i;
+	int		i;
 	char	*res;
 	char	*varvalue;
 
@@ -289,31 +335,59 @@ void	fuse_all_0space_nodes(t_token *token)
 	curr = token;
 	while(curr)
 	{
-		if ((curr->type == 4 || curr->type == 5) && curr->leading_space == 0)
+		if ((curr->type == 8 || curr->type == 4 || curr->type == 5) && curr->leading_space == 0 && curr->prev->type !=9999)
 		{
-			fuse_node_with_next(curr);
+			fuse_node_with_next(curr->prev);
 		}
 		curr = curr->next;
 	}
 }
 
+void	remove_empty_quotes(t_token *token)
+{
+	t_token	*curr;
+
+	curr = token;
+	while(curr)
+	{
+		if((curr->type == 5 || curr->type == 4) && ft_strlen(curr->word) == 2)
+		{
+			if (curr->leading_space == 1 && curr->next->type != 9999)
+				curr->next->leading_space = 1;
+			ft_lstdelone(curr);
+		}
+		curr = curr->next;
+	}
+
+}
 
 
 t_cmdtable  *parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
+	remove_empty_quotes(token);
 	expand_var(token, core->env);
+//		printf("\033[0;31m 1 \033[0m\n");
 //	printlist(token);
+
 	expand_var_in_doublequote(token, core->env);
+//		printf("\033[0;31m 2 \033[0m\n");
 //	printlist(token);
+
 	remove_singlequotes(token);
+//		printf("\033[0;31m 3 \033[0m\n");
 //	printlist(token);
+
 	fuse_all_0space_nodes(token);
+//		printf("\033[0;31m 4 \033[0m\n");
 //	printlist(token);
+
 	//print_cmdtable(cmd);
+//	printf("\033[0;31mAFTER parse.c\033[0m\n");
+//	printlist(token);
 	return (prep_nodes_for_exec(token));
 //	handle_singlequote(token);
-//	printlist(token);
+
 //	printlist(token);
 //	handle_singlequote();
 	

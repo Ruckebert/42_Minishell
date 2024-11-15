@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
 /*   Updated: 2024/11/15 10:12:04 by aruckenb         ###   ########.fr       */
@@ -131,6 +131,7 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i);
 //all parser functions!
 t_cmdtable *parse(t_data *core, t_token * token);
 t_cmdtable *prep_nodes_for_exec(t_token *token);
+void	ft_lstadd_next(t_token **lst, t_token *new);
 
 //all tokenizer functions!
 t_token *tokenize(t_data *core);

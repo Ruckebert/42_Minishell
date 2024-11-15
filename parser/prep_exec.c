@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/15 09:46:09 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:49:29 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int get_strnum(t_token *curr)
 	int i;
 
 	i = 0;
-	while((!(is_redir(curr)) && strncmp(curr->word,"|",1) != 0 && curr->type != 3) && !is_END(curr))
+	while((!(is_redir(curr)) && curr->type != 3) && !is_END(curr))
 	{
 		i++;
 		curr = curr->next;
@@ -148,7 +148,7 @@ void find_builtins(t_cmdtable *cmd)
 	curr = cmd;
 	while(curr != NULL)
 	{
-		if (curr->args && curr->args[0] != NULL)
+		if (curr->args && curr->args[0] != NULL) //checkthis
 		{
 		if (!ft_strcmp(curr->args[0], "echo"))
 			curr->isbuiltin = 1;
@@ -196,12 +196,14 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 		}
 		else
 			curr = get_args(newcmd,curr);
-
 	}
-	//print_cmdtable(cmd);
-	find_builtins(cmd);
-	free_token_list(token);
 	
+	find_builtins(cmd);
+//	printf("\033[0;31mbefore free in prep_exec.c\033[0m\n");
+//	printlist(token);
+	free_token_list(token);
+//	printf("\033[0;31mAFTER prep_exec.c\033[0m\n");
+//	print_cmdtable(cmd);
 	return (cmd);
 //	free_cmdtable(&cmd);
 }
