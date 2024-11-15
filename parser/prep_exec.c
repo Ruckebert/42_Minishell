@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/29 14:39:31 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/15 09:46:09 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void find_builtins(t_cmdtable *cmd)
 	curr = cmd;
 	while(curr != NULL)
 	{
-		if (curr->args[0] != NULL)
+		if (curr->args && curr->args[0] != NULL)
 		{
 		if (!ft_strcmp(curr->args[0], "echo"))
 			curr->isbuiltin = 1;

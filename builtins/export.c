@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/29 15:48:52 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/11 10:53:27 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,27 @@ void	print_exo_env(t_data *core)
 {
 	int i;
 	int j;
+	int has_equal;
 	
 	i = 0;
 	while (core->export_env[i])
 	{
 		ft_printf("declare -x ");
 		j = 0;
+		has_equal = 0;
 		while (core->export_env[i][j])
 		{
 			if (core->export_env[i][j] == '=')
 			{
-				ft_printf("%c", core->export_env[i][j]);
-				ft_printf("\"");
+				ft_printf("%c\"", core->export_env[i][j]);
+				has_equal = 1;
 			}
 			else
 				ft_printf("%c", core->export_env[i][j]);
 			j++;
 		}
-		ft_printf("\"");
+		if (has_equal == 1)
+			ft_printf("\"");
 		ft_printf("\n");
 		i++;
 	}
@@ -92,29 +95,34 @@ int	check_dup_exo(char **env, char **argv, char **temp, int j)
 	}
 	return (found);
 }
+
+void	reverse_free(int i, char **temp)
+{
+	while(i >= 0)
+	{
+		free(temp[i]);
+		i--;
+	}
+	free(temp);
+	exit(2);
+}
+
 char	**new_exo_env(char **env, char **argv, int argc, int count)
 {
 	int j;
 	int i;
 	int found;
 	char **temp;
+	
 	temp = malloc((argc + count) * sizeof(char *));
 	if (!temp)
 		exit(1);
-
 	i = 0;
 	while (env[i])
 	{
 		temp[i] = ft_strdup(env[i]);
 		if (!temp[i])
-		{
-			while(i >= 0)
-			{
-				free(temp[i]);
-				i--;
-			}
-			return (free(temp), NULL);
-		}
+			reverse_free(i, temp);
 		i++;
 	}
 	j = 1;
@@ -125,16 +133,8 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 		if (!found)
 		{
 			temp[i] = ft_strdup(argv[j]);
-			//ft_printf("%s\n", temp[i]);
 			if (!temp[i])
-			{
-				while(i >= 0)
-				{
-					free(temp[i]);
-					i--;
-				}
-				return (free(temp), NULL);
-			}
+				reverse_free(i, temp);
 			i++;
 		}
 		j++;

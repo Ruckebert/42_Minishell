@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:31:08 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/28 10:24:09 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:57:01 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	**unset_exo(t_data *core, char **env, int i, char **argv)
 	char **temp;
 	int found = 0;
 	
-	temp = malloc(((count - i) + 1) * sizeof(char *));
+	temp = malloc(((count - i) + 2) * sizeof(char *));
 	if (!temp)
 		exit(write(1, "Malloc Error", 13));
 	i = 0;
@@ -54,6 +54,7 @@ char	**unset_exo(t_data *core, char **env, int i, char **argv)
 		if (!found)
 		{
 			temp[k] = ft_strdup(env[i]);
+			free(env[i]);
 			k++;
 		}	
 		i++;
@@ -68,7 +69,7 @@ char	**unset_env(t_data *core, char **env, int i, char **argv)
 	int found = 0;
 	char **temp;
 
-	temp = malloc(((environment_export(core) - i) +  1) * sizeof(char *));
+	temp = malloc(((environment_export(core) - i) + 2) * sizeof(char *));
 	if (!temp)
 		exit(1);
 
@@ -81,6 +82,7 @@ char	**unset_env(t_data *core, char **env, int i, char **argv)
 		if (!found)
 		{
 			temp[new_env] = ft_strdup(env[i]);
+			free(env[i]);
 			new_env++;
 		}
 		i++;
