@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/13 14:43:09 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/14 10:46:04 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 {
 	close(fd[0]);
-	if (cmd->redir_type != 0)
+	if (cmd->redir_type == 10)
+		here_doc(cmd, core, STDIN_FILENO);
+	if (cmd->redir_type != 0 && cmd->redir_type != 10)
 		redirctions(cmd, core, vars, fd);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
 		error_handler_fd(fd[1]);
@@ -83,10 +85,12 @@ void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 {
 	close(fd[1]);
+	if (cmd->redir_type == 10)
+		here_doc(cmd, core, fd[0]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 		error_handler_fd(fd[0]);
 	close(fd[0]);
-	if (cmd->redir_type != 0)
+	if (cmd->redir_type != 0 && cmd->redir_type != 10)
 		redirctions(cmd, core, vars, fd);
 	if (cmd->isbuiltin == 1)
 		echo_cmd(cmd, core);

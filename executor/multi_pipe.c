@@ -6,13 +6,13 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/13 12:04:32 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:15:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	closing_cmds(int cmds, int fd[cmds - 1][2])
+void	closing_cmds_parent(int cmds, int fd[cmds - 1][2])
 {
 	int j = 0;
 	while (j < cmds - 1)
@@ -45,6 +45,26 @@ int	cmd_count(t_cmdtable *cmd)
 	return (total);
 }
 
+void	first_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
+{
+	if (cmd->redir_type == 10)
+		here_doc(cmd, core, STDIN_FILENO);
+	if (cmd->redir_type != 0 && cmd->redir_type != 10)
+		redirctions(cmd, core, vars, &fd);
+	if (dup2(fd, STDOUT_FILENO) == -1)
+		error_handler_fd(fd);
+}
+
+void	last_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
+{
+	if (cmd->redir_type == 10)
+		here_doc(cmd, core, fd);
+	if (dup2(fd, STDIN_FILENO) == -1)
+		error_handler_fd(fd);
+	if (cmd->redir_type != 0 && cmd->redir_type != 10)
+		redirctions(cmd, core, vars, NULL);
+}
+
 void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 {
 	int		cmds = cmd_count(cmd);
@@ -53,7 +73,6 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	int		j = 0;
 
 	int fd[cmds - 1][2];
-
 	while (i < cmds - 1)
 	{
 		if (pipe(fd[i]) == -1)
@@ -79,27 +98,32 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 			error_handler();
 		if (vars->childid == 0)
 		{
-			if (i == 0)
+			if (i == 0) 
 			{
-				if (dup2(fd[i][1], STDOUT_FILENO) == -1)
-					error_handler_fd(fd[i][1]);
+				close(fd[i][0]);
+				first_pipe(vars, core, current_cmd, fd[i][1]);
 			}
-			else if (i == cmds - 1)
+			else if (i == cmds - 1) 
 			{
+				close(fd[i - 1][1]);
+				last_pipe(vars, core, current_cmd, fd[i - 1][0]);
+			}
+			else 
+			{
+				close(fd[i - 1][1]);
+				close(fd[i][0]);
 				if (dup2(fd[i - 1][0], STDIN_FILENO) == -1)
 					error_handler_fd(fd[i - 1][0]);
-			}
-			else
-			{
-				if (dup2(fd[i - 1][0], STDIN_FILENO) == -1)
-					error_handler_fd(fd[i - 1][0]);
 				if (dup2(fd[i][1], STDOUT_FILENO) == -1)
 					error_handler_fd(fd[i][1]);
+				if (cmd->redir_type == 10)
+					here_doc(cmd, core, STDIN_FILENO);
+				if (current_cmd->redir_type != 0 && current_cmd->redir_type != 10)
+					redirctions(current_cmd, core, vars, &fd[i][0]);
+				close(fd[i - 1][0]);
+				close(fd[i][1]);
 			}
-			if (current_cmd->redir != 0)
-				redirctions(cmd, core, vars, *fd);
-			
-			closing_cmds(cmds, fd);
+			closing_cmds_parent(cmds, fd);
 			if (current_cmd->isbuiltin == 1)
 				echo_cmd(current_cmd, core);
 			else
@@ -109,7 +133,7 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 		current_cmd = current_cmd->next;
 		i++;
 	}
-	closing_cmds(cmds, fd);
+	closing_cmds_parent(cmds, fd);
 	j = -1;
 	while (++j < cmds)
 		waitpid(vars->childid, &status, 0);

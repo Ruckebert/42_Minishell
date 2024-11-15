@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/13 12:08:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/14 10:58:08 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char *expander_env(t_data *core, char *line)
 }
 
 
-void	here_doc(t_cmdtable *cmd, t_data *core, int *fd)
+void	here_doc(t_cmdtable *cmd, t_data *core, int fd)
 {
 	char *line;
 	char *expand_line;
@@ -82,7 +82,6 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int *fd)
 	
 	if (pipe(tmp_fd) == -1)
 		error_handler_fd(tmp_fd[1]);
-	//if the cmd->redir has no quotes it should not expand so i dont know martin handles that in the parser
 	while (1)
 	{
 		line = readline("> ");
@@ -106,10 +105,10 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int *fd)
 		free(line);
 	}
 	close(tmp_fd[1]);
-	if (dup2(tmp_fd[0], STDIN_FILENO) == -1)
+	if (dup2(tmp_fd[0], fd) == -1)
 	{
 		close(tmp_fd[0]);
-		error_handler_fd(fd[1]);
+		error_handler_fd(fd);
 	}
 	close(tmp_fd[0]);
 }

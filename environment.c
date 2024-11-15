@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 11:20:52 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:10:30 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,28 @@ char	**shellvl(int i, char **env, char **new_env)
 	return (new_env);
 }
 
+void	core_direct_user(t_data *core, char **new_env, char **env, int i)
+{
+	if (ft_strncmp(new_env[i], "USER=", 5) == 0)
+	{
+		core->user = ft_strdup(env[i] + 5);
+		if (!core->user)
+		{
+			free_environment(new_env, i);
+			return ;
+		}
+	}
+	if (ft_strncmp(new_env[i], "HOME=", 5) == 0)
+	{
+		core->direct = ft_strdup(env[i] + 5);
+		if (!core->user)
+		{
+			free_environment(new_env, i);
+			return ;
+		}
+	}
+}
+
 char	**environment_copy(char **env, char **new_env, t_data *core, int count)
 {
 	int	i;
@@ -59,18 +81,7 @@ char	**environment_copy(char **env, char **new_env, t_data *core, int count)
 			if (!new_env[i])
 				return (free_environment(new_env, i));
 		}
-		if (ft_strncmp(new_env[i], "USER=", 5) == 0)
-		{
-			core->user = ft_strdup(env[i] + 5);
-			if (!core->user)
-				return (free_environment(new_env, i));
-		}
-		if (ft_strncmp(new_env[i], "HOME=", 5) == 0)
-		{
-			core->direct = ft_strdup(env[i] + 5);
-			if (!core->user)
-				return (free_environment(new_env, i));
-		}
+		core_direct_user(core, new_env, env, i);
 		i++;
 	}
 	new_env[i] = NULL;
