@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/14 10:58:08 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/15 10:12:26 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ char *expander_env(t_data *core, char *line)
 	}
     return (expanded_line);
 }
-
 
 void	here_doc(t_cmdtable *cmd, t_data *core, int fd)
 {

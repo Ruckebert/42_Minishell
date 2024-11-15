@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/14 16:15:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/15 10:07:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 				if (dup2(fd[i][1], STDOUT_FILENO) == -1)
 					error_handler_fd(fd[i][1]);
 				if (cmd->redir_type == 10)
-					here_doc(cmd, core, STDIN_FILENO);
+					here_doc(cmd, core, *fd[i]);
 				if (current_cmd->redir_type != 0 && current_cmd->redir_type != 10)
 					redirctions(current_cmd, core, vars, &fd[i][0]);
 				close(fd[i - 1][0]);
