@@ -148,7 +148,7 @@ void find_builtins(t_cmdtable *cmd)
 	curr = cmd;
 	while(curr != NULL)
 	{
-		if (curr->args[0] != NULL)
+		if (curr->args && curr->args[0] != NULL) //checkthis
 		{
 		if (!ft_strcmp(curr->args[0], "echo"))
 			curr->isbuiltin = 1;

@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/14 16:31:12 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:42:15 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int main(int argc, char *argv[], char **env)
 	int status = -1;
 
 	token = NULL;
+	core.exit_status = 0;
 	if (argc == -1)
 		exit(2);
 	core.env = copy_env(env, &core);
@@ -48,13 +49,11 @@ int main(int argc, char *argv[], char **env)
 	(void)argc;
 	(void)argv;
 	core.export_env[0] = NULL;
-	if (/*isatty(STDIN_FILENO) == */1)
+	if (isatty(STDIN_FILENO) == 1 /*true*/) //The isatty is the reason why the tester doesnt work
 	{
-		chdir(core.direct);
-		pwd_update(&core);
 		while (status == -1)
 		{
-			core.line = readline("");
+			core.line = readline("PeePeeShell$ > ");
 			if (core.line == NULL)
 			{
 				if (isatty(STDIN_FILENO))
@@ -64,13 +63,14 @@ int main(int argc, char *argv[], char **env)
 			add_history(core.line);
     	  	token = tokenize(&core);
 			if(token)
-			{	
+			{
 				core.cmd = parse(&core, token);
 				executor(core.cmd, &core);
 			}
 			free(core.line);
-			if (status != -1)
-				break;
+			//printf("Exit Status: %d\n", core.exit_status);
+			if (status >= 0)
+				exit(core.exit_status);
 		}
 	}
 	return (0);
