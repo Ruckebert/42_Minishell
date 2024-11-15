@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/14 12:57:05 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:18:11 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	combine_with_equal(t_token	*token)
 	curr = token;
 	while (curr && curr->next && curr->next->next)
 	{
-		if (!ft_strcmp(curr->next->word, "="))
+		if (!ft_strcmp(curr->next->word, "=") && curr->type != 9999)
 		{	
 			if(curr->next->leading_space == 0)
 			{
@@ -205,9 +205,10 @@ t_token	*tokenize(t_data *core)
 
 	combine_double_redirect(token);
 	combine_with_equal(token);
-//	printf("\033[0;31mAFTER token.c\033[0m\n");
 
+//	printf("\033[0;31mAFTER token.c\033[0m\n");
 //	printlist(token);
+	
 	return(token);
 }
 

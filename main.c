@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/15 10:46:21 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:38:48 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ int g_state = -1;
 void sig_handleINT(int signal)
 {
 	if(signal == SIGINT)
+	{
+		write(1, "PeePeeShell$ > ", 15);
 		write(1,"\n",1);
-
+	}
 }
 
 int main(int argc, char *argv[], char **env)
