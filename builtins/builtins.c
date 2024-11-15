@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/14 09:36:01 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/15 10:35:16 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,6 +258,6 @@ void	exit_com(t_data *core)
 	if (core->cmd != NULL)
 		free_cmdtable(&core->cmd);
 	rl_clear_history();
-	printf("Exit Status: %d\n", core->exit_status);
+	//printf("Exit Status: %d\n", core->exit_status);
 	exit(core->exit_status);
 }
