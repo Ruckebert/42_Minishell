@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/14 13:18:38 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:11:31 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,17 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 	write(2,": command not found\n",20);
 	//ft_printf("%s: command not found\n", argv[0]);
 	free_split(vars->store); 
+	core->exit_status = 127;
+	exit(core->exit_status);
+}
+
+
+void	absolute_path_finder(t_data *core, char **envp, char **argv)
+{
+	if (access(argv[0], R_OK) == 0)
+		execve(argv[0], argv, envp);
+	write(2,argv[0],ft_strlen(argv[0]));
+	write(2,": command not found\n",20);
 	core->exit_status = 127;
 	exit(core->exit_status);
 }
@@ -132,6 +143,8 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 				redirctions(cmd, core, vars, fd);
 			if (cmd->isbuiltin == 1)
 				echo_cmd(cmd, core);
+			else if (cmd->args[0] && ft_strchr(cmd->args[0], '/'))
+				absolute_path_finder(core, core->env, cmd->args);
 			else
 				path_finder(vars, core, core->env, cmd->args, 0);
 		}
