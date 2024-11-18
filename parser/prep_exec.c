@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/14 14:49:29 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:58:56 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 //	printlist(token);
 	free_token_list(token);
 //	printf("\033[0;31mAFTER prep_exec.c\033[0m\n");
-//	print_cmdtable(cmd);
+	//print_cmdtable(cmd);
 	return (cmd);
 //	free_cmdtable(&cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/15 16:01:06 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:06:28 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,12 @@ void	first_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 {
 	if (cmd->redir_type != 0 && cmd->redir_type != 10)
 		redirctions(cmd, core, vars, &fd);
-	if (cmd->redir_type == 10)
-		here_doc_tempfile(cmd, core, STDIN_FILENO);
 	if (dup2(fd, STDOUT_FILENO) == -1)
 		error_handler_fd(fd);
 }
 
 void	last_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 {
-	if (cmd->redir_type == 10)
-		here_doc(cmd, core, fd);
 	if (dup2(fd, STDIN_FILENO) == -1)
 		error_handler_fd(fd);
 	if (cmd->redir_type != 0 && cmd->redir_type != 10)
@@ -70,14 +66,35 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	int		status = 0;
 	int		i = 0;
 	int		j = 0;
-
 	int fd[cmds - 1][2];
 	int childids[cmds];
-
+	t_cmdtable *current_cmd = cmd;
+	t_cmdtable *temp = current_cmd;
+	
+	while (current_cmd)
+	{
+		if (current_cmd->redir_type == 10)
+		{
+			if (current_cmd->args[0] == NULL)
+				here_doc_tempfile(current_cmd, core, STDIN_FILENO);
+			else
+			{
+				i = 0;
+				while(current_cmd->args[i])
+					i++;
+				current_cmd->args[i] = ft_strdup(here_doc_tempfile(current_cmd, core, STDIN_FILENO));
+				current_cmd->args[i + 1]  = NULL;
+			}
+		}
+		current_cmd = current_cmd->next;
+	}
+	current_cmd = temp;
+	i = 0;
 	while (i < cmds - 1)
 	{
 		if (pipe(fd[i]) == -1)
 		{
+			write(1, "ERROR\n", 7);
 			while (j < i)
 			{
 				close(fd[j][0]);
@@ -90,8 +107,7 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	}
 
 	i = 0;
-	t_cmdtable *current_cmd = cmd;
-
+	
 	while (current_cmd)
 	{
 		vars->childid = fork();
@@ -103,13 +119,13 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 			{
 				close(fd[i][0]);
 				first_pipe(vars, core, current_cmd, fd[i][1]);
+				//close(fd[i][1]);			
 			}
 			else if (i == cmds - 1) 
 			{
 				close(fd[i - 1][1]);
-				if (current_cmd->redir_type == 10)
-					here_doc(current_cmd, core, fd[i - 1][0]);
 				last_pipe(vars, core, current_cmd, fd[i - 1][0]);
+				//close(fd[i - 1][0]);
 			}
 			else 
 			{
@@ -119,8 +135,6 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 					error_handler_fd(fd[i - 1][0]);
 				if (dup2(fd[i][1], STDOUT_FILENO) == -1)
 					error_handler_fd(fd[i][1]);
-				if (current_cmd->redir_type == 10)
-					here_doc_tempfile(current_cmd, core, STDIN_FILENO);
 				if (current_cmd->redir_type != 0 && current_cmd->redir_type != 10)
 					redirctions(current_cmd, core, vars, &fd[i][0]);
 				close(fd[i - 1][0]);
