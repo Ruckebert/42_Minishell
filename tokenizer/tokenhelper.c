@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/16 15:51:08 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:04:40 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	searchsep(char *str)
 	int i;
 
 	i = 0;
-	while(!(issep(&str[i])) && str[i] != '\0' && str[i] != ' ')
+	while(!(issep(&str[i])) && str[i] != '\0' && str[i] != ' ' && str[i] != '\t')
 	{
 		if(isquote(&str[i]))
 			return(i);
@@ -57,7 +57,7 @@ int	searchsep(char *str)
 
 int	is_myspace(char *c)
 {
-	if(*c == ' ')
+	if(*c == ' ' || *c == '\t')
 		return (1);
 	return (0);
 }

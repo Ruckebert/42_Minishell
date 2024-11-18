@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/15 17:35:32 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:06:00 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,9 +185,10 @@ void expand_var(t_token *token, char **env, t_data *core)
 				}
 				else
 				{
-					curr = curr->prev;
 					remove_next_token(curr);
-					remove_next_token(curr);
+					free(curr->word);
+					curr->word = malloc (1);
+					curr->word[0] = '\0';
 				}
 			}
 		}
@@ -359,11 +360,11 @@ void	fuse_all_0space_nodes(t_token *token)
 	curr = token;
 	while(curr)
 	{
-		if ((curr->type == 8 || curr->type == 4 || curr->type == 5 || curr->type == 7) && curr->leading_space == 0 && curr->prev->type !=9999)
+		if ((curr->type == 8 || curr->type == 4 || curr->type == 5 || curr->type == 7 || curr->type == 9) && curr->leading_space == 0 && curr->prev->type !=9999)
 		{
 			fuse_node_with_next(curr->prev);
 		}
-		if ((curr->type == 8 || curr->type == 4 || curr->type == 5 || curr->type == 7) && curr->next->type !=9999 && curr->next->leading_space == 0)
+		if ((curr->type == 8 || curr->type == 4 || curr->type == 5 || curr->type == 7 || curr->type == 9) && curr->next->type !=9999 && curr->next->leading_space == 0)
 		{
 			fuse_node_with_next(curr);
 			curr = curr->prev;
@@ -381,10 +382,13 @@ void	remove_empty_quotes(t_token *token)
 	{
 		if((curr->type == 5 || curr->type == 4) && ft_strlen(curr->word) == 2)
 		{
-			if (curr->leading_space == 1 && curr->next->type != 9999)
-				curr->next->leading_space = 1;
+			/*if (curr->leading_space == 1 && curr->next->type != 9999)
+				curr->leading_space = 1;
+			else
+				curr->leading_space = 0;*/
 			free(curr->word);
 			curr->word = strdup("");
+			curr->type = 9;
 		}
 		curr = curr->next;
 	}
@@ -395,21 +399,28 @@ void	remove_empty_quotes(t_token *token)
 t_cmdtable  *parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
-	remove_empty_quotes(token);
-	expand_var(token, core->env, core);
+
 //		printf("\033[0;31m 1 \033[0m\n");
 //	printlist(token);
 
-	expand_var_in_doublequote(token, core->env, core);
+	remove_empty_quotes(token);
 //		printf("\033[0;31m 2 \033[0m\n");
 //	printlist(token);
 
-	remove_singlequotes(token);
+	expand_var(token, core->env, core);
 //		printf("\033[0;31m 3 \033[0m\n");
 //	printlist(token);
 
-	fuse_all_0space_nodes(token);
+	expand_var_in_doublequote(token, core->env, core);
 //		printf("\033[0;31m 4 \033[0m\n");
+//	printlist(token);
+
+	remove_singlequotes(token);
+//		printf("\033[0;31m 5 \033[0m\n");
+//	printlist(token);
+
+	fuse_all_0space_nodes(token);
+//		printf("\033[0;31m 6 \033[0m\n");
 //	printlist(token);
 
 	//print_cmdtable(cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/15 10:35:16 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:31:28 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 	
 	if (cmd->args[i] == NULL)
 		no = 0;
-	else if (ft_strcmp(cmd->args[i], "-n") == 0)
+	else if (strcmp(cmd->args[i], "-n") == 0)
 	{
 		no = 1;
 		i++;
