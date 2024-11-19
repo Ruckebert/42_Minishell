@@ -147,7 +147,7 @@ int	searchsep(char *str);
 t_token	*ft_lstnew(char *word);
 t_token	*ft_lstlast(t_token *lst);
 void	ft_lstadd_back(t_token **lst, t_token *new);
-
+int is_END(t_token *curr);
 void	ft_lstdelone(t_token *lst);
 //for testing
 void printlist_both(t_token *head);

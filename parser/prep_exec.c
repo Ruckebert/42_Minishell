@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/19 12:45:38 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:56:05 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int is_redir(t_token	*token)
 
 int is_END(t_token *curr)
 {
-	if((strncmp(curr->word, "END", 3) == 0 && curr->type == 9999)) 
+	if(strncmp(curr->word, "END", 3) == 0 && curr->type == 9999) 
 		return(1);
 	return (0);
 }
@@ -127,17 +127,10 @@ t_token *get_args(t_cmdtable *cmd, t_token *token)
 
 t_token *add_redir(t_cmdtable *cmd,t_token *curr)
 {
-	if (curr->next->type != 0)
-	{
-		ft_printf("no redir name after redir symbol");
-		exit(7);
-	}
-	else
-	{
-		cmd->redir_type = curr->type;
-		cmd->redir = curr->next->word;
-		curr = curr->next->next;
-	}
+
+	cmd->redir_type = curr->type;
+	cmd->redir = curr->next->word;
+	curr = curr->next->next;
 	return (curr);
 }
 
