@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/15 10:12:26 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:06:02 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,64 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int fd)
 		error_handler_fd(fd);
 	}
 	close(tmp_fd[0]);
+}
+
+char *ft_nbr_pointhex(intptr_t num)
+{
+	int					store;
+	unsigned long		nb;
+	int					count;
+	char				*character;
+
+	character = ft_calloc(21, sizeof(char *));
+	nb = num;
+	count = 0;
+	while (nb > 0)
+	{
+		store = nb % 16;
+		if (store < 10)
+			character[count++] = 48 + store;
+		else
+			character[count++] = 87 + store;
+		nb = nb / 16;
+	}
+	character[count] = '\0';
+	return (character);
+}
+
+char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
+{
+	char *line;
+	char *expand_line;
+	char *filename;
+	int tmp_fd;
+
+	filename = ft_nbr_pointhex((intptr_t)cmd->redir);
+	tmp_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (tmp_fd == -1)
+		error_handler_fd(fd);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+			break;
+		if (ft_strncmp(line, cmd->redir, ft_strlen(cmd->redir)) == 0 && 
+			ft_strlen(line) == ft_strlen(cmd->redir))
+		{
+			free(line);
+			break;
+		}
+		expand_line = expander_env(core, line);
+		if (expand_line)
+		{
+			write(tmp_fd, expand_line, strlen(expand_line));
+			free(expand_line);
+		}
+		else
+			write(tmp_fd, line, strlen(line));
+		write(tmp_fd, "\n", 1);
+		free(line);
+	}
+	close(tmp_fd);
+	return (filename);
 }

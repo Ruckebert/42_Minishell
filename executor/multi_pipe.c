@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/15 10:58:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/19 12:32:42 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,8 @@ int	cmd_count(t_cmdtable *cmd)
 	//printf("Total:%d\n", total);
 	return (total);
 }
-
 void	first_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 {
-	if (cmd->redir_type == 10)
-		here_doc(cmd, core, STDIN_FILENO);
 	if (cmd->redir_type != 0 && cmd->redir_type != 10)
 		redirctions(cmd, core, vars, &fd);
 	if (dup2(fd, STDOUT_FILENO) == -1)
@@ -57,8 +54,6 @@ void	first_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 
 void	last_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 {
-	if (cmd->redir_type == 10)
-		here_doc(cmd, core, fd);
 	if (dup2(fd, STDIN_FILENO) == -1)
 		error_handler_fd(fd);
 	if (cmd->redir_type != 0 && cmd->redir_type != 10)
@@ -71,12 +66,44 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	int		status = 0;
 	int		i = 0;
 	int		j = 0;
-
 	int fd[cmds - 1][2];
+	int childids[cmds];
+	
+	t_cmdtable *current_cmd = cmd;
+	t_cmdtable *temp = current_cmd;
+	
+	//Here_doc file creation
+	while (current_cmd)
+	{
+		if (current_cmd->redir_type == 10)
+		{
+			if (current_cmd->args == NULL)
+			{
+				vars->cmd = ft_calloc(cmds, sizeof(char *));
+				vars->cmd[j] = here_doc_tempfile(current_cmd, core, STDIN_FILENO);
+				j++;
+			}
+			else
+			{
+				i = 0;
+				while(current_cmd->args[i])
+					i++;
+				current_cmd->args[i] = ft_strdup(here_doc_tempfile(current_cmd, core, STDIN_FILENO));
+				current_cmd->args[i + 1]  = NULL;
+			}
+		}
+		current_cmd = current_cmd->next;
+	}
+	current_cmd = temp;
+	
+	//Piping process
+	i = 0;
+	j = 0;
 	while (i < cmds - 1)
 	{
 		if (pipe(fd[i]) == -1)
 		{
+			write(1, "ERROR\n", 7);
 			while (j < i)
 			{
 				close(fd[j][0]);
@@ -88,9 +115,8 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 		i++;
 	}
 
+	//Main Execution process
 	i = 0;
-	t_cmdtable *current_cmd = cmd;
-
 	while (current_cmd)
 	{
 		vars->childid = fork();
@@ -102,11 +128,13 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 			{
 				close(fd[i][0]);
 				first_pipe(vars, core, current_cmd, fd[i][1]);
+				//close(fd[i][1]);			
 			}
 			else if (i == cmds - 1) 
 			{
 				close(fd[i - 1][1]);
 				last_pipe(vars, core, current_cmd, fd[i - 1][0]);
+				//close(fd[i - 1][0]);
 			}
 			else 
 			{
@@ -118,24 +146,54 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 					error_handler_fd(fd[i][1]);
 				if (current_cmd->redir_type != 0 && current_cmd->redir_type != 10)
 					redirctions(current_cmd, core, vars, &fd[i][0]);
-				//if (cmd->redir_type == 10)
-				//	here_doc(cmd, core, fd[i - 1][0]);
 				close(fd[i - 1][0]);
 				close(fd[i][1]);
 			}
 			closing_cmds_parent(cmds, fd);
 			if (current_cmd->isbuiltin == 1)
 				echo_cmd(current_cmd, core);
+			else if (current_cmd->isbuiltin != 0)
+				builtin_cmds(current_cmd, core);
+			else if (current_cmd->args[0] && ft_strchr(current_cmd->args[0], '/'))
+				absolute_path_finder(core, core->env, current_cmd->args);
 			else
 				path_finder(vars, core, envp, current_cmd->args, 0);
-			exit(0);
+			exit(core->exit_status);
 		}
+		childids[i] = vars->childid;
 		current_cmd = current_cmd->next;
 		i++;
 	}
 	closing_cmds_parent(cmds, fd);
+	
+	//Waiting for child processes
 	j = -1;
 	while (++j < cmds)
-		waitpid(vars->childid, &status, 0);
+	{
+		waitpid(childids[j], &status, 0);
+	}
+
+	//Removing files if its a here_doc
+	j = 0;
+	current_cmd = temp;
+	while (current_cmd)
+	{
+		if (current_cmd->redir_type == 10)
+		{
+			if (current_cmd->args == NULL)
+			{
+				unlink(vars->cmd[j]);
+				j++;
+			}
+			else
+			{
+				i = 0;
+				while (current_cmd->args[i])
+					i++;
+				unlink(current_cmd->args[i - 1]);
+			}
+		}
+		current_cmd = current_cmd->next;
+	}
 	exit(core->exit_status);
 }

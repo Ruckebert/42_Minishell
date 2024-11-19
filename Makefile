@@ -19,7 +19,7 @@ OBJECTSPARSE = $(SOURCEPARSE:.c=.o)
 
 CFLAGS = -Wall -Werror -Wextra -g
 
-COMP = cc -lreadline
+COMP = cc -lreadline #-fsanitize=address
 
 RM = rm -f
 

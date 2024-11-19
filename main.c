@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/15 10:46:21 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/19 14:09:28 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int main(int argc, char *argv[], char **env)
 			{
 				if (isatty(STDIN_FILENO))
 					write(1,"exit\n",5);
-				exit (0);
+				exit (core.exit_status);
 			}
 			add_history(core.line);
     	  	token = tokenize(&core);
