@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/18 15:06:00 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:00:00 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,14 @@ void remove_quotes(t_token *curr)
 {
 	char *temp;
 
-	temp = malloc(ft_strlen(curr->word) - 1);
+	if (curr->word[0] == '\'' || curr->word[0] == '\"')
+	{
+		temp = malloc(ft_strlen(curr->word) - 1);
 
-	ft_strlcpy(temp, &curr->word[1], ft_strlen(curr->word) - 1);
-	free(curr->word);
-	curr->word = temp;
+		ft_strlcpy(temp, &curr->word[1], ft_strlen(curr->word) - 1);
+		free(curr->word);
+		curr->word = temp;
+	}
 }
 
 void split_to_token(t_token *curr)
@@ -156,6 +159,16 @@ void split_to_token(t_token *curr)
 		curr = curr->next;
 	}
 	free (arr);
+}
+
+int	is_heredoc(t_token *token)
+{
+	t_token *curr;
+	curr = token;
+	
+	if (curr->type == 10)
+		return (1);
+	return (0);
 }
 
 void expand_var(t_token *token, char **env, t_data *core)
@@ -360,14 +373,60 @@ void	fuse_all_0space_nodes(t_token *token)
 	curr = token;
 	while(curr)
 	{
-		if ((curr->type == 8 || curr->type == 4 || curr->type == 5 || curr->type == 7 || curr->type == 9) && curr->leading_space == 0 && curr->prev->type !=9999)
+		if ((curr->type == 8 || curr->type == 4 || curr->type == 5 || curr->type == 7 || curr->type == 9) && curr->leading_space == 0 && curr->prev->type !=9999 )
 		{
+			if (!is_redir(curr) && !is_redir(curr->prev))
 			fuse_node_with_next(curr->prev);
 		}
 		if ((curr->type == 8 || curr->type == 4 || curr->type == 5 || curr->type == 7 || curr->type == 9) && curr->next->type !=9999 && curr->next->leading_space == 0)
 		{
-			fuse_node_with_next(curr);
-			curr = curr->prev;
+			if (!is_redir(curr) && !is_redir(curr->next))
+			{
+				fuse_node_with_next(curr);
+				curr = curr->prev;
+			}
+		}
+		curr = curr->next;
+	}
+}
+
+int has_quote(t_token *curr)
+{
+
+	if ((curr->word[0] == '\'' && curr->word[ft_strlen(curr->word) - 1] == '\'')
+		||(curr->word[0] == '\"' && curr->word[ft_strlen(curr->word) - 1] == '\"'))
+		return (1);
+	return (0);
+}
+
+void handle_heredoc_delimiter(t_token *token)
+{
+	t_token	*curr;
+
+	curr = token;
+	while(curr)
+	{
+		if (!is_START(curr) && is_heredoc(curr->prev))
+		{
+			if (curr->next->leading_space != 0 && has_quote(curr))
+			{
+				remove_quotes(curr);
+				curr->type = 30;
+			}
+			while(curr->next->leading_space == 0)
+			{
+				if (has_quote(curr))
+				{
+					remove_quotes(curr);
+					curr->type = 30;
+				}
+				if (has_quote(curr->next))
+					remove_quotes(curr->next);
+				fuse_node_with_next(curr);
+			}
+			/*check if element has quotes and remove them
+			fuse node with next node
+			*/
 		}
 		curr = curr->next;
 	}
@@ -382,10 +441,6 @@ void	remove_empty_quotes(t_token *token)
 	{
 		if((curr->type == 5 || curr->type == 4) && ft_strlen(curr->word) == 2)
 		{
-			/*if (curr->leading_space == 1 && curr->next->type != 9999)
-				curr->leading_space = 1;
-			else
-				curr->leading_space = 0;*/
 			free(curr->word);
 			curr->word = strdup("");
 			curr->type = 9;
@@ -400,9 +455,13 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
 
-//		printf("\033[0;31m 1 \033[0m\n");
+//	printf("\033[0;31m 1 \033[0m\n");
 //	printlist(token);
 
+	handle_heredoc_delimiter(token);
+//	printf("\033[0;31m 1b \033[0m\n");
+//	printlist(token);
+	
 	remove_empty_quotes(token);
 //		printf("\033[0;31m 2 \033[0m\n");
 //	printlist(token);
@@ -424,10 +483,10 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 //	printlist(token);
 
 	//print_cmdtable(cmd);
-//	printf("\033[0;31mAFTER parse.c\033[0m\n");
-//	printlist(token);
+	printf("\033[0;31mAFTER parse.c\033[0m\n");
+	printlist(token);
 	return (prep_nodes_for_exec(token));
-//	handle_singlequote(token);
+//	handle_singlequote(token); remove this function
 
 //	printlist(token);
 //	handle_singlequote();
