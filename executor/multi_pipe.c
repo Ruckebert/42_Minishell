@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/18 16:06:28 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/19 12:32:42 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,21 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	int		j = 0;
 	int fd[cmds - 1][2];
 	int childids[cmds];
+	
 	t_cmdtable *current_cmd = cmd;
 	t_cmdtable *temp = current_cmd;
 	
+	//Here_doc file creation
 	while (current_cmd)
 	{
 		if (current_cmd->redir_type == 10)
 		{
-			if (current_cmd->args[0] == NULL)
-				here_doc_tempfile(current_cmd, core, STDIN_FILENO);
+			if (current_cmd->args == NULL)
+			{
+				vars->cmd = ft_calloc(cmds, sizeof(char *));
+				vars->cmd[j] = here_doc_tempfile(current_cmd, core, STDIN_FILENO);
+				j++;
+			}
 			else
 			{
 				i = 0;
@@ -89,7 +95,10 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 		current_cmd = current_cmd->next;
 	}
 	current_cmd = temp;
+	
+	//Piping process
 	i = 0;
+	j = 0;
 	while (i < cmds - 1)
 	{
 		if (pipe(fd[i]) == -1)
@@ -106,8 +115,8 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 		i++;
 	}
 
+	//Main Execution process
 	i = 0;
-	
 	while (current_cmd)
 	{
 		vars->childid = fork();
@@ -143,19 +152,48 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 			closing_cmds_parent(cmds, fd);
 			if (current_cmd->isbuiltin == 1)
 				echo_cmd(current_cmd, core);
+			else if (current_cmd->isbuiltin != 0)
+				builtin_cmds(current_cmd, core);
+			else if (current_cmd->args[0] && ft_strchr(current_cmd->args[0], '/'))
+				absolute_path_finder(core, core->env, current_cmd->args);
 			else
 				path_finder(vars, core, envp, current_cmd->args, 0);
-			exit(0);
+			exit(core->exit_status);
 		}
 		childids[i] = vars->childid;
 		current_cmd = current_cmd->next;
 		i++;
 	}
 	closing_cmds_parent(cmds, fd);
+	
+	//Waiting for child processes
 	j = -1;
 	while (++j < cmds)
 	{
 		waitpid(childids[j], &status, 0);
+	}
+
+	//Removing files if its a here_doc
+	j = 0;
+	current_cmd = temp;
+	while (current_cmd)
+	{
+		if (current_cmd->redir_type == 10)
+		{
+			if (current_cmd->args == NULL)
+			{
+				unlink(vars->cmd[j]);
+				j++;
+			}
+			else
+			{
+				i = 0;
+				while (current_cmd->args[i])
+					i++;
+				unlink(current_cmd->args[i - 1]);
+			}
+		}
+		current_cmd = current_cmd->next;
 	}
 	exit(core->exit_status);
 }

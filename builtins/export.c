@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/11 10:53:27 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:27:18 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,33 @@ void	reverse_free(int i, char **temp)
 	exit(2);
 }
 
+int		argv_checker(char **argv)
+{
+	int i = 1;
+	int	j = 0;
+	int	equal = 0;
+
+	while (argv[i])
+	{
+		j = 0;
+		equal = 0;
+		while (argv[i][j])
+		{
+			if (argv[i][j] == '=')
+			{
+				equal++;
+				if (argv[i][j - 1] == '\0')
+					equal++;
+			}
+			j++;
+		}
+		if (equal > 1)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	**new_exo_env(char **env, char **argv, int argc, int count)
 {
 	int j;
@@ -132,6 +159,8 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 		found = check_dup_exo(env, argv, temp, j);
 		if (!found)
 		{
+			if (argv_checker(argv) == 1)
+				return (NULL);
 			temp[i] = ft_strdup(argv[j]);
 			if (!temp[i])
 				reverse_free(i, temp);

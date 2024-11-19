@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/15 10:35:16 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:19:37 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,11 @@ void	export(t_cmdtable *cmd, t_data *core)
 	{	
 		temp = new_exo_env(core->export_env, cmd->args, i, count);
 		if (!temp)
-			exit(write(2, "Error: Enviornment is Not Sexy Enough\n", 39));
+		{
+			core->exit_status = 1; //An error message has to printed
+			write(2, "Error: Enviornment is Not Sexy Enough\n", 39);
+			return ;
+		}
 		core->env = new_exo_env(core->env, cmd->args, i, count);
 		if (!core->env)
 			exit(write(2, "Error: Enviornment is Not Sexy Enough\n", 39));
@@ -140,16 +144,26 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 {
 	int	i;
 	int no;
+	int j;
 	
 	i = 1;
+	j = 1;
 	no = 0;
 	
 	if (cmd->args[i] == NULL)
 		no = 0;
-	else if (ft_strcmp(cmd->args[i], "-n") == 0)
+	else if (ft_strncmp(cmd->args[i], "-n", 2) == 0)
 	{
-		no = 1;
-		i++;
+		while (cmd->args[i][j])
+		{
+			if (cmd->args[i][j] == 'n')
+				no = 1;
+			else
+				no = 0;
+			j++;
+		}
+		if (no == 1)
+			i++;
 	}
 	while (cmd->args[i])
 	{
