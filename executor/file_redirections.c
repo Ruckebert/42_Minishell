@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:34:33 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 18:26:00 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:45:59 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	file_input(t_cmdtable *cmd, t_var *vars, int *fd)
 {
 	vars->fdin = open(cmd->redir, O_RDONLY);
 	if (vars->fdin == -1)
-		error_handler_fd(fd[1]);
+		error_handler_fd(fd[1], cmd);
 	if (cmd->args[0] != NULL)
 	{
 		if (dup2(vars->fdin, STDIN_FILENO) == -1)
 		{
 			close(vars->fdin);
-			error_handler_fd(fd[1]);
+			error_handler_fd(fd[1], cmd);
 		}
 	}
 	close(vars->fdin);
@@ -32,13 +32,13 @@ void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
 {
 	vars->fdout = open(cmd->redir, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (vars->fdout == -1)
-		error_handler_fd(fd[0]);
+		error_handler_fd(fd[0], cmd);
 	if (cmd->args[0] != NULL)
 	{
 		if (dup2(vars->fdout, STDOUT_FILENO) == -1)
 		{
 			close(vars->fdout);
-			error_handler_fd(fd[0]);
+			error_handler_fd(fd[0], cmd);
 		}
 	}
 	close(vars->fdout);
@@ -48,13 +48,13 @@ void	file_append(t_cmdtable *cmd, t_var *vars, int *fd)
 {
 	vars->fdout = open(cmd->redir, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (vars->fdout == -1)
-		error_handler_fd(fd[0]);
+		error_handler_fd(fd[0], cmd);
 	if (cmd->args[0] != NULL)
 	{
 		if (dup2(vars->fdout, STDOUT_FILENO) == -1)
 		{
 			close(vars->fdout);
-			error_handler_fd(fd[0]);
+			error_handler_fd(fd[0], cmd);
 		}
 	}
 	close(vars->fdout);

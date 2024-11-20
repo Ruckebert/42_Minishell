@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 18:26:18 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:45:39 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 	if (cmd->redir_type != 0 && cmd->redir_type != 10)
 		redirctions(cmd, core, vars, fd);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
-		error_handler_fd(fd[1]);
+		error_handler_fd(fd[1], cmd);
 	close(fd[1]);
 	if (cmd->isbuiltin == 1)
 		echo_cmd(cmd, core);
@@ -103,7 +103,7 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 	if (cmd->redir_type == 10)
 		here_doc(cmd, core, fd[0]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		error_handler_fd(fd[0]);
+		error_handler_fd(fd[0], cmd);
 	close(fd[0]);
 	if (cmd->redir_type != 0 && cmd->redir_type != 10)
 		redirctions(cmd, core, vars, fd);

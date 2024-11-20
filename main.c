@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 14:09:28 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:28:24 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int main(int argc, char *argv[], char **env)
 			if (core.line == NULL)
 			{
 				if (isatty(STDIN_FILENO))
-					write(1,"exit\n",5);
+					write(2,"exit\n",6);
 				exit (core.exit_status);
 			}
 			add_history(core.line);

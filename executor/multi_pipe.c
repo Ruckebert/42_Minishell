@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 12:32:42 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:46:41 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ void	first_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 	if (cmd->redir_type != 0 && cmd->redir_type != 10)
 		redirctions(cmd, core, vars, &fd);
 	if (dup2(fd, STDOUT_FILENO) == -1)
-		error_handler_fd(fd);
+		error_handler_fd(fd, cmd);
 }
 
 void	last_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 {
 	if (dup2(fd, STDIN_FILENO) == -1)
-		error_handler_fd(fd);
+		error_handler_fd(fd, cmd);
 	if (cmd->redir_type != 0 && cmd->redir_type != 10)
 		redirctions(cmd, core, vars, NULL);
 }
@@ -141,9 +141,9 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 				close(fd[i - 1][1]);
 				close(fd[i][0]);
 				if (dup2(fd[i - 1][0], STDIN_FILENO) == -1)
-					error_handler_fd(fd[i - 1][0]);
+					error_handler_fd(fd[i - 1][0], current_cmd);
 				if (dup2(fd[i][1], STDOUT_FILENO) == -1)
-					error_handler_fd(fd[i][1]);
+					error_handler_fd(fd[i][1], current_cmd);
 				if (current_cmd->redir_type != 0 && current_cmd->redir_type != 10)
 					redirctions(current_cmd, core, vars, &fd[i][0]);
 				close(fd[i - 1][0]);

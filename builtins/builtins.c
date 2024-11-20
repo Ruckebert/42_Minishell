@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 15:48:32 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:39:38 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	pwd(t_data *core)
 		free(core->direct);
 		return ;
 	}
+	core->exit_status = 0;
 	ft_printf("%s\n", core->direct);
 }
 
@@ -159,11 +160,32 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 			if (cmd->args[i][j] == 'n')
 				no = 1;
 			else
+			{
 				no = 0;
+				break ;
+			}
 			j++;
 		}
 		if (no == 1)
+		{
 			i++;
+			while (cmd->args[i])
+			{
+				if (ft_strncmp(cmd->args[i], "-n", 2) == 0)
+				{
+					j = 2;
+					while (cmd->args[i][j] == 'n')
+						j++;
+					if (cmd->args[i][j] == '\0')
+					{
+						no = 1;
+						i++;
+						continue ;
+					}
+				}
+				break;
+			}
+		}
 	}
 	while (cmd->args[i])
 	{
@@ -212,6 +234,11 @@ void	exit_com(t_data *core)
 			}
 			else if (core->cmd->args[i][j] == '-' && j == 0)
 			{
+				/*if (core->cmd->args[1][1] == '0')
+				{
+					j = -1;
+					break ;
+				}*/
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
 					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
 				else

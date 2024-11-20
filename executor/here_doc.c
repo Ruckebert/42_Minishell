@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/18 16:06:02 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:46:12 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int fd)
 	int tmp_fd[2];
 	
 	if (pipe(tmp_fd) == -1)
-		error_handler_fd(tmp_fd[1]);
+		error_handler_fd(tmp_fd[1], cmd);
 	while (1)
 	{
 		line = readline("> ");
@@ -107,7 +107,7 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int fd)
 	if (dup2(tmp_fd[0], fd) == -1)
 	{
 		close(tmp_fd[0]);
-		error_handler_fd(fd);
+		error_handler_fd(fd, cmd);
 	}
 	close(tmp_fd[0]);
 }
@@ -145,7 +145,7 @@ char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 	filename = ft_nbr_pointhex((intptr_t)cmd->redir);
 	tmp_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (tmp_fd == -1)
-		error_handler_fd(fd);
+		error_handler_fd(fd, cmd);
 	while (1)
 	{
 		line = readline("> ");

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:22:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 12:15:00 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:21:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ void	normal_cd(char *old_pwd, t_cmdtable *cmd, t_data *core)
 	}
 	else
 	{
-		write(2, "cd: ", 5);
+		write(2, "cd: ", 4);
 		write(2, core->direct, ft_strlen(core->direct));
-		write(2, ": no such file or directory\n", 29);
+		write(2, ": No such file or directory\n", 29);
 		//ft_printf("cd: %s: no such file or directory\n", core->direct);
 		core->exit_status = 1;
 	}
