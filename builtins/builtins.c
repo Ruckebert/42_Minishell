@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 13:19:37 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:48:32 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,9 +240,6 @@ void	exit_com(t_data *core)
 	}
 	else if (j != -1 && core->cmd->args[2] == NULL)
 	{
-		//IDk why but it doesnt work for negative numbers
-		//printf("%d\n", ft_atoi(core->cmd->args[1]));
-		//printf("%d\n", 256 % ft_atoi(core->cmd->args[1]));
 		if (ft_atoi(core->cmd->args[1]) < 0)
 			core->exit_status = 256 - (ft_atoi(core->cmd->args[1]) * -1);
 		else
@@ -250,12 +247,16 @@ void	exit_com(t_data *core)
 	}
 	else if (j != -1 && core->cmd->args[2] != NULL)
 	{
+		core->exit_status = 1;
 		write(2, "exit: too many arguments\n", 26);
 		return ;
 	}
 	else if (j == -1)
 	{
-		write(2, "exit: numeric arugment required\n", 33);
+		//So in the case of exit "" it should also exit from here or it should go into here.
+		write(2, "exit: ", 7);
+		write(2, core->cmd->args[1], ft_strlen(core->cmd->args[1]));
+		write(2, ": numeric arugment required\n", 29);
 		core->exit_status = 2; //Change to the correct exit status
 	}
 	

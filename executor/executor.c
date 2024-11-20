@@ -164,7 +164,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 
 void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
-	int	status = 0;
+	//int	status = 0;
 
 	if (pipe(fd) == -1)
 	{
@@ -181,9 +181,10 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		child_pros(cmd, vars, core, fd);
 	else
 	{
-		waitpid(vars->childid, &status, 0);
-		if (WIFEXITED(status))
-			core->exit_status = WEXITSTATUS(status);
+		//Removed 
+		//waitpid(vars->childid, &status, 0);
+		//if (WIFEXITED(status))
+		//	core->exit_status = WEXITSTATUS(status);
 		parent_pros(cmd->next, vars, core, fd);
 	}
 }
