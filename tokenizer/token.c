@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/18 15:06:15 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:56:16 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,14 @@ void	combine_double_redirect(t_token	*token)
 
 	curr = token;
 	while (curr && curr->next)
-	{
-		if (!ft_strncmp(curr->word, "<\0",2)  && !ft_strncmp(curr->next->word, "<\0",2) && (curr->next->leading_space == 0))
-			substitute_redir(curr,"<<\0");
-		else if (!ft_strncmp(curr->word, ">\0",2)  && !ft_strncmp(curr->next->word, ">\0",2) && (curr->next->leading_space == 0))
-			substitute_redir(curr,">>\0");
+	{	
+		if (curr->type == curr->next->type)
+		{
+			if (!ft_strncmp(curr->word, "<\0",2)  && !ft_strncmp(curr->next->word, "<\0",2) && (curr->next->leading_space == 0))
+				substitute_redir(curr,"<<\0");
+			else if (!ft_strncmp(curr->word, ">\0",2)  && !ft_strncmp(curr->next->word, ">\0",2) && (curr->next->leading_space == 0) )
+				substitute_redir(curr,">>\0");
+		}
 		curr = curr->next;
 	}
 }
@@ -137,6 +140,7 @@ void	combine_with_equal(t_token	*token)
 						temp = curr->next->word;
 						ft_strlcpy(curr->next->word, &temp[1],ft_strlen(&temp[1]));
 					}
+					curr->leading_space= curr->prev->leading_space;
 					ft_lstdelone(curr->prev);
 					temp = res;
 					res = ft_strjoin(temp,curr->next->word);
@@ -204,8 +208,9 @@ t_token	*tokenize(t_data *core)
 	newtoken->leading_space = 20;
 
 	combine_double_redirect(token);
+//	printf("\033[0;31mAFTER token.c\033[0m\n");
+//	printlist(token);
 	combine_with_equal(token);
-
 //	printf("\033[0;31mAFTER token.c\033[0m\n");
 //	printlist(token);
 	
