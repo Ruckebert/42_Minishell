@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/20 10:45:39 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:32:02 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 			multi_pipe(&vars, cmd, core, core->env);
 		else
 		{
-			waitpid(second, NULL, 0);
+			waitpid(second, &status, 0);
 			if (WIFEXITED(status))
 				core->exit_status = WEXITSTATUS(status);
 		}

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/20 10:46:41 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:32:20 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,9 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	{
 		waitpid(childids[j], &status, 0);
 	}
-
+	if (WIFEXITED(status))
+		core->exit_status = WEXITSTATUS(status);
+	
 	//Removing files if its a here_doc
 	j = 0;
 	current_cmd = temp;
