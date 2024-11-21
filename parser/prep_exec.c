@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/19 17:56:10 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:39:45 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int is_redir(t_token	*token)
 	t_token	*curr;
 
 	curr = token;
-	if (curr->type == 1 || curr->type == 2 || curr->type == 10 || curr->type == 20)
+	if (curr->type == 1 || curr->type == 2 || curr->type == 10 || curr->type == 20 || curr->type == 30)
 		return (1);
 	return(0);
 }
@@ -129,6 +129,8 @@ t_token *add_redir(t_cmdtable *cmd,t_token *curr)
 {
 
 	cmd->redir_type = curr->type;
+	if (curr->next->type == 30)
+		cmd->redir_type = 30;
 	cmd->redir = curr->next->word;
 	curr = curr->next->next;
 	return (curr);
@@ -192,11 +194,11 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 	}
 	
 	find_builtins(cmd);
-//	printf("\033[0;31mbefore free in prep_exec.c\033[0m\n");
-//	printlist(token);
+	printf("\033[0;31mbefore free in prep_exec.c\033[0m\n");
+	printlist(token);
 	free_token_list(token);
-//	printf("\033[0;31mAFTER prep_exec.c\033[0m\n");
-//	print_cmdtable(cmd);
+	printf("\033[0;31mAFTER prep_exec.c\033[0m\n");
+	print_cmdtable(cmd);
 	return (cmd);
 //	free_cmdtable(&cmd);
 }
