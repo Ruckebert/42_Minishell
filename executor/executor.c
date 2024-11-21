@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 18:26:18 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:55:15 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 {
 	close(fd[0]);
-	if (cmd->redir_type == 10)
+	if (cmd->redir_type == 10 || cmd->redir_type == 30)
 		here_doc(cmd, core, STDIN_FILENO);
-	if (cmd->redir_type != 0 && cmd->redir_type != 10)
+	if (cmd->redir_type != 0 && cmd->redir_type != 10 && cmd->redir_type != 30)
 		redirctions(cmd, core, vars, fd);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
-		error_handler_fd(fd[1]);
+		error_handler_fd(fd[1], cmd);
 	close(fd[1]);
 	if (cmd->isbuiltin == 1)
 		echo_cmd(cmd, core);
@@ -100,12 +100,12 @@ void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 {
 	close(fd[1]);
-	if (cmd->redir_type == 10)
+	if (cmd->redir_type == 10 || cmd->redir_type == 30)
 		here_doc(cmd, core, fd[0]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		error_handler_fd(fd[0]);
+		error_handler_fd(fd[0], cmd);
 	close(fd[0]);
-	if (cmd->redir_type != 0 && cmd->redir_type != 10)
+	if (cmd->redir_type != 0 && cmd->redir_type != 10 && cmd->redir_type != 30)
 		redirctions(cmd, core, vars, fd);
 	if (cmd->isbuiltin == 1)
 		echo_cmd(cmd, core);
@@ -164,7 +164,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 
 void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
-	int	status = 0;
+	//int	status = 0;
 
 	if (pipe(fd) == -1)
 	{
@@ -181,9 +181,10 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		child_pros(cmd, vars, core, fd);
 	else
 	{
-		waitpid(vars->childid, &status, 0);
-		if (WIFEXITED(status))
-			core->exit_status = WEXITSTATUS(status);
+		//Removed 
+		//waitpid(vars->childid, &status, 0);
+		//if (WIFEXITED(status))
+		//	core->exit_status = WEXITSTATUS(status);
 		parent_pros(cmd->next, vars, core, fd);
 	}
 }
@@ -232,7 +233,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 			multi_pipe(&vars, cmd, core, core->env);
 		else
 		{
-			waitpid(second, NULL, 0);
+			waitpid(second, &status, 0);
 			if (WIFEXITED(status))
 				core->exit_status = WEXITSTATUS(status);
 		}

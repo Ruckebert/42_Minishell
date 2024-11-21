@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 13:19:37 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:07:41 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	pwd(t_data *core)
 		free(core->direct);
 		return ;
 	}
+	core->exit_status = 0;
 	ft_printf("%s\n", core->direct);
 }
 
@@ -159,11 +160,32 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 			if (cmd->args[i][j] == 'n')
 				no = 1;
 			else
+			{
 				no = 0;
+				break ;
+			}
 			j++;
 		}
 		if (no == 1)
+		{
 			i++;
+			while (cmd->args[i])
+			{
+				if (ft_strncmp(cmd->args[i], "-n", 2) == 0)
+				{
+					j = 2;
+					while (cmd->args[i][j] == 'n')
+						j++;
+					if (cmd->args[i][j] == '\0')
+					{
+						no = 1;
+						i++;
+						continue ;
+					}
+				}
+				break;
+			}
+		}
 	}
 	while (cmd->args[i])
 	{
@@ -192,25 +214,26 @@ void	exit_com(t_data *core)
 	//If the number is positive and is over subtract it with 256
 	//For negative numbers subtract it with 256
 	//If the number is 256 the exit status is 0
-
+	
 	while (core->cmd->args[i])
 	{
 		j = 0;
 		while (core->cmd->args[i][j])
 		{
-			if (core->cmd->args[i][j] == '+' && j == 0)
+			if (core->cmd->args[i][j] == ' ')
+			{
+			}
+			else if (core->cmd->args[i][j] == '+' && j == 0)
 			{
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
-				{
 					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
-				}
 				else
 				{
 					j = -1;
 					break ;
 				}
 			}
-			else if (core->cmd->args[i][j] == '-' && j == 0)
+			else if ((core->cmd->args[i][j] == '-' && j == 0) || (core->cmd->args[i][j] == '-' && core->cmd->args[i][j - 1] == ' '))
 			{
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
 					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
@@ -233,16 +256,18 @@ void	exit_com(t_data *core)
 			break ;
 		i++;	
 	}
-
+	if (core->cmd->args[1] != NULL && core->cmd->args[1][0] == '\0')
+		j = -1;
+	//if (ft_atoi(core->cmd->args[1]) > ft_atoi("9223372036854775808"))
+	//	j = -1;
+	//if (ft_atoi(core->cmd->args[1]) < ft_atoi("-9223372036854775808"))
+	//	j = -1;
 	//checks whether or not all the requirements are met
 	if (j != -1 && core->cmd->args[1] == NULL)
 	{
 	}
 	else if (j != -1 && core->cmd->args[2] == NULL)
 	{
-		//IDk why but it doesnt work for negative numbers
-		//printf("%d\n", ft_atoi(core->cmd->args[1]));
-		//printf("%d\n", 256 % ft_atoi(core->cmd->args[1]));
 		if (ft_atoi(core->cmd->args[1]) < 0)
 			core->exit_status = 256 - (ft_atoi(core->cmd->args[1]) * -1);
 		else
@@ -250,12 +275,15 @@ void	exit_com(t_data *core)
 	}
 	else if (j != -1 && core->cmd->args[2] != NULL)
 	{
+		core->exit_status = 1;
 		write(2, "exit: too many arguments\n", 26);
 		return ;
 	}
 	else if (j == -1)
 	{
-		write(2, "exit: numeric arugment required\n", 33);
+		write(2, "exit: ", 7);
+		write(2, core->cmd->args[1], ft_strlen(core->cmd->args[1]));
+		write(2, ": numeric arugment required\n", 29);
 		core->exit_status = 2; //Change to the correct exit status
 	}
 	

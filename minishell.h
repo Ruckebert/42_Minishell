@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/21 12:18:42 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:45:21 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int		executor(t_cmdtable *cmd, t_data *core);
 void	error_handler(void);
 void	error_handler_split(char **split);
 void	free_split(char **split);
-void	error_handler_fd(int fd);
+void	error_handler_fd(int fd, t_cmdtable *cmd);
 void	file_input(t_cmdtable *cmd, t_var *vars, int *fd);
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd);
 void	file_append(t_cmdtable *cmd, t_var *vars, int *fd);
