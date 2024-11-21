@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:09:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 14:13:38 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:44:58 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ void	error_handler(void)
 	exit(1);
 }
 
-void	error_handler_fd(int fd)
+void	error_handler_fd(int fd, t_cmdtable *cmd)
 {
 	close(fd);
-	perror("Error in reading file or duplication");
+	ft_putstr_fd(cmd->redir, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
 	exit(1);
 }
 

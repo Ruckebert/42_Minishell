@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 13:27:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:35:04 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,10 @@ int		argv_checker(char **argv)
 	int i = 1;
 	int	j = 0;
 	int	equal = 0;
+	int error = 0;
 
+	if ((argv[i][0] >= '0' && argv[i][0] <= '9') || argv[i][0] == '+')
+		return (1);
 	while (argv[i])
 	{
 		j = 0;
@@ -125,9 +128,11 @@ int		argv_checker(char **argv)
 				if (argv[i][j - 1] == '\0')
 					equal++;
 			}
+			if ((argv[i][j] == '^' || argv[i][j] == '!' || argv[i][j] == '~' || argv[i][j] == '#' || argv[i][j] == '@' || argv[i][j] == '*' || argv[i][j] == '-' || argv[i][j] == '.' || argv[i][j] == '{' || argv[i][j] == '}') && equal == 0)
+				error++;
 			j++;
 		}
-		if (equal > 1)
+		if (equal > 1 || error >= 1)
 			return (1);
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/19 18:00:00 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:58:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -483,8 +483,8 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 //	printlist(token);
 
 	//print_cmdtable(cmd);
-	printf("\033[0;31mAFTER parse.c\033[0m\n");
-	printlist(token);
+	//printf("\033[0;31mAFTER parse.c\033[0m\n");
+	//printlist(token);
 	return (prep_nodes_for_exec(token));
 //	handle_singlequote(token); remove this function
 
