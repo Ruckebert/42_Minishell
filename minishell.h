@@ -151,6 +151,7 @@ int is_END(t_token *curr);
 int is_START(t_token *curr);
 int is_redir(t_token	*token);
 void	ft_lstdelone(t_token *lst);
+void	remove_empty_quotes(t_token *token);
 //for testing
 void printlist_both(t_token *head);
 void printCharPointerArray(char **arr);

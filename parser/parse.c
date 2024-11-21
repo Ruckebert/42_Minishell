@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/20 12:58:07 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:28:08 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,12 +376,17 @@ void	fuse_all_0space_nodes(t_token *token)
 		if ((curr->type == 8 || curr->type == 4 || curr->type == 5 || curr->type == 7 || curr->type == 9) && curr->leading_space == 0 && curr->prev->type !=9999 )
 		{
 			if (!is_redir(curr) && !is_redir(curr->prev))
-			fuse_node_with_next(curr->prev);
+			{
+				curr->prev->type = curr->type;
+				fuse_node_with_next(curr->prev);
+				curr = curr->prev;
+			}
 		}
 		if ((curr->type == 8 || curr->type == 4 || curr->type == 5 || curr->type == 7 || curr->type == 9) && curr->next->type !=9999 && curr->next->leading_space == 0)
 		{
 			if (!is_redir(curr) && !is_redir(curr->next))
 			{
+				
 				fuse_node_with_next(curr);
 				curr = curr->prev;
 			}
@@ -459,12 +464,10 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 //	printlist(token);
 
 	handle_heredoc_delimiter(token);
-//	printf("\033[0;31m 1b \033[0m\n");
+//	printf("\033[0;31m 2 \033[0m\n");
 //	printlist(token);
 	
-	remove_empty_quotes(token);
-//		printf("\033[0;31m 2 \033[0m\n");
-//	printlist(token);
+	
 
 	expand_var(token, core->env, core);
 //		printf("\033[0;31m 3 \033[0m\n");
@@ -483,8 +486,8 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 //	printlist(token);
 
 	//print_cmdtable(cmd);
-	//printf("\033[0;31mAFTER parse.c\033[0m\n");
-	//printlist(token);
+//	printf("\033[0;31mAFTER parse.c\033[0m\n");
+//	printlist(token);
 	return (prep_nodes_for_exec(token));
 //	handle_singlequote(token); remove this function
 

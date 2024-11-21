@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/21 11:13:14 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:56:16 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int is_redir(t_token	*token)
 	t_token	*curr;
 
 	curr = token;
-	if (curr->type == 1 || curr->type == 2 || curr->type == 10 || curr->type == 20)
+	if (curr->type == 1 || curr->type == 2 || curr->type == 10 || curr->type == 20 || curr->type == 30)
 		return (1);
 	return(0);
 }
@@ -92,8 +92,15 @@ int get_strnum(t_token *curr)
 	int i;
 
 	i = 0;
-	while((!(is_redir(curr)) && curr->type != 3) && !is_END(curr))
+	while(curr->type != 3 && !is_END(curr))
 	{
+		if(is_redir(curr))
+		{
+			if(is_END(curr->next->next))
+				break ;
+			curr = curr->next->next;
+			continue ;
+		}
 		i++;
 		curr = curr->next;
 	}
@@ -105,7 +112,9 @@ t_token *get_args(t_cmdtable *cmd, t_token *token)
 	t_token	*curr;
 	int		i;
 	int		strnum;
-
+	
+	if (cmd->args)
+		return (token->next);
 	i = 0;
 	curr = token;
 	if(is_START(curr))
@@ -114,21 +123,26 @@ t_token *get_args(t_cmdtable *cmd, t_token *token)
 	cmd->args = malloc(sizeof(char*) * (strnum + 1));
 	while(i < strnum)
 	{
-		cmd->args[i] = curr->word;
-		i++;
+		if(!is_redir(curr) &&!is_redir(curr->prev))
+		{
+			cmd->args[i] = curr->word;
+			i++;
+		}
 		if (!(curr->next))
 			break;
 		curr = curr->next;
 	}
 	cmd->args[i] = NULL;
 	cmd->has_pipe_after = 0;
-	return (curr);
+	return (token);
 }
 
 t_token *add_redir(t_cmdtable *cmd,t_token *curr)
 {
-
+	
 	cmd->redir_type = curr->type;
+	if (curr->next->type == 30)
+		cmd->redir_type = 30;
 	cmd->redir = curr->next->word;
 	curr = curr->next->next;
 	return (curr);
@@ -164,6 +178,22 @@ void find_builtins(t_cmdtable *cmd)
 	}
 }
 
+void copy_args(t_cmdtable *cmd)
+{
+	int strnum;
+
+	strnum = 0;
+	while(cmd->prev->args[strnum])
+		strnum++;
+	cmd->args = malloc(sizeof(char*) * (strnum + 1));
+	strnum = 0;
+	while(cmd->prev->args[strnum])
+	{
+		cmd->args[strnum] = ft_strdup(cmd->prev->args[strnum]);
+		strnum++;
+	}
+}
+
 t_cmdtable *prep_nodes_for_exec(t_token *token)
 {
 	t_cmdtable	*cmd;
@@ -178,6 +208,12 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 	{
 		if (is_redir(curr))
 		{
+			if(newcmd->redir)
+			{
+				newcmd = ft_lstnew_cmd(NULL, 0);
+				ft_lstadd_back_cmd(&cmd, newcmd);
+				copy_args(newcmd);
+			}
 			curr = add_redir(newcmd, curr);
 		}
 		else if (is_PIPE(curr))
