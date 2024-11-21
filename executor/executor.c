@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/21 14:55:15 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:58:25 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,12 +125,122 @@ void	pipe_error(int *fd)
 	close(fd[1]);
 }
 
+
+void	both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
+{
+	t_cmdtable *tmp;
+	t_cmdtable *output;
+	t_cmdtable *input;
+	int i = 0;
+	char *filename;
+	
+	while (cmd)
+	{
+		if (cmd->redir_type == 1) 
+			input = cmd;
+		if (cmd->redir_type == 10 || cmd->redir_type == 30)
+		{
+			input = cmd;
+			if (filename != NULL)
+				unlink(filename);
+			free(filename);
+			filename = here_doc_tempfile(cmd, core, fd);
+		}
+		if (cmd->redir_type == 2 || cmd->redir_type == 20)
+		{
+			output = cmd;
+			redirctions(cmd, core, vars, &fd);
+		}
+		cmd = cmd->next;
+	}
+	tmp = output;
+	i = 0;
+	while(output->args[i])
+		i++;
+	if (input->redir_type == 1)
+		output->args[i] = ft_strdup(input->redir);
+	else 
+		output->args[i] = ft_strdup(filename);
+	output->args[i + 1]  = NULL;
+	output = tmp;
+	if (filename != NULL)
+	{
+		unlink(filename);
+		free(filename);
+	}
+	return ;
+}
+
+void	input_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
+{
+	t_cmdtable *input;
+	char *filename;
+	
+	while (cmd)
+	{
+		if (cmd->redir_type == 1) 
+			input = cmd;
+		if (cmd->redir_type == 10 || cmd->redir_type == 30)
+		{
+			input = cmd;
+			redirctions(cmd, core, vars, &fd);
+		}
+		cmd = cmd->next;
+	}
+	return ; //input
+}
+
+void	output_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
+{
+	t_cmdtable *output;
+
+	while (cmd)
+	{
+		if (cmd->redir_type == 2 || cmd->redir_type == 20)
+		{
+			output = cmd;
+			redirctions(cmd, core, vars, &fd);
+		}
+		cmd = cmd->next;
+	}
+	
+	return ; //return the output?
+}
+
+
+void	multi_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
+{
+	t_cmdtable *tmp;
+	tmp = cmd;
+	int input;
+	int output;
+	
+	while (cmd)
+	{
+		if (cmd->redir_type == 1 || cmd->redir_type == 10 || cmd->redir_type == 30)
+			input++;
+		if (cmd->redir_type == 2 || cmd->redir_type == 20)
+			output++;
+		cmd = cmd->next;
+	}
+	cmd = tmp;
+	if (input != 0 && output != 0)
+		both_redirections(cmd, core, vars, fd);
+	else if (input != 0 && output == 0)
+		input_redirections(cmd, core, vars, fd);
+	else if (input == 0 && output != 0)
+		output_redirections(cmd, core, vars, fd);
+	return ;
+}
+
 void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 {
 	int		fd[2];
 	pid_t	second;
 	int		status = 0;
 
+	if (cmd->next != NULL)
+		multi_redirections(cmd, core, vars, fd);
 	if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
 		builtin_cmds(cmd, core);
 	else
@@ -164,8 +274,8 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 
 void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
-	//int	status = 0;
-
+	//int	status = 0
+	
 	if (pipe(fd) == -1)
 	{
 		perror("Pipe Failure");
@@ -213,6 +323,23 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 	}	
 }
 
+int	pipe_checker(t_cmdtable *cmd)
+{
+	t_cmdtable *tmp;
+	int i = 0;
+	tmp = cmd;
+
+	while (cmd)
+	{
+		if (cmd->has_pipe_after == 1)
+			i++;
+		cmd = cmd->next;
+	}
+	cmd = tmp;
+	return (i);
+}
+
+
 int	executor(t_cmdtable *cmd, t_data *core)
 {
 	int		fd[2];
@@ -220,11 +347,11 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	pid_t 	second;
 	int		status = 0;
 
-	if (cmd->has_pipe_after != 1)
+	if (pipe_checker(cmd) == 0)
 		no_pipe_exe(cmd, core, &vars);
-	else if (cmd->has_pipe_after == 1 && cmd->next->has_pipe_after != 1) //Singe Pipe
+	else if (pipe_checker(cmd) == 1) //Singe Pipe
 		single_pipe_exe(cmd, core, &vars);
-	else if (cmd->has_pipe_after == 1 && cmd->next->has_pipe_after == 1) // Mutli Pipe
+	else if (pipe_checker(cmd) > 1)
 	{
 		second = fork();
 		if (second == -1)
