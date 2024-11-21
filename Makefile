@@ -17,7 +17,7 @@ OBJECTSTOK = $(SOURCETOK:.c=.o)
 
 OBJECTSPARSE = $(SOURCEPARSE:.c=.o)
 
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=undefined
 
 COMP = cc -lreadline #-fsanitize=address
 
