@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/21 14:39:37 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/21 15:17:35 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int fd)
 	if (dup2(tmp_fd[0], fd) == -1)
 	{
 		close(tmp_fd[0]);
+		write(1, "1", 1);
 		error_handler_fd(fd, cmd);
 	}
 	close(tmp_fd[0]);
