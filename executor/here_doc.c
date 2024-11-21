@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/20 10:46:12 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:39:37 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int fd)
 			break;
 		}
 		expand_line = expander_env(core, line);
-		if (expand_line)
+		if (expand_line && cmd->redir_type == 10)
 		{
 			write(tmp_fd[1], expand_line, strlen(expand_line));
 			free(expand_line);

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:34:33 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/20 10:45:59 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:44:50 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		file_input(cmd, vars, fd);
 	else if (cmd->redir_type == 2)
 		file_output(cmd, vars, fd);
-	else if (cmd->redir_type == 10)
+	else if (cmd->redir_type == 10 || cmd->redir_type == 30)
 		here_doc(cmd, core, *fd);
 	else if (cmd->redir_type == 20)
 		file_append(cmd, vars, fd);

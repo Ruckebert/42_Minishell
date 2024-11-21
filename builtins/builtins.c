@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/20 12:39:38 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:07:41 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,31 +214,27 @@ void	exit_com(t_data *core)
 	//If the number is positive and is over subtract it with 256
 	//For negative numbers subtract it with 256
 	//If the number is 256 the exit status is 0
-
+	
 	while (core->cmd->args[i])
 	{
 		j = 0;
 		while (core->cmd->args[i][j])
 		{
-			if (core->cmd->args[i][j] == '+' && j == 0)
+			if (core->cmd->args[i][j] == ' ')
+			{
+			}
+			else if (core->cmd->args[i][j] == '+' && j == 0)
 			{
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
-				{
 					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
-				}
 				else
 				{
 					j = -1;
 					break ;
 				}
 			}
-			else if (core->cmd->args[i][j] == '-' && j == 0)
+			else if ((core->cmd->args[i][j] == '-' && j == 0) || (core->cmd->args[i][j] == '-' && core->cmd->args[i][j - 1] == ' '))
 			{
-				/*if (core->cmd->args[1][1] == '0')
-				{
-					j = -1;
-					break ;
-				}*/
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
 					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
 				else
@@ -260,7 +256,12 @@ void	exit_com(t_data *core)
 			break ;
 		i++;	
 	}
-
+	if (core->cmd->args[1] != NULL && core->cmd->args[1][0] == '\0')
+		j = -1;
+	//if (ft_atoi(core->cmd->args[1]) > ft_atoi("9223372036854775808"))
+	//	j = -1;
+	//if (ft_atoi(core->cmd->args[1]) < ft_atoi("-9223372036854775808"))
+	//	j = -1;
 	//checks whether or not all the requirements are met
 	if (j != -1 && core->cmd->args[1] == NULL)
 	{
@@ -280,7 +281,6 @@ void	exit_com(t_data *core)
 	}
 	else if (j == -1)
 	{
-		//So in the case of exit "" it should also exit from here or it should go into here.
 		write(2, "exit: ", 7);
 		write(2, core->cmd->args[1], ft_strlen(core->cmd->args[1]));
 		write(2, ": numeric arugment required\n", 29);

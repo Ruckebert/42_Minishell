@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/20 14:32:20 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:49:16 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	cmd_count(t_cmdtable *cmd)
 }
 void	first_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 {
-	if (cmd->redir_type != 0 && cmd->redir_type != 10)
+	if (cmd->redir_type != 0 && cmd->redir_type != 10 && cmd->redir_type != 30)
 		redirctions(cmd, core, vars, &fd);
 	if (dup2(fd, STDOUT_FILENO) == -1)
 		error_handler_fd(fd, cmd);
@@ -56,7 +56,7 @@ void	last_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
 {
 	if (dup2(fd, STDIN_FILENO) == -1)
 		error_handler_fd(fd, cmd);
-	if (cmd->redir_type != 0 && cmd->redir_type != 10)
+	if (cmd->redir_type != 0 && cmd->redir_type != 10 && cmd->redir_type != 30)
 		redirctions(cmd, core, vars, NULL);
 }
 
@@ -75,7 +75,7 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	//Here_doc file creation
 	while (current_cmd)
 	{
-		if (current_cmd->redir_type == 10)
+		if (current_cmd->redir_type == 10 || current_cmd->redir_type == 30)
 		{
 			if (current_cmd->args == NULL)
 			{
@@ -144,7 +144,7 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 					error_handler_fd(fd[i - 1][0], current_cmd);
 				if (dup2(fd[i][1], STDOUT_FILENO) == -1)
 					error_handler_fd(fd[i][1], current_cmd);
-				if (current_cmd->redir_type != 0 && current_cmd->redir_type != 10)
+				if (current_cmd->redir_type != 0 && current_cmd->redir_type != 10 && current_cmd->redir_type != 30)
 					redirctions(current_cmd, core, vars, &fd[i][0]);
 				close(fd[i - 1][0]);
 				close(fd[i][1]);
