@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 17:06:38 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:18:42 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ int is_END(t_token *curr);
 int is_START(t_token *curr);
 int is_redir(t_token	*token);
 void	ft_lstdelone(t_token *lst);
+void	remove_empty_quotes(t_token *token);
 //for testing
 void printlist_both(t_token *head);
 void printCharPointerArray(char **arr);
