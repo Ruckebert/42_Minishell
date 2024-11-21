@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/21 14:56:16 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/21 15:43:47 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_cmdtable	*ft_lstnew_cmd(char *redir, int type)
 		return (NULL);
 	elem->redir = redir;
 	elem->redir_type = type;
+	elem->args = NULL;
 	elem->next = NULL;
 	elem->prev = NULL;
 	return (elem);
@@ -202,6 +203,7 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 
 	curr = token;
 	cmd = NULL;
+
 	newcmd = ft_lstnew_cmd(NULL, 0);
 	ft_lstadd_back_cmd(&cmd, newcmd);
 	while (!is_END(curr))
@@ -232,7 +234,7 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 //	printlist(token);
 	free_token_list(token);
 //	printf("\033[0;31mAFTER prep_exec.c\033[0m\n");
-	//print_cmdtable(cmd);
+//	print_cmdtable(cmd);
 	return (cmd);
 //	free_cmdtable(&cmd);
 }
