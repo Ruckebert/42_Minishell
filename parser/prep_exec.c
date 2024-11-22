@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/21 18:10:03 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:40:20 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,7 @@ t_token *get_args(t_cmdtable *cmd, t_token *token)
 		return (token->next);
 	i = 0;
 	curr = token;
-	if(is_START(curr))
-		curr = curr->next;
+
 	strnum = get_strnum(curr);
 	cmd->args = malloc(sizeof(char*) * (strnum + 1));
 	while(i < strnum)
@@ -184,6 +183,8 @@ void copy_args(t_cmdtable *cmd)
 	int strnum;
 
 	strnum = 0;
+	if(cmd->prev->args)
+	{
 	while(cmd->prev->args[strnum])
 		strnum++;
 	cmd->args = malloc(sizeof(char*) * (strnum + 1));
@@ -192,6 +193,7 @@ void copy_args(t_cmdtable *cmd)
 	{
 		cmd->args[strnum] = ft_strdup(cmd->prev->args[strnum]);
 		strnum++;
+	}
 	}
 }
 
@@ -206,6 +208,8 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 
 	newcmd = ft_lstnew_cmd(NULL, 0);
 	ft_lstadd_back_cmd(&cmd, newcmd);
+	if(is_START(curr))
+		curr = curr->next;
 	while (!is_END(curr))
 	{
 		if (is_redir(curr))
@@ -234,7 +238,7 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 //	printlist(token);
 	free_token_list(token);
 //	printf("\033[0;31mAFTER prep_exec.c\033[0m\n");
-//	print_cmdtable(cmd);
+	print_cmdtable(cmd);
 	return (cmd);
 //	free_cmdtable(&cmd);
 }

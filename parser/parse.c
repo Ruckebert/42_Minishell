@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/21 18:09:37 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:20:05 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -418,7 +418,7 @@ void handle_heredoc_delimiter(t_token *token)
 				remove_quotes(curr);
 				curr->type = 30;
 			}
-			while(curr->next->leading_space == 0)
+			while(curr->next->leading_space == 0 && !is_redir(curr->next) && curr->next->type != 3)
 			{
 				if (has_quote(curr))
 				{
@@ -493,36 +493,36 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
 
-//	printf("\033[0;31m 1 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 1 \033[0m\n");
+	printlist(token);
 
 	handle_heredoc_delimiter(token);
-//	printf("\033[0;31m 2 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 2 \033[0m\n");
+	printlist(token);
 	
 	split_vars_by_slash(token);
-//	printf("\033[0;31m 2b \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 2b \033[0m\n");
+	printlist(token);
 	
 	expand_var(token, core->env, core);
-//	printf("\033[0;31m 3 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 3 \033[0m\n");
+	printlist(token);
 
 	expand_var_in_doublequote(token, core->env, core);
-//	printf("\033[0;31m 4 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 4 \033[0m\n");
+	printlist(token);
 
 	remove_singlequotes(token);
-//	printf("\033[0;31m 5 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 5 \033[0m\n");
+	printlist(token);
 
 	fuse_all_0space_nodes(token);
-//	printf("\033[0;31m 6 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 6 \033[0m\n");
+	printlist(token);
 
 	//print_cmdtable(cmd);
-//	printf("\033[0;31mAFTER parse.c\033[0m\n");
-//	printlist(token);
+	printf("\033[0;31mAFTER parse.c\033[0m\n");
+	printlist(token);
 	return (prep_nodes_for_exec(token));
 //	handle_singlequote(token); remove this function
 

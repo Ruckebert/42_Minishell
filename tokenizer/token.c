@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/21 14:55:49 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:37:59 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ t_token	*tokenize(t_data *core)
 	pos = 0;
 	token = NULL;
 
-	if (core->line[0] == '\0')
+	if (core->line[0] == '\0') // if i remove this we open many many minishells when i press enter and we print for some reason
 		return (NULL);
 		
 	newtoken = ft_lstnew("START");
