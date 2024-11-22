@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/21 11:49:16 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:03:37 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,8 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	{
 		if (current_cmd->redir_type == 10 || current_cmd->redir_type == 30)
 		{
-			if (current_cmd->args == NULL)
-			{
-				vars->cmd = ft_calloc(cmds, sizeof(char *));
-				vars->cmd[j] = here_doc_tempfile(current_cmd, core, STDIN_FILENO);
-				j++;
-			}
-			else
-			{
-				i = 0;
-				while(current_cmd->args[i])
-					i++;
-				current_cmd->args[i] = ft_strdup(here_doc_tempfile(current_cmd, core, STDIN_FILENO));
-				current_cmd->args[i + 1]  = NULL;
-			}
+			current_cmd->redir = ft_strdup(here_doc_tempfile(current_cmd, core, STDIN_FILENO));
+			current_cmd->redir_type  = 1;
 		}
 		current_cmd = current_cmd->next;
 	}
@@ -178,23 +166,13 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	//Removing files if its a here_doc
 	j = 0;
 	current_cmd = temp;
-	while (current_cmd)
+	while (cmd)
 	{
-		if (current_cmd->redir_type == 10)
+		if (cmd->redir_type == 10)
 		{
-			if (current_cmd->args == NULL)
-			{
-				unlink(vars->cmd[j]);
-				j++;
-			}
-			else
-			{
-				i = 0;
-				while (current_cmd->args[i])
-					i++;
-				unlink(current_cmd->args[i - 1]);
-			}
+			unlink(current_cmd->redir);
 		}
+		cmd = cmd->next;
 		current_cmd = current_cmd->next;
 	}
 	exit(core->exit_status);

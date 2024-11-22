@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/21 16:58:25 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:24:57 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 {
 	close(fd[0]);
-	if (cmd->redir_type == 10 || cmd->redir_type == 30)
-		here_doc(cmd, core, STDIN_FILENO);
+	//if (cmd->redir_type == 10 || cmd->redir_type == 30)
+	//	here_doc(cmd, core, STDIN_FILENO);
 	if (cmd->redir_type != 0 && cmd->redir_type != 10 && cmd->redir_type != 30)
 		redirctions(cmd, core, vars, fd);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
@@ -100,8 +100,8 @@ void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 {
 	close(fd[1]);
-	if (cmd->redir_type == 10 || cmd->redir_type == 30)
-		here_doc(cmd, core, fd[0]);
+	//if (cmd->redir_type == 10 || cmd->redir_type == 30)
+	//	here_doc(cmd, core, fd[0]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 		error_handler_fd(fd[0], cmd);
 	close(fd[0]);
@@ -126,13 +126,14 @@ void	pipe_error(int *fd)
 }
 
 
-void	both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
+t_cmdtable *both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
 {
 	t_cmdtable *tmp;
 	t_cmdtable *output;
 	t_cmdtable *input;
 	int i = 0;
-	char *filename;
+	char *filename = NULL;
+	int original_stdout = dup(STDOUT_FILENO);
 	
 	while (cmd)
 	{
@@ -149,7 +150,13 @@ void	both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
 		if (cmd->redir_type == 2 || cmd->redir_type == 20)
 		{
 			output = cmd;
-			redirctions(cmd, core, vars, &fd);
+			if (cmd->next == NULL)
+				break ;
+			else 
+				redirctions(cmd, core, vars, &fd);
+			if (dup2(original_stdout, STDOUT_FILENO) == -1)
+				close(original_stdout);
+			close(original_stdout);
 		}
 		cmd = cmd->next;
 	}
@@ -162,58 +169,79 @@ void	both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
 	else 
 		output->args[i] = ft_strdup(filename);
 	output->args[i + 1]  = NULL;
-	output = tmp;
-	if (filename != NULL)
-	{
-		unlink(filename);
-		free(filename);
-	}
-	return ;
+	free(filename);
+	return (output);
 }
 
-void	input_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
+t_cmdtable *input_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
 {
 	t_cmdtable *input;
-	char *filename;
+	char *filename = NULL;
+	vars->store = NULL;
 	
 	while (cmd)
 	{
-		if (cmd->redir_type == 1) 
+		if (cmd->redir_type == 1)
 			input = cmd;
 		if (cmd->redir_type == 10 || cmd->redir_type == 30)
 		{
 			input = cmd;
-			redirctions(cmd, core, vars, &fd);
+			if (filename != NULL)
+				unlink(filename);
+			free(filename);
+			filename = here_doc_tempfile(cmd, core, fd);
 		}
 		cmd = cmd->next;
 	}
-	return ; //input
+	if (input->redir_type == 10 || input->redir_type == 30)
+	{
+		input->redir = ft_strdup(filename);
+		input->redir_type = 1;
+	}
+	else
+	{
+		if (filename != NULL)
+		{
+			unlink(filename);
+			free(filename);
+		}
+	}
+	return (input);
 }
 
-void	output_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
+t_cmdtable *output_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
-	t_cmdtable *output;
-
+	t_cmdtable *output = NULL;
+	int original_stdout = dup(STDOUT_FILENO);
+	
 	while (cmd)
 	{
 		if (cmd->redir_type == 2 || cmd->redir_type == 20)
 		{
 			output = cmd;
-			redirctions(cmd, core, vars, &fd);
+			if (cmd->next == NULL)
+				break ;
+			else 
+				redirctions(cmd, core, vars, fd);
+			if (dup2(original_stdout, STDOUT_FILENO) == -1)
+			{
+				close(original_stdout);
+				error_handler_fd(fd[0], cmd);
+			}
+			close(original_stdout);
 		}
 		cmd = cmd->next;
 	}
-	
-	return ; //return the output?
+	return (output);
 }
 
 
-void	multi_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
+t_cmdtable *multi_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
 	t_cmdtable *tmp;
 	tmp = cmd;
-	int input;
-	int output;
+	int input = 0;
+	int output = 0;
 	
 	while (cmd)
 	{
@@ -221,16 +249,18 @@ void	multi_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
 			input++;
 		if (cmd->redir_type == 2 || cmd->redir_type == 20)
 			output++;
+		if (cmd->has_pipe_after == 1)
+			break ;
 		cmd = cmd->next;
 	}
 	cmd = tmp;
 	if (input != 0 && output != 0)
-		both_redirections(cmd, core, vars, fd);
+		return (both_redirections(cmd, core, vars, *fd));
 	else if (input != 0 && output == 0)
-		input_redirections(cmd, core, vars, fd);
+		return (input_redirections(cmd, core, vars, *fd));
 	else if (input == 0 && output != 0)
-		output_redirections(cmd, core, vars, fd);
-	return ;
+		return (output_redirections(cmd, core, vars, fd));
+	return (NULL);
 }
 
 void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
@@ -240,7 +270,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 	int		status = 0;
 
 	if (cmd->next != NULL)
-		multi_redirections(cmd, core, vars, fd);
+		cmd = multi_redirections(cmd, core, vars, fd);
 	if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
 		builtin_cmds(cmd, core);
 	else
@@ -261,6 +291,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 				absolute_path_finder(core, core->env, cmd->args);
 			else
 				path_finder(vars, core, core->env, cmd->args, 0);
+			exit(core->exit_status);
 		}
 		else
 		{
@@ -274,8 +305,6 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 
 void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
-	//int	status = 0
-	
 	if (pipe(fd) == -1)
 	{
 		perror("Pipe Failure");
@@ -295,6 +324,8 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		//waitpid(vars->childid, &status, 0);
 		//if (WIFEXITED(status))
 		//	core->exit_status = WEXITSTATUS(status);
+		if (cmd->next->redir_type != 0)
+			cmd->next = multi_redirections(cmd->next, core, vars, fd);
 		parent_pros(cmd->next, vars, core, fd);
 	}
 }
@@ -307,6 +338,8 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 
 	if (cmd->isbuiltin == 4)
 		builtin_cmds(cmd, core);
+	if (cmd->redir_type != 0)
+		cmd = multi_redirections(cmd, core, vars, fd);
 	second = fork();
 	if (second == -1)
 	{

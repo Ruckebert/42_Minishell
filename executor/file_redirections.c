@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:34:33 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/21 15:18:00 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/22 10:28:44 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	file_input(t_cmdtable *cmd, t_var *vars, int *fd)
 }
 
 void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
-{
+{	
 	vars->fdout = open(cmd->redir, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (vars->fdout == -1)
 		error_handler_fd(fd[0], cmd);
@@ -41,7 +41,7 @@ void	file_output(t_cmdtable *cmd, t_var *vars, int *fd)
 			error_handler_fd(fd[0], cmd);
 		}
 	}
-	close(vars->fdout);
+	close(vars->fdout);;
 }
 
 void	file_append(t_cmdtable *cmd, t_var *vars, int *fd)

@@ -1,0 +1,35 @@
+cat Makefile | ls > out
+cat out
+/bin/rm -f out
+<
+>
+>>
+|
+01c415
+01c4671
+02752e1
+02bd002
+063406
+builtins
+echo
+environment.c
+environment.o
+executor
+function.txt
+infile
+libft
+LICENSE
+main.c
+main.o
+Makefile
+minishell
+minishell.h
+mstest_output_2024-11-22_11.01.34
+myfile
+out
+parser
+tmp_redir_out
+to_do.txt
+tokenizer
+valgrind_like_this
+valgrind.supp
