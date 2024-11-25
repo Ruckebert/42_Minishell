@@ -6,15 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/22 14:24:57 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:04:51 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-//Note! that im not sure whether or not some of the error_handler from the original works with the new code
-//Note! 2 -> Alot of variables and variable inputs are gonna have to get changed when the data struct from the parser is somewhat complete
-//Note! Note to self dont wear the blue sweater anymore
 
 void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 {
@@ -79,10 +75,10 @@ void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 {
 	close(fd[0]);
-	//if (cmd->redir_type == 10 || cmd->redir_type == 30)
-	//	here_doc(cmd, core, STDIN_FILENO);
 	if (cmd->redir_type != 0 && cmd->redir_type != 10 && cmd->redir_type != 30)
 		redirctions(cmd, core, vars, fd);
+	//if (core->exit_status == 1)
+	//	exit(core->exit_status);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
 		error_handler_fd(fd[1], cmd);
 	close(fd[1]);
@@ -107,6 +103,8 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 	close(fd[0]);
 	if (cmd->redir_type != 0 && cmd->redir_type != 10 && cmd->redir_type != 30)
 		redirctions(cmd, core, vars, fd);
+	//if (core->exit_status == 1)
+	//	exit(core->exit_status);
 	if (cmd->isbuiltin == 1)
 		echo_cmd(cmd, core);
 	else if (cmd->isbuiltin > 1)
@@ -125,14 +123,13 @@ void	pipe_error(int *fd)
 	close(fd[1]);
 }
 
-
+//This needs work
 t_cmdtable *both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
 {
 	t_cmdtable *tmp;
 	t_cmdtable *output;
 	t_cmdtable *input;
 	int i = 0;
-	char *filename = NULL;
 	int original_stdout = dup(STDOUT_FILENO);
 	
 	while (cmd)
@@ -142,10 +139,10 @@ t_cmdtable *both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd
 		if (cmd->redir_type == 10 || cmd->redir_type == 30)
 		{
 			input = cmd;
-			if (filename != NULL)
-				unlink(filename);
-			free(filename);
-			filename = here_doc_tempfile(cmd, core, fd);
+			if (vars->filename != NULL)
+				unlink(vars->filename);
+			free(vars->filename);
+			vars->filename = here_doc_tempfile(cmd, core, fd);
 		}
 		if (cmd->redir_type == 2 || cmd->redir_type == 20)
 		{
@@ -155,7 +152,10 @@ t_cmdtable *both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd
 			else 
 				redirctions(cmd, core, vars, &fd);
 			if (dup2(original_stdout, STDOUT_FILENO) == -1)
+			{
 				close(original_stdout);
+				return (NULL);
+			}
 			close(original_stdout);
 		}
 		cmd = cmd->next;
@@ -167,18 +167,15 @@ t_cmdtable *both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd
 	if (input->redir_type == 1)
 		output->args[i] = ft_strdup(input->redir);
 	else 
-		output->args[i] = ft_strdup(filename);
+		output->args[i] = ft_strdup(vars->filename);
 	output->args[i + 1]  = NULL;
-	free(filename);
 	return (output);
 }
 
 t_cmdtable *input_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
 {
 	t_cmdtable *input;
-	char *filename = NULL;
-	vars->store = NULL;
-	
+
 	while (cmd)
 	{
 		if (cmd->redir_type == 1)
@@ -186,25 +183,24 @@ t_cmdtable *input_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int f
 		if (cmd->redir_type == 10 || cmd->redir_type == 30)
 		{
 			input = cmd;
-			if (filename != NULL)
-				unlink(filename);
-			free(filename);
-			filename = here_doc_tempfile(cmd, core, fd);
+			if (vars->filename != NULL)
+				unlink(vars->filename);
+			//free(vars->filename);
+			vars->filename = here_doc_tempfile(cmd, core, fd);
 		}
+		if (cmd->has_pipe_after == 1)
+			break ;
 		cmd = cmd->next;
 	}
 	if (input->redir_type == 10 || input->redir_type == 30)
 	{
-		input->redir = ft_strdup(filename);
+		input->redir = ft_strdup(vars->filename);
 		input->redir_type = 1;
 	}
 	else
 	{
-		if (filename != NULL)
-		{
-			unlink(filename);
-			free(filename);
-		}
+		if (vars->filename != NULL)
+			unlink(vars->filename);
 	}
 	return (input);
 }
@@ -230,6 +226,8 @@ t_cmdtable *output_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int 
 			}
 			close(original_stdout);
 		}
+		if (cmd->has_pipe_after == 1)
+			break ;
 		cmd = cmd->next;
 	}
 	return (output);
@@ -298,6 +296,8 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 			waitpid(second, &status, 0);
 			if (WIFEXITED(status))
 				core->exit_status = WEXITSTATUS(status);
+			if (vars->filename)
+				unlink(vars->filename);
 		}
 	}
 	return ;
@@ -320,12 +320,13 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		child_pros(cmd, vars, core, fd);
 	else
 	{
-		//Removed 
 		//waitpid(vars->childid, &status, 0);
 		//if (WIFEXITED(status))
 		//	core->exit_status = WEXITSTATUS(status);
 		if (cmd->next->redir_type != 0)
 			cmd->next = multi_redirections(cmd->next, core, vars, fd);
+		//ft_printf("%s\n", cmd->has_pipe_after);
+		//ft_printf("%s\n", cmd->next->args[0]);
 		parent_pros(cmd->next, vars, core, fd);
 	}
 }
@@ -339,7 +340,9 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 	if (cmd->isbuiltin == 4)
 		builtin_cmds(cmd, core);
 	if (cmd->redir_type != 0)
+	{
 		cmd = multi_redirections(cmd, core, vars, fd);
+	}
 	second = fork();
 	if (second == -1)
 	{
@@ -353,6 +356,8 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 		waitpid(second, &status, 0);
 		if (WIFEXITED(status))
 			core->exit_status = WEXITSTATUS(status);
+		if (vars->filename)
+			unlink(vars->filename);
 	}	
 }
 
