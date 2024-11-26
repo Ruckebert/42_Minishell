@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/25 10:15:35 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:20:27 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,11 @@ typedef struct s_var
 	char	*comm;
 	char	*full_comm;
 	char	*filename;
+	int		file_error;
 	int		fdin;
 	int		fdout;
 	int		childid;
+	
 }	t_var;
 
 /*Environment Functions*/
@@ -116,6 +118,7 @@ void	exit_com(t_data *core);
 void	builtin_cmds(t_cmdtable *cmd, t_data *core);
 
 /*Executor Functions*/
+int		pipe_checker(t_cmdtable *cmd);
 int		executor(t_cmdtable *cmd, t_data *core);
 void	error_handler(void);
 void	error_handler_split(char **split);
