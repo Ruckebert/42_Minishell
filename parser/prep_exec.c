@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/27 12:45:19 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:40:20 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,7 @@ t_token *get_args(t_cmdtable *cmd, t_token *token)
 		return (token->next);
 	i = 0;
 	curr = token;
-	if(is_START(curr))
-		curr = curr->next;
+
 	strnum = get_strnum(curr);
 	cmd->args = malloc(sizeof(char*) * (strnum + 1));
 	while(i < strnum)
@@ -158,23 +157,25 @@ void find_builtins(t_cmdtable *cmd)
 	{
 		if (curr->args && curr->args[0] != NULL) //checkthis
 		{
-		if (!ft_strcmp(curr->args[0], "echo"))
-			curr->isbuiltin = 1;
-		else if (!ft_strcmp(curr->args[0], "cd"))
-			curr->isbuiltin = 2;
-		else if (!ft_strcmp(curr->args[0], "pwd"))
-			curr->isbuiltin = 3;
-		else if (!ft_strcmp(curr->args[0], "export"))
-			curr->isbuiltin = 4;
-		else if (!ft_strcmp(curr->args[0], "unset"))
-			curr->isbuiltin = 5;
-		else if (!ft_strcmp(curr->args[0], "env"))
-			curr->isbuiltin = 6;
-		else if (!ft_strcmp(curr->args[0], "exit"))
-			curr->isbuiltin = 7;
+			if (!ft_strcmp(curr->args[0], "echo"))
+				curr->isbuiltin = 1;
+			else if (!ft_strcmp(curr->args[0], "cd"))
+				curr->isbuiltin = 2;
+			else if (!ft_strcmp(curr->args[0], "pwd"))
+				curr->isbuiltin = 3;
+			else if (!ft_strcmp(curr->args[0], "export"))
+				curr->isbuiltin = 4;
+			else if (!ft_strcmp(curr->args[0], "unset"))
+				curr->isbuiltin = 5;
+			else if (!ft_strcmp(curr->args[0], "env"))
+				curr->isbuiltin = 6;
+			else if (!ft_strcmp(curr->args[0], "exit"))
+				curr->isbuiltin = 7;
+			else
+				curr->isbuiltin = 0;
+		}
 		else
 			curr->isbuiltin = 0;
-		}
 		curr = curr->next;
 	}
 }
@@ -184,14 +185,17 @@ void copy_args(t_cmdtable *cmd)
 	int strnum;
 
 	strnum = 0;
-	while(cmd->prev->args[strnum])
-		strnum++;
-	cmd->args = malloc(sizeof(char*) * (strnum + 1));
-	strnum = 0;
-	while(cmd->prev->args[strnum])
+	if(cmd->prev->args)
 	{
-		cmd->args[strnum] = ft_strdup(cmd->prev->args[strnum]);
-		strnum++;
+		while(cmd->prev->args[strnum])
+			strnum++;
+		cmd->args = malloc(sizeof(char*) * (strnum + 1));
+		strnum = 0;
+		while(cmd->prev->args[strnum])
+		{
+			cmd->args[strnum] = ft_strdup(cmd->prev->args[strnum]);
+			strnum++;
+		}
 	}
 }
 
@@ -206,6 +210,8 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 
 	newcmd = ft_lstnew_cmd(NULL, 0);
 	ft_lstadd_back_cmd(&cmd, newcmd);
+	if(is_START(curr))
+		curr = curr->next;
 	while (!is_END(curr))
 	{
 		if (is_redir(curr))

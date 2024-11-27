@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/21 12:28:08 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:20:05 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ char	*parse_var_name(t_token *curr)
 	start++;
 	if (*start != ' ')
 	{
-		while (start[len] != ' ' && start[len] != '\0' && start[len] != '\'')
+		while (start[len] != ' ' && start[len] != '\0' && start[len] != '\'' && start[len] != '/')
 			len++;
 		res = malloc(len + 1);
 		ft_strlcpy(res, start, len + 1);
@@ -310,7 +310,7 @@ void expand_var_in_doublequote(t_token *token, char **env, t_data *core)
 				{
 					if (*(temp+1) == '?')
 					{
-					var = strdup("?"); 
+						var = strdup("?"); 
 					}
 					else
 					{
@@ -418,7 +418,7 @@ void handle_heredoc_delimiter(t_token *token)
 				remove_quotes(curr);
 				curr->type = 30;
 			}
-			while(curr->next->leading_space == 0)
+			while(curr->next->leading_space == 0 && !is_redir(curr->next) && curr->next->type != 3)
 			{
 				if (has_quote(curr))
 				{
@@ -426,12 +426,14 @@ void handle_heredoc_delimiter(t_token *token)
 					curr->type = 30;
 				}
 				if (has_quote(curr->next))
+				{
 					remove_quotes(curr->next);
+					curr->type = 30;
+				}
+				if (curr->next->type == 9)
+					curr->type = 30;
 				fuse_node_with_next(curr);
 			}
-			/*check if element has quotes and remove them
-			fuse node with next node
-			*/
 		}
 		curr = curr->next;
 	}
@@ -447,7 +449,7 @@ void	remove_empty_quotes(t_token *token)
 		if((curr->type == 5 || curr->type == 4) && ft_strlen(curr->word) == 2)
 		{
 			free(curr->word);
-			curr->word = strdup("");
+			curr->word = ft_strdup("");
 			curr->type = 9;
 		}
 		curr = curr->next;
@@ -455,39 +457,74 @@ void	remove_empty_quotes(t_token *token)
 
 }
 
+void split_vars_by_slash(t_token *token)
+{
+	t_token *curr;
+	char **arr;
+	int		i;
+	t_token *newtoken;
+	char *temp;
+	
+	i = 0;
+	curr = token;
+	while(curr)
+	{
+		if (curr->type == 8 && ft_strchr(curr->next->word,'/') )
+		{
+			arr = ft_split(curr->next->word, '/');
+			free(curr->next->word);
+			curr->next->word = arr[i];
+			curr = curr->next;
+			i++;
+			while (arr[i])
+			{
+				temp = ft_strjoin("/",arr[i]);
+				free(arr[i]);
+				newtoken = ft_lstnew(temp);
+				ft_lstadd_next(&curr, newtoken);
+				curr = curr->next;
+				i++;
+			}
+			free (arr);
+		}
+		curr = curr->next;
+	}
+}
 
 t_cmdtable  *parse(t_data *core, t_token *token)
 {
 //	printlist_both(token);
 
-//	printf("\033[0;31m 1 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 1 \033[0m\n");
+	printlist(token);
 
 	handle_heredoc_delimiter(token);
-//	printf("\033[0;31m 2 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 2 \033[0m\n");
+	printlist(token);
 	
+	split_vars_by_slash(token);
+	printf("\033[0;31m 2b \033[0m\n");
+	printlist(token);
 	
-
 	expand_var(token, core->env, core);
-//		printf("\033[0;31m 3 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 3 \033[0m\n");
+	printlist(token);
 
 	expand_var_in_doublequote(token, core->env, core);
-//		printf("\033[0;31m 4 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 4 \033[0m\n");
+	printlist(token);
 
 	remove_singlequotes(token);
-//		printf("\033[0;31m 5 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 5 \033[0m\n");
+	printlist(token);
 
 	fuse_all_0space_nodes(token);
-//		printf("\033[0;31m 6 \033[0m\n");
-//	printlist(token);
+	printf("\033[0;31m 6 \033[0m\n");
+	printlist(token);
 
 	//print_cmdtable(cmd);
-//	printf("\033[0;31mAFTER parse.c\033[0m\n");
-//	printlist(token);
+	printf("\033[0;31mAFTER parse.c\033[0m\n");
+	printlist(token);
 	return (prep_nodes_for_exec(token));
 //	handle_singlequote(token); remove this function
 
