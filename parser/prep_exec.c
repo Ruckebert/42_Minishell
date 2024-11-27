@@ -157,23 +157,25 @@ void find_builtins(t_cmdtable *cmd)
 	{
 		if (curr->args && curr->args[0] != NULL) //checkthis
 		{
-		if (!ft_strcmp(curr->args[0], "echo"))
-			curr->isbuiltin = 1;
-		else if (!ft_strcmp(curr->args[0], "cd"))
-			curr->isbuiltin = 2;
-		else if (!ft_strcmp(curr->args[0], "pwd"))
-			curr->isbuiltin = 3;
-		else if (!ft_strcmp(curr->args[0], "export"))
-			curr->isbuiltin = 4;
-		else if (!ft_strcmp(curr->args[0], "unset"))
-			curr->isbuiltin = 5;
-		else if (!ft_strcmp(curr->args[0], "env"))
-			curr->isbuiltin = 6;
-		else if (!ft_strcmp(curr->args[0], "exit"))
-			curr->isbuiltin = 7;
+			if (!ft_strcmp(curr->args[0], "echo"))
+				curr->isbuiltin = 1;
+			else if (!ft_strcmp(curr->args[0], "cd"))
+				curr->isbuiltin = 2;
+			else if (!ft_strcmp(curr->args[0], "pwd"))
+				curr->isbuiltin = 3;
+			else if (!ft_strcmp(curr->args[0], "export"))
+				curr->isbuiltin = 4;
+			else if (!ft_strcmp(curr->args[0], "unset"))
+				curr->isbuiltin = 5;
+			else if (!ft_strcmp(curr->args[0], "env"))
+				curr->isbuiltin = 6;
+			else if (!ft_strcmp(curr->args[0], "exit"))
+				curr->isbuiltin = 7;
+			else
+				curr->isbuiltin = 0;
+		}
 		else
 			curr->isbuiltin = 0;
-		}
 		curr = curr->next;
 	}
 }
@@ -185,15 +187,15 @@ void copy_args(t_cmdtable *cmd)
 	strnum = 0;
 	if(cmd->prev->args)
 	{
-	while(cmd->prev->args[strnum])
-		strnum++;
-	cmd->args = malloc(sizeof(char*) * (strnum + 1));
-	strnum = 0;
-	while(cmd->prev->args[strnum])
-	{
-		cmd->args[strnum] = ft_strdup(cmd->prev->args[strnum]);
-		strnum++;
-	}
+		while(cmd->prev->args[strnum])
+			strnum++;
+		cmd->args = malloc(sizeof(char*) * (strnum + 1));
+		strnum = 0;
+		while(cmd->prev->args[strnum])
+		{
+			cmd->args[strnum] = ft_strdup(cmd->prev->args[strnum]);
+			strnum++;
+		}
 	}
 }
 
