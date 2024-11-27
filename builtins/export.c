@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/20 13:35:04 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/26 14:48:10 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int		argv_checker(char **argv)
 				if (argv[i][j - 1] == '\0')
 					equal++;
 			}
-			if ((argv[i][j] == '^' || argv[i][j] == '!' || argv[i][j] == '~' || argv[i][j] == '#' || argv[i][j] == '@' || argv[i][j] == '*' || argv[i][j] == '-' || argv[i][j] == '.' || argv[i][j] == '{' || argv[i][j] == '}') && equal == 0)
+			if ((argv[i][j] == '+' | argv[i][j] == '?' || argv[i][j] == '^' || argv[i][j] == '!' || argv[i][j] == '~' || argv[i][j] == '#' || argv[i][j] == '@' || argv[i][j] == '*' || argv[i][j] == '-' || argv[i][j] == '.' || argv[i][j] == '{' || argv[i][j] == '}') && equal == 0)
 				error++;
 			j++;
 		}
