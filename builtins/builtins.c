@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/21 13:07:41 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:29:06 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,13 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 //BTW Do not look at this?
 //To Do: Exit command should free everything and then exit;
 //Need to free the cmd and everything in it
+//This is for handling certain cases of very big numbers
+unsigned long long ft_unsigned_ll_atoi()
+{
+
+	return (0);
+}
+
 void	exit_com(t_data *core)
 {
 	int i = 1;

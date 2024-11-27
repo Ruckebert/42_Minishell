@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:09:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/20 10:44:58 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/27 13:10:41 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	error_handler_fd(int fd, t_cmdtable *cmd)
 	close(fd);
 	ft_putstr_fd(cmd->redir, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
-	exit(1);
+	return ;
 }
 
 void	error_handler_split(char **split)
