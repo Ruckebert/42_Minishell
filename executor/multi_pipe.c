@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/26 15:10:41 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/27 12:57:47 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,46 +33,32 @@ int	cmd_count(t_cmdtable *cmd)
 	while (cmd)
 	{
 		i = 0;
-		while (cmd->args[i])
+		if (cmd->args)
 		{
-			i++;
-			total++;
-			break ;
+			while (cmd->args[i])
+			{
+				i++;
+				total++;
+				break ;
+			}
 		}
 		cmd = cmd->next;
 	}
 	//printf("Total:%d\n", total);
 	return (total);
 }
-void	first_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
-{
-	if (cmd->redir_type != 0 && cmd->redir_type != 10 && cmd->redir_type != 30)
-		redirctions(cmd, core, vars, &fd);
-	if (dup2(fd, STDOUT_FILENO) == -1)
-		error_handler_fd(fd, cmd);
-}
 
-void	last_pipe(t_var *vars, t_data *core, t_cmdtable *cmd, int fd)
+void multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 {
-	if (dup2(fd, STDIN_FILENO) == -1)
-		error_handler_fd(fd, cmd);
-	if (cmd->redir_type != 0 && cmd->redir_type != 10 && cmd->redir_type != 30)
-		redirctions(cmd, core, vars, &fd);
-}
-
-void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
-{
-	int		cmds = cmd_count(cmd);
-	int		status = 0;
-	int		i = 0;
-	int		j = 0;
-	int fd[cmds - 1][2];
-	int childids[cmds];
-	
-	t_cmdtable *current_cmd = cmd;
+    int status = 0;
+    int fd[2];
+    int prev_fd = -1;
+    int childids[cmd_count(cmd)];
+    int i = 0;
+	int j = 0;
+    t_cmdtable *current_cmd = cmd;
 	t_cmdtable *temp = current_cmd;
-	
-	//Here_doc file creation
+
 	while (current_cmd)
 	{
 		if (current_cmd->redir_type == 10 || current_cmd->redir_type == 30)
@@ -84,96 +70,76 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 	}
 	current_cmd = temp;
 	
-	//Piping process
-	i = 0;
-	j = 0;
-	while (i < cmds - 1)
-	{
-		if (pipe(fd[i]) == -1)
+    while (current_cmd)
+    {
+        if (current_cmd->next && pipe(fd) == -1)
+            error_handler();
+		if (current_cmd->redir_type != 0)
 		{
-			write(1, "ERROR\n", 7);
-			while (j < i)
-			{
-				close(fd[j][0]);
-				close(fd[j][1]);
-				j++;
-			}
-			error_handler();
-		}	
-		i++;
-	}
-
-	//Main Execution process
-	i = 0;
-	while (current_cmd)
-	{
-		vars->childid = fork();
-		if (vars->childid == -1)
-			error_handler();
-		if (vars->childid == 0)
-		{
-			if (i == 0) 
-			{
-				close(fd[i][0]);
-				first_pipe(vars, core, current_cmd, fd[i][1]);
-				//close(fd[i][1]);			
-			}
-			else if (i == cmds - 1) 
-			{
-				close(fd[i - 1][1]);
-				last_pipe(vars, core, current_cmd, fd[i - 1][0]);
-				//close(fd[i - 1][0]);
-			}
-			else 
-			{
-				close(fd[i - 1][1]);
-				close(fd[i][0]);
-				if (dup2(fd[i - 1][0], STDIN_FILENO) == -1)
-					error_handler_fd(fd[i - 1][0], current_cmd);
-				if (dup2(fd[i][1], STDOUT_FILENO) == -1)
-					error_handler_fd(fd[i][1], current_cmd);
-				if (current_cmd->redir_type != 0 && current_cmd->redir_type != 10 && current_cmd->redir_type != 30)
-					redirctions(current_cmd, core, vars, &fd[i][0]);
-				close(fd[i - 1][0]);
-				close(fd[i][1]);
-			}
-			closing_cmds_parent(cmds, fd);
-			if (current_cmd->isbuiltin == 1)
-				echo_cmd(current_cmd, core);
-			else if (current_cmd->isbuiltin != 0)
-				builtin_cmds(current_cmd, core);
-			else if (current_cmd->args[0] && ft_strchr(current_cmd->args[0], '/'))
-				absolute_path_finder(core, core->env, current_cmd->args);
-			else
-				path_finder(vars, core, envp, current_cmd->args, 0);
-			exit(core->exit_status);
+			current_cmd = multi_redirections(current_cmd, core, vars);
+			vars->file_error = 0;
 		}
-		childids[i] = vars->childid;
-		current_cmd = current_cmd->next;
-		i++;
-	}
-	closing_cmds_parent(cmds, fd);
-	
-	//Waiting for child processes
+        vars->childid = fork();
+        if (vars->childid == -1)
+            error_handler();
+        if (vars->childid == 0)
+        {
+			if (prev_fd != -1)
+            {
+                if (dup2(prev_fd, STDIN_FILENO) == -1)
+                    error_handler_fd(prev_fd, current_cmd);
+                close(prev_fd);
+				if (current_cmd->redir_type == 40)
+                	redirctions(current_cmd, core, vars, NULL);
+            }
+            if (current_cmd->next)
+            {
+                close(fd[0]);
+                if (dup2(fd[1], STDOUT_FILENO) == -1)
+                    error_handler_fd(fd[1], current_cmd);
+                close(fd[1]);
+            }
+            if (current_cmd->redir_type != 0)
+                redirctions(current_cmd, core, vars, NULL);
+			if (current_cmd->isbuiltin == 1)
+                echo_cmd(current_cmd, core);
+            else if (current_cmd->isbuiltin != 0)
+                builtin_cmds(current_cmd, core);
+            else if (current_cmd->args[0] && ft_strchr(current_cmd->args[0], '/'))
+                absolute_path_finder(core, core->env, current_cmd->args);
+            else
+                path_finder(vars, core, envp, current_cmd->args, 0);
+            exit(core->exit_status);
+        }
+        if (prev_fd != -1)
+            close(prev_fd);
+        if (current_cmd->next)
+        {
+            close(fd[1]);
+            prev_fd = fd[0];
+        }
+        childids[i++] = vars->childid;
+        current_cmd = current_cmd->next;
+    }
+    if (prev_fd != -1)
+		close(prev_fd);
+
 	j = -1;
-	while (++j < cmds)
-	{
+
+	while (++j < i)
 		waitpid(childids[j], &status, 0);
-	}
-	if (WIFEXITED(status))
+
+    if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
-	
-	//Removing files if its a here_doc
+
 	j = 0;
 	current_cmd = temp;
 	while (cmd)
 	{
-		if (cmd->redir_type == 10)
-		{
+		if (cmd->redir_type == 10 || cmd->redir_type == 30)
 			unlink(current_cmd->redir);
-		}
 		cmd = cmd->next;
 		current_cmd = current_cmd->next;
 	}
-	exit(core->exit_status);
+    exit(core->exit_status);
 }
