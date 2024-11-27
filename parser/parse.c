@@ -434,9 +434,6 @@ void handle_heredoc_delimiter(t_token *token)
 					curr->type = 30;
 				fuse_node_with_next(curr);
 			}
-			/*check if element has quotes and remove them
-			fuse node with next node
-			*/
 		}
 		curr = curr->next;
 	}

@@ -12,14 +12,18 @@
 
 #include "minishell.h"
 
-int g_state = -1;
+volatile sig_atomic_t interrupt_received = 0;
 
 void sig_handleINT(int signal)
 {
 	if(signal == SIGINT)
 	{
-		write(1, "PeePeeShell$ > ", 15);
-		write(1,"\n",1);
+		//ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();	
+		interrupt_received = 128 + signal;
 	}
 }
 
@@ -55,6 +59,12 @@ int main(int argc, char *argv[], char **env)
 	{
 		while (status == -1)
 		{
+			/*if (interrupt_received != 0)
+			{
+				core.exit_status = 130;
+				interrupt_received = 0;
+				continue;
+			}*/
 			core.line = readline("PeePeeShell$ > ");
 			//core.line = readline("");
 			if (core.line == NULL)
@@ -64,7 +74,7 @@ int main(int argc, char *argv[], char **env)
 				exit (core.exit_status);
 			}
 			add_history(core.line);
-    	  	token = tokenize(&core);
+			token = tokenize(&core);
 			if(token)
 			{
 				core.cmd = parse(&core, token);
