@@ -426,7 +426,12 @@ void handle_heredoc_delimiter(t_token *token)
 					curr->type = 30;
 				}
 				if (has_quote(curr->next))
+				{
 					remove_quotes(curr->next);
+					curr->type = 30;
+				}
+				if (curr->next->type == 9)
+					curr->type = 30;
 				fuse_node_with_next(curr);
 			}
 			/*check if element has quotes and remove them
