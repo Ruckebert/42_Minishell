@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/27 14:00:55 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/27 16:09:56 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 {
-	if (argv[0] == NULL)
+	if (argv == NULL)
 		return ;
 	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
 		i++;
@@ -105,7 +105,7 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd)
 		echo_cmd(cmd, core);
 	else if (cmd->isbuiltin > 1)
 		builtin_cmds(cmd, core);
-	else if (cmd->args[0] && ft_strchr(cmd->args[0], '/'))
+	else if (cmd->args && ft_strchr(cmd->args[0], '/'))
 		absolute_path_finder(core, core->env, cmd->args);
 	else
 		path_finder(vars, core, core->env, cmd->args, 0);
@@ -290,6 +290,7 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		pipe_error(fd);
 		return ;
 	}
+	//Put it in here
 	if (vars->childid == 0)
 	{
 		if (cmd->redir_type != 0)
@@ -311,21 +312,29 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 
 void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 {
+	char **files;
 	int		fd[2];
 	pid_t 	second;
+	int		i = 0;
 	int		status = 0;
 	t_cmdtable *current_cmd = cmd;
 	
-	while (cmd)
+	if (here_doc_counter(cmd) != 0)
 	{
-		if (cmd->redir_type == 10 || cmd->redir_type == 30)
+		files = ft_calloc(here_doc_counter(cmd), sizeof(char *));
+		while (cmd)
 		{
-			cmd->redir = ft_strdup(here_doc_tempfile(cmd, core, STDIN_FILENO));
-			cmd->redir_type  = 1;
+			if (cmd->redir_type == 10 || cmd->redir_type == 30)
+			{
+				cmd->redir = ft_strdup(here_doc_tempfile(cmd, core, STDIN_FILENO));
+				cmd->redir_type  = 1;
+				files[i] = ft_strdup(cmd->redir);
+				i++;
+			}
+			cmd = cmd->next;
 		}
-		cmd = cmd->next;
+		cmd = current_cmd;
 	}
-	cmd = current_cmd;
 
 	second = fork();
 	if (second == -1)
@@ -340,8 +349,15 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 		waitpid(second, &status, 0);
 		if (WIFEXITED(status))
 			core->exit_status = WEXITSTATUS(status);
-		if (vars->filename)
-			unlink(vars->filename);
+		i = 0;
+		if (files)
+		{
+			while (files[i])
+			{
+				unlink(files[i]);
+				i++;
+			}
+		}
 	}	
 }
 
