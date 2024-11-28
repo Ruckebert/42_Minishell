@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/27 16:07:43 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/28 09:44:13 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,18 @@ int	cmd_count(t_cmdtable *cmd)
 	while (cmd)
 	{
 		i = 0;
-		if (cmd->args)
+		total++;
+		if (cmd->has_pipe_after != 1)
 		{
-			while (cmd->args[i])
+			while (cmd)
 			{
-				i++;
-				total++;
-				break ;
+				if (cmd->has_pipe_after == 1)
+					break ;
+				cmd = cmd->next;
 			}
 		}
+		if (cmd == NULL)
+			break ;
 		cmd = cmd->next;
 	}
 	return (total);
