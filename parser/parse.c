@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/22 14:20:05 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/28 16:51:19 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,8 @@ void expand_var(t_token *token, char **env, t_data *core)
 	{
 		if (curr->type == 8 && curr->next->leading_space == 0)
 		{
+			if(ft_isalpha(curr->next->word[0]) || !ft_strcmp(curr->next->word,"_") || !ft_strcmp(curr->next->word,"?"))
+			{
 			if(!ft_strcmp(curr->next->word,"?"))
 			{
 				ft_lstdelone(curr->next);
@@ -198,11 +200,17 @@ void expand_var(t_token *token, char **env, t_data *core)
 				}
 				else
 				{
+					ft_lstdelone(curr->next);
+					curr = curr->prev;
+					ft_lstdelone(curr->next);
+					/*
 					remove_next_token(curr);
 					free(curr->word);
 					curr->word = malloc (1);
 					curr->word[0] = '\0';
+					*/
 				}
+			}
 			}
 		}
 		curr = curr->next;
@@ -266,6 +274,7 @@ void parsearound_var(t_token *curr, char **env, char *var, t_data *core)
 	}
 	else if (!is_expandable(var, env))
 	{
+		curr->next->leading_space = curr->leading_space;
 		res = ft_strjoin(beforevar, aftervar);
 		free(beforevar);
 		free(aftervar);
@@ -306,7 +315,7 @@ void expand_var_in_doublequote(t_token *token, char **env, t_data *core)
 			temp = ft_strchr(curr->word, '$');
 			while (temp != NULL)
 			{
-				if(*(temp+1) != ' ')
+				if(*(temp+1) != ' ' && (*(temp+1) == '_' || ft_isalpha(*(temp+1)) || *(temp+1) == '?'))
 				{
 					if (*(temp+1) == '?')
 					{
@@ -457,28 +466,93 @@ void	remove_empty_quotes(t_token *token)
 
 }
 
-void split_vars_by_slash(t_token *token)
+int has_var_sep(char *str)
+{
+	int	i;
+	
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (!ft_isalnum(str[i]))
+			return (i);
+		i++;
+	}
+	return (0);
+}
+
+char which_var_sep(char *str)
+{
+	int	i;
+	
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (!ft_isalnum(str[i]))
+			return (str[i]);
+		i++;
+	}
+	return ('\0');
+}
+
+void split_vars_by_sep(t_token *token)
+{
+	t_token *curr;
+	int		i;
+	t_token *newtoken;
+	char *str1;
+	char *str2;
+
+
+	i = 0;
+	curr = token;
+	while(curr)
+	{
+		if (curr->type == 8 && has_var_sep(curr->next->word) && ft_strlen(curr->next->word) != 1)
+		{
+			
+			i = has_var_sep(curr->next->word);
+			str1 = malloc (i + 1);
+			str2 = malloc (ft_strlen(&curr->next->word[i]) + 1);
+			ft_strlcpy(str1, curr->next->word, i + 1);
+			ft_strlcpy(str2, &curr->next->word[i], ft_strlen(&curr->next->word[i]) + 1);
+			free (curr->next->word);
+			curr->next->word = str1;
+			curr = curr->next;
+			newtoken = ft_lstnew(str2);
+			ft_lstadd_next(&curr, newtoken);
+		}
+		curr = curr->next;
+	}
+}
+
+/*
+void split_vars_by_sep(t_token *token)
 {
 	t_token *curr;
 	char **arr;
 	int		i;
 	t_token *newtoken;
 	char *temp;
-	
+	char *sep;
+
 	i = 0;
 	curr = token;
 	while(curr)
 	{
-		if (curr->type == 8 && ft_strchr(curr->next->word,'/') )
+		
+		if (curr->type == 8 && has_var_sep(curr->next->word) && ft_strlen(curr->next->word) != 1)
 		{
-			arr = ft_split(curr->next->word, '/');
+			sep = malloc(2);
+			sep[1] = '\0';
+			sep[0] = which_var_sep(curr->next->word);
+			arr = ft_split(curr->next->word, sep[0]);
 			free(curr->next->word);
 			curr->next->word = arr[i];
 			curr = curr->next;
 			i++;
 			while (arr[i])
 			{
-				temp = ft_strjoin("/",arr[i]);
+				temp = ft_strjoin(sep, arr[i]);
 				free(arr[i]);
 				newtoken = ft_lstnew(temp);
 				ft_lstadd_next(&curr, newtoken);
@@ -486,10 +560,11 @@ void split_vars_by_slash(t_token *token)
 				i++;
 			}
 			free (arr);
+			free (sep);
 		}
 		curr = curr->next;
 	}
-}
+}*/
 
 t_cmdtable  *parse(t_data *core, t_token *token)
 {
@@ -502,7 +577,7 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 //	printf("\033[0;31m 2 \033[0m\n");
 //	printlist(token);
 	
-	split_vars_by_slash(token);
+	split_vars_by_sep(token);
 //	printf("\033[0;31m 2b \033[0m\n");
 //	printlist(token);
 	
@@ -521,7 +596,10 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 	fuse_all_0space_nodes(token);
 //	printf("\033[0;31m 6 \033[0m\n");
 //	printlist(token);
-
+	if (first_token_directory(token, core) != 0)
+		return(NULL);
+	if (outredir_to_directory(token, core) != 0)
+		return(NULL);
 	//print_cmdtable(cmd);
 //	printf("\033[0;31mAFTER parse.c\033[0m\n");
 //	printlist(token);

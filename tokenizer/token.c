@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/22 12:37:59 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/28 10:30:08 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,82 +116,6 @@ void	combine_double_redirect(t_token	*token)
 		}
 		curr = curr->next;
 	}
-}
-
-int redir_before_end(t_token *token, t_data *core)
-{
-	t_token	*curr;
-
-	curr = token;
-	if (curr->type == 9999)
-		curr = curr->next;
-	while (curr)
-	{
-		if ((curr->type == 1 | curr->type == 2 | curr->type == 10 | curr->type == 20) && (curr->next->type == 9999))
-		{
-			printf("synthax error near newline\n");
-			core->exit_status = 2;
-			return (1);
-		}
-		curr = curr->next;
-	}
-	return (0);
-}
-
-int redir_before_redir(t_token *token, t_data *core)
-{
-	t_token	*curr;
-
-	curr = token;
-	if (curr->type == 9999)
-		curr = curr->next;
-	while (curr)
-	{
-		if ((curr->type == 1 | curr->type == 2 | curr->type == 10 | curr->type == 20)
-			&& (curr->next->type == 1 | curr->next->type == 2 | curr->next->type == 10 | curr->next->type == 20))
-		{
-			printf("synthax error near redirection \n");
-			core->exit_status = 2;
-			return (1);
-		}
-		curr = curr->next;
-	}
-	return (0);
-}
-/*this doesnt work here, need to do it after expansion
-int first_token_directory(t_token *token, t_data *core) 
-{
-    struct stat sb;
-
-printf("%s",token->next->word);
-	if (stat(token->next->word, &sb) == 0)
-	{
-		if (S_ISDIR(sb.st_mode))
-		{
-			core->exit_status = 126;
-			return (1);
-		}
-		else
-			return (0);
-	}
-	else
-	{
-		//exit properly idiot
-	perror("stat failed");
-	}
-
-    return 7;
-}
-*/
-int	synthax_check(t_token *token,t_data *core)
-{
-	int	check;
-
-	check = 0;
-	check += redir_before_end(token, core);
-	check += redir_before_redir(token, core);
-	
-	return (check);
 }
 
 t_token	*tokenize(t_data *core)

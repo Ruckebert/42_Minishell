@@ -1,7 +1,7 @@
 
 NAME = minishell
 
-SOURCE = main.c executor/here_doc.c executor/multi_pipe.c executor/file_redirections.c executor/executor.c executor/executor_utils.c environment.c
+SOURCE = main.c executor/here_doc.c executor/multi_pipe.c executor/file_redirections.c executor/executor.c executor/executor_utils.c environment.c synthax/synthax.c
 
 SOURCEBUILTINS = builtins/builtins.c builtins/cd_functions.c builtins/builtin_utils.c  builtins/export.c  builtins/unset.c
 
@@ -17,9 +17,9 @@ OBJECTSTOK = $(SOURCETOK:.c=.o)
 
 OBJECTSPARSE = $(SOURCEPARSE:.c=.o)
 
-CFLAGS = -Wall -Werror -Wextra -g -fsanitize=undefined
+CFLAGS = -Wall -Werror -Wextra -g
 
-COMP = cc -lreadline #-fsanitize=address
+COMP = cc -lreadline
 
 RM = rm -f
 

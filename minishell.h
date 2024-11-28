@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/27 13:27:50 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/28 12:24:44 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,11 @@ void	ft_lstadd_next(t_token **lst, t_token *new);
 
 //all tokenizer functions!
 t_token *tokenize(t_data *core);
-
+int	synthax_check(t_token *token,t_data *core);
+int first_token_directory(t_token *token, t_data *core);
+int redir_before_redir(t_token *token, t_data *core);
+int redir_before_end(t_token *token, t_data *core);
+int	outredir_to_directory(t_token *token, t_data *core);
 //isneeded
 int	is_myspace(char *c);
 int	issep(char *c);
