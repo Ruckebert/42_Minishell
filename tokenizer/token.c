@@ -118,6 +118,82 @@ void	combine_double_redirect(t_token	*token)
 	}
 }
 
+int redir_before_end(t_token *token, t_data *core)
+{
+	t_token	*curr;
+
+	curr = token;
+	if (curr->type == 9999)
+		curr = curr->next;
+	while (curr)
+	{
+		if ((curr->type == 1 | curr->type == 2 | curr->type == 10 | curr->type == 20) && (curr->next->type == 9999))
+		{
+			printf("synthax error near newline\n");
+			core->exit_status = 2;
+			return (1);
+		}
+		curr = curr->next;
+	}
+	return (0);
+}
+
+int redir_before_redir(t_token *token, t_data *core)
+{
+	t_token	*curr;
+
+	curr = token;
+	if (curr->type == 9999)
+		curr = curr->next;
+	while (curr)
+	{
+		if ((curr->type == 1 | curr->type == 2 | curr->type == 10 | curr->type == 20)
+			&& (curr->next->type == 1 | curr->next->type == 2 | curr->next->type == 10 | curr->next->type == 20))
+		{
+			printf("synthax error near redirection \n");
+			core->exit_status = 2;
+			return (1);
+		}
+		curr = curr->next;
+	}
+	return (0);
+}
+/*this doesnt work here, need to do it after expansion
+int first_token_directory(t_token *token, t_data *core) 
+{
+    struct stat sb;
+
+printf("%s",token->next->word);
+	if (stat(token->next->word, &sb) == 0)
+	{
+		if (S_ISDIR(sb.st_mode))
+		{
+			core->exit_status = 126;
+			return (1);
+		}
+		else
+			return (0);
+	}
+	else
+	{
+		//exit properly idiot
+	perror("stat failed");
+	}
+
+    return 7;
+}
+*/
+int	synthax_check(t_token *token,t_data *core)
+{
+	int	check;
+
+	check = 0;
+	check += redir_before_end(token, core);
+	check += redir_before_redir(token, core);
+	
+	return (check);
+}
+
 t_token	*tokenize(t_data *core)
 {
 	t_token	*token;
@@ -165,13 +241,12 @@ t_token	*tokenize(t_data *core)
 	newtoken->leading_space = 20;
 
 	combine_double_redirect(token);
-//	printf("\033[0;31mAFTER token.c\033[0m\n");
-//	printlist(token);
 
 	remove_empty_quotes(token);
 //	printf("\033[0;31m 2 \033[0m\n");
 //	printlist(token);
-	
-	
+		
+	if(synthax_check(token, core) != 0)
+		return (NULL);//free tokenlist here
 	return(token);
 }
