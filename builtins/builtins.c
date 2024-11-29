@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/26 15:29:06 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/28 14:41:10 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,33 +204,75 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 //To Do: Exit command should free everything and then exit;
 //Need to free the cmd and everything in it
 //This is for handling certain cases of very big numbers
-unsigned long long ft_unsigned_ll_atoi()
-{
 
-	return (0);
+unsigned long long ft_strtoull(const char *str, int *j)
+{
+	unsigned long long result = 0;
+	unsigned long long prev_result = 0;
+	int digit;
+	const char *temp = str;
+
+	while (*temp == ' ' || *temp == '\t' || *temp == '\n' || *temp == '\r' || *temp == '\v' || *temp == '\f')
+        temp++;
+	if (*temp == '+')
+		temp++;
+	while (*temp)
+	{
+		if (*temp >= '0' && *temp <= '9')
+    		digit = *temp - '0';
+        else if (*temp >= 'a' && *temp <= 'z')
+            digit = *temp - 'a' + 10;
+        else if (*temp >= 'A' && *temp <= 'Z')
+            digit = *temp - 'A' + 10;
+        else
+            break;
+        if (digit >= 10)
+            break;
+        prev_result = result;
+        result = result * 10 + digit;
+        if (result < prev_result)
+		{
+            *j = -1;
+            break;
+        }
+        temp++;
+    }
+	if (ft_strcmp((char *)str, "-9223372036854775809") == 0)
+		*j = -1;
+	if (result == 0 && ft_strlen(str) != 0 && *j != -1)
+	{
+		char *temp2;
+		temp = str;
+		if (temp[0] == '-')
+			temp++;
+		temp2 = ft_strtrim(temp, "0");
+		if (ft_strcmp(temp2, "9223372036854775809") == 0)
+			*j = -1;
+	}
+	if (result > 9223372036854775807)
+		*j = -1;
+	return (result);
 }
 
 void	exit_com(t_data *core)
 {
 	int i = 1;
 	int j = 0;
-	
-	//I need to check whether or not the value is numerical or not
-	//I should only check that their is a single argument, if its more then one display too many arguments and do NOT exit
-	//So if the number is positive and not over 256 then just print that number out
-	//If the number is positive and is over subtract it with 256
-	//For negative numbers subtract it with 256
-	//If the number is 256 the exit status is 0
-	
+	unsigned long long sign;
+	char *temp = NULL;
+
+	if (core->cmd->args[1])
+	{
+		temp = ft_strtrim(core->cmd->args[1], " ");
+		core->cmd->args[1] = ft_strdup(temp);
+	}
 	while (core->cmd->args[i])
 	{
 		j = 0;
+		sign = ft_strtoull(core->cmd->args[1], &j);
 		while (core->cmd->args[i][j])
 		{
-			if (core->cmd->args[i][j] == ' ')
-			{
-			}
-			else if (core->cmd->args[i][j] == '+' && j == 0)
+			if (core->cmd->args[i][j] == '+' && j == 0)
 			{
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
 					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
@@ -265,11 +307,6 @@ void	exit_com(t_data *core)
 	}
 	if (core->cmd->args[1] != NULL && core->cmd->args[1][0] == '\0')
 		j = -1;
-	//if (ft_atoi(core->cmd->args[1]) > ft_atoi("9223372036854775808"))
-	//	j = -1;
-	//if (ft_atoi(core->cmd->args[1]) < ft_atoi("-9223372036854775808"))
-	//	j = -1;
-	//checks whether or not all the requirements are met
 	if (j != -1 && core->cmd->args[1] == NULL)
 	{
 	}

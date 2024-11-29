@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/28 16:51:19 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/27 14:15:00 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -568,8 +568,6 @@ void split_vars_by_sep(t_token *token)
 
 t_cmdtable  *parse(t_data *core, t_token *token)
 {
-//	printlist_both(token);
-
 //	printf("\033[0;31m 1 \033[0m\n");
 //	printlist(token);
 
