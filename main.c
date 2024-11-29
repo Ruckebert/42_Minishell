@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/20 14:13:38 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/28 10:44:45 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ int main(int argc, char *argv[], char **env)
 			if(token)
 			{
 				core.cmd = parse(&core, token);
-				executor(core.cmd, &core);
+				if (core.cmd)
+					executor(core.cmd, &core);
 			}
 			free(core.line);
 			if (status >= 0)
