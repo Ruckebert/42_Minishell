@@ -240,7 +240,6 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 //	printlist(token);
 	free_token_list(token);
 //	printf("\033[0;31mAFTER prep_exec.c\033[0m\n");
-	//print_cmdtable(cmd);
 	return (cmd);
 //	free_cmdtable(&cmd);
 }

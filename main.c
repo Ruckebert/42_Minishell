@@ -12,18 +12,17 @@
 
 #include "minishell.h"
 
-volatile sig_atomic_t interrupt_received = 0;
+volatile sig_atomic_t g_interrupt_received = 0;
 
 void sig_handleINT(int signal)
 {
 	if(signal == SIGINT)
 	{
-		//ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();	
-		interrupt_received = 128 + signal;
+		g_interrupt_received = 128 + signal;
 	}
 }
 
@@ -33,13 +32,13 @@ int main(int argc, char *argv[], char **env)
 	t_token *token;
 
 	int error = -999;
-	struct sigaction SI;
+	struct sigaction SA_parent;
 
 	
-	SI.sa_handler = sig_handleINT;
-	SI.sa_flags = 0;
-	sigemptyset(&SI.sa_mask);
-	error = sigaction(SIGINT, &SI, NULL);
+	SA_parent.sa_handler = sig_handleINT;
+	SA_parent.sa_flags = 0;
+	sigemptyset(&SA_parent.sa_mask);
+	error = sigaction(SIGINT, &SA_parent, NULL);
 	if (error == -1)
 		exit (254);
 		
@@ -59,14 +58,12 @@ int main(int argc, char *argv[], char **env)
 	{
 		while (status == -1)
 		{
-			/*if (interrupt_received != 0)
+			if (g_interrupt_received != 0)
 			{
 				core.exit_status = 130;
-				interrupt_received = 0;
-				continue;
-			}*/
+				g_interrupt_received = 0;
+			}
 			core.line = readline("PeePeeShell$ > ");
-			//core.line = readline("");
 			if (core.line == NULL)
 			{
 				if (isatty(STDIN_FILENO))
@@ -81,7 +78,6 @@ int main(int argc, char *argv[], char **env)
 				executor(core.cmd, &core);
 			}
 			free(core.line);
-			//printf("Exit Status: %d\n", core.exit_status);
 			if (status >= 0)
 				exit(core.exit_status);
 		}
