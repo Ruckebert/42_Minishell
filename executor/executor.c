@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/28 12:54:02 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/29 10:37:36 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,7 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 
 void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 {
-	char **files;
+	char **files = NULL;
 	int		fd[2];
 	pid_t 	second;
 	int		i = 0;
