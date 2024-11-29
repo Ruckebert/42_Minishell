@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/27 13:27:50 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/27 14:49:50 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_var
 	char	*comm;
 	char	*full_comm;
 	char	*filename;
+	char	*filename2;
 	int		file_error;
 	int		fdin;
 	int		fdout;
@@ -118,6 +119,7 @@ void	exit_com(t_data *core);
 void	builtin_cmds(t_cmdtable *cmd, t_data *core);
 
 /*Executor Functions*/
+int			here_doc_counter(t_cmdtable *cmd);
 int			pipe_checker(t_cmdtable *cmd);
 int			executor(t_cmdtable *cmd, t_data *core);
 void		error_handler(void);

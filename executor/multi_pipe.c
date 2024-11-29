@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/27 12:57:47 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/28 09:44:13 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,43 +33,66 @@ int	cmd_count(t_cmdtable *cmd)
 	while (cmd)
 	{
 		i = 0;
-		if (cmd->args)
+		total++;
+		if (cmd->has_pipe_after != 1)
 		{
-			while (cmd->args[i])
+			while (cmd)
 			{
-				i++;
-				total++;
-				break ;
+				if (cmd->has_pipe_after == 1)
+					break ;
+				cmd = cmd->next;
 			}
 		}
+		if (cmd == NULL)
+			break ;
 		cmd = cmd->next;
 	}
-	//printf("Total:%d\n", total);
+	return (total);
+}
+
+int	here_doc_counter(t_cmdtable *cmd)
+{
+	int total;
+
+	total = 0;
+	while (cmd)
+	{
+		if (cmd->redir_type == 10 || cmd->redir_type == 30)
+			total++;
+		cmd = cmd->next;
+	}
 	return (total);
 }
 
 void multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 {
+	char **files = NULL;
     int status = 0;
     int fd[2];
     int prev_fd = -1;
-    int childids[cmd_count(cmd)];
+    int childids[cmd_count(cmd) + 1];
     int i = 0;
-	int j = 0;
+	int j;
     t_cmdtable *current_cmd = cmd;
 	t_cmdtable *temp = current_cmd;
 
-	while (current_cmd)
+	if (here_doc_counter(cmd) != 0)
 	{
-		if (current_cmd->redir_type == 10 || current_cmd->redir_type == 30)
+		files = ft_calloc(here_doc_counter(cmd), sizeof(char *));
+		while (current_cmd)
 		{
-			current_cmd->redir = ft_strdup(here_doc_tempfile(current_cmd, core, STDIN_FILENO));
-			current_cmd->redir_type  = 1;
+			if (current_cmd->redir_type == 10 || current_cmd->redir_type == 30)
+			{
+				current_cmd->redir = ft_strdup(here_doc_tempfile(current_cmd, core, STDIN_FILENO));
+				current_cmd->redir_type  = 1;
+				files[i] = ft_strdup(current_cmd->redir);
+				i++;
+			}
+			current_cmd = current_cmd->next;
 		}
-		current_cmd = current_cmd->next;
+		current_cmd = temp;
 	}
-	current_cmd = temp;
-	
+	i = 0;
     while (current_cmd)
     {
         if (current_cmd->next && pipe(fd) == -1)
@@ -105,15 +128,15 @@ void multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
                 echo_cmd(current_cmd, core);
             else if (current_cmd->isbuiltin != 0)
                 builtin_cmds(current_cmd, core);
-            else if (current_cmd->args[0] && ft_strchr(current_cmd->args[0], '/'))
+            else if (current_cmd->args && ft_strchr(current_cmd->args[0], '/'))
                 absolute_path_finder(core, core->env, current_cmd->args);
             else
                 path_finder(vars, core, envp, current_cmd->args, 0);
-            exit(core->exit_status);
+			exit(core->exit_status);
         }
         if (prev_fd != -1)
             close(prev_fd);
-        if (current_cmd->next)
+		if (current_cmd->next)
         {
             close(fd[1]);
             prev_fd = fd[0];
@@ -125,21 +148,21 @@ void multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 		close(prev_fd);
 
 	j = -1;
-
-	while (++j < i)
-		waitpid(childids[j], &status, 0);
-
-    if (WIFEXITED(status))
+	while (++j <= i)
+	{
+		waitpid(childids[++j], &status, 0);
+	}
+	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
 
-	j = 0;
-	current_cmd = temp;
-	while (cmd)
-	{
-		if (cmd->redir_type == 10 || cmd->redir_type == 30)
-			unlink(current_cmd->redir);
-		cmd = cmd->next;
-		current_cmd = current_cmd->next;
+	if (files)
+	{	
+		j = 0;
+		while (files[j])
+		{
+			unlink(files[j]);
+			j++;
+		}
 	}
-    exit(core->exit_status);
+	exit(core->exit_status);
 }
