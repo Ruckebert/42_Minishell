@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/28 09:44:13 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:49:14 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 		close(prev_fd);
 
 	j = -1;
-	while (++j <= i)
+	while (++j < i)
 	{
 		waitpid(childids[++j], &status, 0);
 	}
@@ -156,13 +156,15 @@ void multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
 		core->exit_status = WEXITSTATUS(status);
 
 	if (files)
-	{	
+	{
+		//vars->filename2 = files;
 		j = 0;
 		while (files[j])
 		{
 			unlink(files[j]);
 			j++;
 		}
+		
 	}
 	exit(core->exit_status);
 }

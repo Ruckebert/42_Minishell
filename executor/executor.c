@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/28 12:54:02 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:48:11 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
 		i++;
 	if (!envp[i])
+	{
+		if ((access(argv[0], R_OK) == 0))
+			execve(argv[0], argv, envp);
 		error_handler();
+	}
 	vars->store = ft_split(envp[i] + 5, ':');
 	if (!vars->store)
 		error_handler();
@@ -36,6 +40,8 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 		execve(vars->full_comm, argv, envp);
 		free(vars->full_comm);
 	}
+	//if ((access(argv[0], R_OK) == 0))
+	//	execve(argv[0], argv, envp);
 	write(2,argv[0],ft_strlen(argv[0]));
 	write(2,": command not found\n",20);
 	//ft_printf("%s: command not found\n", argv[0]);
@@ -312,7 +318,7 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 
 void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 {
-	char **files;
+	char **files = NULL;
 	int		fd[2];
 	pid_t 	second;
 	int		i = 0;
@@ -383,6 +389,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	int		fd[2];
 	t_var	vars;
 	pid_t 	second;
+	//int 	j = 0;
 	int		status = 0;
 
 	if (pipe_checker(cmd) == 0)
@@ -399,6 +406,15 @@ int	executor(t_cmdtable *cmd, t_data *core)
 		else
 		{
 			waitpid(second, &status, 0);
+			/*if (vars->filename2)
+			{
+				j = 0;
+				while (vars->filename2[j])
+				{
+					unlink(vars->filename2[j]);
+					j++;
+				}
+			}*/
 			if (WIFEXITED(status))
 				core->exit_status = WEXITSTATUS(status);
 		}

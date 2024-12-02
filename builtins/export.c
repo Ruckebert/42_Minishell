@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/28 15:34:35 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:48:50 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	bubble_sort(t_data *core)
 		i = 0;
 		while (core->export_env[i + 1])
 		{
+			//ft_printf("%s\n", core->export_env[i]);
 			if (ft_strcmp(core->export_env[i], core->export_env[i + 1]) > 0)
 			{
 				temp_str = core->export_env[i];
@@ -142,27 +143,31 @@ int		argv_checker(char **argv)
 	return (0);
 }
 
-int already_in_temp(char **temp, char *argv)
+int check_dup(char **argv, char **temp, int k, int j) 
 {
 	int i = 0;
-	int found = 0;
-	int var_len;
-	int	env_len;
+	int len_var = len_env_var(argv, j);
 
-
-	var_len = 0;
-	env_len = 0;
-	while (temp[i])
+	while (argv[i])
 	{
-		if (ft_strncmp(temp[i], argv, var_len) == 0)
+		if (i >= j)
 		{
-			temp[i] = ft_strdup(argv);
-			found = 1;
-			break ;
+			i++;
+			continue ;
+		}
+		else if (ft_strncmp(argv[j], argv[i], len_var) == 0)
+		{
+			if (ft_strcmp(argv[j], argv[i]) != 0)
+			{
+				if (argv_checker(argv) == 1)
+					return (-1);	
+				temp[k - i] = ft_strdup(argv[j]);
+				return (1);
+			}
 		}
 		i++;
 	}
-	return (found);
+    return (0);
 }
 
 char	**new_exo_env(char **env, char **argv, int argc, int count)
@@ -170,7 +175,7 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 	int j;
 	int i;
 	int found;
-	char **temp;
+	char **temp = NULL;
 	
 	temp = malloc((argc + count) * sizeof(char *));
 	if (!temp)
@@ -188,12 +193,14 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 	{
 		found = 0;
 		found = check_dup_exo(env, argv, temp, j);
+		if (found != 1)
+			found = check_dup(argv, temp, i, j);
+		if (found == -1)
+			return (NULL);
 		if (!found)
 		{
 			if (argv_checker(argv) == 1)
 				return (NULL);
-			if (already_in_temp(temp, argv[j]) == 1)
-				continue ;
 			temp[i] = ft_strdup(argv[j]);
 			if (!temp[i])
 				reverse_free(i, temp);

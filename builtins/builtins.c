@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/28 14:41:10 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:05:32 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	cd_com(t_cmdtable *cmd, t_data *core)
 {
 	char *old_pwd;
 
+	core->exit_status = 0;
 	old_pwd = getcwd(NULL, 0);
 	if (cmd->args[2] != NULL)
 	{
@@ -89,6 +90,33 @@ void	simple_free(char **str)
 	free(str);
 }
 
+
+int already_in_temp(char **temp, char *argv)
+{
+	int i = 0;
+	int found = 0;
+	int var_len;
+	int	env_len;
+
+
+	var_len = 0;
+	env_len = 0;
+	if (temp[1] == NULL)
+		return (1);
+	while (temp[i])
+	{
+		var_len = len_env_var(&argv, i);
+		if (ft_strncmp(temp[i], argv, var_len) == 0)
+		{
+			temp[i] = ft_strdup(argv);
+			found = 1;
+			break ;
+		}
+		i++;
+	}
+	return (found);
+}
+
 void	export(t_cmdtable *cmd, t_data *core)
 {
 	int i = 0;
@@ -105,10 +133,38 @@ void	export(t_cmdtable *cmd, t_data *core)
 		print_exo_env(core);
 	else if (count > 1)
 	{	
+
+		int j = 1;
+		int k = 0;
+		int sub = 0;
+		int var_len = 0;
+
+		while (cmd->args[j])
+		{
+			var_len = len_env_var(cmd->args, j);
+			k = 0;
+			while (cmd->args[k])
+			{
+				if (k == j)
+					break ;
+				if (ft_strncmp(cmd->args[k], cmd->args[j], var_len) == 0)
+				{
+					if (ft_strcmp(cmd->args[k], cmd->args[j]) != 0)
+					{
+						sub++;
+						break ;
+					}
+				}
+				k++;
+			}
+			j++;
+		}
+		j -= sub;
+		count = j;
 		temp = new_exo_env(core->export_env, cmd->args, i, count);
 		if (!temp)
 		{
-			core->exit_status = 1; //An error message has to printed
+			core->exit_status = 1;
 			write(2, "Error: Enviornment is Not Sexy Enough\n", 39);
 			return ;
 		}
@@ -150,7 +206,7 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 	i = 1;
 	j = 1;
 	no = 0;
-	
+	core->exit_status = 0;
 	if (cmd->args[i] == NULL)
 		no = 0;
 	else if (ft_strncmp(cmd->args[i], "-n", 2) == 0)
