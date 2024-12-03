@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/28 10:30:08 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/11/29 12:53:48 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,11 +163,17 @@ t_token	*tokenize(t_data *core)
 	ft_lstadd_back(&token, newtoken);
 	newtoken->type = 9999;
 	newtoken->leading_space = 20;
-
+	
+//	printf("\033[0;31m 0-1 \033[0m\n");
+//	printlist(token);
 	combine_double_redirect(token);
 
+	
+//	printf("\033[0;31m 0-2 \033[0m\n");
+//	printlist(token);
+	
 	remove_empty_quotes(token);
-//	printf("\033[0;31m 2 \033[0m\n");
+//	printf("\033[0;31m 0-3 \033[0m\n");
 //	printlist(token);
 		
 	if(synthax_check(token, core) != 0)

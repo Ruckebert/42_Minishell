@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/02 15:11:49 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:14:25 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,21 +194,21 @@ void expand_var(t_token *token, char **env, t_data *core)
 				if (is_expandable(curr->next->word, env))
 				{
 					value = get_env_var(curr->next->word, env);
+					if (value[0] == ' ' || value[0] == '\t')
+						curr->leading_space = 1;
+					if (value[ft_strlen(value) - 1] == ' ' || value[ft_strlen(value) - 1] == '\t')
+						curr->next->next->leading_space = 1;
 					substitute_node_word(curr, value);		
 					if (ft_strchr(curr->word, ' ') != NULL)
 						split_to_token(curr);
 				}
 				else
 				{
+					if (curr->next->next->type != 9999)
+						curr->next->next->leading_space = curr->leading_space;
 					ft_lstdelone(curr->next);
 					curr = curr->prev;
 					ft_lstdelone(curr->next);
-					/*
-					remove_next_token(curr);
-					free(curr->word);
-					curr->word = malloc (1);
-					curr->word[0] = '\0';
-					*/
 				}
 			}
 			}
@@ -473,7 +473,7 @@ int has_var_sep(char *str)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (!ft_isalnum(str[i]))
+		if (!ft_isalnum(str[i]) && (str[i] != '_' ))
 			return (i);
 		i++;
 	}
@@ -502,7 +502,6 @@ void split_vars_by_sep(t_token *token)
 	char *str1;
 	char *str2;
 
-
 	i = 0;
 	curr = token;
 	while(curr)
@@ -525,46 +524,26 @@ void split_vars_by_sep(t_token *token)
 	}
 }
 
-/*
-void split_vars_by_sep(t_token *token)
+int redir_before_nonexpandable(t_token *token, t_data *core)
 {
-	t_token *curr;
-	char **arr;
-	int		i;
-	t_token *newtoken;
-	char *temp;
-	char *sep;
-
-	i = 0;
+	t_token	*curr;
+	
 	curr = token;
-	while(curr)
+	while (curr && curr->next)
 	{
-		
-		if (curr->type == 8 && has_var_sep(curr->next->word) && ft_strlen(curr->next->word) != 1)
+		if (is_redir(curr) && curr->next->type == 8 && !is_expandable(curr->next->next->word, core->env))
 		{
-			sep = malloc(2);
-			sep[1] = '\0';
-			sep[0] = which_var_sep(curr->next->word);
-			arr = ft_split(curr->next->word, sep[0]);
-			free(curr->next->word);
-			curr->next->word = arr[i];
-			curr = curr->next;
-			i++;
-			while (arr[i])
-			{
-				temp = ft_strjoin(sep, arr[i]);
-				free(arr[i]);
-				newtoken = ft_lstnew(temp);
-				ft_lstadd_next(&curr, newtoken);
-				curr = curr->next;
-				i++;
-			}
-			free (arr);
-			free (sep);
+			ft_putstr_fd(curr->next->word, 2);
+			ft_putstr_fd(curr->next->next->word, 2);
+			ft_putstr_fd(": ", 2);
+			ft_putstr_fd("ambiguous redirect\n", 2);
+			core->exit_status = 1;
+			return (1);
 		}
 		curr = curr->next;
 	}
-}*/
+	return (0);
+}
 
 t_cmdtable  *parse(t_data *core, t_token *token)
 {
@@ -578,7 +557,10 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 	split_vars_by_sep(token);
 //	printf("\033[0;31m 2b \033[0m\n");
 //	printlist(token);
-	
+
+	if (redir_before_nonexpandable(token, core) != 0)
+		return (NULL);
+		
 	expand_var(token, core->env, core);
 //	printf("\033[0;31m 3 \033[0m\n");
 //	printlist(token);
