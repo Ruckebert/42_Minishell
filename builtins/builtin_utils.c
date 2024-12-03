@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:34:16 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/18 13:34:21 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/02 11:49:03 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_strcmp(char *s1, char *s2)
 		s2++;
 	}
 	if ((*s1 != *s2))
-		return (1);
+		return (*s1 - *s2);
 	return (0);
 }
 

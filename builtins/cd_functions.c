@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:22:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/20 10:21:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/11/29 11:28:37 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	cd_empty(char *old_pwd, t_data *core)
 
 void	normal_cd(char *old_pwd, t_cmdtable *cmd, t_data *core)
 {
+	struct stat fileStat;
+
 	free(core->direct);
 	core->direct = ft_strdup(cmd->args[1]);
 	if (access(core->direct, sizeof(char)) == 0)
@@ -68,9 +70,18 @@ void	normal_cd(char *old_pwd, t_cmdtable *cmd, t_data *core)
 	}
 	else
 	{
-		write(2, "cd: ", 4);
-		write(2, core->direct, ft_strlen(core->direct));
-		write(2, ": No such file or directory\n", 29);
+		if (stat(cmd->args[1], &fileStat) == 0)
+		{
+			write(2, "cd: ", 4);
+			write(2, core->direct, ft_strlen(core->direct));
+			write(2, ": Permission deined\n", 29);
+		}
+		else
+		{
+			write(2, "cd: ", 4);
+			write(2, core->direct, ft_strlen(core->direct));
+			write(2, ": No such file or directory\n", 29);
+		}
 		//ft_printf("cd: %s: no such file or directory\n", core->direct);
 		core->exit_status = 1;
 	}
