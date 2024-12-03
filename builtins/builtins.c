@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/02 15:05:32 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/03 13:22:28 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,45 +77,36 @@ void	env(t_data *core)
 	return ;
 }
 
-void	simple_free(char **str)
+//This is for export
+int	dup_malloc_count(t_cmdtable *cmd, int j, int k, int sub)
 {
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-}
-
-
-int already_in_temp(char **temp, char *argv)
-{
-	int i = 0;
-	int found = 0;
 	int var_len;
-	int	env_len;
-
 
 	var_len = 0;
-	env_len = 0;
-	if (temp[1] == NULL)
-		return (1);
-	while (temp[i])
+	while (cmd->args[j])
 	{
-		var_len = len_env_var(&argv, i);
-		if (ft_strncmp(temp[i], argv, var_len) == 0)
+		var_len = len_env_var(cmd->args, j);
+		k = 0;
+		while (cmd->args[k])
 		{
-			temp[i] = ft_strdup(argv);
-			found = 1;
-			break ;
+			if (k == j)
+				break ;
+			if (ft_strncmp(cmd->args[k], cmd->args[j], var_len) == 0)
+			{
+				if (ft_strcmp(cmd->args[k], cmd->args[j]) != 0)
+				{
+					sub++;
+					break ;
+				}
+			}
+			k++;
 		}
-		i++;
+		j++;
 	}
-	return (found);
+	j -= sub;
+	return (j);
 }
+
 
 void	export(t_cmdtable *cmd, t_data *core)
 {
@@ -133,34 +124,7 @@ void	export(t_cmdtable *cmd, t_data *core)
 		print_exo_env(core);
 	else if (count > 1)
 	{	
-
-		int j = 1;
-		int k = 0;
-		int sub = 0;
-		int var_len = 0;
-
-		while (cmd->args[j])
-		{
-			var_len = len_env_var(cmd->args, j);
-			k = 0;
-			while (cmd->args[k])
-			{
-				if (k == j)
-					break ;
-				if (ft_strncmp(cmd->args[k], cmd->args[j], var_len) == 0)
-				{
-					if (ft_strcmp(cmd->args[k], cmd->args[j]) != 0)
-					{
-						sub++;
-						break ;
-					}
-				}
-				k++;
-			}
-			j++;
-		}
-		j -= sub;
-		count = j;
+		count = dup_malloc_count(cmd, 1, 0, 0);
 		temp = new_exo_env(core->export_env, cmd->args, i, count);
 		if (!temp)
 		{
@@ -256,59 +220,10 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 	exit(core->exit_status);
 }
 
-//BTW Do not look at this?
+//BTW Do not look at this? MArtin i know you are looking at this you dirty dog
 //To Do: Exit command should free everything and then exit;
 //Need to free the cmd and everything in it
 //This is for handling certain cases of very big numbers
-
-unsigned long long ft_strtoull(const char *str, int *j)
-{
-	unsigned long long result = 0;
-	unsigned long long prev_result = 0;
-	int digit;
-	const char *temp = str;
-
-	while (*temp == ' ' || *temp == '\t' || *temp == '\n' || *temp == '\r' || *temp == '\v' || *temp == '\f')
-        temp++;
-	if (*temp == '+')
-		temp++;
-	while (*temp)
-	{
-		if (*temp >= '0' && *temp <= '9')
-    		digit = *temp - '0';
-        else if (*temp >= 'a' && *temp <= 'z')
-            digit = *temp - 'a' + 10;
-        else if (*temp >= 'A' && *temp <= 'Z')
-            digit = *temp - 'A' + 10;
-        else
-            break;
-        if (digit >= 10)
-            break;
-        prev_result = result;
-        result = result * 10 + digit;
-        if (result < prev_result)
-		{
-            *j = -1;
-            break;
-        }
-        temp++;
-    }
-	if (ft_strcmp((char *)str, "-9223372036854775809") == 0)
-		*j = -1;
-	if (result == 0 && ft_strlen(str) != 0 && *j != -1)
-	{
-		char *temp2;
-		temp = str;
-		if (temp[0] == '-')
-			temp++;
-		temp2 = ft_strtrim(temp, "0");
-		if (ft_strcmp(temp2, "9223372036854775809") == 0)
-			*j = -1;
-	}
-	if (result > 9223372036854775807)
-		*j = -1;
-	return (result);
-}
 
 void	exit_com(t_data *core)
 {
@@ -359,7 +274,9 @@ void	exit_com(t_data *core)
 		}
 		if (j == -1)
 			break ;
-		i++;	
+		i++;
+		if (i == 2)
+			break ;
 	}
 	if (core->cmd->args[1] != NULL && core->cmd->args[1][0] == '\0')
 		j = -1;
@@ -384,7 +301,7 @@ void	exit_com(t_data *core)
 		write(2, "exit: ", 7);
 		write(2, core->cmd->args[1], ft_strlen(core->cmd->args[1]));
 		write(2, ": numeric arugment required\n", 29);
-		core->exit_status = 2; //Change to the correct exit status
+		core->exit_status = 2;
 	}
 	
 	//Frees everything and exits

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:34:33 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/27 15:34:02 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:14:43 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		core->exit_status = 1;
 		exit (core->exit_status);
 	}
-	if (cmd->args[0] != NULL && vars->file_error != 1)
+	if (cmd->args && vars->file_error != 1)
 	{
 		if (dup2(vars->fdout, STDOUT_FILENO) == -1)
 		{
@@ -72,7 +72,7 @@ void	file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		core->exit_status = 1;
 		exit (core->exit_status);
 	}
-	if (cmd->args[0] != NULL)
+	if (cmd->args && vars->file_error != 1)
 	{
 		if (dup2(vars->fdout, STDOUT_FILENO) == -1)
 		{

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/19 15:25:06 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/03 10:45:10 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char	**shellvl(int i, char **env, char **new_env)
 	int		temp_num;
 
 	temp_num = ft_atoi(env[i] + 6);
-	temp_num++;
 	temp = ft_itoa(temp_num);
 	if (!temp)
 		return (free_environment(new_env, i));
