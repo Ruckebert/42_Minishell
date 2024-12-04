@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/03 15:00:22 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:21:03 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,7 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
 		i++;
 	if (!envp[i])
-	{
-		//in this case the path does not exist
-		if ((access(argv[0], R_OK) == 0))
-			execve(argv[0], argv, envp);
-		write(2,argv[0],ft_strlen(argv[0]));
-		write(2, ": No such file or directory\n", 29);
-		exit(1);
-	}
+		absolute_path_finder(core, envp, argv);
 	vars->store = ft_split(envp[i] + 5, ':');
 	if (!vars->store)
 		error_handler();
@@ -50,12 +43,7 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 		free(vars->full_comm);
 	}
 	if (ft_strlen(envp[store]) <= 5)
-	{
-		if ((access(argv[0], R_OK) == 0))
-			execve(argv[0], argv, envp);
-		write(2,argv[0],ft_strlen(argv[0]));
-		write(2, ": No such file or directory\n", 29);
-	}
+		absolute_path_finder(core, envp, argv);
 	else
 	{
 		write(2,argv[0],ft_strlen(argv[0]));
@@ -68,11 +56,24 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 
 void	absolute_path_finder(t_data *core, char **envp, char **argv)
 {
+	struct stat fileStat;
+	
 	if (access(argv[0], R_OK) == 0)
 		execve(argv[0], argv, envp);
-	write(2,argv[0],ft_strlen(argv[0]));
-	write(2,": command not found\n",20);
-	core->exit_status = 127;
+	if (stat(argv[0], &fileStat) == 0)
+	{
+		write(2,argv[0],ft_strlen(argv[0]));
+		write(2, ": Permission deined\n", 21);
+		core->exit_status = 126;
+	}
+	else
+	{
+		write(2,argv[0],ft_strlen(argv[0]));
+		write(2, ": No such file or directory\n", 29);
+		core->exit_status = 127;
+	}
+	//write(2,argv[0],ft_strlen(argv[0]));
+	//write(2,": command not found\n",20);
 	exit(core->exit_status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/03 16:11:42 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:10:46 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ t_cmdtable *return_pipe(t_cmdtable *cmd)
 
 void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
+	//try to make this into one general function FOR MARTIN
+	int		status = 0;
+	
 	if (pipe(fd) == -1)
 	{
 		perror("Pipe Failure");
@@ -84,10 +87,16 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			cmd = multi_redirections(cmd, core, vars);
 		vars->file_error = 0;
 		child_pros(cmd, vars, core, fd);
+		exit(core->exit_status);
 	}
-	else
-	{ 
-		close(fd[1]);
+	vars->childid2 = fork();
+	if (vars->childid2 == -1)
+	{
+		pipe_error(fd);
+		return ;
+	}
+	if (vars->childid2 == 0)
+	{
 		cmd = return_pipe(cmd);
 		if (cmd->redir_type != 0)
 		{
@@ -95,7 +104,17 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			vars->file_error = 0;
 		}
 		parent_pros(cmd, vars, core, fd);
+		exit(core->exit_status);
 	}
+	close(fd[0]);
+    close(fd[1]);
+	waitpid(vars->childid, &status, 0);
+    waitpid(vars->childid2, &status, 0);
+    if (WIFEXITED(status))
+	{
+		core->exit_status = WEXITSTATUS(status);
+	}
+	exit(core->exit_status);
 }
 
 void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)

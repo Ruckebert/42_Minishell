@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/03 13:22:28 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:15:49 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void	export(t_cmdtable *cmd, t_data *core)
 		temp = new_exo_env(core->export_env, cmd->args, i, count);
 		if (!temp)
 		{
+			//Why do i return here?
 			core->exit_status = 1;
 			write(2, "Error: Enviornment is Not Sexy Enough\n", 39);
 			return ;
@@ -146,8 +147,7 @@ void	unset(t_cmdtable *cmd, t_data *core)
 	int		i;
 	
 	i = 0;
-	if (i == 1)
-		return ;
+	core->exit_status = 0;
 	temp = unset_exo(core, core->export_env, i, cmd->args);
 	core->env = unset_env(core, core->env, i, cmd->args);
 	i = 0;
@@ -189,6 +189,7 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 		if (no == 1)
 		{
 			i++;
+			//Make No an int pointer in the function, and only return i
 			while (cmd->args[i])
 			{
 				if (ft_strncmp(cmd->args[i], "-n", 2) == 0)
@@ -245,6 +246,7 @@ void	exit_com(t_data *core)
 		{
 			if (core->cmd->args[i][j] == '+' && j == 0)
 			{
+				//This function can be reused for the other cases
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
 					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
 				else
@@ -255,6 +257,7 @@ void	exit_com(t_data *core)
 			}
 			else if ((core->cmd->args[i][j] == '-' && j == 0) || (core->cmd->args[i][j] == '-' && core->cmd->args[i][j - 1] == ' '))
 			{
+				//If the returned value == j -1 break
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
 					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
 				else
@@ -275,6 +278,7 @@ void	exit_com(t_data *core)
 		if (j == -1)
 			break ;
 		i++;
+		//Change this into the while loop condition
 		if (i == 2)
 			break ;
 	}

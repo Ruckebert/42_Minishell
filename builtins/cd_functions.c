@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:22:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/29 11:28:37 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/04 12:23:49 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	normal_cd(char *old_pwd, t_cmdtable *cmd, t_data *core)
 		{
 			write(2, "cd: ", 4);
 			write(2, core->direct, ft_strlen(core->direct));
-			write(2, ": Permission deined\n", 29);
+			write(2, ": Permission deined\n", 21);
 		}
 		else
 		{

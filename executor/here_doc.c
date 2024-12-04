@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/02 15:39:37 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:51:58 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,13 @@ void	here_doc(t_cmdtable *cmd, t_data *core, int fd)
 	{
 		line = readline("> ");
 		if (!line)
-			break;
+		{
+			write(2, "warning: here-document delimited by end-of-file ", 49);
+			write(2, "(wanted '", 10);
+			write(2, cmd->redir, ft_strlen(cmd->redir));
+			write(2, "')\n", 4);
+			break ;
+		}
 		if (ft_strncmp(line, cmd->redir, ft_strlen(cmd->redir)) == 0 && 
 			ft_strlen(line) == ft_strlen(cmd->redir))
 		{
@@ -150,7 +156,13 @@ char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 	{
 		line = readline("> ");
 		if (!line)
-			break;
+		{
+			write(2, "warning: here-document delimited by end-of-file ", 49);
+			write(2, "(wanted '", 10);
+			write(2, cmd->redir, ft_strlen(cmd->redir));
+			write(2, "')\n", 4);
+			break ;
+		}
 		if (ft_strncmp(line, cmd->redir, ft_strlen(cmd->redir)) == 0 && 
 			ft_strlen(line) == ft_strlen(cmd->redir))
 		{

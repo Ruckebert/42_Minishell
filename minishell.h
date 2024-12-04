@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/03 13:22:49 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/04 11:03:53 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_var
 	int		fdin;
 	int		fdout;
 	int		childid;
+	int		childid2;
 	
 }	t_var;
 
@@ -121,6 +122,7 @@ void	exit_com(t_data *core);
 void	builtin_cmds(t_cmdtable *cmd, t_data *core);
 
 /*Executor Functions*/
+t_cmdtable 	*return_pipe(t_cmdtable *cmd);
 int			here_doc_counter(t_cmdtable *cmd);
 int			pipe_checker(t_cmdtable *cmd);
 void		pipe_error(int *fd);
