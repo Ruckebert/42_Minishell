@@ -6,12 +6,14 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/04 11:03:53 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:27:10 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+
 
 # include "libft/libft.h"
 
@@ -173,6 +175,7 @@ void setup_signal_handler(int signal, void (*handler)(int));
 void sig_handleINT_child(int signal);
 void sig_handleINT_parent(int signal);
 void sig_handleINT_parent2(int signal);
+void sig_handleINT_heredoc(int signal);
 //for testing
 void 	printlist_both(t_token *head);
 void 	printCharPointerArray(char **arr);
