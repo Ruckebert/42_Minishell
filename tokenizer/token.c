@@ -15,21 +15,21 @@
 int	whichtoken(char c)
 {
 	if (c == '<')
-		return 1;
+		return (1);
 	else if (c == '>')
-		return 2;
+		return (2);
 	else if (c == '|')
-		return 3;
+		return (3);
 	else if (c == '"')
-		return 4;
+		return (4);
 	else if (c == '\'')
-		return 5;
+		return (5);
 	else if (c == '-')
-		return 6;
+		return (6);
 	else if (c == '=')
-		return 7;
+		return (7);
 	else if (c == '$')
-		return 8;
+		return (8);
 	else
 		return (0);
 }
@@ -37,14 +37,13 @@ int	whichtoken(char c)
 char	*getword(int *pos, int *oldpos, t_data *core, t_token *token)
 {
 	char	*word;
-	
+
 	*pos += searchsep(&core->line[*oldpos]);
 	word = malloc (*pos - *oldpos + 1);
-	if(word == NULL)
+	if (word == NULL)
 	{
 		perror("in getquote");
 		free_token_list(token);
-		//need to free everything from core too TODO: make a universal function that will free core in our whole code so that we dont have multiple ways to do that 
 		exit (EXIT_FAILURE);
 	}
 	word[*pos - *oldpos] = '\0';
@@ -66,22 +65,21 @@ char	*getsep(int *pos, t_data *core)
 char	*getquote(int *pos, int *oldpos, t_data *core, t_token *token)
 {
 	char	*word;
-	
+
 	*pos += searchquote(&core->line[*pos]);
 	word = malloc (*pos - *oldpos + 1);
-	if(word == NULL)
+	if (word == NULL)
 	{
 		perror("in getquote");
 		free_token_list(token);
 		exit (EXIT_FAILURE);
-		//need to free everything from core too TODO: make a universal function that will free core in our whole code so that we dont have multiple ways to do that 
 	}
 	word[*pos - *oldpos] = '\0';
 	ft_strlcpy(word, &(core->line[*oldpos]), *pos - *oldpos + 1);
 	return (word);
 }
 
-void	substitute_redir(t_token *curr,char str[3])
+void	substitute_redir(t_token *curr, char str[3])
 {
 	t_token	*newnext;
 	t_token	*discard;
@@ -106,19 +104,23 @@ void	combine_double_redirect(t_token	*token)
 
 	curr = token;
 	while (curr && curr->next)
-	{	
+	{
 		if (curr->type == curr->next->type)
 		{
-			if (!ft_strncmp(curr->word, "<\0",2)  && !ft_strncmp(curr->next->word, "<\0",2) && (curr->next->leading_space == 0))
-				substitute_redir(curr,"<<\0");
-			else if (!ft_strncmp(curr->word, ">\0",2)  && !ft_strncmp(curr->next->word, ">\0",2) && (curr->next->leading_space == 0) )
-				substitute_redir(curr,">>\0");
+			if (!ft_strncmp(curr->word, "<\0", 2)
+				&& !ft_strncmp(curr->next->word, "<\0", 2)
+				&& (curr->next->leading_space == 0))
+				substitute_redir(curr, "<<\0");
+			else if (!ft_strncmp(curr->word, ">\0", 2)
+				&& !ft_strncmp(curr->next->word, ">\0", 2)
+				&& (curr->next->leading_space == 0))
+				substitute_redir(curr, ">>\0");
 		}
 		curr = curr->next;
 	}
 }
 
-void make_start_token(t_token **token)
+void	make_start_token(t_token **token)
 {
 	t_token	*newtoken;
 
@@ -128,7 +130,7 @@ void make_start_token(t_token **token)
 	newtoken->leading_space = 20;
 }
 
-void make_end_token(t_token **token)
+void	make_end_token(t_token **token)
 {
 	t_token	*newtoken;
 
@@ -138,18 +140,18 @@ void make_end_token(t_token **token)
 	newtoken->leading_space = 20;
 }
 
-void make_tokens(t_data *core, t_token *token,int pos)
+void	make_tokens(t_data *core, t_token *token, int pos)
 {
 	t_token	*newtoken;
 	char	*word;
-	int	oldpos;
+	int		oldpos;
 
 	while (core->line[pos] != '\0')
 	{
 		while (is_myspace(&core->line[pos]))
 			pos++;
-		if(core->line[pos] == '\0')
-			break;
+		if (core->line[pos] == '\0')
+			break ;
 		oldpos = pos;
 		if (!(issep(&core->line[pos])) && !(isquote(&core->line[pos])))
 			word = getword(&pos, &oldpos, core, token);
@@ -158,10 +160,10 @@ void make_tokens(t_data *core, t_token *token,int pos)
 		else if (isquote(&core->line[pos]))
 			word = getquote(&pos, &oldpos, core, token);
 		newtoken = ft_lstnew(word);
-		if(token->next != NULL && core->line[oldpos - 1] == ' ')
+		if (token->next != NULL && core->line[oldpos - 1] == ' ')
 			newtoken->leading_space = 1;
 		else
-			newtoken->leading_space = 0;			
+			newtoken->leading_space = 0;
 		ft_lstadd_back(&token, newtoken);
 		newtoken->type = whichtoken(core->line[oldpos]);
 	}
@@ -170,18 +172,16 @@ void make_tokens(t_data *core, t_token *token,int pos)
 t_token	*tokenize(t_data *core)
 {
 	t_token	*token;
-	int	pos;
+	int		pos;
 
 	pos = 0;
 	token = NULL;
-//	if (core->line[0] == '\0') // if i remove this we open many many minishells when i press enter and we print for some reason
-//		return (NULL);
-	make_start_token(&token);	
+	make_start_token(&token);
 	make_tokens(core, token, pos);
-	make_end_token(&token);	
+	make_end_token(&token);
 	combine_double_redirect(token);
 	remove_empty_quotes(token);
-	if(synthax_check(token, core) != 0)
-		return (NULL);//free tokenlist here
-	return(token);
+	if (synthax_check(token, core) != 0)
+		return (NULL);
+	return (token);
 }

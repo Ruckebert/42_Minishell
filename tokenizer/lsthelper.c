@@ -42,7 +42,7 @@ void	ft_lstadd_back(t_token **lst, t_token *new)
 	t_token	*end;
 
 	if (!new)
-		return;
+		return ;
 	if (*lst == NULL)
 	{
 		*lst = new;
@@ -58,12 +58,11 @@ void	ft_lstadd_back(t_token **lst, t_token *new)
 void	ft_lstadd_next(t_token **lst, t_token *new)
 {
 	t_token	*curr;
-	t_token *tempn;
-	
-	curr = *lst;
+	t_token	*tempn;
 
+	curr = *lst;
 	if (!new)
-		return;
+		return ;
 	if (*lst == NULL)
 	{
 		*lst = new;
@@ -73,15 +72,15 @@ void	ft_lstadd_next(t_token **lst, t_token *new)
 		tempn = curr->next;
 		curr->next = new;
 		curr->next->next = tempn;
-		new->prev=curr;
+		new->prev = curr;
 		tempn->prev = new;
 	}
 }
 
 void	ft_lstdelone(t_token *lst)
 {
-	t_token *temp;
-	
+	t_token	*temp;
+
 	temp = lst->prev;
 	lst->prev->next = lst->next;
 	lst->next->prev = temp;

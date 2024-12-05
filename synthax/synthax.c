@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-int redir_before_end(t_token *token, t_data *core)
+int	redir_before_end(t_token *token, t_data *core)
 {
 	t_token	*curr;
 
@@ -21,7 +21,9 @@ int redir_before_end(t_token *token, t_data *core)
 		curr = curr->next;
 	while (curr)
 	{
-		if ((curr->type == 1 | curr->type == 2 | curr->type == 10 | curr->type == 20) && (curr->next->type == 9999))
+		if ((curr->type == 1 | curr->type == 2
+				| curr->type == 10 | curr->type == 20)
+			&& (curr->next->type == 9999))
 		{
 			ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 			core->exit_status = 2;
@@ -32,7 +34,7 @@ int redir_before_end(t_token *token, t_data *core)
 	return (0);
 }
 
-int start_before_pipe(t_token *token, t_data *core)
+int	start_before_pipe(t_token *token, t_data *core)
 {
 	t_token	*curr;
 
@@ -46,7 +48,7 @@ int start_before_pipe(t_token *token, t_data *core)
 	return (0);
 }
 
-int pipe_before_end(t_token *token, t_data *core)
+int	pipe_before_end(t_token *token, t_data *core)
 {
 	t_token	*curr;
 
@@ -66,7 +68,7 @@ int pipe_before_end(t_token *token, t_data *core)
 	return (0);
 }
 
-int pipe_before_pipe(t_token *token, t_data *core)
+int	pipe_before_pipe(t_token *token, t_data *core)
 {
 	t_token	*curr;
 
@@ -89,7 +91,7 @@ int pipe_before_pipe(t_token *token, t_data *core)
 	return (0);
 }
 
-int redir_before_pipe(t_token *token, t_data *core)
+int	redir_before_pipe(t_token *token, t_data *core)
 {
 	t_token	*curr;
 
@@ -98,7 +100,8 @@ int redir_before_pipe(t_token *token, t_data *core)
 		curr = curr->next;
 	while (curr)
 	{
-		if ((curr->type == 1 | curr->type == 2 | curr->type == 10 | curr->type == 20)
+		if ((curr->type == 1 | curr->type == 2
+				| curr->type == 10 | curr->type == 20)
 			&& curr->next->type == 3)
 		{
 			ft_putstr_fd("syntax error near unexpected token ", 2);
@@ -113,7 +116,7 @@ int redir_before_pipe(t_token *token, t_data *core)
 	return (0);
 }
 
-int redir_before_redir(t_token *token, t_data *core)
+int	redir_before_redir(t_token *token, t_data *core)
 {
 	t_token	*curr;
 
@@ -122,8 +125,10 @@ int redir_before_redir(t_token *token, t_data *core)
 		curr = curr->next;
 	while (curr)
 	{
-		if ((curr->type == 1 | curr->type == 2 | curr->type == 10 | curr->type == 20)
-			&& (curr->next->type == 1 | curr->next->type == 2 | curr->next->type == 10 | curr->next->type == 20))
+		if ((curr->type == 1 | curr->type == 2
+				| curr->type == 10 | curr->type == 20)
+			&& (curr->next->type == 1 | curr->next->type == 2
+				| curr->next->type == 10 | curr->next->type == 20))
 		{
 			ft_putstr_fd("syntax error near unexpected token ", 2);
 			ft_putstr_fd("`", 2);
@@ -137,10 +142,10 @@ int redir_before_redir(t_token *token, t_data *core)
 	return (0);
 }
 
-int	first_token_directory(t_token *token, t_data *core) 
+int	first_token_directory(t_token *token, t_data *core)
 {
-    struct stat sb;
-	t_token	*curr;
+	struct stat	sb;
+	t_token		*curr;
 
 	curr = token;
 	if (curr->type == 9999)
@@ -149,7 +154,8 @@ int	first_token_directory(t_token *token, t_data *core)
 	{
 		if (S_ISDIR(sb.st_mode))
 		{
-			if (ft_strcmp(".",curr->word) == 0 || ft_strcmp("..",curr->word) == 0)
+			if (ft_strcmp(".", curr->word) == 0
+				|| ft_strcmp("..", curr->word) == 0)
 				return (0);
 			ft_putstr_fd(curr->word, 2);
 			ft_putstr_fd(": Is a directory\n", 2);
@@ -159,13 +165,13 @@ int	first_token_directory(t_token *token, t_data *core)
 		else
 			return (0);
 	}
-    return (0);
+	return (0);
 }
 
-int	outredir_to_directory(t_token *token, t_data *core) 
+int	outredir_to_directory(t_token *token, t_data *core)
 {
-    struct stat sb;
-	t_token	*curr;
+	struct stat	sb;
+	t_token		*curr;
 
 	curr = token;
 	if (curr->type == 9999)
@@ -177,7 +183,8 @@ int	outredir_to_directory(t_token *token, t_data *core)
 		{
 			if (S_ISDIR(sb.st_mode))
 			{
-				if (ft_strcmp(".",curr->word) == 0 || ft_strcmp("..",curr->word) == 0)
+				if (ft_strcmp(".", curr->word) == 0
+					|| ft_strcmp("..", curr->word) == 0)
 					return (0);
 				ft_putstr_fd(curr->word, 2);
 				ft_putstr_fd(": Is a directory\n", 2);
@@ -188,10 +195,10 @@ int	outredir_to_directory(t_token *token, t_data *core)
 				return (0);
 		}
 	}
-    return (0);
+	return (0);
 }
 
-int	synthax_check(t_token *token,t_data *core)
+int	synthax_check(t_token *token, t_data *core)
 {
 	int	check;
 
