@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 11:19:31 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:27:31 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ void sig_handleINT_child(int signal)
 	   	ioctl(STDIN_FILENO, TIOCSTI, "\n");
     	rl_on_new_line();
     	rl_redisplay();
+	}
+}
+
+void sig_handleINT_heredoc(int signal)
+{
+	if(signal == SIGINT)
+	{
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		g_interrupt_received = signal;
 	}
 }
 

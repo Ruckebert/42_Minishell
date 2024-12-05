@@ -6,11 +6,13 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 14:33:49 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:29:09 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern volatile sig_atomic_t g_interrupt_received;
 
 void	here_doc_null_msg(t_cmdtable *cmd)
 {
@@ -115,7 +117,9 @@ char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 	char *filename;
 	int tmp_fd;
 
-	setup_signal_handler(SIGINT, SIG_DFL);
+	//setup_signal_handler(SIGINT, sig_handleINT_parent2);
+	//setup_signal_handler(SIGINT, SIG_DFL);
+	setup_signal_handler(SIGINT, sig_handleINT_heredoc);
 	filename = ft_nbr_pointhex((intptr_t)cmd->redir);
 	tmp_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (tmp_fd == -1)
@@ -123,11 +127,14 @@ char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 	while (1)
 	{
 		line = readline("> ");
+		if (g_interrupt_received != 0)
+			return (NULL);
 		if (!line)
 		{
 			here_doc_null_msg(cmd);
 			break ;
 		}
+
 		if (ft_strncmp(line, cmd->redir, ft_strlen(cmd->redir)) == 0 && 
 			ft_strlen(line) == ft_strlen(cmd->redir))
 		{
