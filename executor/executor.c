@@ -161,6 +161,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 		}
 		if (second == 0)
 		{
+			//setup_signal_handler(SIGINT, sig_handleINT_child);
 			if (cmd->redir_type != 0)
 				redirctions(cmd, core, vars, fd);
 			if (cmd->isbuiltin == 1)
@@ -173,6 +174,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 		}
 		else
 		{
+			setup_signal_handler(SIGINT, sig_handleINT_parent2);
 			waitpid(second, &status, 0);
 			if (WIFEXITED(status))
 				core->exit_status = WEXITSTATUS(status);

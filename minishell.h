@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
 /*   Updated: 2024/12/04 11:03:53 by aruckenb         ###   ########.fr       */
@@ -169,6 +169,10 @@ int 	is_START(t_token *curr);
 int 	is_redir(t_token	*token);
 void	ft_lstdelone(t_token *lst);
 void	remove_empty_quotes(t_token *token);
+void setup_signal_handler(int signal, void (*handler)(int));
+void sig_handleINT_child(int signal);
+void sig_handleINT_parent(int signal);
+void sig_handleINT_parent2(int signal);
 //for testing
 void 	printlist_both(t_token *head);
 void 	printCharPointerArray(char **arr);
