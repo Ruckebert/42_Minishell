@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/11/28 10:44:45 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/05 11:19:31 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int main(int argc, char *argv[], char **env)
 	int error = -999;
 	struct sigaction SA_parent;
 
-	
 	SA_parent.sa_handler = sig_handleINT;
 	SA_parent.sa_flags = 0;
 	sigemptyset(&SA_parent.sa_mask);
@@ -67,7 +66,7 @@ int main(int argc, char *argv[], char **env)
 			if (core.line == NULL)
 			{
 				if (isatty(STDIN_FILENO))
-					write(2,"exit\n",6);
+					write(2,"exit\n",5);
 				exit (core.exit_status);
 			}
 			add_history(core.line);

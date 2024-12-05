@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:31:08 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/10/30 11:57:01 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:18:43 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int		finder(int found, int i, char **argv, char **env)
 	}
 	return (found);
 }
+
+//Why not reuse the unset_exo and unset_env instead of having two functions that bascially do the same thing?
 
 char	**unset_exo(t_data *core, char **env, int i, char **argv)
 {
@@ -72,7 +74,6 @@ char	**unset_env(t_data *core, char **env, int i, char **argv)
 	temp = malloc(((environment_export(core) - i) + 2) * sizeof(char *));
 	if (!temp)
 		exit(1);
-
 	new_env = 0;
 	i = 0;
 	while (env[i])

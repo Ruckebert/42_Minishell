@@ -6,11 +6,20 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/02 15:39:37 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/05 14:51:42 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	here_doc_null_msg(t_cmdtable *cmd)
+{
+	ft_putstr_fd("warning: here-document delimited by end-of-file ", 2);
+	ft_putstr_fd("(wanted `", 2);
+	ft_putstr_fd(cmd->redir, 2);
+	ft_putstr_fd("')\n", 2);
+}
+
 
 char *expander_env(t_data *core, char *line) 
 {
@@ -30,6 +39,7 @@ char *expander_env(t_data *core, char *line)
             before_var = ft_substr(line, 0, i);
             expanded_line = ft_strjoin(expanded_line, before_var);
             free(before_var);
+			
             var_start = &line[i + 1];
             j = 0;
             while (var_start[j] && (ft_isalnum(var_start[j]) || var_start[j] == '_'))
@@ -41,10 +51,12 @@ char *expander_env(t_data *core, char *line)
 				free(expanded_line);
 				exit(1);
 			}
+			
             env_value = getenv(var_name);
             free(var_name);
             if (!env_value) 
                 env_value = "";
+			
             expanded_line = ft_strjoin(expanded_line, env_value);
 			if (!expanded_line)
 			{
@@ -71,45 +83,6 @@ char *expander_env(t_data *core, char *line)
 		}	
 	}
     return (expanded_line);
-}
-
-void	here_doc(t_cmdtable *cmd, t_data *core, int fd)
-{
-	char *line;
-	char *expand_line;
-	int tmp_fd[2];
-	
-	if (pipe(tmp_fd) == -1)
-		error_handler_fd(tmp_fd[1], cmd);
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-			break;
-		if (ft_strncmp(line, cmd->redir, ft_strlen(cmd->redir)) == 0 && 
-			ft_strlen(line) == ft_strlen(cmd->redir))
-		{
-			free(line);
-			break;
-		}
-		expand_line = expander_env(core, line);
-		if (expand_line && cmd->redir_type == 10)
-		{
-			write(tmp_fd[1], expand_line, strlen(expand_line));
-			free(expand_line);
-		}
-		else
-			write(tmp_fd[1], line, strlen(line));
-		write(tmp_fd[1], "\n", 1);
-		free(line);
-	}
-	close(tmp_fd[1]);
-	if (dup2(tmp_fd[0], fd) == -1)
-	{
-		close(tmp_fd[0]);
-		error_handler_fd(fd, cmd);
-	}
-	close(tmp_fd[0]);
 }
 
 char *ft_nbr_pointhex(intptr_t num)
@@ -150,7 +123,10 @@ char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 	{
 		line = readline("> ");
 		if (!line)
-			break;
+		{
+			here_doc_null_msg(cmd);
+			break ;
+		}
 		if (ft_strncmp(line, cmd->redir, ft_strlen(cmd->redir)) == 0 && 
 			ft_strlen(line) == ft_strlen(cmd->redir))
 		{

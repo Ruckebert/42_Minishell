@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/02 15:13:00 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/05 11:44:18 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,7 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 //	printf("\033[0;31mbefore free in prep_exec.c\033[0m\n");
 	//printlist(token);
 	free_token_list(token);
+	//print_cmdtable(cmd);
 	//printf("\033[0;31mAFTER prep_exec.c\033[0m\n");
 	return (cmd);
 //	free_cmdtable(&cmd);
