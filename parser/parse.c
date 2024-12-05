@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/11/29 14:14:25 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/05 14:53:58 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ void expand_var(t_token *token, char **env, t_data *core)
 					value = get_env_var(curr->next->word, env);
 					if (value[0] == ' ' || value[0] == '\t')
 						curr->leading_space = 1;
-					if (value[ft_strlen(value) - 1] == ' ' || value[ft_strlen(value) - 1] == '\t')
+					if ((ft_strlen(value) > 0) && (value[ft_strlen(value) - 1] == ' ' || value[ft_strlen(value) - 1] == '\t'))
 						curr->next->next->leading_space = 1;
 					substitute_node_word(curr, value);		
 					if (ft_strchr(curr->word, ' ') != NULL)
@@ -531,7 +531,7 @@ int redir_before_nonexpandable(t_token *token, t_data *core)
 	curr = token;
 	while (curr && curr->next)
 	{
-		if (is_redir(curr) && curr->next->type == 8 && !is_expandable(curr->next->next->word, core->env))
+		if (is_redir(curr) && curr->type !=10 && curr->next->type == 8 && !is_expandable(curr->next->next->word, core->env))
 		{
 			ft_putstr_fd(curr->next->word, 2);
 			ft_putstr_fd(curr->next->next->word, 2);

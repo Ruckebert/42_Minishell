@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/02 15:48:11 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/05 14:30:31 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 		}
 		if (second == 0)
 		{
+			//setup_signal_handler(SIGINT, sig_handleINT_child);
 			if (cmd->redir_type != 0)
 				redirctions(cmd, core, vars, fd);
 			if (cmd->isbuiltin == 1)
@@ -260,6 +261,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 		}
 		else
 		{
+			setup_signal_handler(SIGINT, sig_handleINT_parent2);
 			waitpid(second, &status, 0);
 			if (WIFEXITED(status))
 				core->exit_status = WEXITSTATUS(status);
