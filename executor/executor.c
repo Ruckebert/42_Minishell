@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 15:18:13 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:39:32 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern volatile sig_atomic_t g_interrupt_received;
 
 int	path_checker(char **envp)
 {
@@ -179,8 +181,9 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 			if (cmd->redir_type == 10 || cmd->redir_type == 30)
 			{
 				cmd->redir = ft_strdup(here_doc_tempfile(cmd, core, STDIN_FILENO));
-				if (!cmd->redir)
+				if (g_interrupt_received != 0)
 				{
+					files[i] = ft_strdup(cmd->redir);
 					here_doc_file_del(files);
 					return ;
 				}
