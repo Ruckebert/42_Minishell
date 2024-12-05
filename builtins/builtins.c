@@ -6,13 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/04 16:15:49 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/05 14:55:31 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// All Builtins Manipulate the Environment that is why we have to build them seperately. :0 
 
 void	cd_com(t_cmdtable *cmd, t_data *core)
 {
@@ -22,7 +20,7 @@ void	cd_com(t_cmdtable *cmd, t_data *core)
 	old_pwd = getcwd(NULL, 0);
 	if (cmd->args[2] != NULL)
 	{
-		write(2, "cd: too many arguments\n", 24);
+		write(2, "cd: too many arguments\n", 23);
 		core->exit_status = 1;
 		free(old_pwd);
 		return ;
@@ -110,9 +108,9 @@ int	dup_malloc_count(t_cmdtable *cmd, int j, int k, int sub)
 
 void	export(t_cmdtable *cmd, t_data *core)
 {
-	int i = 0;
-	int count = 0;
-	char **temp;
+	int		i;
+	int		count;
+	char	**temp;
 	
 	count = environment_export(core);
 	bubble_sort(core);
@@ -128,9 +126,7 @@ void	export(t_cmdtable *cmd, t_data *core)
 		temp = new_exo_env(core->export_env, cmd->args, i, count);
 		if (!temp)
 		{
-			//Why do i return here?
 			core->exit_status = 1;
-			write(2, "Error: Enviornment is Not Sexy Enough\n", 39);
 			return ;
 		}
 		core->env = new_exo_env(core->env, cmd->args, i, count);
@@ -161,6 +157,33 @@ void	unset(t_cmdtable *cmd, t_data *core)
 	core->export_env = temp;
 }
 
+//Echo
+
+int	second_no(int *no, int i, t_cmdtable *cmd)
+{
+	int	j;
+
+	j = 0;
+	i++;
+	while (cmd->args[i])
+	{
+		if (ft_strncmp(cmd->args[i], "-n", 2) == 0)
+		{
+			j = 2;
+		while (cmd->args[i][j] == 'n')
+			j++;
+		if (cmd->args[i][j] == '\0')
+		{
+			*no = 1;
+			i++;
+			continue ;
+		}
+		}
+		break;
+	}
+	return (i);
+}
+
 void	echo_cmd(t_cmdtable *cmd, t_data *core)
 {
 	int	i;
@@ -170,7 +193,6 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 	i = 1;
 	j = 1;
 	no = 0;
-	core->exit_status = 0;
 	if (cmd->args[i] == NULL)
 		no = 0;
 	else if (ft_strncmp(cmd->args[i], "-n", 2) == 0)
@@ -187,27 +209,10 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 			j++;
 		}
 		if (no == 1)
-		{
-			i++;
-			//Make No an int pointer in the function, and only return i
-			while (cmd->args[i])
-			{
-				if (ft_strncmp(cmd->args[i], "-n", 2) == 0)
-				{
-					j = 2;
-					while (cmd->args[i][j] == 'n')
-						j++;
-					if (cmd->args[i][j] == '\0')
-					{
-						no = 1;
-						i++;
-						continue ;
-					}
-				}
-				break;
-			}
-		}
+			i = second_no(&no, i, cmd);
 	}
+	//Throw all of this into a function
+	core->exit_status = 0;
 	while (cmd->args[i])
 	{
 		if (cmd->args[i + 1] == NULL)
@@ -225,6 +230,99 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core)
 //To Do: Exit command should free everything and then exit;
 //Need to free the cmd and everything in it
 //This is for handling certain cases of very big numbers
+
+//IDK if i should remove this because when i use it as a function it causes an error and idk why.
+int	exit_return_checker(t_data *core, int i, int j)
+{
+	if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
+		core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
+	else
+		return (-1);
+	return (0);
+}
+
+//Not Used
+int	exit_loop(t_data *core)
+{
+	int i;
+	int j;
+	unsigned long long sign;
+
+	i = 1;
+	j = 0;
+	while (core->cmd->args[i])
+	{
+		j = 0;
+		sign = ft_strtoull(core->cmd->args[1], &j);
+		while (core->cmd->args[i][j])
+		{
+			if (core->cmd->args[i][j] == '+' && j == 0)
+			{
+				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
+					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
+				else
+				{
+					j = -1;
+					break ;
+				}
+			}
+			else if ((core->cmd->args[i][j] == '-' && j == 0) || (core->cmd->args[i][j] == '-' && core->cmd->args[i][j - 1] == ' '))
+			{
+				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
+					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
+				else
+				{
+					j = -1;
+					break ;
+				}
+			}
+			else if (core->cmd->args[i][j] >= '0' && core->cmd->args[i][j] <= '9')
+				core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
+			else
+			{
+				j = -1;
+				break ;
+			}
+			j++;
+		}
+		if (j == -1)
+			break ;
+		i++;
+		if (i == 2)
+			break ;
+	}
+	if (j == -1)
+		return (-1);
+	return (0);
+}
+
+int	exit_error_handler(int j, t_data *core)
+{
+	if (j != -1 && core->cmd->args[1] == NULL)
+	{
+	}
+	else if (j != -1 && core->cmd->args[2] == NULL)
+	{
+		if (ft_atoi(core->cmd->args[1]) < 0)
+			core->exit_status = 256 - (ft_atoi(core->cmd->args[1]) * -1);
+		else
+			core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
+	}
+	else if (j != -1 && core->cmd->args[2] != NULL)
+	{
+		core->exit_status = 1;
+		ft_putstr_fd("exit: too many arguments\n", 2);
+		return (1);
+	}
+	else if (j == -1)
+	{
+		ft_putstr_fd("exit: ", 2);
+		ft_putstr_fd(core->cmd->args[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		core->exit_status = 2;
+	}
+	return (0);
+}
 
 void	exit_com(t_data *core)
 {
@@ -246,7 +344,6 @@ void	exit_com(t_data *core)
 		{
 			if (core->cmd->args[i][j] == '+' && j == 0)
 			{
-				//This function can be reused for the other cases
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
 					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
 				else
@@ -257,7 +354,6 @@ void	exit_com(t_data *core)
 			}
 			else if ((core->cmd->args[i][j] == '-' && j == 0) || (core->cmd->args[i][j] == '-' && core->cmd->args[i][j - 1] == ' '))
 			{
-				//If the returned value == j -1 break
 				if (core->cmd->args[i][j + 1] >= '0' && core->cmd->args[i][j + 1] <= '9')
 					core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
 				else
@@ -284,30 +380,9 @@ void	exit_com(t_data *core)
 	}
 	if (core->cmd->args[1] != NULL && core->cmd->args[1][0] == '\0')
 		j = -1;
-	if (j != -1 && core->cmd->args[1] == NULL)
-	{
-	}
-	else if (j != -1 && core->cmd->args[2] == NULL)
-	{
-		if (ft_atoi(core->cmd->args[1]) < 0)
-			core->exit_status = 256 - (ft_atoi(core->cmd->args[1]) * -1);
-		else
-			core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
-	}
-	else if (j != -1 && core->cmd->args[2] != NULL)
-	{
-		core->exit_status = 1;
-		write(2, "exit: too many arguments\n", 26);
+	if (exit_error_handler(j, core) == 1)
 		return ;
-	}
-	else if (j == -1)
-	{
-		write(2, "exit: ", 7);
-		write(2, core->cmd->args[1], ft_strlen(core->cmd->args[1]));
-		write(2, ": numeric arugment required\n", 29);
-		core->exit_status = 2;
-	}
-	
+
 	//Frees everything and exits
 	i = 0;
 	while (core->env[i])
@@ -321,6 +396,5 @@ void	exit_com(t_data *core)
 	if (core->cmd != NULL)
 		free_cmdtable(&core->cmd);
 	rl_clear_history();
-	//printf("Exit Status: %d\n", core->exit_status);
 	exit(core->exit_status);
 }

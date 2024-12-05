@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/03 13:21:10 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:45:17 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,14 @@ void	reverse_free(int i, char **temp)
 	exit(2);
 }
 
+void	exp_error_msg(char *argv)
+{
+	ft_putstr_fd("export: `", 2);
+	ft_putstr_fd(argv, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+}
+
+
 int		argv_checker(char **argv)
 {
 	int i = 1;
@@ -116,7 +124,7 @@ int		argv_checker(char **argv)
 	int first = 0;
 
 	if ((argv[i][0] >= '0' && argv[i][0] <= '9') || argv[i][0] == '+')
-		return (1);
+		return (exp_error_msg(argv[i]), 1);
 	while (argv[i])
 	{
 		j = 0;
@@ -136,7 +144,7 @@ int		argv_checker(char **argv)
 			j++;
 		}
 		if (equal > 1 || error >= 1)
-			return (1);
+			return (exp_error_msg(argv[i]), 1);
 		i++;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:45:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/04 11:02:43 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/05 11:51:09 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,12 @@ t_cmdtable *output_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int 
 
 t_cmdtable *both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
 {
-	cmd = input_redirections(cmd, core, vars, fd);
+	t_cmdtable *input;
+	
+	input = input_redirections(cmd, core, vars, fd);
 	cmd->next = output_redirections(cmd, core, vars, &fd);
 	cmd->redir_type = 40;
+	cmd = input;
 	return (cmd);
 }
 

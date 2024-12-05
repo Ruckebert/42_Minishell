@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/04 16:10:46 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/05 14:16:52 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		perror("Pipe Failure");
 		return ;
 	}
+	//Split this into a
 	vars->childid = fork();
 	if (vars->childid == -1)
 	{
@@ -89,6 +90,8 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		child_pros(cmd, vars, core, fd);
 		exit(core->exit_status);
 	}
+	
+	//Split this into a function
 	vars->childid2 = fork();
 	if (vars->childid2 == -1)
 	{
@@ -99,10 +102,8 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 	{
 		cmd = return_pipe(cmd);
 		if (cmd->redir_type != 0)
-		{
 			cmd = multi_redirections(cmd, core, vars);
-			vars->file_error = 0;
-		}
+		vars->file_error = 0;
 		parent_pros(cmd, vars, core, fd);
 		exit(core->exit_status);
 	}
@@ -111,9 +112,7 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 	waitpid(vars->childid, &status, 0);
     waitpid(vars->childid2, &status, 0);
     if (WIFEXITED(status))
-	{
 		core->exit_status = WEXITSTATUS(status);
-	}
 	exit(core->exit_status);
 }
 

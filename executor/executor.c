@@ -6,14 +6,32 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/04 16:21:03 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/05 14:54:30 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int	path_checker(char **envp)
+{
+	int i = 0;
+	int	j = 0;
 
-//TO DO: Add a function to check the ending of the path function;
+	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
+		i++;
+	while (envp[i][j])
+	{
+		if (envp[i][j] == ':' && j == 5)
+			return (1);
+		else if (envp[i][j] == ':' && j == (int)ft_strlen(envp[i]) - 1)
+			return (1);
+		else if (envp[i][j] == ':' && envp[i][j - 1] == ':')
+			return (1);
+		j++;
+	}
+	return (0);
+}
+
 void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 {
 	int store;
@@ -44,12 +62,14 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 	}
 	if (ft_strlen(envp[store]) <= 5)
 		absolute_path_finder(core, envp, argv);
+	else if (path_checker(envp) == 1 && (access(argv[0], R_OK) == 0))
+		execve(argv[0], argv, envp);
 	else
 	{
 		write(2,argv[0],ft_strlen(argv[0]));
 		write(2,": command not found\n",20);
 	}
-	free_split(vars->store); 
+	free_split(vars->store);
 	core->exit_status = 127;
 	exit(core->exit_status);
 }
@@ -63,17 +83,15 @@ void	absolute_path_finder(t_data *core, char **envp, char **argv)
 	if (stat(argv[0], &fileStat) == 0)
 	{
 		write(2,argv[0],ft_strlen(argv[0]));
-		write(2, ": Permission deined\n", 21);
+		write(2, ": Permission denied\n", 20);
 		core->exit_status = 126;
 	}
 	else
 	{
 		write(2,argv[0],ft_strlen(argv[0]));
-		write(2, ": No such file or directory\n", 29);
+		write(2, ": No such file or directory\n", 28);
 		core->exit_status = 127;
 	}
-	//write(2,argv[0],ft_strlen(argv[0]));
-	//write(2,": command not found\n",20);
 	exit(core->exit_status);
 }
 
@@ -107,6 +125,27 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 	pid_t	second;
 	int		status = 0;
 
+	int i = 0;
+	char **files = NULL;
+	t_cmdtable *current_cmd = cmd;
+	
+	if (here_doc_counter(cmd) != 0)
+	{
+		files = ft_calloc(here_doc_counter(cmd), sizeof(char *));
+		while (cmd)
+		{
+			if (cmd->redir_type == 10 || cmd->redir_type == 30)
+			{
+				cmd->redir = ft_strdup(here_doc_tempfile(cmd, core, STDIN_FILENO));
+				cmd->redir_type  = 1;
+				files[i] = ft_strdup(cmd->redir);
+				i++;
+			}
+			cmd = cmd->next;
+		}
+		cmd = current_cmd;
+	}
+	
 	if (cmd->next != NULL)
 		cmd = multi_redirections(cmd, core, vars);
 	vars->file_error = 0;
@@ -137,8 +176,15 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 			waitpid(second, &status, 0);
 			if (WIFEXITED(status))
 				core->exit_status = WEXITSTATUS(status);
-			if (vars->filename)
-				unlink(vars->filename);
+			i = 0;
+			if (files)
+			{
+				while (files[i])
+				{
+					unlink(files[i]);
+					i++;
+				}
+			}
 		}
 	}
 	return ;
@@ -169,7 +215,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 
 	if (pipe_checker(cmd) == 0)
 		no_pipe_exe(cmd, core, &vars);
-	else if (pipe_checker(cmd) == 1) //Singe Pipe
+	else if (pipe_checker(cmd) == 1)
 		single_pipe_exe(cmd, core, &vars);
 	else if (pipe_checker(cmd) > 1)
 	{
