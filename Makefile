@@ -1,7 +1,7 @@
 
 NAME = minishell
 
-SOURCE = main.c executor/here_doc.c executor/multi_pipe.c executor/file_redirections.c executor/executor.c executor/executor_utils.c environment.c synthax/synthax.c
+SOURCE = main.c executor/here_doc.c executor/multi_pipe.c executor/pipes_processes.c executor/file_redirections.c executor/file_redirections2.c executor/executor.c executor/executor_utils.c environment.c synthax/synthax.c
 
 SOURCEBUILTINS = builtins/builtins.c builtins/cd_functions.c builtins/builtin_utils.c  builtins/export.c  builtins/unset.c
 

@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 13:11:54 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/04 11:03:53 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_var
 	int		fdin;
 	int		fdout;
 	int		childid;
+	int		childid2;
 	
 }	t_var;
 
@@ -92,9 +93,11 @@ void	pwd_update(t_data *core);
 void	envi_update(char *old_pwd, t_data *core);
 
 /*Utils/Free*/
-int		ft_strcmp(char *s1, char *s2);
-int		len_env_var(char **argv, int j);
-int		environment_export(t_data *core);
+int					ft_strcmp(char *s1, char *s2);
+int					len_env_var(char **argv, int j);
+int					environment_export(t_data *core);
+unsigned long long	ft_strtoull(const char *str, int *j);
+void				simple_free(char **str);
 
 /*Builtin Functions*/
 void	bubble_sort(t_data *core);
@@ -119,8 +122,10 @@ void	exit_com(t_data *core);
 void	builtin_cmds(t_cmdtable *cmd, t_data *core);
 
 /*Executor Functions*/
+t_cmdtable 	*return_pipe(t_cmdtable *cmd);
 int			here_doc_counter(t_cmdtable *cmd);
 int			pipe_checker(t_cmdtable *cmd);
+void		pipe_error(int *fd);
 int			executor(t_cmdtable *cmd, t_data *core);
 void		error_handler(void);
 void		error_handler_split(char **split);
@@ -134,33 +139,34 @@ char		*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd);
 void		redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 t_cmdtable	*multi_redirections(t_cmdtable *cmd, t_data *core, t_var *vars);
 void		multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp);
+void		single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars);
 void		absolute_path_finder(t_data *core, char **envp, char **argv);
 void		path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i);
 
 //all parser functions!
-t_cmdtable *parse(t_data *core, t_token * token);
-t_cmdtable *prep_nodes_for_exec(t_token *token);
-void	ft_lstadd_next(t_token **lst, t_token *new);
+t_cmdtable 	*parse(t_data *core, t_token * token);
+t_cmdtable 	*prep_nodes_for_exec(t_token *token);
+void		ft_lstadd_next(t_token **lst, t_token *new);
 
 //all tokenizer functions!
 t_token *tokenize(t_data *core);
-int	synthax_check(t_token *token,t_data *core);
-int first_token_directory(t_token *token, t_data *core);
-int redir_before_redir(t_token *token, t_data *core);
-int redir_before_end(t_token *token, t_data *core);
-int	outredir_to_directory(t_token *token, t_data *core);
+int		synthax_check(t_token *token,t_data *core);
+int 	first_token_directory(t_token *token, t_data *core);
+int 	redir_before_redir(t_token *token, t_data *core);
+int 	redir_before_end(t_token *token, t_data *core);
+int		outredir_to_directory(t_token *token, t_data *core);
 //isneeded
-int	is_myspace(char *c);
-int	issep(char *c);
-int	isquote(char *c);
-int	searchquote(char *str);
-int	searchsep(char *str);
+int		is_myspace(char *c);
+int		issep(char *c);
+int		isquote(char *c);
+int		searchquote(char *str);
+int		searchsep(char *str);
 t_token	*ft_lstnew(char *word);
 t_token	*ft_lstlast(t_token *lst);
 void	ft_lstadd_back(t_token **lst, t_token *new);
-int is_END(t_token *curr);
-int is_START(t_token *curr);
-int is_redir(t_token	*token);
+int 	is_END(t_token *curr);
+int 	is_START(t_token *curr);
+int 	is_redir(t_token	*token);
 void	ft_lstdelone(t_token *lst);
 void	remove_empty_quotes(t_token *token);
 void setup_signal_handler(int signal, void (*handler)(int));
@@ -168,11 +174,12 @@ void sig_handleINT_child(int signal);
 void sig_handleINT_parent(int signal);
 void sig_handleINT_parent2(int signal);
 //for testing
-void printlist_both(t_token *head);
-void printCharPointerArray(char **arr);
+void 	printlist_both(t_token *head);
+void 	printCharPointerArray(char **arr);
 void	printlist_type(t_token *head);
 void	printlist(t_token *head);
 void	free_token_list(t_token *head);
-void print_cmdtable(t_cmdtable *cmd);
-void free_cmdtable(t_cmdtable **head);
+void 	print_cmdtable(t_cmdtable *cmd);
+void 	free_cmdtable(t_cmdtable **head);
+
 #endif

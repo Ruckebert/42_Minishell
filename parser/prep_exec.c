@@ -239,6 +239,7 @@ t_cmdtable *prep_nodes_for_exec(t_token *token)
 //	printf("\033[0;31mbefore free in prep_exec.c\033[0m\n");
 //	printlist(token);
 	free_token_list(token);
+	//print_cmdtable(cmd);
 	//printf("\033[0;31mAFTER prep_exec.c\033[0m\n");
 	return (cmd);
 //	free_cmdtable(&cmd);

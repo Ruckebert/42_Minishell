@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/02 15:49:14 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:12:11 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
     t_cmdtable *current_cmd = cmd;
 	t_cmdtable *temp = current_cmd;
 
+	//Make this into a single function
 	if (here_doc_counter(cmd) != 0)
 	{
 		files = ft_calloc(here_doc_counter(cmd), sizeof(char *));
@@ -147,17 +148,16 @@ void multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp)
     if (prev_fd != -1)
 		close(prev_fd);
 
-	j = -1;
-	while (++j < i)
+	j = 0;
+	while (j < i)
 	{
-		waitpid(childids[++j], &status, 0);
+		waitpid(childids[j], &status, 0);
+		j++;
 	}
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
-
 	if (files)
 	{
-		//vars->filename2 = files;
 		j = 0;
 		while (files[j])
 		{
