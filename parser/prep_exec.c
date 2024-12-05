@@ -148,34 +148,41 @@ t_token *add_redir(t_cmdtable *cmd,t_token *curr)
 	return (curr);
 }
 
+void set_builtin_status(t_cmdtable *cmd)
+{
+	if (cmd->args && cmd->args[0] != NULL)
+	{
+		if (!ft_strcmp(cmd->args[0], "echo"))
+			cmd->isbuiltin = 1;
+		else if (!ft_strcmp(cmd->args[0], "cd"))
+			cmd->isbuiltin = 2;
+		else if (!ft_strcmp(cmd->args[0], "pwd"))
+			cmd->isbuiltin = 3;
+		else if (!ft_strcmp(cmd->args[0], "export"))
+			cmd->isbuiltin = 4;
+		else if (!ft_strcmp(cmd->args[0], "unset"))
+			cmd->isbuiltin = 5;
+		else if (!ft_strcmp(cmd->args[0], "env"))
+			cmd->isbuiltin = 6;
+		else if (!ft_strcmp(cmd->args[0], "exit"))
+			cmd->isbuiltin = 7;
+		else
+			cmd->isbuiltin = 0;
+	}
+	else
+	{
+	    cmd->isbuiltin = 0;
+	}
+}
+
 void find_builtins(t_cmdtable *cmd)
 {
 	t_cmdtable *curr;
 
 	curr = cmd;
-	while(curr != NULL)
+	while (curr != NULL)
 	{
-		if (curr->args && curr->args[0] != NULL) //checkthis
-		{
-			if (!ft_strcmp(curr->args[0], "echo"))
-				curr->isbuiltin = 1;
-			else if (!ft_strcmp(curr->args[0], "cd"))
-				curr->isbuiltin = 2;
-			else if (!ft_strcmp(curr->args[0], "pwd"))
-				curr->isbuiltin = 3;
-			else if (!ft_strcmp(curr->args[0], "export"))
-				curr->isbuiltin = 4;
-			else if (!ft_strcmp(curr->args[0], "unset"))
-				curr->isbuiltin = 5;
-			else if (!ft_strcmp(curr->args[0], "env"))
-				curr->isbuiltin = 6;
-			else if (!ft_strcmp(curr->args[0], "exit"))
-				curr->isbuiltin = 7;
-			else
-				curr->isbuiltin = 0;
-		}
-		else
-			curr->isbuiltin = 0;
+		set_builtin_status(curr);
 		curr = curr->next;
 	}
 }
@@ -199,48 +206,64 @@ void copy_args(t_cmdtable *cmd)
 	}
 }
 
+t_cmdtable *initialize_cmd_table(t_token **curr)
+{
+	t_cmdtable *cmd;
+	t_cmdtable *newcmd;
+
+	cmd = NULL;
+	newcmd = ft_lstnew_cmd(NULL, 0);
+	ft_lstadd_back_cmd(&cmd, newcmd);
+	if (is_START(*curr))
+		*curr = (*curr)->next;
+	return cmd;
+}
+
+t_token *process_redir(t_cmdtable **newcmd, t_cmdtable **cmd, t_token *curr)
+{
+	if ((*newcmd)->redir)
+	{
+		*newcmd = ft_lstnew_cmd(NULL, 0);
+		ft_lstadd_back_cmd(cmd, *newcmd);
+		copy_args(*newcmd);
+	}
+	return add_redir(*newcmd, curr);
+}
+
+t_token *process_pipe(t_cmdtable **newcmd, t_cmdtable **cmd, t_token *curr)
+{
+	*newcmd = ft_lstnew_cmd(NULL, 0);
+	ft_lstadd_back_cmd(cmd, *newcmd);
+	(*newcmd)->prev->has_pipe_after = 1;
+	return curr->next;
+}
+
+void process_tokens(t_cmdtable **cmd, t_token *curr)
+{
+	t_cmdtable *newcmd = *cmd;
+
+	while (!is_END(curr))
+	{
+		if (is_redir(curr))
+			curr = process_redir(&newcmd, cmd, curr);
+		else if (is_PIPE(curr))
+			curr = process_pipe(&newcmd, cmd, curr);
+		else
+			curr = get_args(newcmd, curr);
+	}
+}
+
 t_cmdtable *prep_nodes_for_exec(t_token *token)
 {
 	t_cmdtable	*cmd;
 	t_token		*curr;
-	t_cmdtable	*newcmd;
 
 	curr = token;
-	cmd = NULL;
-
-	newcmd = ft_lstnew_cmd(NULL, 0);
-	ft_lstadd_back_cmd(&cmd, newcmd);
-	if(is_START(curr))
-		curr = curr->next;
-	while (!is_END(curr))
-	{
-		if (is_redir(curr))
-		{
-			if(newcmd->redir)
-			{
-				newcmd = ft_lstnew_cmd(NULL, 0);
-				ft_lstadd_back_cmd(&cmd, newcmd);
-				copy_args(newcmd);
-			}
-			curr = add_redir(newcmd, curr);
-		}
-		else if (is_PIPE(curr))
-		{
-			newcmd = ft_lstnew_cmd(NULL, 0);
-			ft_lstadd_back_cmd(&cmd, newcmd);
-			newcmd->prev->has_pipe_after = 1;
-			curr = curr->next;
-		}
-		else
-			curr = get_args(newcmd,curr);
-	}
-	
+	cmd = initialize_cmd_table(&curr);
+	process_tokens(&cmd, curr);
 	find_builtins(cmd);
-//	printf("\033[0;31mbefore free in prep_exec.c\033[0m\n");
-//	printlist(token);
+//    printlist(token);
 	free_token_list(token);
-	//print_cmdtable(cmd);
-	//printf("\033[0;31mAFTER prep_exec.c\033[0m\n");
-	return (cmd);
-//	free_cmdtable(&cmd);
+//    print_cmdtable(cmd);
+	return cmd;
 }

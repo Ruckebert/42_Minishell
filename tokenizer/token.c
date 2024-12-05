@@ -54,7 +54,7 @@ char	*getword(int *pos, int *oldpos, t_data *core, t_token *token)
 
 char	*getsep(int *pos, t_data *core)
 {
-	char *word;
+	char	*word;
 
 	word = malloc(2);
 	word[0] = core->line[*pos];
@@ -62,7 +62,7 @@ char	*getsep(int *pos, t_data *core)
 	(*pos)++;
 	return (word);
 }
-//TODO: =word, >>, << tokens not working, need to iterate over list and fix it after the whole tokenizing process
+
 char	*getquote(int *pos, int *oldpos, t_data *core, t_token *token)
 {
 	char	*word;
@@ -118,24 +118,31 @@ void	combine_double_redirect(t_token	*token)
 	}
 }
 
-t_token	*tokenize(t_data *core)
+void make_start_token(t_token **token)
 {
-	t_token	*token;
-	t_token *newtoken;
-	char	*word;
-	int		pos;
-	int		oldpos;
+	t_token	*newtoken;
 
-	pos = 0;
-	token = NULL;
-
-	if (core->line[0] == '\0') // if i remove this we open many many minishells when i press enter and we print for some reason
-		return (NULL);
-		
 	newtoken = ft_lstnew("START");
-	ft_lstadd_back(&token, newtoken);
+	ft_lstadd_back(token, newtoken);
 	newtoken->type = 9999;
 	newtoken->leading_space = 20;
+}
+
+void make_end_token(t_token **token)
+{
+	t_token	*newtoken;
+
+	newtoken = ft_lstnew("END");
+	ft_lstadd_back(token, newtoken);
+	newtoken->type = 9999;
+	newtoken->leading_space = 20;
+}
+
+void make_tokens(t_data *core, t_token *token,int pos)
+{
+	t_token	*newtoken;
+	char	*word;
+	int	oldpos;
 
 	while (core->line[pos] != '\0')
 	{
@@ -158,24 +165,22 @@ t_token	*tokenize(t_data *core)
 		ft_lstadd_back(&token, newtoken);
 		newtoken->type = whichtoken(core->line[oldpos]);
 	}
+}
 
-	newtoken = ft_lstnew("END");
-	ft_lstadd_back(&token, newtoken);
-	newtoken->type = 9999;
-	newtoken->leading_space = 20;
-	
-//	printf("\033[0;31m 0-1 \033[0m\n");
-//	printlist(token);
+t_token	*tokenize(t_data *core)
+{
+	t_token	*token;
+	int	pos;
+
+	pos = 0;
+	token = NULL;
+//	if (core->line[0] == '\0') // if i remove this we open many many minishells when i press enter and we print for some reason
+//		return (NULL);
+	make_start_token(&token);	
+	make_tokens(core, token, pos);
+	make_end_token(&token);	
 	combine_double_redirect(token);
-
-	
-//	printf("\033[0;31m 0-2 \033[0m\n");
-//	printlist(token);
-	
 	remove_empty_quotes(token);
-//	printf("\033[0;31m 0-3 \033[0m\n");
-//	printlist(token);
-		
 	if(synthax_check(token, core) != 0)
 		return (NULL);//free tokenlist here
 	return(token);

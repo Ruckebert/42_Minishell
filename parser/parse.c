@@ -580,9 +580,8 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 		return(NULL);
 	if (outredir_to_directory(token, core) != 0)
 		return(NULL);
-	//print_cmdtable(cmd);
 //	printf("\033[0;31mAFTER parse.c\033[0m\n");
-	//printlist(token);
+//	printlist(token);
 	return (prep_nodes_for_exec(token));
 //	handle_singlequote(token); remove this function
 
