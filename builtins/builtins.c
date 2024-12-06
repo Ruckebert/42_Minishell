@@ -246,14 +246,12 @@ int	exit_loop(t_data *core)
 {
 	int i;
 	int j;
-	unsigned long long sign;
 
 	i = 1;
 	j = 0;
 	while (core->cmd->args[i])
 	{
 		j = 0;
-		sign = ft_strtoull(core->cmd->args[1], &j);
 		while (core->cmd->args[i][j])
 		{
 			if (core->cmd->args[i][j] == '+' && j == 0)
@@ -328,7 +326,6 @@ void	exit_com(t_data *core)
 {
 	int i = 1;
 	int j = 0;
-	unsigned long long sign;
 	char *temp = NULL;
 
 	if (core->cmd->args[1])
@@ -339,7 +336,6 @@ void	exit_com(t_data *core)
 	while (core->cmd->args[i])
 	{
 		j = 0;
-		sign = ft_strtoull(core->cmd->args[1], &j);
 		while (core->cmd->args[i][j])
 		{
 			if (core->cmd->args[i][j] == '+' && j == 0)

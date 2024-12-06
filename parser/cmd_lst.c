@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lsthelper.c                                        :+:      :+:    :+:   */
+/*   cmd_lst.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/30 15:17:47 by marsenij         ###   ########.fr       */
+/*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
+/*   Updated: 2024/12/06 12:50:08 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_token	*ft_lstnew(char *word)
+t_cmdtable	*ft_lstnew_cmd(char *redir, int type)
 {
-	t_token	*elem;
+	t_cmdtable	*elem;
 
-	elem = malloc(sizeof(t_token));
+	elem = malloc(sizeof(t_cmdtable));
 	if (!elem)
 		return (NULL);
-	elem->word = word;
+	elem->redir = redir;
+	elem->redir_type = type;
+	elem->args = NULL;
 	elem->next = NULL;
 	elem->prev = NULL;
 	return (elem);
 }
 
-t_token	*ft_lstlast(t_token *lst)
+t_cmdtable	*ft_lstlast_cmd(t_cmdtable *lst)
 {
-	t_token	*temp;
+	t_cmdtable	*temp;
 
 	if (!lst)
 		return (NULL);
@@ -37,9 +39,9 @@ t_token	*ft_lstlast(t_token *lst)
 	return (temp);
 }
 
-void	ft_lstadd_back(t_token **lst, t_token *new)
+void	ft_lstadd_back_cmd(t_cmdtable **lst, t_cmdtable *new)
 {
-	t_token	*end;
+	t_cmdtable	*end;
 
 	if (!new)
 		return ;
@@ -49,41 +51,8 @@ void	ft_lstadd_back(t_token **lst, t_token *new)
 	}
 	else
 	{
-		end = ft_lstlast(*lst);
+		end = ft_lstlast_cmd(*lst);
 		end->next = new;
 		new->prev = end;
 	}
-}
-
-void	ft_lstadd_next(t_token **lst, t_token *new)
-{
-	t_token	*curr;
-	t_token	*tempn;
-
-	curr = *lst;
-	if (!new)
-		return ;
-	if (*lst == NULL)
-	{
-		*lst = new;
-	}
-	else
-	{
-		tempn = curr->next;
-		curr->next = new;
-		curr->next->next = tempn;
-		new->prev = curr;
-		tempn->prev = new;
-	}
-}
-
-void	ft_lstdelone(t_token *lst)
-{
-	t_token	*temp;
-
-	temp = lst->prev;
-	lst->prev->next = lst->next;
-	lst->next->prev = temp;
-	free(lst->word);
-	free(lst);
 }
