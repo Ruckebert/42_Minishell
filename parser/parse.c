@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/06 13:34:52 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/06 14:22:51 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void	split_to_token(t_token *curr)
 
 t_cmdtable  *parse(t_data *core, t_token *token)
 {
-	printf("\033[0;31m 1 \033[0m\n");
-	printlist(token);
+//	printf("\033[0;31m 1 \033[0m\n");
+//	printlist(token);
 
 	handle_heredoc_delimiter(token);
 //	printf("\033[0;31m 2 \033[0m\n");
@@ -115,8 +115,8 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 		return(NULL);
 	if (outredir_to_directory(token, core) != 0)
 		return(NULL);
-	printf("\033[0;31mAFTER parse.c\033[0m\n");
-	printlist(token);
+//	printf("\033[0;31mAFTER parse.c\033[0m\n");
+//	printlist(token);
 	return (prep_nodes_for_exec(token));
 //	handle_singlequote(token); remove this function
 
