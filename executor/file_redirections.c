@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:34:33 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 14:51:58 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/06 14:54:05 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			exit(core->exit_status);
 		}
 	}
-	close(vars->fdout);;
+	close(vars->fdout);
 }
 
 void	file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
@@ -99,4 +99,17 @@ void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		file_output(cmd->next, core, vars, fd);
 	}
 	return ;
+}
+
+int	redirection_checker(t_cmdtable *cmd, t_var *vars)
+{
+	if (cmd->redir_type == 1 || cmd->redir_type == 10 || cmd->redir_type == 30)
+		vars->input++;
+	if (cmd->redir_type == 2 || cmd->redir_type == 20)
+		vars->output++;
+	if (cmd->has_pipe_after == 1)
+		return (1);
+	if (cmd->next == NULL)
+		return (1);
+	return (0);
 }

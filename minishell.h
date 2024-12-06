@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 13:48:30 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:07:46 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,10 @@ int					len_env_var(char **argv, int j);
 int					environment_export(t_data *core);
 unsigned long long	ft_strtoull(const char *str, int *j);
 void				simple_free(char **str);
+void				expander_freer(t_exp *doc);
+void				here_doc_null_msg(t_cmdtable *cmd);
+void				closing_cmds_parent(int cmds, int fd[cmds - 1][2]);
+int					cmd_count(t_cmdtable *cmd);
 
 /*Builtin Functions*/
 int		exit_loop(t_data *core, int i, int j);
@@ -165,7 +169,10 @@ void	exit_com(t_data *core);
 void	builtin_cmds(t_cmdtable *cmd, t_data *core);
 
 /*Executor Functions*/
+int			redirection_checker(t_cmdtable *cmd, t_var *vars);
 t_cmdtable 	*return_pipe(t_cmdtable *cmd);
+void		child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd);
+void		parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd);
 int			here_doc_counter(t_cmdtable *cmd);
 int			pipe_checker(t_cmdtable *cmd);
 void		pipe_error(int *fd);
@@ -178,12 +185,13 @@ void		file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 void		file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 void		file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 void		here_doc_file_del(char **files);
-void		here_doc_creator(t_cmdtable *cmd, t_data *core, char **files);
+void		here_doc_creator(t_cmdtable *cmd, t_data *core, char **files, int i);
 char		*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd);
 void		redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 t_cmdtable	*multi_redirections(t_cmdtable *cmd, t_data *core, t_var *vars);
 void		execution_pro(t_cmdtable *cmd, t_data *core, t_var *vars, int fd[2]);
 void		multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core);
+void		no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status);
 void		single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars);
 void		absolute_path_finder(t_data *core, char **envp, char **argv);
 void		path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i);
