@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 15:29:09 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/06 10:45:19 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,10 @@ char *ft_nbr_pointhex(intptr_t num)
 
 char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 {
-	char *line;
-	char *expand_line;
-	char *filename;
-	int tmp_fd;
+	char	*line;
+	char	*expand_line;
+	char	*filename;
+	int		tmp_fd;
 
 	//setup_signal_handler(SIGINT, sig_handleINT_parent2);
 	//setup_signal_handler(SIGINT, SIG_DFL);
@@ -134,21 +134,20 @@ char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 			here_doc_null_msg(cmd);
 			break ;
 		}
-
-		if (ft_strncmp(line, cmd->redir, ft_strlen(cmd->redir)) == 0 && 
-			ft_strlen(line) == ft_strlen(cmd->redir))
+		if (ft_strncmp(line, cmd->redir, ft_strlen(cmd->redir)) == 0
+			&& ft_strlen(line) == ft_strlen(cmd->redir))
 		{
 			free(line);
-			break;
+			break ;
 		}
 		expand_line = expander_env(core, line);
 		if (expand_line && cmd->redir_type == 10 )
 		{
-			write(tmp_fd, expand_line, strlen(expand_line));
+			write(tmp_fd, expand_line, ft_strlen(expand_line));
 			free(expand_line);
 		}
 		else
-			write(tmp_fd, line, strlen(line));
+			write(tmp_fd, line, ft_strlen(line));
 		write(tmp_fd, "\n", 1);
 		free(line);
 	}
