@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 10:45:19 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:37:13 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,10 @@ char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 	{
 		line = readline("> ");
 		if (g_interrupt_received != 0)
-			return (NULL);
+		{
+			close(tmp_fd);
+			return (filename);
+		}
 		if (!line)
 		{
 			here_doc_null_msg(cmd);

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 15:18:13 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:39:32 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern volatile sig_atomic_t g_interrupt_received;
 
 int	path_checker(char **envp)
 {
@@ -119,14 +121,11 @@ void	pipe_error(int *fd)
 	close(fd[1]);
 }
 
-void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
-{
-	int		fd[2];
-	pid_t	second;
-	int		status = 0;
 
+//Work in progress
+void	here_doc_creator(t_cmdtable *cmd, t_data *core, char **files)
+{
 	int i = 0;
-	char **files = NULL;
 	t_cmdtable *current_cmd = cmd;
 	
 	if (here_doc_counter(cmd) != 0)
@@ -137,6 +136,57 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 			if (cmd->redir_type == 10 || cmd->redir_type == 30)
 			{
 				cmd->redir = ft_strdup(here_doc_tempfile(cmd, core, STDIN_FILENO));
+				cmd->redir_type  = 1;
+				files[i] = ft_strdup(cmd->redir);
+				i++;
+			}
+			cmd = cmd->next;
+		}
+		cmd = current_cmd;
+	}	
+}
+
+
+void	here_doc_file_del(char **files)
+{
+	int i;
+
+	i = 0;
+	if (files)
+	{
+		while (files[i])
+		{
+			unlink(files[i]);
+			i++;
+		}
+	}
+}
+
+
+void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
+{
+	int		fd[2];
+	pid_t	second;
+	int		status = 0;
+	char **files = NULL;
+	
+	int i = 0;
+	t_cmdtable *current_cmd = cmd;
+	
+	if (here_doc_counter(cmd) != 0)
+	{
+		files = ft_calloc(here_doc_counter(cmd), sizeof(char *));
+		while (cmd)
+		{
+			if (cmd->redir_type == 10 || cmd->redir_type == 30)
+			{
+				cmd->redir = ft_strdup(here_doc_tempfile(cmd, core, STDIN_FILENO));
+				if (g_interrupt_received != 0)
+				{
+					files[i] = ft_strdup(cmd->redir);
+					here_doc_file_del(files);
+					return ;
+				}
 				cmd->redir_type  = 1;
 				files[i] = ft_strdup(cmd->redir);
 				i++;
@@ -178,15 +228,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 			waitpid(second, &status, 0);
 			if (WIFEXITED(status))
 				core->exit_status = WEXITSTATUS(status);
-			i = 0;
-			if (files)
-			{
-				while (files[i])
-				{
-					unlink(files[i]);
-					i++;
-				}
-			}
+			here_doc_file_del(files);
 		}
 	}
 	return ;
