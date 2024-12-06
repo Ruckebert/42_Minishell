@@ -1,13 +1,13 @@
 
 NAME = minishell
 
-SOURCE = main.c executor/here_doc.c executor/multi_pipe.c executor/pipes_processes.c executor/file_redirections.c executor/file_redirections2.c executor/executor.c executor/executor_utils.c environment.c synthax/synthax.c
+SOURCE = main.c executor/here_doc.c executor/multi_pipe.c executor/pipes_processes.c executor/file_redirections.c executor/file_redirections2.c executor/executor.c executor/executor_utils.c environment.c synthax/synthax.c synthax/synthax2.c
 
 SOURCEBUILTINS = builtins/builtins.c builtins/cd_functions.c builtins/builtin_utils.c  builtins/echo.c builtins/export3.c builtins/exit_cmds.c builtins/export2.c builtins/export.c  builtins/unset.c
 
-SOURCETOK = ./tokenizer/testing.c ./tokenizer/token.c ./tokenizer/lsthelper.c ./tokenizer/tokenhelper.c
+SOURCETOK = ./tokenizer/testing.c ./tokenizer/token.c ./tokenizer/lsthelper.c ./tokenizer/tokenhelper.c ./tokenizer/tokenhelper2.c
 
-SOURCEPARSE = ./parser/parse.c ./parser/prep_exec.c
+SOURCEPARSE = ./parser/parse.c ./parser/prep_exec.c ./parser/prep_exec2.c ./parser/parsehelper.c ./parser/expand.c ./parser/prep_exec_helper.c ./parser/cmd_lst.c ./parser/split_vars.c ./parser/fuse_nodes.c ./parser/heredoc_delimiter.c ./parser/parse_around_var.c ./parser/fuse_node_word.c ./parser/copy_exec_args.c ./parser/expand_in_doublequote.c
 
 OBJECTS = $(SOURCE:.c=.o)
 

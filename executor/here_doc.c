@@ -153,6 +153,7 @@ char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 		}
 		if (here_doc_main(&doc, cmd, core) == 1)
 			break ;
+
 	}
 	return (close(doc.tmp_fd), doc.filename);
 }

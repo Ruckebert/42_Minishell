@@ -23,16 +23,18 @@ int	isquote(char *c)
 
 int	issep(char *c)
 {
-	if (*c == '<' || *c == '>' ||  *c == '|' || *c == '=' || *c == '$' || *c == '?')
+	if (*c == '<' || *c == '>' || *c == '|'
+		|| *c == '=' || *c == '$' || *c == '?')
 		return (1);
 	return (0);
 }
 
 int	searchquote(char *str)
 {
-	int i;
-	char quote_type = *str;
+	int		i;
+	char	quote_type;
 
+	quote_type = *str;
 	i = 1;
 	while (str[i] != '\0' && str[i] != quote_type)
 		i++;
@@ -43,13 +45,14 @@ int	searchquote(char *str)
 
 int	searchsep(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(!(issep(&str[i])) && str[i] != '\0' && str[i] != ' ' && str[i] != '\t')
+	while (!(issep(&str[i])) && str[i] != '\0'
+		&& str[i] != ' ' && str[i] != '\t')
 	{
-		if(isquote(&str[i]))
-			return(i);
+		if (isquote(&str[i]))
+			return (i);
 		i++;
 	}
 	return (i);
@@ -57,8 +60,7 @@ int	searchsep(char *str)
 
 int	is_myspace(char *c)
 {
-	if(*c == ' ' || *c == '\t')
+	if (*c == ' ' || *c == '\t')
 		return (1);
 	return (0);
 }
-

@@ -25,14 +25,11 @@ void	closing_cmds_parent(int cmds, int fd[cmds - 1][2])
 
 int	cmd_count(t_cmdtable *cmd)
 {
-	int i;
 	int total;
 
-	i = 0;
 	total = 0;
 	while (cmd)
 	{
-		i = 0;
 		total++;
 		if (cmd->has_pipe_after != 1)
 		{
