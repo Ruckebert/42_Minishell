@@ -6,18 +6,20 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:31:08 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/04 16:18:43 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/06 14:01:26 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		finder(int found, int i, char **argv, char **env)
+int	finder(int found, int i, char **argv, char **env)
 {
-	int argc;
-	int var_len = 0;
-	int	env_len = 0;
+	int	argc;
+	int	var_len;
+	int	env_len;
 
+	var_len = 0;
+	env_len = 0;
 	argc = 1;
 	while (argv[argc])
 	{
@@ -36,40 +38,11 @@ int		finder(int found, int i, char **argv, char **env)
 	return (found);
 }
 
-//Why not reuse the unset_exo and unset_env instead of having two functions that bascially do the same thing?
-
-char	**unset_exo(t_data *core, char **env, int i, char **argv)
-{
-	int count = environment_export(core);
-	char **temp;
-	int found = 0;
-	
-	temp = malloc(((count - i) + 2) * sizeof(char *));
-	if (!temp)
-		exit(write(1, "Malloc Error", 13));
-	i = 0;
-	int k = 0;
-	while (env[i])
-	{
-		found = 0;
-		found = finder(found, i, argv, env);
-		if (!found)
-		{
-			temp[k] = ft_strdup(env[i]);
-			free(env[i]);
-			k++;
-		}	
-		i++;
-	}
-	temp[k] = NULL;
-	return (temp);
-}
-
 char	**unset_env(t_data *core, char **env, int i, char **argv)
 {
-	int new_env;
-	int found = 0;
-	char **temp;
+	int		new_env;
+	int		found;
+	char	**temp;
 
 	temp = malloc(((environment_export(core) - i) + 2) * sizeof(char *));
 	if (!temp)

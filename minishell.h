@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 15:27:10 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/06 14:11:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,19 +75,46 @@ typedef struct s_token
 //Piping
 typedef struct s_var
 {
+	/*Executioner Commands*/
 	char	**store;
 	char	**cmd;
 	char	*comm;
 	char	*full_comm;
+	int		store_env;
+
+	/*Pipe Redirections*/
 	char	*filename;
-	char	**filename2;
 	int		file_error;
+	int		input;
+	int		output;
 	int		fdin;
 	int		fdout;
+	int		prev_fd;
+
+	/*Single Pipe Forks*/
 	int		childid;
 	int		childid2;
 	
 }	t_var;
+
+//Here_doc Expander
+typedef struct s_exp
+{
+	/*Here Doc Expander*/
+	char *expanded_line;
+    char *var_start;
+    char *env_value;
+	char *var_name;
+	char *before_var;
+	int j;
+
+	/*Here Doc*/
+	char	*line;
+	char	*expand_line;
+	char	*filename;
+	int		tmp_fd;
+
+}	t_exp;
 
 /*Environment Functions*/
 char	**copy_env(char **env, t_data *core);
@@ -102,8 +129,16 @@ unsigned long long	ft_strtoull(const char *str, int *j);
 void				simple_free(char **str);
 
 /*Builtin Functions*/
+int		exit_loop(t_data *core, int i, int j);
+int		exit_error_handler(int j, t_data *core);
+int		second_no(int *no, int i, t_cmdtable *cmd);
+void	echo_exit(int i, int no, t_cmdtable *cmd, t_data *core);
 void	bubble_sort(t_data *core);
-void	print_exo_env(t_data *core);
+void	exp_error_msg(char *argv);
+void	reverse_free(int i, char **temp);
+int		dup_malloc_count(t_cmdtable *cmd, int j, int k, int sub);
+int		cmd_args_count(t_cmdtable *cmd);
+void	print_exo_env(t_data *core, int i);
 char	**new_exo_env(char **env, char **argv, int argc, int count);
 int		check_dup_exo(char **env, char **argv, char **temp, int j);
 int		finder(int found, int i, char **argv, char **env);
@@ -119,7 +154,7 @@ void	cd_com(t_cmdtable *cmd, t_data *core);
 void	pwd(t_data *core);
 void	export(t_cmdtable *cmd, t_data *core);
 void	unset(t_cmdtable *cmd, t_data *core);
-void	echo_cmd(t_cmdtable *cmd, t_data *core);
+void	echo_cmd(t_cmdtable *cmd, t_data *core, int i);
 void	exit_com(t_data *core);
 void	builtin_cmds(t_cmdtable *cmd, t_data *core);
 
@@ -136,11 +171,13 @@ void		error_handler_fd(int fd, t_cmdtable *cmd);
 void		file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 void		file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 void		file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
-void		here_doc(t_cmdtable *cmd, t_data *core, int fd);
+void		here_doc_file_del(char **files);
+void		here_doc_creator(t_cmdtable *cmd, t_data *core, char **files);
 char		*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd);
 void		redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 t_cmdtable	*multi_redirections(t_cmdtable *cmd, t_data *core, t_var *vars);
-void		multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, char **envp);
+void		execution_pro(t_cmdtable *cmd, t_data *core, t_var *vars, int fd[2]);
+void		multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core);
 void		single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars);
 void		absolute_path_finder(t_data *core, char **envp, char **argv);
 void		path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i);
