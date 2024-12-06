@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 15:39:32 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/06 12:48:42 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,24 @@ int	path_checker(char **envp)
 	return (0);
 }
 
+void	path_finder_end_checker(t_var *vars, t_data *core, char **envp, char **argv)
+{
+	if (ft_strlen(envp[vars->store_env]) <= 5)
+		absolute_path_finder(core, envp, argv);
+	else if (path_checker(envp) == 1 && (access(argv[0], R_OK) == 0))
+		execve(argv[0], argv, envp);
+	else
+	{
+		write(2,argv[0],ft_strlen(argv[0]));
+		write(2,": command not found\n",20);
+	}
+	free_split(vars->store);
+	core->exit_status = 127;
+	exit(core->exit_status);
+}
+
 void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 {
-	int store;
-
-	store = 0;
 	if (argv == NULL)
 		return ;
 	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
@@ -48,7 +61,7 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 	vars->store = ft_split(envp[i] + 5, ':');
 	if (!vars->store)
 		error_handler();
-	store = i;
+	vars->store_env = i;
 	i = -1;
 	while (vars->store[++i])
 	{
@@ -62,18 +75,7 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 		execve(vars->full_comm, argv, envp);
 		free(vars->full_comm);
 	}
-	if (ft_strlen(envp[store]) <= 5)
-		absolute_path_finder(core, envp, argv);
-	else if (path_checker(envp) == 1 && (access(argv[0], R_OK) == 0))
-		execve(argv[0], argv, envp);
-	else
-	{
-		write(2,argv[0],ft_strlen(argv[0]));
-		write(2,": command not found\n",20);
-	}
-	free_split(vars->store);
-	core->exit_status = 127;
-	exit(core->exit_status);
+	path_finder_end_checker(vars, core, envp, argv);
 }
 
 void	absolute_path_finder(t_data *core, char **envp, char **argv)
@@ -119,34 +121,11 @@ void	pipe_error(int *fd)
 	perror("Error While Forking");
 	close(fd[0]);
 	close(fd[1]);
+	exit(1); //Free everything and exit.
 }
 
 
 //Work in progress
-void	here_doc_creator(t_cmdtable *cmd, t_data *core, char **files)
-{
-	int i = 0;
-	t_cmdtable *current_cmd = cmd;
-	
-	if (here_doc_counter(cmd) != 0)
-	{
-		files = ft_calloc(here_doc_counter(cmd), sizeof(char *));
-		while (cmd)
-		{
-			if (cmd->redir_type == 10 || cmd->redir_type == 30)
-			{
-				cmd->redir = ft_strdup(here_doc_tempfile(cmd, core, STDIN_FILENO));
-				cmd->redir_type  = 1;
-				files[i] = ft_strdup(cmd->redir);
-				i++;
-			}
-			cmd = cmd->next;
-		}
-		cmd = current_cmd;
-	}	
-}
-
-
 void	here_doc_file_del(char **files)
 {
 	int i;
@@ -162,17 +141,13 @@ void	here_doc_file_del(char **files)
 	}
 }
 
-
-void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
+void	here_doc_creator(t_cmdtable *cmd, t_data *core, char **files)
 {
-	int		fd[2];
-	pid_t	second;
-	int		status = 0;
-	char **files = NULL;
+	int i;
+	t_cmdtable *current_cmd;
 	
-	int i = 0;
-	t_cmdtable *current_cmd = cmd;
-	
+	i = 0;
+	current_cmd = cmd;
 	if (here_doc_counter(cmd) != 0)
 	{
 		files = ft_calloc(here_doc_counter(cmd), sizeof(char *));
@@ -187,49 +162,59 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 					here_doc_file_del(files);
 					return ;
 				}
-				cmd->redir_type  = 1;
+				cmd->redir_type = 1;
 				files[i] = ft_strdup(cmd->redir);
 				i++;
 			}
 			cmd = cmd->next;
 		}
 		cmd = current_cmd;
-	}
+	}	
+}
+
+void	execution_pro(t_cmdtable *cmd, t_data *core, t_var *vars, int fd[2])
+{
+	if (cmd->redir_type != 0)
+		redirctions(cmd, core, vars, fd);
+	if (cmd->isbuiltin == 1)
+		echo_cmd(cmd, core, 0);
+	else if (cmd->args && ft_strchr(cmd->args[0], '/'))
+		absolute_path_finder(core, core->env, cmd->args);
+	else
+		path_finder(vars, core, core->env, cmd->args, 0);
+	exit(core->exit_status);
+}
+
+void	no_pipe_status(char **files, int status, t_data *core, pid_t second)
+{
+	setup_signal_handler(SIGINT, sig_handleINT_parent2);
+	waitpid(second, &status, 0);
+	if (WIFEXITED(status))
+		core->exit_status = WEXITSTATUS(status);
+	here_doc_file_del(files);
+}
+
+void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
+{
+	int		fd[2];
+	pid_t	second;
+	char	**files;
 	
+	files = NULL;
+	here_doc_creator(cmd, core, files);
 	if (cmd->next != NULL)
 		cmd = multi_redirections(cmd, core, vars);
-	vars->file_error = 0;
 	if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
 		builtin_cmds(cmd, core);
 	else
 	{
 		second = fork();
 		if (second == -1)
-		{
 			pipe_error(fd);
-			return ;
-		}
 		if (second == 0)
-		{
-			//setup_signal_handler(SIGINT, sig_handleINT_child);
-			if (cmd->redir_type != 0)
-				redirctions(cmd, core, vars, fd);
-			if (cmd->isbuiltin == 1)
-				echo_cmd(cmd, core);
-			else if (cmd->args && ft_strchr(cmd->args[0], '/'))
-				absolute_path_finder(core, core->env, cmd->args);
-			else
-				path_finder(vars, core, core->env, cmd->args, 0);
-			exit(core->exit_status);
-		}
+			execution_pro(cmd, core, vars, fd);
 		else
-		{
-			setup_signal_handler(SIGINT, sig_handleINT_parent2);
-			waitpid(second, &status, 0);
-			if (WIFEXITED(status))
-				core->exit_status = WEXITSTATUS(status);
-			here_doc_file_del(files);
-		}
+			no_pipe_status(files, status, core, second);
 	}
 	return ;
 }
@@ -255,10 +240,11 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	int		fd[2];
 	t_var	vars;
 	pid_t 	second;
-	int		status = 0;
+	int		status;
 
+	status = 0;
 	if (pipe_checker(cmd) == 0)
-		no_pipe_exe(cmd, core, &vars);
+		no_pipe_exe(cmd, core, &vars, status);
 	else if (pipe_checker(cmd) == 1)
 		single_pipe_exe(cmd, core, &vars);
 	else if (pipe_checker(cmd) > 1)
@@ -267,7 +253,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 		if (second == -1)
 			return (pipe_error(fd), 1);
 		if (second == 0)
-			multi_pipe(&vars, cmd, core, core->env);
+			multi_pipe(&vars, cmd, core);
 		else
 		{
 			waitpid(second, &status, 0);

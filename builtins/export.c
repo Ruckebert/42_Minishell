@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 12:45:17 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/06 14:03:16 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 void	bubble_sort(t_data *core)
 {
-	int swapped;
-	char *temp_str;
-	int	i;
-	
+	int		swapped;
+	char	*temp_str;
+	int		i;
+
 	i = 0;
 	swapped = 1;
+	temp_str = NULL;
 	while (swapped)
 	{
 		swapped = 0;
@@ -38,12 +39,11 @@ void	bubble_sort(t_data *core)
 	}
 }
 
-void	print_exo_env(t_data *core)
+void	print_exo_env(t_data *core, int	i)
 {
-	int i;
-	int j;
-	int has_equal;
-	
+	int	j;
+	int	has_equal;
+
 	i = 0;
 	while (core->export_env[i])
 	{
@@ -70,11 +70,11 @@ void	print_exo_env(t_data *core)
 
 int	check_dup_exo(char **env, char **argv, char **temp, int j)
 {
-	int k;
-	int found;
-	int var_len;
+	int	k;
+	int	found;
+	int	var_len;
 	int	env_len;
-	
+
 	k = 0;
 	found = 0;
 	var_len = 0;
@@ -98,7 +98,7 @@ int	check_dup_exo(char **env, char **argv, char **temp, int j)
 
 void	reverse_free(int i, char **temp)
 {
-	while(i >= 0)
+	while (i >= 0)
 	{
 		free(temp[i]);
 		i--;
@@ -112,109 +112,4 @@ void	exp_error_msg(char *argv)
 	ft_putstr_fd("export: `", 2);
 	ft_putstr_fd(argv, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
-}
-
-
-int		argv_checker(char **argv)
-{
-	int i = 1;
-	int	j = 0;
-	int	equal = 0;
-	int error = 0;
-	int first = 0;
-
-	if ((argv[i][0] >= '0' && argv[i][0] <= '9') || argv[i][0] == '+')
-		return (exp_error_msg(argv[i]), 1);
-	while (argv[i])
-	{
-		j = 0;
-		equal = 0;
-		while (argv[i][j])
-		{
-			if (argv[i][j] == '=' && first == 0)
-			{
-				equal++;
-				if (argv[i][j - 1] == '\0')
-					equal++;
-			}
-			if ((argv[i][j] == '+' | argv[i][j] == '?' || argv[i][j] == '^' || argv[i][j] == '!' || argv[i][j] == '~' || argv[i][j] == '#' || argv[i][j] == '@' || argv[i][j] == '*' || argv[i][j] == '-' || argv[i][j] == '.' || argv[i][j] == '{' || argv[i][j] == '}') && equal == 0)
-				error++;
-			if (ft_isalnum(argv[i][j]) == 0 && equal == 1)
-				first++;
-			j++;
-		}
-		if (equal > 1 || error >= 1)
-			return (exp_error_msg(argv[i]), 1);
-		i++;
-	}
-	return (0);
-}
-
-int check_dup(char **argv, char **temp, int k, int j) 
-{
-	int i = 0;
-	int len_var = len_env_var(argv, j);
-
-	while (argv[i])
-	{
-		if (i >= j)
-		{
-			i++;
-			continue ;
-		}
-		else if (ft_strncmp(argv[j], argv[i], len_var) == 0)
-		{
-			if (ft_strcmp(argv[j], argv[i]) != 0)
-			{
-				if (argv_checker(argv) == 1)
-					return (-1);	
-				temp[k - i] = ft_strdup(argv[j]);
-				return (1);
-			}
-		}
-		i++;
-	}
-    return (0);
-}
-
-char	**new_exo_env(char **env, char **argv, int argc, int count)
-{
-	int j;
-	int i;
-	int found;
-	char **temp = NULL;
-	
-	temp = malloc((argc + count) * sizeof(char *));
-	if (!temp)
-		exit(1);
-	i = 0;
-	while (env[i])
-	{
-		temp[i] = ft_strdup(env[i]);
-		if (!temp[i])
-			reverse_free(i, temp);
-		i++;
-	}
-	j = 1;
-	while (argv[j])
-	{
-		found = 0;
-		found = check_dup_exo(env, argv, temp, j);
-		if (found != 1)
-			found = check_dup(argv, temp, i, j);
-		if (found == -1)
-			return (NULL);
-		if (!found)
-		{
-			if (argv_checker(argv) == 1)
-				return (NULL);
-			temp[i] = ft_strdup(argv[j]);
-			if (!temp[i])
-				reverse_free(i, temp);
-			i++;
-		}
-		j++;
-	}
-	temp[i] = NULL;
-	return (temp);
 }

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:22:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 14:08:10 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/06 13:29:48 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 void	cd_oldpwd(char *old_pwd, t_data *core)
 {
-	int i = 0;
-	
+	int	i;
+
+	i = 0;
 	while (core->env[i])
 	{
 		if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
@@ -35,13 +36,13 @@ void	cd_oldpwd(char *old_pwd, t_data *core)
 
 void	cd_empty(char *old_pwd, t_data *core)
 {
-	int i;
+	int	i;
+
 	i = 0;
-		
 	free(core->direct);
 	while (core->env[i])
 	{
-		if	(ft_strncmp(core->env[i], "HOME=", 5) == 0)
+		if (ft_strncmp(core->env[i], "HOME=", 5) == 0)
 		{
 			core->direct = ft_strdup(core->env[i] + 5);
 			if (!core->user)
@@ -56,10 +57,26 @@ void	cd_empty(char *old_pwd, t_data *core)
 	free(old_pwd);
 }
 
+void	print_cd_error_msg(t_cmdtable *cmd, t_data *core)
+{
+	struct stat	filestat;
+
+	if (stat(cmd->args[1], &filestat) == 0)
+	{
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(core->direct, 2);
+		ft_putstr_fd(": Permission deined\n", 2);
+	}
+	else
+	{
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(core->direct, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+	}
+}
+
 void	normal_cd(char *old_pwd, t_cmdtable *cmd, t_data *core)
 {
-	struct stat fileStat;
-
 	free(core->direct);
 	core->direct = ft_strdup(cmd->args[1]);
 	if (access(core->direct, sizeof(char)) == 0)
@@ -70,18 +87,7 @@ void	normal_cd(char *old_pwd, t_cmdtable *cmd, t_data *core)
 	}
 	else
 	{
-		if (stat(cmd->args[1], &fileStat) == 0)
-		{
-			ft_putstr_fd("cd: ", 2);
-			ft_putstr_fd(core->direct, 2);
-			ft_putstr_fd(": Permission deined\n", 2);
-		}
-		else
-		{
-			ft_putstr_fd("cd: ", 2);
-			ft_putstr_fd(core->direct, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-		}
+		print_cd_error_msg(cmd, core);
 		core->exit_status = 1;
 	}
 	free(old_pwd);

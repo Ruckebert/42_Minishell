@@ -4,6 +4,8 @@
 		"get_next_line.h": "c",
 		"minishell.h": "c",
 		"random": "c",
+		"atomic": "c",
+		"algorithm": "c"
 		"*.tcc": "c"
 	}
 }
