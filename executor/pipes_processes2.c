@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 15:04:53 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:43:37 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 	char	**files;
 
 	files = NULL;
-	here_doc_creator(cmd, core, files, 0);
-	if (cmd->next != NULL)
-		cmd = multi_redirections(cmd, core, vars);
+	here_doc_creator(cmd, core, &files, 0);
 	if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
 		builtin_cmds(cmd, core);
 	else
@@ -92,7 +90,11 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 		if (second == -1)
 			pipe_error(fd);
 		if (second == 0)
+		{
+			if (cmd->next != NULL)
+				cmd = multi_redirections(cmd, core, vars);
 			execution_pro(cmd, core, vars, fd);
+		}
 		else
 			no_pipe_status(files, status, core, second);
 	}

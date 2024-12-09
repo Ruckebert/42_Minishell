@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:45:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 14:55:28 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:43:18 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ t_cmdtable	*input_redirections(t_cmdtable *cmd, t_data *core,
 {
 	t_cmdtable	*input;
 
+	input = NULL;
 	while (cmd)
 	{
-		input = input_types(cmd, core, vars, fd);
+		if (cmd->redir_type != 2 && cmd->redir_type != 20)
+			input = input_types(cmd, core, vars, fd);
 		if (!input && vars->file_error != 1)
 			return (cmd);
 		if (cmd->has_pipe_after == 1)
@@ -92,7 +94,10 @@ t_cmdtable	*both_redirections(t_cmdtable *cmd, t_data *core,
 {
 	t_cmdtable	*input;
 
+	input = NULL;
 	input = input_redirections(cmd, core, vars, fd);
+	if (access(input->redir, R_OK) != 0)
+		file_input(input, core, vars, &fd);
 	cmd->next = output_redirections(cmd, core, vars, &fd);
 	cmd->redir_type = 40;
 	cmd = input;

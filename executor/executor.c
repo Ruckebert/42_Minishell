@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 14:51:40 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/09 10:48:37 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void	pipe_error(int *fd)
 	exit(1);
 }
 
-void	here_doc_creator(t_cmdtable *cmd, t_data *core, char **files, int i)
+void	here_doc_creator(t_cmdtable *cmd, t_data *core, char ***files, int i)
 {
 	t_cmdtable	*current_cmd;
 
 	current_cmd = cmd;
 	if (here_doc_counter(cmd) != 0)
 	{
-		files = ft_calloc(here_doc_counter(cmd), sizeof(char *));
+		*files = ft_calloc(here_doc_counter(cmd), sizeof(char *));
 		while (cmd)
 		{
 			if (cmd->redir_type == 10 || cmd->redir_type == 30)
@@ -54,12 +54,12 @@ void	here_doc_creator(t_cmdtable *cmd, t_data *core, char **files, int i)
 				cmd->redir = ft_strdup(here_doc_tempfile(cmd, core, 0));
 				if (g_interrupt_received != 0)
 				{
-					files[i] = ft_strdup(cmd->redir);
-					here_doc_file_del(files);
+					(*files)[i] = ft_strdup(cmd->redir);
+					here_doc_file_del(*files);
 					return ;
 				}
 				cmd->redir_type = 1;
-				files[i] = ft_strdup(cmd->redir);
+				(*files)[i] = ft_strdup(cmd->redir);
 				i++;
 			}
 			cmd = cmd->next;
@@ -103,7 +103,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 		if (second == -1)
 			return (pipe_error(fd), 1);
 		if (second == 0)
-			multi_pipe(&vars, cmd, core);
+			multi_pipe(&vars, cmd, core, 0);
 		else
 		{
 			waitpid(second, &status, 0);

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 15:04:08 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:10:39 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ t_cmdtable	*return_pipe(t_cmdtable *cmd)
 	}
 	return (cmd->next);
 }
-
 
 void	child_pipe(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
@@ -69,7 +68,6 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core,
 	status = 0;
 	if (pipe(fd) == -1)
 		pipe_error(fd);
-
 	vars->childid = fork();
 	child_pipe(cmd, core, vars, fd);
 	vars->childid2 = fork();
@@ -92,7 +90,7 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 
 	status = 0;
 	files = NULL;
-	here_doc_creator(cmd, core, files, 0);
+	here_doc_creator(cmd, core, &files, 0);
 	second = fork();
 	if (second == -1)
 	{

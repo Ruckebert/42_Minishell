@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 14:09:28 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/09 10:48:44 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,6 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core, int i)
 	}
 	echo_exit(i, no, cmd, core);
 }
-
-//IDK if i should remove this because when i use it as a function it causes an error and idk why.
 
 void	exit_com(t_data *core)
 {
