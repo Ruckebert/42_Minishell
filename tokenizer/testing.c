@@ -134,12 +134,14 @@ void free_cmdtable(t_cmdtable **head)
     t_cmdtable *tmp;
     int i;
 
-    while (*head != NULL)
+    tmp = NULL;
+    tmp = *head;
+    while (tmp != NULL)
     {
-        tmp = *head;
 
-        // Free args
         i = 0;
+        if (tmp == NULL)
+            return ;
         if (tmp->args != NULL)
         {
             while (tmp->args[i])
@@ -148,14 +150,15 @@ void free_cmdtable(t_cmdtable **head)
                 i++;
             }
         }
+        if (tmp->redir != NULL)
+            free(tmp->redir);
         free(tmp->args);
 
-        // Free redir
         if (tmp->redir)
             free(tmp->redir);
 
-        // Free node
         free(tmp);
+        tmp = tmp->next;
     }
 }
 

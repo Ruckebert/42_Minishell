@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/10 13:11:10 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:50:32 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ t_token	*ft_lstnew(char *word)
 {
 	t_token	*elem;
 
+	if (!word)
+		return (NULL);
 	elem = malloc(sizeof(t_token));
 	if (!elem)
 		return (NULL);

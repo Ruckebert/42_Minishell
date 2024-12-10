@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 11:27:13 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 14:33:37 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,10 +259,11 @@ void	fuse_all_0space_nodes(t_token *token);
 void	handle_heredoc_delimiter(t_token *token);
 void	fuse_node_with_next(t_token *curr);
 int		whichtoken(char c);
-void	substitute_redir(t_token *curr, char str[3]);
+void	substitute_redir(t_token *curr, char str[3],
+			t_token *token, t_data *core);
 void	make_end_token(t_token **token, t_data *core);
 void	make_start_token(t_token **token, t_data *core);
-void	combine_double_redirect(t_token	*token);
+void	combine_double_redirect(t_token	*token, t_data *core);
 void	remove_empty_quotes(t_token *token);
 char	*parse_var_name(t_token *curr);
 void	copy_args(t_cmdtable *cmd);
