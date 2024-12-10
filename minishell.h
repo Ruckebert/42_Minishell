@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/09 10:12:14 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:27:13 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@
 # include "libft/libft.h"
 
 // All allowed functions are in these headers 
-#include <unistd.h>
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <string.h>
-#include <sys/ioctl.h>
-#include <termios.h>
-#include <curses.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <sys/stat.h>
+# include <dirent.h>
+# include <string.h>
+# include <sys/ioctl.h>
+# include <termios.h>
+# include <curses.h>
 
 //Cmd Parser Table
 typedef struct s_cmdtable
@@ -40,8 +40,8 @@ typedef struct s_cmdtable
 	int		redir_type;
 	char	*redir;
 	int		isbuiltin;
-	struct s_cmdtable *next;
-	struct s_cmdtable *prev;
+	struct s_cmdtable	*next;
+	struct s_cmdtable	*prev;
 
 }	t_cmdtable;
 
@@ -99,12 +99,12 @@ typedef struct s_var
 typedef struct s_exp
 {
 	/*Here Doc Expander*/
-	char *expanded_line;
-    char *var_start;
-    char *env_value;
-	char *var_name;
-	char *before_var;
-	int j;
+	char	*expanded_line;
+	char	*var_start;
+	char	*env_value;
+	char	*var_name;
+	char	*before_var;
+	int		j;
 
 	/*Here Doc*/
 	char	*line;
@@ -126,17 +126,19 @@ typedef struct s_parse_context
 char	**copy_env(char **env, t_data *core);
 void	pwd_update(t_data *core);
 void	envi_update(char *old_pwd, t_data *core);
+char	**free_environment(char **new_env, int i);
 
 /*Utils/Free*/
-int					ft_strcmp(char *s1, char *s2);
-int					len_env_var(char **argv, int j);
-int					environment_export(t_data *core);
+void	free_exit(t_data *core);
+int		ft_strcmp(char *s1, char *s2);
+int		len_env_var(char **argv, int j);
+int		environment_export(t_data *core);
 unsigned long long	ft_strtoull(const char *str, int *j);
-void				simple_free(char **str);
-void				expander_freer(t_exp *doc);
-void				here_doc_null_msg(t_cmdtable *cmd);
-void				closing_cmds_parent(int cmds, int fd[cmds - 1][2]);
-int					cmd_count(t_cmdtable *cmd);
+void	simple_free(char **str);
+void	expander_freer(t_exp *doc);
+void	here_doc_null_msg(t_cmdtable *cmd);
+void	closing_cmds_parent(int cmds, int fd[cmds - 1][2]);
+int		cmd_count(t_cmdtable *cmd);
 
 /*Builtin Functions*/
 int		exit_loop(t_data *core, int i, int j);
@@ -170,7 +172,7 @@ void	builtin_cmds(t_cmdtable *cmd, t_data *core);
 
 /*Executor Functions*/
 int			redirection_checker(t_cmdtable *cmd, t_var *vars);
-t_cmdtable 	*return_pipe(t_cmdtable *cmd);
+t_cmdtable	*return_pipe(t_cmdtable *cmd);
 void		child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd);
 void		parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd);
 int			here_doc_counter(t_cmdtable *cmd);

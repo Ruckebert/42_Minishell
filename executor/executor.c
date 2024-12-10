@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/09 10:48:37 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:15:31 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	pipe_checker(t_cmdtable *cmd)
 
 int	executor(t_cmdtable *cmd, t_data *core)
 {
-	int		fd[2];
 	t_var	vars;
 	pid_t	second;
 	int		status;
@@ -101,7 +100,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	{
 		second = fork();
 		if (second == -1)
-			return (pipe_error(fd), 1);
+			return (1);
 		if (second == 0)
 			multi_pipe(&vars, cmd, core, 0);
 		else
