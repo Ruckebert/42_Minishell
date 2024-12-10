@@ -1,2 +1,0 @@
-tail: cannot fstat 'standard input': Bad file descriptor
-tail: -: Bad file descriptor

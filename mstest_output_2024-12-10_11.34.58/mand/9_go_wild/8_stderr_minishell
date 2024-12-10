@@ -1,6 +1,0 @@
-filedoesnotexist: No such file or directory
-head: error reading 'standard input': Bad file descriptor
-head: -: Bad file descriptor
-cat: -: Bad file descriptor
-cat: closing standard input: Bad file descriptor
-grep: (standard input): Bad file descriptor
