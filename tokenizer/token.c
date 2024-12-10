@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/10 11:30:16 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 15:13:34 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ char	*getword(int *pos, int *oldpos, t_data *core, t_token *token)
 	word = malloc (*pos - *oldpos + 1);
 	if (word == NULL)
 	{
-		perror("in getquote");
 		free_token_list(token);
+		free_exit(core);
 		exit (EXIT_FAILURE);
 	}
 	word[*pos - *oldpos] = '\0';
@@ -29,11 +29,17 @@ char	*getword(int *pos, int *oldpos, t_data *core, t_token *token)
 	return (word);
 }
 
-char	*getsep(int *pos, t_data *core)
+char	*getsep(int *pos, t_data *core, t_token *token)
 {
 	char	*word;
 
 	word = malloc(2);
+	if (word == NULL)
+	{
+		free_token_list(token);
+		free_exit(core);
+		exit (EXIT_FAILURE);
+	}
 	word[0] = core->line[*pos];
 	word[1] = '\0';
 	(*pos)++;
@@ -48,8 +54,8 @@ char	*getquote(int *pos, int *oldpos, t_data *core, t_token *token)
 	word = malloc (*pos - *oldpos + 1);
 	if (word == NULL)
 	{
-		perror("in getquote");
 		free_token_list(token);
+		free_exit(core);
 		exit (EXIT_FAILURE);
 	}
 	word[*pos - *oldpos] = '\0';
@@ -73,13 +79,15 @@ void	make_tokens(t_data *core, t_token *token, int pos)
 		if (!(issep(&core->line[pos])) && !(isquote(&core->line[pos])))
 			word = getword(&pos, &oldpos, core, token);
 		else if (issep(&core->line[pos]))
-			word = getsep(&pos, core);
+			word = getsep(&pos, core, token);
 		else if (isquote(&core->line[pos]))
 			word = getquote(&pos, &oldpos, core, token);
 		newtoken = ft_lstnew(word);
+		free(word);
 		if (!newtoken)
 		{
 			free_token_list(token);
+			free_exit(core);
 			exit(1);
 		}
 		if (token->next != NULL && core->line[oldpos - 1] == ' ')
@@ -98,10 +106,15 @@ t_token	*tokenize(t_data *core)
 
 	pos = 0;
 	token = NULL;
+//	printlist(token);
 	make_start_token(&token, core);
+//	printlist(token);
 	make_tokens(core, token, pos);
+//	printlist(token);
 	make_end_token(&token, core);
-	combine_double_redirect(token);
+//	printlist(token);
+	combine_double_redirect(token, core);
+//	printlist(token);
 	remove_empty_quotes(token);
 	if (synthax_check(token, core) != 0)
 		return (NULL);

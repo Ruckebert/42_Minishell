@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lsthelper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/10 12:02:09 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:50:32 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ t_token	*ft_lstnew(char *word)
 {
 	t_token	*elem;
 
+	if (!word)
+		return (NULL);
 	elem = malloc(sizeof(t_token));
 	if (!elem)
 		return (NULL);
-	if (word)
-		elem->word = word;
-	else
-		elem = (t_token *){0};
+	elem->word = ft_strdup(word);
+	if (!elem->word)
+		return (NULL);
 	elem->next = NULL;
 	elem->prev = NULL;
 	return (elem);
