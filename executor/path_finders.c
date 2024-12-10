@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_finders.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:36:24 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 14:41:49 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:12:12 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	path_finder_end_checker(t_var *vars, t_data *core,
 	simple_free(core->env);
 	if (core->export_env != NULL)
 		simple_free(core->export_env);
-	free(core->user);
 	free(core->direct);
 	free(core->line);
 	if (core->cmd != NULL)

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:07:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 12:31:58 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:12:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,11 @@ void	echo_exit(int i, int no, t_cmdtable *cmd, t_data *core)
 	if (no == 0)
 		ft_printf("\n");
 	free_exit(core);
-	/*
 	if(core->env != NULL)
 		simple_free(core->env);
 	if (core->export_env != NULL)
 		simple_free(core->export_env);
-	free(core->user);
 	free(core->direct);
-	free(core->line);*/
+	free(core->line);
 	exit(core->exit_status);
 }

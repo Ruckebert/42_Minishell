@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/10 14:24:58 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 15:58:01 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_cmdtable	*prep_nodes_for_exec(t_token *token)
 	cmd = (t_cmdtable *){0};
 	if (!token)
 		return (NULL);
-	printlist(token);
+	//printlist(token);
 	curr = token;
 	cmd = initialize_cmd_table(&curr);
 	process_tokens(&cmd, curr);
