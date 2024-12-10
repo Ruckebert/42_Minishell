@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 11:15:31 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:23:21 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,19 @@ void	pipe_error(int *fd)
 void	here_doc_creator(t_cmdtable *cmd, t_data *core, char ***files, int i)
 {
 	t_cmdtable	*current_cmd;
+	char		*temp;
 
 	current_cmd = cmd;
 	if (here_doc_counter(cmd) != 0)
 	{
-		*files = ft_calloc(here_doc_counter(cmd), sizeof(char *));
+		*files = ft_calloc(here_doc_counter(cmd) + 1, sizeof(char *));
 		while (cmd)
 		{
 			if (cmd->redir_type == 10 || cmd->redir_type == 30)
 			{
-				cmd->redir = ft_strdup(here_doc_tempfile(cmd, core, 0));
+				temp = here_doc_tempfile(cmd, core, 0);
+				free(cmd->redir);
+				cmd->redir = ft_strdup(temp);
 				if (g_interrupt_received != 0)
 				{
 					(*files)[i] = ft_strdup(cmd->redir);
@@ -60,6 +63,7 @@ void	here_doc_creator(t_cmdtable *cmd, t_data *core, char ***files, int i)
 				}
 				cmd->redir_type = 1;
 				(*files)[i] = ft_strdup(cmd->redir);
+				free(temp);
 				i++;
 			}
 			cmd = cmd->next;

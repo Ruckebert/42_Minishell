@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/09 15:04:17 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:07:38 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,7 @@ void	multi_pipe_end(int i, int *childids, t_data *core, char **files)
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
 	here_doc_file_del(files);
-	/*Freeing Part*/
-	free(childids);
-	simple_free(core->env);
-	if (core->export_env != NULL)
-		simple_free(core->export_env);
-	free(core->user);
-	free(core->direct);
-	free(core->line);
-	/*Freeing Part*/
+	free_exit(core);
 	exit(core->exit_status);
 }
 

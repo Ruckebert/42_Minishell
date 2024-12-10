@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:22:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/09 12:56:56 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 15:10:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ void	cd_oldpwd(char *old_pwd, t_data *core)
 			break ;
 		}
 		i++;
+	}
+	if (core->env[i] == NULL)
+	{
+		ft_putstr_fd("cd: OLDPWD not set\n", 2);
+		core->empty_cd = 2;
+		return ;
 	}
 	ft_printf("%s\n", core->direct);
 	if (chdir(core->direct) == -1)
@@ -83,6 +89,13 @@ void	normal_cd(char *old_pwd, t_cmdtable *cmd, t_data *core)
 	{
 		if (chdir(core->direct) == -1)
 			core->exit_status = 1;
+		if (old_pwd == NULL && core->empty_cd != 1)
+		{
+			ft_putstr_fd("cd: error: cannot access parent directory\n", 2);
+			core->empty_cd++;
+		}
+		else if (core->empty_cd == 1)
+			core->empty_cd = 0;
 		envi_update(old_pwd, core);
 	}
 	else
