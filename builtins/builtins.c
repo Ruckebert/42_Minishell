@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 14:09:28 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:24:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,7 @@ void	pwd(t_data *core)
 	free(core->direct);
 	core->direct = getcwd(NULL, 0);
 	if (!core->direct)
-	{
-		free(core->direct);
 		return ;
-	}
 	core->exit_status = 0;
 	ft_printf("%s\n", core->direct);
 }
@@ -75,11 +72,19 @@ void	env(t_data *core)
 	return ;
 }
 
+void	insert_new_env(t_data *core, char **temp, char **temp_env)
+{
+	simple_free(core->export_env);
+	core->export_env = temp;
+	simple_free(core->env);
+	core->env = temp_env;
+}
 void	export(t_cmdtable *cmd, t_data *core)
 {
 	int		i;
 	int		count;
 	char	**temp;
+	char	**temp_env;
 
 	count = environment_export(core);
 	bubble_sort(core);
@@ -96,32 +101,27 @@ void	export(t_cmdtable *cmd, t_data *core)
 			core->exit_status = 1;
 			return ;
 		}
-		core->env = new_exo_env(core->env, cmd->args, i, count);
+		temp_env = new_exo_env(core->env, cmd->args, i, count);
 		if (!core->env)
 			exit(write(2, "Error: Enviornment is Not Sexy Enough\n", 39));
-		simple_free(core->export_env);
-		core->export_env = temp;
+		insert_new_env(core, temp, temp_env);
 	}
 }
 
 void	unset(t_cmdtable *cmd, t_data *core)
 {
 	char	**temp;
+	char	**temp_env;
 	int		i;
 
 	i = 0;
 	core->exit_status = 0;
 	temp = unset_env(core, core->export_env, i, cmd->args);
-	core->env = unset_env(core, core->env, i, cmd->args);
-	i = 0;
-	while (core->export_env[i])
-	{
-		if (!core->export_env[i])
-			free(core->export_env[i]);
-		i++;
-	}
-	free(core->export_env);
+	temp_env = unset_env(core, core->env, i, cmd->args);
+	simple_free(core->export_env);
 	core->export_env = temp;
+	simple_free(core->env);
+	core->env = temp_env;
 }
 
 void	echo_cmd(t_cmdtable *cmd, t_data *core, int i)
@@ -153,7 +153,22 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core, int i)
 	echo_exit(i, no, cmd, core);
 }
 
-//IDK if i should remove this because when i use it as a function it causes an error and idk why.
+void	free_exit(t_data *core)
+{
+	if(core->env != NULL)
+		simple_free(core->env);
+	if (core->export_env != NULL)
+		simple_free(core->export_env);
+	free(core->user);
+	free(core->direct);
+	free(core->line);
+	if (core->cmd != NULL)
+		free_cmdtable(&core->cmd);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
+}
+
 
 void	exit_com(t_data *core)
 {
@@ -168,21 +183,11 @@ void	exit_com(t_data *core)
 	{
 		temp = ft_strtrim(core->cmd->args[1], " ");
 		core->cmd->args[1] = ft_strdup(temp);
+		free(temp);
 	}
 	j = exit_loop(core, i, j);
 	if (exit_error_handler(j, core) == 1)
 		return ;
-	i = 0; /*Frees everything and exits*/
-	while (core->env[i])
-		i++;
-	simple_free(core->env);
-	if (core->export_env != NULL)
-		simple_free(core->export_env);
-	free(core->user);
-	free(core->direct);
-	free(core->line);
-	if (core->cmd != NULL)
-		free_cmdtable(&core->cmd);
-	rl_clear_history();
+	free_exit(core);
 	exit(core->exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/03 10:45:10 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:08:34 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,12 @@ char	**environment_copy(char **env, char **new_env, t_data *core, int count)
 	return (new_env);
 }
 
-char **copy_env(char **env, t_data *core)
+char	**copy_env(char **env, t_data *core)
 {
-	char **new_env;
-	int count;
+	char	**new_env;
+	int		count;
 
+	new_env = NULL;
 	if (env == NULL || *env == NULL)
 		exit(1);
 	count = 0;
@@ -102,56 +103,9 @@ char **copy_env(char **env, t_data *core)
 		exit(2);
 	core->export_env = malloc((count + 1) * sizeof(char *));
 	if (!core->export_env)
+	{
+		free(new_env);
 		exit(2);
+	}
 	return (environment_copy(env, new_env, core, count));
-}
-
-void pwd_update(t_data *core)
-{
-	int i;
-	char *temp;
-	
-	i = 0;
-	while (core->env[i])
-	{
-		if (ft_strncmp(core->env[i], "PWD=", 4) == 0)
-		{
-			temp = ft_substr(core->env[i], 0, 4);
-			free(core->env[i]);
-			core->env[i] = ft_strjoin(temp, core->direct);
-			if (!core->env[i])
-				free_environment(core->env, i);
-			free(temp);
-		}
-		i++;
-	}
-	return ;
-}
-
-void	envi_update(char *old_pwd, t_data *core)
-{
-	int i;
-	char *temp;
-
-	i = 0;
-	core->direct = getcwd(NULL, 0);
-	while (core->env[i])
-	{
-		if (ft_strncmp(core->env[i], "PWD=", 4) == 0)
-		{
-			temp = ft_substr(core->env[i], 0, 4);
-			free(core->env[i]);
-			core->env[i] = ft_strjoin(temp, core->direct);
-			free(temp);
-		}
-		else if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
-		{
-			temp = ft_substr(core->env[i], 0, 7);
-			free(core->env[i]);
-			core->env[i] = ft_strjoin(temp, old_pwd);
-			free(temp);
-		}
-		i++;
-	}
-	return ;
 }

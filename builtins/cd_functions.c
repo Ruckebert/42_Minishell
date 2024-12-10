@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:22:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 13:29:48 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/09 12:56:56 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ void	cd_empty(char *old_pwd, t_data *core)
 	int	i;
 
 	i = 0;
-	free(core->direct);
 	while (core->env[i])
 	{
 		if (ft_strncmp(core->env[i], "HOME=", 5) == 0)
 		{
+			free(core->direct);
 			core->direct = ft_strdup(core->env[i] + 5);
-			if (!core->user)
+			if (!core->direct)
 				return ;
 			break ;
 		}

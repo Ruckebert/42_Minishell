@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:34:16 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 14:09:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 10:26:59 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	len_env_var(char **argv, int j)
 
 int	environment_export(t_data *core)
 {
-	int	count;
+	int		count;
 
 	count = 0;
 	if (core->export_env[0] == NULL)

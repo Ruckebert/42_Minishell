@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 16:26:47 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/05 15:33:15 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 09:48:26 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@ static char	*ft_strcpy(char *dest, const char *src)
 
 char	*ft_strdup(const char *src)
 {
-	char	*characterstring = NULL;
-	char	*temp = NULL;
+	char	*characterstring;
+	char	*temp;
 	int		len;
 
+	characterstring = NULL;
+	temp = NULL;
 	if (!src)
 		return (NULL);
 	len = ft_strlen(src);
