@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:36:24 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 11:30:21 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:57:04 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ void	path_finder_end_checker(t_var *vars, t_data *core,
 		free_cmdtable(&core->cmd);
 	close(STDOUT_FILENO);
 	close(STDERR_FILENO);
+	close(STDIN_FILENO);
 	/*Freeing Part*/
 	exit(core->exit_status);
 }
 
 void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 {
-	close(STDIN_FILENO);
 	if (argv == NULL)
 		return ;
 	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
