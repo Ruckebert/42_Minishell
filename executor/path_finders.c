@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:36:24 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 11:57:04 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:48:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,6 @@ void	absolute_path_finder(t_data *core, char **envp, char **argv)
 		write(2, ": No such file or directory\n", 28);
 		core->exit_status = 127;
 	}
+	free_exit(core);
 	exit(core->exit_status);
 }

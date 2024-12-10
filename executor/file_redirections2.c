@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:45:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/09 11:43:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:32:33 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ t_cmdtable	*multi_redirections(t_cmdtable *cmd, t_data *core, t_var *vars)
 		return (both_redirections(cmd, core, vars, *fd));
 	else if (vars->input != 0 && vars->output == 0)
 		return (input_redirections(cmd, core, vars, *fd));
-	else if (vars->input == 0 && vars->fdout != 0)
+	else if (vars->input == 0 && vars->output != 0)
 		return (output_redirections(cmd, core, vars, fd));
 	return (NULL);
 }

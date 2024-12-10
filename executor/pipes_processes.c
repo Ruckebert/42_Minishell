@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/09 13:15:44 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:45:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	child_pipe(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			cmd = multi_redirections(cmd, core, vars);
 		vars->file_error = 0;
 		child_pros(cmd, vars, core, fd);
+		free_exit(core);
 		exit(core->exit_status);
 	}
 }
@@ -56,6 +57,7 @@ void	parent_pipe(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			cmd = multi_redirections(cmd, core, vars);
 		vars->file_error = 0;
 		parent_pros(cmd, vars, core, fd);
+		free_exit(core);
 		exit(core->exit_status);
 	}
 }

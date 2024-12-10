@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:09:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/09 10:10:24 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:21:02 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,12 @@ void	here_doc_file_del(char **files)
 			unlink(files[i]);
 			i++;
 		}
+		i = 0;
+		while (files[i])
+		{
+			free(files[i]);
+			i++;
+		}
+		free(files);
 	}
 }
