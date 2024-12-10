@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 10:43:19 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:24:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,23 @@ void	echo_cmd(t_cmdtable *cmd, t_data *core, int i)
 	echo_exit(i, no, cmd, core);
 }
 
+void	free_exit(t_data *core)
+{
+	if(core->env != NULL)
+		simple_free(core->env);
+	if (core->export_env != NULL)
+		simple_free(core->export_env);
+	free(core->user);
+	free(core->direct);
+	free(core->line);
+	if (core->cmd != NULL)
+		free_cmdtable(&core->cmd);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
+}
+
+
 void	exit_com(t_data *core)
 {
 	int		i;
@@ -171,16 +188,6 @@ void	exit_com(t_data *core)
 	j = exit_loop(core, i, j);
 	if (exit_error_handler(j, core) == 1)
 		return ;
-	/*Frees everything and exits*/
-	if(core->env != NULL)
-		simple_free(core->env);
-	if (core->export_env != NULL)
-		simple_free(core->export_env);
-	free(core->user);
-	free(core->direct);
-	free(core->line);
-	if (core->cmd != NULL)
-		free_cmdtable(&core->cmd);
-	rl_clear_history();
+	free_exit(core);
 	exit(core->exit_status);
 }
