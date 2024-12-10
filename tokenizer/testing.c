@@ -123,7 +123,9 @@ void    free_token_list(t_token *head)
 	{
 		tmp = head;
 		head = head->next;
-		free(tmp);
+        if (tmp->word)
+		    free (tmp->word);
+        free (tmp);
 	}
 }
 

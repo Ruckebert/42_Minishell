@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/10 10:58:21 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:35:04 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	process_tokens(t_cmdtable **cmd, t_token *curr)
 	t_cmdtable	*newcmd;
 
 	newcmd = *cmd;
+
 	while (!is_end(curr))
 	{
 		if (is_redir(curr))
@@ -65,12 +66,16 @@ t_cmdtable	*prep_nodes_for_exec(t_token *token)
 	t_cmdtable	*cmd;
 	t_token		*curr;
 
+	cmd = (t_cmdtable *){0};
+	if (!token)
+		return (NULL);
+	printlist(token);
 	curr = token;
 	cmd = initialize_cmd_table(&curr);
 	process_tokens(&cmd, curr);
 	find_builtins(cmd);
 	if (token)
 		free_token_list(token);
-//	print_cmdtable(cmd);
+	print_cmdtable(cmd);
 	return (cmd);
 }

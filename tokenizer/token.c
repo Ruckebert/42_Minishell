@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/10 12:55:20 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:36:41 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	make_tokens(t_data *core, t_token *token, int pos)
 		else if (isquote(&core->line[pos]))
 			word = getquote(&pos, &oldpos, core, token);
 		newtoken = ft_lstnew(word);
+		free(word);
 		if (!newtoken)
 		{
 			free_token_list(token);
@@ -99,10 +100,15 @@ t_token	*tokenize(t_data *core)
 
 	pos = 0;
 	token = NULL;
+//	printlist(token);
 	make_start_token(&token, core);
+//	printlist(token);
 	make_tokens(core, token, pos);
+//	printlist(token);
 	make_end_token(&token, core);
+//	printlist(token);
 	combine_double_redirect(token);
+//	printlist(token);
 	remove_empty_quotes(token);
 	if (synthax_check(token, core) != 0)
 		return (NULL);

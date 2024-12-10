@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/06 13:02:28 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:36:17 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_token	*get_args(t_cmdtable *cmd, t_token *token)
 	{
 		if (!is_redir(curr) &&!is_redir(curr->prev))
 		{
-			cmd->args[i] = curr->word;
+			cmd->args[i] = strdup(curr->word);
 			i++;
 		}
 		if (!(curr->next))

@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/10 12:50:49 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:11:10 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_token	*ft_lstnew(char *word)
 {
 	t_token	*elem;
 
-	elem = NULL;//malloc(sizeof(t_token));
+	elem = malloc(sizeof(t_token));
 	if (!elem)
 		return (NULL);
 	elem->word = ft_strdup(word);
