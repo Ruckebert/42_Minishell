@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/10 11:30:16 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:55:20 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	make_tokens(t_data *core, t_token *token, int pos)
 		if (!newtoken)
 		{
 			free_token_list(token);
+			free_exit(core);
 			exit(1);
 		}
 		if (token->next != NULL && core->line[oldpos - 1] == ' ')

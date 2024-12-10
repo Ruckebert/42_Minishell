@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 10:58:55 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:57:42 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int main(int argc, char *argv[], char **env)
 	setup_signal_handler(SIGINT, sig_handleINT_parent);
 		
 	int status = -1;
-
+	core = (t_data){0};
 	token = NULL;
 	core.exit_status = 0;
 	if (argc == -1)

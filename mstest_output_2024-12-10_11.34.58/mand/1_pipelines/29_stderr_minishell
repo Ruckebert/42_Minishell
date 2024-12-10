@@ -1,0 +1,19 @@
+warning: here-document delimited by end-of-file (wanted `stop3')
+cat: -: Bad file descriptor
+cat: closing standard input: Bad file descriptor
+cat: -: Bad file descriptor
+cat: closing standard input: Bad file descriptor
+cat: -: Bad file descriptor
+cat: closing standard input: Bad file descriptor
+cat: -: Bad file descriptor
+cat: closing standard input: Bad file descriptor
+fe: command not found
+wf: command not found
+fwe: command not found
+f: command not found
+stop: command not found
+dw: command not found
+stop1: command not found
+dwasd: command not found
+stop2: command not found
+cat: Makefile: No such file or directory

@@ -135,14 +135,16 @@ void free_cmdtable(t_cmdtable **head)
     while (*head != NULL)
     {
         tmp = *head;
-        *head = (*head)->next;
 
         // Free args
         i = 0;
-        while (tmp->args[i])
+        if (tmp->args != NULL)
         {
-            free(tmp->args[i]);
-            i++;
+            while (tmp->args[i])
+            {
+                free(tmp->args[i]);
+                i++;
+            }
         }
         free(tmp->args);
 

@@ -1,0 +1,16 @@
+UndefinedBehaviorSanitizer:DEADLYSIGNAL
+==1635889==ERROR: UndefinedBehaviorSanitizer: SEGV on unknown address (pc 0x00000044cec6 bp 0x7fffcb7db8c0 sp 0x7fffcb7db800 T1635889)
+==1635889==The signal is caused by a READ memory access.
+==1635889==Hint: this fault was caused by a dereference of a high value address (see register values below).  Disassemble the provided pc to learn which register was used.
+    #0 0x44cec6 in free_cmdtable /home/marsenij/Documents/minishell/tokenizer/testing.c:138:26
+    #1 0x43e3f9 in free_exit /home/marsenij/Documents/minishell/builtins/builtins.c:166:3
+    #2 0x452619 in make_start_token /home/marsenij/Documents/minishell/tokenizer/tokenhelper2.c:45:3
+    #3 0x44feb7 in tokenize /home/marsenij/Documents/minishell/tokenizer/token.c:101:2
+    #4 0x426152 in main /home/marsenij/Documents/minishell/main.c:107:12
+    #5 0x7fe982035d8f in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+    #6 0x7fe982035e3f in __libc_start_main csu/../csu/libc-start.c:392:3
+    #7 0x404494 in _start (/home/marsenij/Documents/minishell/minishell+0x404494)
+
+UndefinedBehaviorSanitizer can not provide additional info.
+SUMMARY: UndefinedBehaviorSanitizer: SEGV /home/marsenij/Documents/minishell/tokenizer/testing.c:138:26 in free_cmdtable
+==1635889==ABORTING
