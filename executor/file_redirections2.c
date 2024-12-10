@@ -6,13 +6,13 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:45:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 11:11:11 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:43:18 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_cmdtable *input_types(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
+t_cmdtable	*input_types(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
 {
 	if (cmd->redir_type == 1)
 	{
@@ -32,13 +32,16 @@ t_cmdtable *input_types(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
 	return (NULL);
 }
 
-t_cmdtable *input_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
+t_cmdtable	*input_redirections(t_cmdtable *cmd, t_data *core,
+	t_var *vars, int fd)
 {
-	t_cmdtable *input;
+	t_cmdtable	*input;
 
+	input = NULL;
 	while (cmd)
 	{
-		input = input_types(cmd, core, vars, fd);
+		if (cmd->redir_type != 2 && cmd->redir_type != 20)
+			input = input_types(cmd, core, vars, fd);
 		if (!input && vars->file_error != 1)
 			return (cmd);
 		if (cmd->has_pipe_after == 1)
@@ -59,10 +62,12 @@ t_cmdtable *input_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int f
 	return (input);
 }
 
-t_cmdtable *output_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
+t_cmdtable	*output_redirections(t_cmdtable *cmd, t_data *core,
+	t_var *vars, int *fd)
 {
-	t_cmdtable *output = NULL;
-	
+	t_cmdtable	*output;
+
+	output = NULL;
 	while (cmd)
 	{
 		if (cmd->redir_type == 2 || cmd->redir_type == 20)
@@ -84,11 +89,15 @@ t_cmdtable *output_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int 
 	return (output);
 }
 
-t_cmdtable *both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd)
+t_cmdtable	*both_redirections(t_cmdtable *cmd, t_data *core,
+	t_var *vars, int fd)
 {
-	t_cmdtable *input;
-	
+	t_cmdtable	*input;
+
+	input = NULL;
 	input = input_redirections(cmd, core, vars, fd);
+	if (access(input->redir, R_OK) != 0)
+		file_input(input, core, vars, &fd);
 	cmd->next = output_redirections(cmd, core, vars, &fd);
 	cmd->redir_type = 40;
 	cmd = input;
@@ -96,24 +105,10 @@ t_cmdtable *both_redirections(t_cmdtable *cmd, t_data *core, t_var *vars, int fd
 	return (cmd);
 }
 
-int	redirection_checker(t_cmdtable *cmd, t_var *vars)
+t_cmdtable	*multi_redirections(t_cmdtable *cmd, t_data *core, t_var *vars)
 {
-	if (cmd->redir_type == 1 || cmd->redir_type == 10 || cmd->redir_type == 30)
-		vars->input++;
-	if (cmd->redir_type == 2 || cmd->redir_type == 20)
-		vars->output++;
-	if (cmd->has_pipe_after == 1)
-		return (1);
-	if (cmd->next == NULL)
-		return (1);
-	return (0);
-}
-
-
-t_cmdtable *multi_redirections(t_cmdtable *cmd, t_data *core, t_var *vars)
-{
-	t_cmdtable *tmp;
-	int fd[2];
+	t_cmdtable	*tmp;
+	int			fd[2];
 
 	tmp = cmd;
 	vars->input = 0;

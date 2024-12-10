@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:02:08 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 14:02:33 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 10:47:04 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	argv_env_loop(int *equal, int *error, char **argv, int i)
 		if ((argv[i][j] == '+' | argv[i][j] == '?' || argv[i][j] == '^'
 			|| argv[i][j] == '!' || argv[i][j] == '~' || argv[i][j] == '#'
 			|| argv[i][j] == '@' || argv[i][j] == '*' || argv[i][j] == '-'
-			|| argv[i][j] == '.' || argv[i][j] == '{' || argv[i][j] == '}')
-			&& *equal == 0)
+			|| argv[i][j] == '.' || argv[i][j] == '{' || argv[i][j] == '}'
+			|| argv[i][j] == '$') && *equal == 0)
 			(*error)++;
 		if (ft_isalnum(argv[i][j]) == 0 && *equal == 1)
 			first++;

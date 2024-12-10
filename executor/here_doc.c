@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 11:25:10 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/09 10:03:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,24 @@
 
 extern volatile sig_atomic_t g_interrupt_received;
 
-void	here_doc_null_msg(t_cmdtable *cmd)
+int	main_exanpder_env(char *line, int i, t_exp *doc)
 {
-	ft_putstr_fd("warning: here-document delimited by end-of-file ", 2);
-	ft_putstr_fd("(wanted `", 2);
-	ft_putstr_fd(cmd->redir, 2);
-	ft_putstr_fd("')\n", 2);
-}
-
-void	expander_freer(t_exp *doc)
-{
-	if (doc->var_name)
-		free(doc->var_start);
-	if (doc->expanded_line)
-		free(doc->expanded_line);
-	if (doc->env_value)
-		free(doc->env_value);
-	exit(1);
-}
-
-int		main_exanpder_env(char *line, int i, t_exp *doc)
-{
-	int j;
+	int	j;
 
 	doc->before_var = ft_substr(line, 0, i);
-    doc->expanded_line = ft_strjoin(doc->expanded_line, doc->before_var);
-	free(doc->before_var);	
-    doc->var_start = &line[i + 1];
-    j = 0;
-    while (doc->var_start[j] && (ft_isalnum(doc->var_start[j]) || doc->var_start[j] == '_'))
+	doc->expanded_line = ft_strjoin(doc->expanded_line, doc->before_var);
+	free(doc->before_var);
+	doc->var_start = &line[i + 1];
+	j = 0;
+	while (doc->var_start[j] && (ft_isalnum(doc->var_start[j])
+			|| doc->var_start[j] == '_'))
 		j++;
-    doc->var_name = ft_substr(doc->var_start, 0, j);
+	doc->var_name = ft_substr(doc->var_start, 0, j);
 	if (!doc->var_name)
 		expander_freer(doc);
-    doc->env_value = getenv(doc->var_name);
-    free(doc->var_name);
-    if (!doc->env_value) 
+	doc->env_value = getenv(doc->var_name);
+	free(doc->var_name);
+	if (!doc->env_value)
 		doc->env_value = "";
 	doc->expanded_line = ft_strjoin(doc->expanded_line, doc->env_value);
 	if (!doc->expanded_line)
@@ -58,36 +40,36 @@ int		main_exanpder_env(char *line, int i, t_exp *doc)
 	return (i);
 }
 
-char *expander_env(t_data *core, char *line) 
+char	*expander_env(t_data *core, char *line)
 {
-	t_exp doc;
-	int i;
-	
+	t_exp	doc;
+	int		i;
+
 	doc = (t_exp){0};
 	i = 0;
 	core->exit_status = 1;
-    while (line[i]) 
+	while (line[i])
 	{
-        if (line[i] == '$') 
+		if (line[i] == '$')
 		{
 			i = main_exanpder_env(line, i, &doc);
-            line = &line[i];
-            i = 0;
-        } 
-		else 
-            i++;
-    }
-    if (*line)
+			line = &line[i];
+			i = 0;
+		}
+		else
+			i++;
+	}
+	if (*line)
 	{
-        doc.expanded_line = ft_strjoin(doc.expanded_line, line);
+		doc.expanded_line = ft_strjoin(doc.expanded_line, line);
 		if (!doc.expanded_line)
 			expander_freer(&doc);
 	}
-    return (doc.expanded_line);
+	return (doc.expanded_line);
 }
 
 
-char *ft_nbr_pointhex(intptr_t num)
+char	*ft_nbr_pointhex(intptr_t num)
 {
 	int					store;
 	unsigned long		nb;
@@ -112,14 +94,14 @@ char *ft_nbr_pointhex(intptr_t num)
 
 int	here_doc_main(t_exp *doc, t_cmdtable *cmd, t_data *core)
 {
-	if (ft_strncmp(doc->line, cmd->redir, ft_strlen(cmd->redir)) == 0 && 
-		ft_strlen(doc->line) == ft_strlen(cmd->redir))
+	if (ft_strncmp(doc->line, cmd->redir, ft_strlen(cmd->redir)) == 0
+		&& ft_strlen(doc->line) == ft_strlen(cmd->redir))
 	{
 		free(doc->line);
 		return (1);
 	}
 	doc->expand_line = expander_env(core, doc->line);
-	if (doc->expand_line && cmd->redir_type == 10 )
+	if (doc->expand_line && cmd->redir_type == 10)
 	{
 		write(doc->tmp_fd, doc->expand_line, ft_strlen(doc->expand_line));
 		free(doc->expand_line);
@@ -133,9 +115,9 @@ int	here_doc_main(t_exp *doc, t_cmdtable *cmd, t_data *core)
 
 char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 {
-	t_exp doc;
-	doc = (t_exp){0};
+	t_exp	doc;
 
+	doc = (t_exp){0};
 	setup_signal_handler(SIGINT, sig_handleINT_heredoc);
 	doc.filename = ft_nbr_pointhex((intptr_t)cmd->redir);
 	doc.tmp_fd = open(doc.filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -153,7 +135,6 @@ char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 		}
 		if (here_doc_main(&doc, cmd, core) == 1)
 			break ;
-
 	}
 	return (close(doc.tmp_fd), doc.filename);
 }
