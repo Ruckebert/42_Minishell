@@ -115,18 +115,14 @@ void printlist_both(t_token *head)
 }
 
 
-void	free_token_list(t_token *head)
+void    free_token_list(t_token *head)
 {
 	t_token	*tmp;
 
 	while (head != NULL)
 	{
-		tmp = head;        // Store current node
-		head = head->next; // Move to next node
-		// Free the fields
-	//	if (tmp->word != NULL)
-	//		free(tmp->word);
-		// Free the node itself
+		tmp = head;
+		head = head->next;
 		free(tmp);
 	}
 }
