@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/10/30 15:17:47 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:20:40 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@ t_token	*ft_lstnew(char *word)
 {
 	t_token	*elem;
 
-	elem = malloc(sizeof(t_token));
+	elem = NULL; //malloc(sizeof(t_token));
 	if (!elem)
 		return (NULL);
-	elem->word = word;
+	if (word)
+		elem->word = word;
+	else
+		elem = (t_token *){0};
 	elem->next = NULL;
 	elem->prev = NULL;
 	return (elem);
@@ -81,9 +84,15 @@ void	ft_lstdelone(t_token *lst)
 {
 	t_token	*temp;
 
-	temp = lst->prev;
-	lst->prev->next = lst->next;
-	lst->next->prev = temp;
-	free(lst->word);
-	free(lst);
+	if (lst != NULL)
+	{
+		temp = lst->prev;
+		if (lst->prev)
+			lst->prev->next = lst->next;
+		if (lst->next)
+			lst->next->prev = temp;
+		if (lst->word != NULL)
+			free(lst->word);
+		free(lst);
+	}
 }

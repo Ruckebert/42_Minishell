@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 13:48:30 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:30:00 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,8 +250,8 @@ void	handle_heredoc_delimiter(t_token *token);
 void	fuse_node_with_next(t_token *curr);
 int		whichtoken(char c);
 void	substitute_redir(t_token *curr, char str[3]);
-void	make_end_token(t_token **token);
-void	make_start_token(t_token **token);
+void	make_end_token(t_token **token, t_data *core);
+void	make_start_token(t_token **token, t_data *core);
 void	combine_double_redirect(t_token	*token);
 void	remove_empty_quotes(t_token *token);
 char	*parse_var_name(t_token *curr);

@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/06 12:39:13 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:29:18 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,31 @@ void	combine_double_redirect(t_token	*token)
 	}
 }
 
-void	make_start_token(t_token **token)
+void	make_start_token(t_token **token, t_data *core)
 {
 	t_token	*newtoken;
 
 	newtoken = ft_lstnew("START");
+	if (!newtoken)
+	{
+		free_token_list(*token);
+		exit(1);
+	}	
 	ft_lstadd_back(token, newtoken);
 	newtoken->type = 9999;
 	newtoken->leading_space = 20;
 }
 
-void	make_end_token(t_token **token)
+void	make_end_token(t_token **token, t_data *core)
 {
 	t_token	*newtoken;
 
 	newtoken = ft_lstnew("END");
+	if (!newtoken)
+	{
+		free_token_list(*token);
+		exit(1);
+	}
 	ft_lstadd_back(token, newtoken);
 	newtoken->type = 9999;
 	newtoken->leading_space = 20;
