@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 14:45:15 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 15:07:17 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	cd_com(t_cmdtable *cmd, t_data *core)
 	char	*old_pwd;
 
 	core->exit_status = 0;
+	old_pwd = NULL;
 	old_pwd = getcwd(NULL, 0);
 	if (cmd->args[2] != NULL)
 	{
@@ -79,6 +80,15 @@ void	insert_new_env(t_data *core, char **temp, char **temp_env)
 	simple_free(core->env);
 	core->env = temp_env;
 }
+
+void	export_malloc_error(t_data *core, char **temp)
+{
+	if (temp)
+		simple_free(temp);
+	write(2, "Error: Failed Malloc\n", 21);
+	free_exit(core);
+	exit(1);
+}
 void	export(t_cmdtable *cmd, t_data *core)
 {
 	int		i;
@@ -103,7 +113,7 @@ void	export(t_cmdtable *cmd, t_data *core)
 		}
 		temp_env = new_exo_env(core->env, cmd->args, i, count);
 		if (!core->env)
-			exit(write(2, "Error: Enviornment is Not Sexy Enough\n", 39));
+			export_malloc_error(core, temp);
 		insert_new_env(core, temp, temp_env);
 	}
 }
@@ -165,7 +175,6 @@ void	free_exit(t_data *core)
 	if (core->cmd != NULL)
 		free_cmdtable(&core->cmd);
 }
-
 
 void	exit_com(t_data *core)
 {

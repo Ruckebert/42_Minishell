@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
 /*   Updated: 2024/12/10 14:33:37 by marsenij         ###   ########.fr       */
@@ -54,6 +54,7 @@ typedef struct s_data
 	char	**env;
 	char	**export_env;
 	int		exit_status;
+	int		empty_cd;
 	t_cmdtable *cmd;
 
 }	t_data;
@@ -139,6 +140,7 @@ void	expander_freer(t_exp *doc);
 void	here_doc_null_msg(t_cmdtable *cmd);
 void	closing_cmds_parent(int cmds, int fd[cmds - 1][2]);
 int		cmd_count(t_cmdtable *cmd);
+void	export_malloc_error(t_data *core, char **temp);
 
 /*Builtin Functions*/
 int		exit_loop(t_data *core, int i, int j);

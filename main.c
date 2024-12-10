@@ -87,6 +87,7 @@ int main(int argc, char *argv[], char **env)
 	(void)argc;
 	(void)argv;
 	core.export_env[0] = NULL;
+	core.empty_cd = 0;
 	if (/*isatty(STDIN_FILENO) ==*/ 1 /*true*/) //The isatty is the reason why the tester doesnt work
 	{
 		while (status == -1)

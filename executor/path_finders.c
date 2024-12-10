@@ -107,5 +107,6 @@ void	absolute_path_finder(t_data *core, char **envp, char **argv)
 		write(2, ": No such file or directory\n", 28);
 		core->exit_status = 127;
 	}
+	free_exit(core);
 	exit(core->exit_status);
 }
