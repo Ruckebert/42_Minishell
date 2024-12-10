@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/09 11:10:39 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/09 13:15:44 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,14 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core,
 	waitpid(vars->childid2, &status, 0);
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
+	/*Freeing Part*/
+	simple_free(core->env);
+	if (core->export_env != NULL)
+		simple_free(core->export_env);
+	free(core->user);
+	free(core->direct);
+	free(core->line);
+	/*Freeing Part*/
 	exit(core->exit_status);
 }
 

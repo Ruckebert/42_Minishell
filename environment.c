@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/03 10:45:10 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 09:46:05 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,12 @@ char	**environment_copy(char **env, char **new_env, t_data *core, int count)
 	return (new_env);
 }
 
-char **copy_env(char **env, t_data *core)
+char	**copy_env(char **env, t_data *core)
 {
-	char **new_env;
-	int count;
+	char	**new_env;
+	int		count;
 
+	new_env = NULL;
 	if (env == NULL || *env == NULL)
 		exit(1);
 	count = 0;
@@ -102,15 +103,18 @@ char **copy_env(char **env, t_data *core)
 		exit(2);
 	core->export_env = malloc((count + 1) * sizeof(char *));
 	if (!core->export_env)
+	{
+		free(new_env);
 		exit(2);
+	}
 	return (environment_copy(env, new_env, core, count));
 }
 
-void pwd_update(t_data *core)
+void	pwd_update(t_data *core)
 {
-	int i;
-	char *temp;
-	
+	int		i;
+	char	*temp;
+
 	i = 0;
 	while (core->env[i])
 	{
@@ -134,6 +138,7 @@ void	envi_update(char *old_pwd, t_data *core)
 	char *temp;
 
 	i = 0;
+	free(core->direct);
 	core->direct = getcwd(NULL, 0);
 	while (core->env[i])
 	{

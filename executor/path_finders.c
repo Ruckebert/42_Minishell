@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:36:24 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 15:02:23 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/09 13:12:40 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,16 @@ void	path_finder_end_checker(t_var *vars, t_data *core,
 	}
 	free_split(vars->store);
 	core->exit_status = 127;
+	/*Freeing Part*/
+	simple_free(core->env);
+	if (core->export_env != NULL)
+		simple_free(core->export_env);
+	free(core->user);
+	free(core->direct);
+	free(core->line);
+	/*Freeing Part*/
+	if (core->cmd != NULL)
+		free_cmdtable(&core->cmd);
 	exit(core->exit_status);
 }
 
