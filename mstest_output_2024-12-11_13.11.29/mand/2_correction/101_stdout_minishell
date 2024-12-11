@@ -1,0 +1,220 @@
+[0;31m 1 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 2 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 2b [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 3 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 4 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 5 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 6 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31mAFTER parse.c[0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 1 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+/bin/../bin/../bin/../bin/../bin/../bin/../bin/../bin/ | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 2 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+/bin/../bin/../bin/../bin/../bin/../bin/../bin/../bin/ | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 2b [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+/bin/../bin/../bin/../bin/../bin/../bin/../bin/../bin/ | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 3 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+/bin/../bin/../bin/../bin/../bin/../bin/../bin/../bin/ | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 4 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+/bin/../bin/../bin/../bin/../bin/../bin/../bin/../bin/ | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 5 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+/bin/../bin/../bin/../bin/../bin/../bin/../bin/../bin/ | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 6 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+/bin/../bin/../bin/../bin/../bin/../bin/../bin/../bin/ | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31mAFTER parse.c[0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+/bin/../bin/../bin/../bin/../bin/../bin/../bin/../bin/ | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 1 [0m
+WORD       bin
+          | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+../bin/../bin/basename | 0    | 0
+$                    | 8    | 1
+PWD                  | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+../bin/../bin/basename | 0    | 0
+$                    | 8    | 1
+PWD                  | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2b [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+../bin/../bin/basename | 0    | 0
+$                    | 8    | 1
+PWD                  | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 3 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+../bin/../bin/basename | 0    | 0
+/usr/bin             | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 4 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+../bin/../bin/basename | 0    | 0
+/usr/bin             | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 5 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+../bin/../bin/basename | 0    | 0
+/usr/bin             | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 6 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+../bin/../bin/basename | 0    | 0
+/usr/bin             | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31mAFTER parse.c[0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+../bin/../bin/basename | 0    | 0
+/usr/bin             | 8    | 1
+END                  | 9999 | 20
+
+

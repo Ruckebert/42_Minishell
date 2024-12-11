@@ -1,0 +1,35 @@
+==289864== Memcheck, a memory error detector
+==289864== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==289864== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==289864== Command: /home/marsenij/Documents/minishell/minishell
+==289864== Parent PID: 289863
+==289864== 
+==289864== 
+==289864== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==289864== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==289864==    <inherited from parent>
+==289864== 
+==289864== 
+==289864== HEAP SUMMARY:
+==289864==     in use at exit: 4,102 bytes in 6 blocks
+==289864==   total heap usage: 109 allocs, 103 frees, 13,823 bytes allocated
+==289864== 
+==289864== 12 bytes in 2 blocks are definitely lost in loss record 2 of 5
+==289864==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289864==    by 0x457BAA: remove_quotes (parsehelper.c:38)
+==289864==    by 0x46052E: expand_var_in_doublequote (expand_in_doublequote.c:49)
+==289864==    by 0x454B40: parse (parse.c:103)
+==289864==    by 0x4261F7: main (main.c:111)
+==289864== 
+==289864== LEAK SUMMARY:
+==289864==    definitely lost: 12 bytes in 2 blocks
+==289864==    indirectly lost: 0 bytes in 0 blocks
+==289864==      possibly lost: 0 bytes in 0 blocks
+==289864==    still reachable: 0 bytes in 0 blocks
+==289864==         suppressed: 4,090 bytes in 4 blocks
+==289864== 
+==289864== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+--289864-- 
+--289864-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,090 bytes in 4 blocks
+==289864== 
+==289864== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)

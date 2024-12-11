@@ -1,0 +1,89 @@
+==293373== Memcheck, a memory error detector
+==293373== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==293373== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==293373== Command: /home/marsenij/Documents/minishell/minishell
+==293373== Parent PID: 293372
+==293373== 
+==293373== 
+==293373== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==293373== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==293373==    <inherited from parent>
+==293373== 
+==293373== 
+==293373== HEAP SUMMARY:
+==293373==     in use at exit: 4,219 bytes in 13 blocks
+==293373==   total heap usage: 91 allocs, 78 frees, 13,577 bytes allocated
+==293373== 
+==293373== 2 bytes in 1 blocks are definitely lost in loss record 1 of 12
+==293373==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==293373==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==293373==    by 0x450AF2: ft_lstnew (lsthelper.c:24)
+==293373==    by 0x45048E: make_tokens (token.c:85)
+==293373==    by 0x450A47: tokenize (token.c:111)
+==293373==    by 0x4261DB: main (main.c:108)
+==293373== 
+==293373== 3 bytes in 1 blocks are still reachable in loss record 2 of 12
+==293373==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==293373==    by 0x452F2D: substitute_redir (tokenhelper2.c:83)
+==293373==    by 0x452AD7: combine_double_redirect (tokenhelper2.c:31)
+==293373==    by 0x450A61: tokenize (token.c:115)
+==293373==    by 0x4261DB: main (main.c:108)
+==293373== 
+==293373== 4 bytes in 1 blocks are still reachable in loss record 3 of 12
+==293373==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==293373==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==293373==    by 0x450AF2: ft_lstnew (lsthelper.c:24)
+==293373==    by 0x4534DE: make_end_token (tokenhelper2.c:57)
+==293373==    by 0x450A54: tokenize (token.c:113)
+==293373==    by 0x4261DB: main (main.c:108)
+==293373== 
+==293373== 6 bytes in 1 blocks are still reachable in loss record 4 of 12
+==293373==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==293373==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==293373==    by 0x450AF2: ft_lstnew (lsthelper.c:24)
+==293373==    by 0x45332E: make_start_token (tokenhelper2.c:41)
+==293373==    by 0x450A37: tokenize (token.c:110)
+==293373==    by 0x4261DB: main (main.c:108)
+==293373== 
+==293373== 15 bytes in 1 blocks are still reachable in loss record 7 of 12
+==293373==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==293373==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==293373==    by 0x459D71: substitute_node_word (expand.c:85)
+==293373==    by 0x459341: handle_expandable_var (expand.c:32)
+==293373==    by 0x458AF5: expand_var (expand.c:62)
+==293373==    by 0x454AB2: parse (parse.c:99)
+==293373==    by 0x4261F7: main (main.c:111)
+==293373== 
+==293373== 32 bytes in 1 blocks are still reachable in loss record 9 of 12
+==293373==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==293373==    by 0x450ACD: ft_lstnew (lsthelper.c:21)
+==293373==    by 0x45332E: make_start_token (tokenhelper2.c:41)
+==293373==    by 0x450A37: tokenize (token.c:110)
+==293373==    by 0x4261DB: main (main.c:108)
+==293373== 
+==293373== 32 bytes in 1 blocks are still reachable in loss record 10 of 12
+==293373==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==293373==    by 0x450ACD: ft_lstnew (lsthelper.c:21)
+==293373==    by 0x4534DE: make_end_token (tokenhelper2.c:57)
+==293373==    by 0x450A54: tokenize (token.c:113)
+==293373==    by 0x4261DB: main (main.c:108)
+==293373== 
+==293373== 64 bytes in 2 blocks are still reachable in loss record 11 of 12
+==293373==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==293373==    by 0x450ACD: ft_lstnew (lsthelper.c:21)
+==293373==    by 0x45048E: make_tokens (token.c:85)
+==293373==    by 0x450A47: tokenize (token.c:111)
+==293373==    by 0x4261DB: main (main.c:108)
+==293373== 
+==293373== LEAK SUMMARY:
+==293373==    definitely lost: 2 bytes in 1 blocks
+==293373==    indirectly lost: 0 bytes in 0 blocks
+==293373==      possibly lost: 0 bytes in 0 blocks
+==293373==    still reachable: 156 bytes in 8 blocks
+==293373==         suppressed: 4,061 bytes in 4 blocks
+==293373== 
+==293373== ERROR SUMMARY: 8 errors from 8 contexts (suppressed: 4 from 4)
+--293373-- 
+--293373-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,061 bytes in 4 blocks
+==293373== 
+==293373== ERROR SUMMARY: 8 errors from 8 contexts (suppressed: 4 from 4)

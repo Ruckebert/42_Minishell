@@ -1,0 +1,115 @@
+==300262== Memcheck, a memory error detector
+==300262== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==300262== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==300262== Command: /home/marsenij/Documents/minishell/minishell
+==300262== Parent PID: 300261
+==300262== 
+==300262== 
+==300262== FILE DESCRIPTORS: 4 open (3 std) at exit.
+==300262== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==300262==    <inherited from parent>
+==300262== 
+==300262== Open file descriptor 2: /dev/null
+==300262==    <inherited from parent>
+==300262== 
+==300262== Open file descriptor 1: /dev/null
+==300262==    <inherited from parent>
+==300262== 
+==300262== Open file descriptor 0:
+==300262==    <inherited from parent>
+==300262== 
+==300262== 
+==300262== HEAP SUMMARY:
+==300262==     in use at exit: 8,910 bytes in 75 blocks
+==300262==   total heap usage: 88 allocs, 13 frees, 13,548 bytes allocated
+==300262== 
+==300262== 4 bytes in 1 blocks are indirectly lost in loss record 1 of 15
+==300262==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==300262==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==300262==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==300262==    by 0x45351E: make_end_token (tokenhelper2.c:57)
+==300262==    by 0x450A94: tokenize (token.c:113)
+==300262==    by 0x4261DB: main (main.c:108)
+==300262== 
+==300262== 6 bytes in 1 blocks are indirectly lost in loss record 2 of 15
+==300262==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==300262==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==300262==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==300262==    by 0x45336E: make_start_token (tokenhelper2.c:41)
+==300262==    by 0x450A77: tokenize (token.c:110)
+==300262==    by 0x4261DB: main (main.c:108)
+==300262== 
+==300262== 8 bytes in 1 blocks are still reachable in loss record 3 of 15
+==300262==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==300262==    by 0x461B6F: ft_strjoin (ft_strjoin.c:29)
+==300262==    by 0x435730: shellvl (environment.c:34)
+==300262==    by 0x435D2F: environment_copy (environment.c:65)
+==300262==    by 0x436436: copy_env (environment.c:101)
+==300262==    by 0x425E61: main (main.c:84)
+==300262== 
+==300262== 12 bytes in 4 blocks are indirectly lost in loss record 6 of 15
+==300262==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==300262==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==300262==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==300262==    by 0x4504CE: make_tokens (token.c:85)
+==300262==    by 0x450A87: tokenize (token.c:111)
+==300262==    by 0x4261DB: main (main.c:108)
+==300262== 
+==300262== 15 bytes in 1 blocks are still reachable in loss record 7 of 15
+==300262==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==300262==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==300262==    by 0x435AF5: core_direct_user (environment.c:47)
+==300262==    by 0x435F91: environment_copy (environment.c:74)
+==300262==    by 0x436436: copy_env (environment.c:101)
+==300262==    by 0x425E61: main (main.c:84)
+==300262== 
+==300262== 32 bytes in 1 blocks are indirectly lost in loss record 9 of 15
+==300262==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==300262==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==300262==    by 0x45351E: make_end_token (tokenhelper2.c:57)
+==300262==    by 0x450A94: tokenize (token.c:113)
+==300262==    by 0x4261DB: main (main.c:108)
+==300262== 
+==300262== 128 bytes in 4 blocks are indirectly lost in loss record 10 of 15
+==300262==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==300262==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==300262==    by 0x4504CE: make_tokens (token.c:85)
+==300262==    by 0x450A87: tokenize (token.c:111)
+==300262==    by 0x4261DB: main (main.c:108)
+==300262== 
+==300262== 214 (32 direct, 182 indirect) bytes in 1 blocks are definitely lost in loss record 11 of 15
+==300262==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==300262==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==300262==    by 0x45336E: make_start_token (tokenhelper2.c:41)
+==300262==    by 0x450A77: tokenize (token.c:110)
+==300262==    by 0x4261DB: main (main.c:108)
+==300262== 
+==300262== 456 bytes in 1 blocks are still reachable in loss record 12 of 15
+==300262==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==300262==    by 0x436281: copy_env (environment.c:92)
+==300262==    by 0x425E61: main (main.c:84)
+==300262== 
+==300262== 456 bytes in 1 blocks are still reachable in loss record 13 of 15
+==300262==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==300262==    by 0x4362F5: copy_env (environment.c:95)
+==300262==    by 0x425E61: main (main.c:84)
+==300262== 
+==300262== 3,698 bytes in 55 blocks are still reachable in loss record 14 of 15
+==300262==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==300262==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==300262==    by 0x435DF6: environment_copy (environment.c:70)
+==300262==    by 0x436436: copy_env (environment.c:101)
+==300262==    by 0x425E61: main (main.c:84)
+==300262== 
+==300262== LEAK SUMMARY:
+==300262==    definitely lost: 32 bytes in 1 blocks
+==300262==    indirectly lost: 182 bytes in 11 blocks
+==300262==      possibly lost: 0 bytes in 0 blocks
+==300262==    still reachable: 4,633 bytes in 59 blocks
+==300262==         suppressed: 4,063 bytes in 4 blocks
+==300262== 
+==300262== ERROR SUMMARY: 11 errors from 11 contexts (suppressed: 4 from 4)
+--300262-- 
+--300262-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,063 bytes in 4 blocks
+==300262== 
+==300262== ERROR SUMMARY: 11 errors from 11 contexts (suppressed: 4 from 4)

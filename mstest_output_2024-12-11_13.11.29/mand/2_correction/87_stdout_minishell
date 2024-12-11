@@ -1,0 +1,157 @@
+{4A85BD73-649A-4678-BB56-2EAD1CED4F74}
+config-err-yf8rlr
+krb5cc_0
+krb5cc_101985_7KMCdC
+krb5ccmachine_42VIENNA.COM
+marsenij-code-zsh
+pymp-u6p8ir8g
+snap-private-tmp
+systemd-private-f4a5181fa10d4c73909ebb693b37247c-bluetooth.service-27yFNv
+systemd-private-f4a5181fa10d4c73909ebb693b37247c-colord.service-aE2tWK
+systemd-private-f4a5181fa10d4c73909ebb693b37247c-ModemManager.service-Loi9GB
+systemd-private-f4a5181fa10d4c73909ebb693b37247c-power-profiles-daemon.service-YgBlPe
+systemd-private-f4a5181fa10d4c73909ebb693b37247c-redis-server.service-tzGTbj
+systemd-private-f4a5181fa10d4c73909ebb693b37247c-switcheroo-control.service-5NNJIo
+systemd-private-f4a5181fa10d4c73909ebb693b37247c-systemd-logind.service-heccbO
+systemd-private-f4a5181fa10d4c73909ebb693b37247c-systemd-resolved.service-olBEWb
+systemd-private-f4a5181fa10d4c73909ebb693b37247c-systemd-timesyncd.service-KqqCXD
+systemd-private-f4a5181fa10d4c73909ebb693b37247c-upower.service-6ByMpI
+tmp.2XiJDvuNm3
+tmp.veTS2ZXjNC
+vboxdrv-Module.symvers
+[0;31m 1 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+..                   | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 2 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+..                   | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 2b [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+..                   | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 3 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+..                   | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 4 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+..                   | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 5 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+..                   | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 6 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+..                   | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31mAFTER parse.c[0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+cd                   | 0    | 0
+..                   | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 1 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+/bin/ls              | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+/bin/ls              | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2b [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+/bin/ls              | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 3 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+/bin/ls              | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 4 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+/bin/ls              | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 5 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+/bin/ls              | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 6 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+/bin/ls              | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31mAFTER parse.c[0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+/bin/ls              | 0    | 0
+END                  | 9999 | 20
+
+

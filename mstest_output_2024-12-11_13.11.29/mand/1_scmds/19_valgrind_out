@@ -1,0 +1,203 @@
+==333547== Memcheck, a memory error detector
+==333547== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==333547== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==333547== Command: /home/marsenij/Documents/minishell/minishell
+==333547== Parent PID: 333546
+==333547== 
+==333556== 
+==333556== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==333556== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==333556==    <inherited from parent>
+==333556== 
+==333556== 
+==333556== HEAP SUMMARY:
+==333556==     in use at exit: 4,056 bytes in 4 blocks
+==333556==   total heap usage: 127 allocs, 123 frees, 14,192 bytes allocated
+==333556== 
+==333556== LEAK SUMMARY:
+==333556==    definitely lost: 0 bytes in 0 blocks
+==333556==    indirectly lost: 0 bytes in 0 blocks
+==333556==      possibly lost: 0 bytes in 0 blocks
+==333556==    still reachable: 0 bytes in 0 blocks
+==333556==         suppressed: 4,056 bytes in 4 blocks
+==333556== 
+==333556== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
+--333556-- 
+--333556-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,056 bytes in 4 blocks
+==333556== 
+==333556== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
+==333557== 
+==333557== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==333557== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==333557==    <inherited from parent>
+==333557== 
+==333557== 
+==333557== HEAP SUMMARY:
+==333557==     in use at exit: 4,226 bytes in 14 blocks
+==333557==   total heap usage: 327 allocs, 313 frees, 26,962 bytes allocated
+==333557== 
+==333557== 11 bytes in 2 blocks are indirectly lost in loss record 1 of 7
+==333557==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333557==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==333557==    by 0x455A87: get_args (prep_exec2.c:53)
+==333557==    by 0x4552A4: process_tokens (prep_exec.c:60)
+==333557==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==333557==    by 0x454BE1: parse (parse.c:120)
+==333557==    by 0x4261F7: main (main.c:111)
+==333557== 
+==333557== 24 bytes in 1 blocks are indirectly lost in loss record 3 of 7
+==333557==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333557==    by 0x455849: get_args (prep_exec2.c:46)
+==333557==    by 0x4552A4: process_tokens (prep_exec.c:60)
+==333557==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==333557==    by 0x454BE1: parse (parse.c:120)
+==333557==    by 0x4261F7: main (main.c:111)
+==333557== 
+==333557== 83 (48 direct, 35 indirect) bytes in 1 blocks are definitely lost in loss record 6 of 7
+==333557==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333557==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==333557==    by 0x454C0E: initialize_cmd_table (prep_exec.c:21)
+==333557==    by 0x455304: prep_nodes_for_exec (prep_exec.c:73)
+==333557==    by 0x454BE1: parse (parse.c:120)
+==333557==    by 0x4261F7: main (main.c:111)
+==333557== 
+==333557== LEAK SUMMARY:
+==333557==    definitely lost: 48 bytes in 1 blocks
+==333557==    indirectly lost: 35 bytes in 3 blocks
+==333557==      possibly lost: 0 bytes in 0 blocks
+==333557==    still reachable: 0 bytes in 0 blocks
+==333557==         suppressed: 4,143 bytes in 10 blocks
+==333557== 
+==333557== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 4 from 4)
+--333557-- 
+--333557-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,143 bytes in 10 blocks
+==333557== 
+==333557== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 4 from 4)
+==333547== 
+==333547== FILE DESCRIPTORS: 4 open (3 std) at exit.
+==333547== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==333547==    <inherited from parent>
+==333547== 
+==333547== Open file descriptor 2: /dev/null
+==333547==    <inherited from parent>
+==333547== 
+==333547== Open file descriptor 1: /dev/null
+==333547==    <inherited from parent>
+==333547== 
+==333547== Open file descriptor 0:
+==333547==    <inherited from parent>
+==333547== 
+==333547== 
+==333547== HEAP SUMMARY:
+==333547==     in use at exit: 12,666 bytes in 133 blocks
+==333547==   total heap usage: 298 allocs, 165 frees, 30,725 bytes allocated
+==333547== 
+==333547== 4 bytes in 1 blocks are still reachable in loss record 1 of 15
+==333547==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333547==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==333547==    by 0x455A87: get_args (prep_exec2.c:53)
+==333547==    by 0x4552A4: process_tokens (prep_exec.c:60)
+==333547==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==333547==    by 0x454BE1: parse (parse.c:120)
+==333547==    by 0x4261F7: main (main.c:111)
+==333547== 
+==333547== 11 bytes in 2 blocks are indirectly lost in loss record 2 of 15
+==333547==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333547==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==333547==    by 0x455A87: get_args (prep_exec2.c:53)
+==333547==    by 0x4552A4: process_tokens (prep_exec.c:60)
+==333547==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==333547==    by 0x454BE1: parse (parse.c:120)
+==333547==    by 0x4261F7: main (main.c:111)
+==333547== 
+==333547== 16 bytes in 1 blocks are still reachable in loss record 3 of 15
+==333547==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333547==    by 0x455849: get_args (prep_exec2.c:46)
+==333547==    by 0x4552A4: process_tokens (prep_exec.c:60)
+==333547==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==333547==    by 0x454BE1: parse (parse.c:120)
+==333547==    by 0x4261F7: main (main.c:111)
+==333547== 
+==333547== 20 bytes in 1 blocks are still reachable in loss record 4 of 15
+==333547==    at 0x484DCD3: realloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333547==    by 0x4AE87BC: getcwd (getcwd.c:86)
+==333547==    by 0x43CE25: pwd (builtins.c:46)
+==333547==    by 0x4332A8: builtin_cmds (executor.c:22)
+==333547==    by 0x42A7BC: no_pipe_exe (pipes_processes2.c:89)
+==333547==    by 0x43403F: executor (executor.c:100)
+==333547==    by 0x4262CC: main (main.c:113)
+==333547== 
+==333547== 24 bytes in 1 blocks are indirectly lost in loss record 6 of 15
+==333547==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333547==    by 0x455849: get_args (prep_exec2.c:46)
+==333547==    by 0x4552A4: process_tokens (prep_exec.c:60)
+==333547==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==333547==    by 0x454BE1: parse (parse.c:120)
+==333547==    by 0x4261F7: main (main.c:111)
+==333547== 
+==333547== 48 bytes in 1 blocks are still reachable in loss record 7 of 15
+==333547==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333547==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==333547==    by 0x454C0E: initialize_cmd_table (prep_exec.c:21)
+==333547==    by 0x455304: prep_nodes_for_exec (prep_exec.c:73)
+==333547==    by 0x454BE1: parse (parse.c:120)
+==333547==    by 0x4261F7: main (main.c:111)
+==333547== 
+==333547== 83 (48 direct, 35 indirect) bytes in 1 blocks are definitely lost in loss record 9 of 15
+==333547==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333547==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==333547==    by 0x454C0E: initialize_cmd_table (prep_exec.c:21)
+==333547==    by 0x455304: prep_nodes_for_exec (prep_exec.c:73)
+==333547==    by 0x454BE1: parse (parse.c:120)
+==333547==    by 0x4261F7: main (main.c:111)
+==333547== 
+==333547== 464 bytes in 1 blocks are still reachable in loss record 11 of 15
+==333547==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333547==    by 0x44C5EA: unset_env (unset.c:47)
+==333547==    by 0x43E341: unset (builtins.c:129)
+==333547==    by 0x4333CA: builtin_cmds (executor.c:26)
+==333547==    by 0x42A7BC: no_pipe_exe (pipes_processes2.c:89)
+==333547==    by 0x43403F: executor (executor.c:100)
+==333547==    by 0x4262CC: main (main.c:113)
+==333547== 
+==333547== 464 bytes in 1 blocks are still reachable in loss record 12 of 15
+==333547==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333547==    by 0x44C5EA: unset_env (unset.c:47)
+==333547==    by 0x43E46C: unset (builtins.c:130)
+==333547==    by 0x4333CA: builtin_cmds (executor.c:26)
+==333547==    by 0x42A7BC: no_pipe_exe (pipes_processes2.c:89)
+==333547==    by 0x43403F: executor (executor.c:100)
+==333547==    by 0x4262CC: main (main.c:113)
+==333547== 
+==333547== 3,692 bytes in 55 blocks are still reachable in loss record 13 of 15
+==333547==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333547==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==333547==    by 0x44C793: unset_env (unset.c:58)
+==333547==    by 0x43E341: unset (builtins.c:129)
+==333547==    by 0x4333CA: builtin_cmds (executor.c:26)
+==333547==    by 0x42A7BC: no_pipe_exe (pipes_processes2.c:89)
+==333547==    by 0x43403F: executor (executor.c:100)
+==333547==    by 0x4262CC: main (main.c:113)
+==333547== 
+==333547== 3,692 bytes in 55 blocks are still reachable in loss record 14 of 15
+==333547==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==333547==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==333547==    by 0x44C793: unset_env (unset.c:58)
+==333547==    by 0x43E46C: unset (builtins.c:130)
+==333547==    by 0x4333CA: builtin_cmds (executor.c:26)
+==333547==    by 0x42A7BC: no_pipe_exe (pipes_processes2.c:89)
+==333547==    by 0x43403F: executor (executor.c:100)
+==333547==    by 0x4262CC: main (main.c:113)
+==333547== 
+==333547== LEAK SUMMARY:
+==333547==    definitely lost: 48 bytes in 1 blocks
+==333547==    indirectly lost: 35 bytes in 3 blocks
+==333547==      possibly lost: 0 bytes in 0 blocks
+==333547==    still reachable: 8,400 bytes in 116 blocks
+==333547==         suppressed: 4,183 bytes in 13 blocks
+==333547== 
+==333547== ERROR SUMMARY: 11 errors from 11 contexts (suppressed: 4 from 4)
+--333547-- 
+--333547-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,183 bytes in 13 blocks
+==333547== 
+==333547== ERROR SUMMARY: 11 errors from 11 contexts (suppressed: 4 from 4)

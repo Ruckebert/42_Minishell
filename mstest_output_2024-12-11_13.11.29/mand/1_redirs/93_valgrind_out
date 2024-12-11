@@ -1,0 +1,554 @@
+==332153== Memcheck, a memory error detector
+==332153== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==332153== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==332153== Command: /home/marsenij/Documents/minishell/minishell
+==332153== Parent PID: 332152
+==332153== 
+==332153== Conditional jump or move depends on uninitialised value(s)
+==332153==    at 0x433F1F: pipe_checker (executor.c:84)
+==332153==    by 0x434022: executor (executor.c:99)
+==332153==    by 0x4262CC: main (main.c:113)
+==332153==  Uninitialised value was created by a heap allocation
+==332153==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332153==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332153==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332153==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332153==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332153==    by 0x454BE1: parse (parse.c:120)
+==332153==    by 0x4261F7: main (main.c:111)
+==332153== 
+==332153== Conditional jump or move depends on uninitialised value(s)
+==332153==    at 0x433F1F: pipe_checker (executor.c:84)
+==332153==    by 0x43404D: executor (executor.c:101)
+==332153==    by 0x4262CC: main (main.c:113)
+==332153==  Uninitialised value was created by a heap allocation
+==332153==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332153==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332153==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332153==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332153==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332153==    by 0x454BE1: parse (parse.c:120)
+==332153==    by 0x4261F7: main (main.c:111)
+==332153== 
+==332157== Conditional jump or move depends on uninitialised value(s)
+==332157==    at 0x4316D8: redirection_checker (file_redirections.c:110)
+==332157==    by 0x432D1A: multi_redirections (file_redirections2.c:119)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a heap allocation
+==332157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332157==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332157==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332157==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332157==    by 0x454BE1: parse (parse.c:120)
+==332157==    by 0x4261F7: main (main.c:111)
+==332157== 
+==332157== Conditional jump or move depends on uninitialised value(s)
+==332157==    at 0x431EE3: input_redirections (file_redirections2.c:47)
+==332157==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a heap allocation
+==332157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332157==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332157==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332157==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332157==    by 0x454BE1: parse (parse.c:120)
+==332157==    by 0x4261F7: main (main.c:111)
+==332157== 
+==332157== Conditional jump or move depends on uninitialised value(s)
+==332157==    at 0x4322DA: input_redirections (file_redirections2.c:58)
+==332157==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a stack allocation
+==332157==    at 0x434000: executor (executor.c:93)
+==332157== 
+==332157== Conditional jump or move depends on uninitialised value(s)
+==332157==    at 0x432376: input_redirections (file_redirections2.c:59)
+==332157==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a stack allocation
+==332157==    at 0x434000: executor (executor.c:93)
+==332157== 
+==332157== Syscall param unlink(pathname) contains uninitialised byte(s)
+==332157==    at 0x4AE90AB: unlink (syscall-template.S:120)
+==332157==    by 0x432396: input_redirections (file_redirections2.c:59)
+==332157==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a stack allocation
+==332157==    at 0x434000: executor (executor.c:93)
+==332157== 
+==332157== Syscall param unlink(pathname) points to unaddressable byte(s)
+==332157==    at 0x4AE90AB: unlink (syscall-template.S:120)
+==332157==    by 0x432396: input_redirections (file_redirections2.c:59)
+==332157==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Address 0x4c357e0 is 0 bytes inside a block of size 32 free'd
+==332157==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x44D8C7: free_token_list (testing.c:131)
+==332157==    by 0x455332: prep_nodes_for_exec (prep_exec.c:77)
+==332157==    by 0x454BE1: parse (parse.c:120)
+==332157==    by 0x4261F7: main (main.c:111)
+==332157==  Block was alloc'd at
+==332157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==332157==    by 0x45336E: make_start_token (tokenhelper2.c:41)
+==332157==    by 0x450A77: tokenize (token.c:110)
+==332157==    by 0x4261DB: main (main.c:108)
+==332157== 
+==332156== 
+==332156== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==332156== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==332156==    <inherited from parent>
+==332156== 
+==332156== 
+==332156== HEAP SUMMARY:
+==332156==     in use at exit: 4,098 bytes in 7 blocks
+==332156==   total heap usage: 105 allocs, 98 frees, 13,977 bytes allocated
+==332156== 
+==332157== 
+==332157== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==332157== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==332157==    <inherited from parent>
+==332157== 
+==332157== 
+==332157== HEAP SUMMARY:
+==332157==     in use at exit: 4,098 bytes in 7 blocks
+==332157==   total heap usage: 105 allocs, 98 frees, 13,977 bytes allocated
+==332157== 
+==332156== 2 bytes in 1 blocks are definitely lost in loss record 1 of 7
+==332156==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332156==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==332156==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==332156==    by 0x4504CE: make_tokens (token.c:85)
+==332156==    by 0x450A87: tokenize (token.c:111)
+==332156==    by 0x4261DB: main (main.c:108)
+==332156== 
+==332156== 8 bytes in 1 blocks are still reachable in loss record 2 of 7
+==332156==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332156==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==332156==    by 0x433C73: here_doc_creator (executor.c:65)
+==332156==    by 0x42F395: single_pipe_exe (pipes_processes.c:96)
+==332156==    by 0x434067: executor (executor.c:102)
+==332156==    by 0x4262CC: main (main.c:113)
+==332156== 
+==332156== 16 bytes in 1 blocks are still reachable in loss record 4 of 7
+==332156==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332156==    by 0x460C9E: ft_calloc (ft_calloc.c:21)
+==332156==    by 0x4336DC: here_doc_creator (executor.c:50)
+==332156==    by 0x42F395: single_pipe_exe (pipes_processes.c:96)
+==332156==    by 0x434067: executor (executor.c:102)
+==332156==    by 0x4262CC: main (main.c:113)
+==332156== 
+==332156== LEAK SUMMARY:
+==332156==    definitely lost: 2 bytes in 1 blocks
+==332156==    indirectly lost: 0 bytes in 0 blocks
+==332156==      possibly lost: 0 bytes in 0 blocks
+==332156==    still reachable: 24 bytes in 2 blocks
+==332156==         suppressed: 4,072 bytes in 4 blocks
+==332156== 
+==332156== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 4 from 4)
+==332156== 
+==332156== 1 errors in context 1 of 5:
+==332156== Conditional jump or move depends on uninitialised value(s)
+==332156==    at 0x433F1F: pipe_checker (executor.c:84)
+==332156==    by 0x43404D: executor (executor.c:101)
+==332156==    by 0x4262CC: main (main.c:113)
+==332156==  Uninitialised value was created by a heap allocation
+==332156==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332156==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332156==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332156==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332156==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332156==    by 0x454BE1: parse (parse.c:120)
+==332156==    by 0x4261F7: main (main.c:111)
+==332156== 
+==332156== 
+==332156== 1 errors in context 2 of 5:
+==332156== Conditional jump or move depends on uninitialised value(s)
+==332156==    at 0x433F1F: pipe_checker (executor.c:84)
+==332156==    by 0x434022: executor (executor.c:99)
+==332156==    by 0x4262CC: main (main.c:113)
+==332156==  Uninitialised value was created by a heap allocation
+==332156==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332156==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332156==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332156==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332156==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332156==    by 0x454BE1: parse (parse.c:120)
+==332156==    by 0x4261F7: main (main.c:111)
+==332156== 
+--332156-- 
+--332156-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,072 bytes in 4 blocks
+==332156== 
+==332156== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 4 from 4)
+==332157== 2 bytes in 1 blocks are definitely lost in loss record 1 of 7
+==332157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==332157==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==332157==    by 0x4504CE: make_tokens (token.c:85)
+==332157==    by 0x450A87: tokenize (token.c:111)
+==332157==    by 0x4261DB: main (main.c:108)
+==332157== 
+==332157== 8 bytes in 1 blocks are still reachable in loss record 2 of 7
+==332157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==332157==    by 0x433C73: here_doc_creator (executor.c:65)
+==332157==    by 0x42F395: single_pipe_exe (pipes_processes.c:96)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157== 
+==332157== 16 bytes in 1 blocks are still reachable in loss record 4 of 7
+==332157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x460C9E: ft_calloc (ft_calloc.c:21)
+==332157==    by 0x4336DC: here_doc_creator (executor.c:50)
+==332157==    by 0x42F395: single_pipe_exe (pipes_processes.c:96)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157== 
+==332157== LEAK SUMMARY:
+==332157==    definitely lost: 2 bytes in 1 blocks
+==332157==    indirectly lost: 0 bytes in 0 blocks
+==332157==      possibly lost: 0 bytes in 0 blocks
+==332157==    still reachable: 24 bytes in 2 blocks
+==332157==         suppressed: 4,072 bytes in 4 blocks
+==332157== 
+==332157== ERROR SUMMARY: 11 errors from 11 contexts (suppressed: 4 from 4)
+==332157== 
+==332157== 1 errors in context 1 of 11:
+==332157== Syscall param unlink(pathname) points to unaddressable byte(s)
+==332157==    at 0x4AE90AB: unlink (syscall-template.S:120)
+==332157==    by 0x432396: input_redirections (file_redirections2.c:59)
+==332157==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Address 0x4c357e0 is 0 bytes inside a block of size 32 free'd
+==332157==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x44D8C7: free_token_list (testing.c:131)
+==332157==    by 0x455332: prep_nodes_for_exec (prep_exec.c:77)
+==332157==    by 0x454BE1: parse (parse.c:120)
+==332157==    by 0x4261F7: main (main.c:111)
+==332157==  Block was alloc'd at
+==332157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==332157==    by 0x45336E: make_start_token (tokenhelper2.c:41)
+==332157==    by 0x450A77: tokenize (token.c:110)
+==332157==    by 0x4261DB: main (main.c:108)
+==332157== 
+==332157== 
+==332157== 1 errors in context 2 of 11:
+==332157== Syscall param unlink(pathname) contains uninitialised byte(s)
+==332157==    at 0x4AE90AB: unlink (syscall-template.S:120)
+==332157==    by 0x432396: input_redirections (file_redirections2.c:59)
+==332157==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a stack allocation
+==332157==    at 0x434000: executor (executor.c:93)
+==332157== 
+==332157== 
+==332157== 1 errors in context 3 of 11:
+==332157== Conditional jump or move depends on uninitialised value(s)
+==332157==    at 0x432376: input_redirections (file_redirections2.c:59)
+==332157==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a stack allocation
+==332157==    at 0x434000: executor (executor.c:93)
+==332157== 
+==332157== 
+==332157== 1 errors in context 4 of 11:
+==332157== Conditional jump or move depends on uninitialised value(s)
+==332157==    at 0x4322DA: input_redirections (file_redirections2.c:58)
+==332157==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a stack allocation
+==332157==    at 0x434000: executor (executor.c:93)
+==332157== 
+==332157== 
+==332157== 1 errors in context 5 of 11:
+==332157== Conditional jump or move depends on uninitialised value(s)
+==332157==    at 0x431EE3: input_redirections (file_redirections2.c:47)
+==332157==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a heap allocation
+==332157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332157==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332157==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332157==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332157==    by 0x454BE1: parse (parse.c:120)
+==332157==    by 0x4261F7: main (main.c:111)
+==332157== 
+==332157== 
+==332157== 1 errors in context 6 of 11:
+==332157== Conditional jump or move depends on uninitialised value(s)
+==332157==    at 0x4316D8: redirection_checker (file_redirections.c:110)
+==332157==    by 0x432D1A: multi_redirections (file_redirections2.c:119)
+==332157==    by 0x42ECE0: parent_pipe (pipes_processes.c:57)
+==332157==    by 0x42EF8C: child_parent_execution (pipes_processes.c:76)
+==332157==    by 0x42F3D4: single_pipe_exe (pipes_processes.c:104)
+==332157==    by 0x434067: executor (executor.c:102)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a heap allocation
+==332157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332157==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332157==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332157==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332157==    by 0x454BE1: parse (parse.c:120)
+==332157==    by 0x4261F7: main (main.c:111)
+==332157== 
+==332157== 
+==332157== 1 errors in context 7 of 11:
+==332157== Conditional jump or move depends on uninitialised value(s)
+==332157==    at 0x433F1F: pipe_checker (executor.c:84)
+==332157==    by 0x43404D: executor (executor.c:101)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a heap allocation
+==332157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332157==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332157==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332157==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332157==    by 0x454BE1: parse (parse.c:120)
+==332157==    by 0x4261F7: main (main.c:111)
+==332157== 
+==332157== 
+==332157== 1 errors in context 8 of 11:
+==332157== Conditional jump or move depends on uninitialised value(s)
+==332157==    at 0x433F1F: pipe_checker (executor.c:84)
+==332157==    by 0x434022: executor (executor.c:99)
+==332157==    by 0x4262CC: main (main.c:113)
+==332157==  Uninitialised value was created by a heap allocation
+==332157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332157==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332157==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332157==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332157==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332157==    by 0x454BE1: parse (parse.c:120)
+==332157==    by 0x4261F7: main (main.c:111)
+==332157== 
+--332157-- 
+--332157-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,072 bytes in 4 blocks
+==332157== 
+==332157== ERROR SUMMARY: 11 errors from 11 contexts (suppressed: 4 from 4)
+==332155== 
+==332155== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==332155== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==332155==    <inherited from parent>
+==332155== 
+==332155== 
+==332155== HEAP SUMMARY:
+==332155==     in use at exit: 4,098 bytes in 7 blocks
+==332155==   total heap usage: 105 allocs, 98 frees, 13,977 bytes allocated
+==332155== 
+==332155== 2 bytes in 1 blocks are definitely lost in loss record 1 of 7
+==332155==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332155==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==332155==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==332155==    by 0x4504CE: make_tokens (token.c:85)
+==332155==    by 0x450A87: tokenize (token.c:111)
+==332155==    by 0x4261DB: main (main.c:108)
+==332155== 
+==332155== 8 bytes in 1 blocks are still reachable in loss record 2 of 7
+==332155==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332155==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==332155==    by 0x433C73: here_doc_creator (executor.c:65)
+==332155==    by 0x42F395: single_pipe_exe (pipes_processes.c:96)
+==332155==    by 0x434067: executor (executor.c:102)
+==332155==    by 0x4262CC: main (main.c:113)
+==332155== 
+==332155== 16 bytes in 1 blocks are still reachable in loss record 4 of 7
+==332155==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332155==    by 0x460C9E: ft_calloc (ft_calloc.c:21)
+==332155==    by 0x4336DC: here_doc_creator (executor.c:50)
+==332155==    by 0x42F395: single_pipe_exe (pipes_processes.c:96)
+==332155==    by 0x434067: executor (executor.c:102)
+==332155==    by 0x4262CC: main (main.c:113)
+==332155== 
+==332155== LEAK SUMMARY:
+==332155==    definitely lost: 2 bytes in 1 blocks
+==332155==    indirectly lost: 0 bytes in 0 blocks
+==332155==      possibly lost: 0 bytes in 0 blocks
+==332155==    still reachable: 24 bytes in 2 blocks
+==332155==         suppressed: 4,072 bytes in 4 blocks
+==332155== 
+==332155== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 4 from 4)
+==332155== 
+==332155== 1 errors in context 1 of 5:
+==332155== Conditional jump or move depends on uninitialised value(s)
+==332155==    at 0x433F1F: pipe_checker (executor.c:84)
+==332155==    by 0x43404D: executor (executor.c:101)
+==332155==    by 0x4262CC: main (main.c:113)
+==332155==  Uninitialised value was created by a heap allocation
+==332155==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332155==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332155==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332155==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332155==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332155==    by 0x454BE1: parse (parse.c:120)
+==332155==    by 0x4261F7: main (main.c:111)
+==332155== 
+==332155== 
+==332155== 1 errors in context 2 of 5:
+==332155== Conditional jump or move depends on uninitialised value(s)
+==332155==    at 0x433F1F: pipe_checker (executor.c:84)
+==332155==    by 0x434022: executor (executor.c:99)
+==332155==    by 0x4262CC: main (main.c:113)
+==332155==  Uninitialised value was created by a heap allocation
+==332155==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332155==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332155==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332155==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332155==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332155==    by 0x454BE1: parse (parse.c:120)
+==332155==    by 0x4261F7: main (main.c:111)
+==332155== 
+--332155-- 
+--332155-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,072 bytes in 4 blocks
+==332155== 
+==332155== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 4 from 4)
+==332153== 
+==332153== FILE DESCRIPTORS: 4 open (3 std) at exit.
+==332153== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==332153==    <inherited from parent>
+==332153== 
+==332153== Open file descriptor 2: /dev/null
+==332153==    <inherited from parent>
+==332153== 
+==332153== Open file descriptor 1: /dev/null
+==332153==    <inherited from parent>
+==332153== 
+==332153== Open file descriptor 0:
+==332153==    <inherited from parent>
+==332153== 
+==332153== 
+==332153== HEAP SUMMARY:
+==332153==     in use at exit: 8,707 bytes in 64 blocks
+==332153==   total heap usage: 106 allocs, 42 frees, 14,097 bytes allocated
+==332153== 
+==332153== 2 bytes in 1 blocks are definitely lost in loss record 1 of 10
+==332153==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332153==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==332153==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==332153==    by 0x4504CE: make_tokens (token.c:85)
+==332153==    by 0x450A87: tokenize (token.c:111)
+==332153==    by 0x4261DB: main (main.c:108)
+==332153== 
+==332153== 8 bytes in 1 blocks are still reachable in loss record 2 of 10
+==332153==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332153==    by 0x461B6F: ft_strjoin (ft_strjoin.c:29)
+==332153==    by 0x435730: shellvl (environment.c:34)
+==332153==    by 0x435D2F: environment_copy (environment.c:65)
+==332153==    by 0x436436: copy_env (environment.c:101)
+==332153==    by 0x425E61: main (main.c:84)
+==332153== 
+==332153== 15 bytes in 1 blocks are still reachable in loss record 4 of 10
+==332153==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332153==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==332153==    by 0x435AF5: core_direct_user (environment.c:47)
+==332153==    by 0x435F91: environment_copy (environment.c:74)
+==332153==    by 0x436436: copy_env (environment.c:101)
+==332153==    by 0x425E61: main (main.c:84)
+==332153== 
+==332153== 456 bytes in 1 blocks are still reachable in loss record 7 of 10
+==332153==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332153==    by 0x436281: copy_env (environment.c:92)
+==332153==    by 0x425E61: main (main.c:84)
+==332153== 
+==332153== 456 bytes in 1 blocks are still reachable in loss record 8 of 10
+==332153==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332153==    by 0x4362F5: copy_env (environment.c:95)
+==332153==    by 0x425E61: main (main.c:84)
+==332153== 
+==332153== 3,698 bytes in 55 blocks are still reachable in loss record 9 of 10
+==332153==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332153==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==332153==    by 0x435DF6: environment_copy (environment.c:70)
+==332153==    by 0x436436: copy_env (environment.c:101)
+==332153==    by 0x425E61: main (main.c:84)
+==332153== 
+==332153== LEAK SUMMARY:
+==332153==    definitely lost: 2 bytes in 1 blocks
+==332153==    indirectly lost: 0 bytes in 0 blocks
+==332153==      possibly lost: 0 bytes in 0 blocks
+==332153==    still reachable: 4,633 bytes in 59 blocks
+==332153==         suppressed: 4,072 bytes in 4 blocks
+==332153== 
+==332153== ERROR SUMMARY: 8 errors from 8 contexts (suppressed: 4 from 4)
+==332153== 
+==332153== 1 errors in context 1 of 8:
+==332153== Conditional jump or move depends on uninitialised value(s)
+==332153==    at 0x433F1F: pipe_checker (executor.c:84)
+==332153==    by 0x43404D: executor (executor.c:101)
+==332153==    by 0x4262CC: main (main.c:113)
+==332153==  Uninitialised value was created by a heap allocation
+==332153==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332153==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332153==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332153==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332153==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332153==    by 0x454BE1: parse (parse.c:120)
+==332153==    by 0x4261F7: main (main.c:111)
+==332153== 
+==332153== 
+==332153== 1 errors in context 2 of 8:
+==332153== Conditional jump or move depends on uninitialised value(s)
+==332153==    at 0x433F1F: pipe_checker (executor.c:84)
+==332153==    by 0x434022: executor (executor.c:99)
+==332153==    by 0x4262CC: main (main.c:113)
+==332153==  Uninitialised value was created by a heap allocation
+==332153==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==332153==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==332153==    by 0x454F8E: process_pipe (prep_exec.c:41)
+==332153==    by 0x45528E: process_tokens (prep_exec.c:58)
+==332153==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==332153==    by 0x454BE1: parse (parse.c:120)
+==332153==    by 0x4261F7: main (main.c:111)
+==332153== 
+--332153-- 
+--332153-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,072 bytes in 4 blocks
+==332153== 
+==332153== ERROR SUMMARY: 8 errors from 8 contexts (suppressed: 4 from 4)

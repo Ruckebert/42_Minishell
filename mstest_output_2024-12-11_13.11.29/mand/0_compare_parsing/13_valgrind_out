@@ -1,0 +1,770 @@
+==289034== Memcheck, a memory error detector
+==289034== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==289034== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==289034== Command: /home/marsenij/Documents/minishell/minishell
+==289034== Parent PID: 289033
+==289034== 
+==289036== 
+==289036== FILE DESCRIPTORS: 4 open (3 std) at exit.
+==289036== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==289036==    <inherited from parent>
+==289036== 
+==289036== Open file descriptor 2: /dev/null
+==289036==    <inherited from parent>
+==289036== 
+==289036== Open file descriptor 1:
+==289036==    at 0x4AE801B: dup2 (syscall-template.S:120)
+==289036==    by 0x428B48: child_pros (pipes_processes2.c:18)
+==289036==    by 0x42EA38: child_pipe (pipes_processes.c:40)
+==289036==    by 0x42EEB4: child_parent_execution (pipes_processes.c:74)
+==289036==    by 0x42F394: single_pipe_exe (pipes_processes.c:104)
+==289036==    by 0x434027: executor (executor.c:102)
+==289036==    by 0x4262CC: main (main.c:113)
+==289036== 
+==289036== Open file descriptor 0:
+==289036==    <inherited from parent>
+==289036== 
+==289036== 
+==289036== HEAP SUMMARY:
+==289036==     in use at exit: 9,106 bytes in 78 blocks
+==289036==   total heap usage: 116 allocs, 38 frees, 13,934 bytes allocated
+==289036== 
+==289036== 8 bytes in 1 blocks are still reachable in loss record 1 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x461B2F: ft_strjoin (ft_strjoin.c:29)
+==289036==    by 0x4356F0: shellvl (environment.c:34)
+==289036==    by 0x435CEF: environment_copy (environment.c:65)
+==289036==    by 0x4363F6: copy_env (environment.c:101)
+==289036==    by 0x425E61: main (main.c:84)
+==289036== 
+==289036== 8 bytes in 2 blocks are still reachable in loss record 2 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==289036==    by 0x456523: add_redir (prep_exec2.c:75)
+==289036==    by 0x454F27: process_redir (prep_exec.c:36)
+==289036==    by 0x455222: process_tokens (prep_exec.c:56)
+==289036==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289036==    by 0x454BA1: parse (parse.c:120)
+==289036==    by 0x4261F7: main (main.c:111)
+==289036== 
+==289036== 13 bytes in 2 blocks are still reachable in loss record 4 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==289036==    by 0x4602DB: copy_args (copy_exec_args.c:28)
+==289036==    by 0x454EE0: process_redir (prep_exec.c:34)
+==289036==    by 0x455222: process_tokens (prep_exec.c:56)
+==289036==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289036==    by 0x454BA1: parse (parse.c:120)
+==289036==    by 0x4261F7: main (main.c:111)
+==289036== 
+==289036== 15 bytes in 1 blocks are still reachable in loss record 5 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==289036==    by 0x435AB5: core_direct_user (environment.c:47)
+==289036==    by 0x435F51: environment_copy (environment.c:74)
+==289036==    by 0x4363F6: copy_env (environment.c:101)
+==289036==    by 0x425E61: main (main.c:84)
+==289036== 
+==289036== 24 bytes in 1 blocks are still reachable in loss record 7 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x45FED6: copy_args (copy_exec_args.c:24)
+==289036==    by 0x454EE0: process_redir (prep_exec.c:34)
+==289036==    by 0x455222: process_tokens (prep_exec.c:56)
+==289036==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289036==    by 0x454BA1: parse (parse.c:120)
+==289036==    by 0x4261F7: main (main.c:111)
+==289036== 
+==289036== 26 bytes in 4 blocks are still reachable in loss record 8 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==289036==    by 0x455A47: get_args (prep_exec2.c:53)
+==289036==    by 0x455264: process_tokens (prep_exec.c:60)
+==289036==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289036==    by 0x454BA1: parse (parse.c:120)
+==289036==    by 0x4261F7: main (main.c:111)
+==289036== 
+==289036== 48 bytes in 1 blocks are still reachable in loss record 10 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289036==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289036==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289036==    by 0x454BA1: parse (parse.c:120)
+==289036==    by 0x4261F7: main (main.c:111)
+==289036== 
+==289036== 48 bytes in 1 blocks are still reachable in loss record 11 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289036==    by 0x454E08: process_redir (prep_exec.c:32)
+==289036==    by 0x455222: process_tokens (prep_exec.c:56)
+==289036==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289036==    by 0x454BA1: parse (parse.c:120)
+==289036==    by 0x4261F7: main (main.c:111)
+==289036== 
+==289036== 48 bytes in 1 blocks are still reachable in loss record 12 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289036==    by 0x454F4E: process_pipe (prep_exec.c:41)
+==289036==    by 0x45524E: process_tokens (prep_exec.c:58)
+==289036==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289036==    by 0x454BA1: parse (parse.c:120)
+==289036==    by 0x4261F7: main (main.c:111)
+==289036== 
+==289036== 48 bytes in 2 blocks are still reachable in loss record 13 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x455809: get_args (prep_exec2.c:46)
+==289036==    by 0x455264: process_tokens (prep_exec.c:60)
+==289036==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289036==    by 0x454BA1: parse (parse.c:120)
+==289036==    by 0x4261F7: main (main.c:111)
+==289036== 
+==289036== 120 bytes in 1 blocks are still reachable in loss record 14 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x4A53122: getdelim (iogetdelim.c:62)
+==289036==    by 0x485C410: readline (in /home/marsenij/42_minishell_tester/utils/libintercept/libintercept.so)
+==289036==    by 0x42607E: main (main.c:100)
+==289036== 
+==289036== 456 bytes in 1 blocks are still reachable in loss record 15 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x436241: copy_env (environment.c:92)
+==289036==    by 0x425E61: main (main.c:84)
+==289036== 
+==289036== 456 bytes in 1 blocks are still reachable in loss record 16 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x4362B5: copy_env (environment.c:95)
+==289036==    by 0x425E61: main (main.c:84)
+==289036== 
+==289036== 3,698 bytes in 55 blocks are still reachable in loss record 17 of 18
+==289036==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289036==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==289036==    by 0x435DB6: environment_copy (environment.c:70)
+==289036==    by 0x4363F6: copy_env (environment.c:101)
+==289036==    by 0x425E61: main (main.c:84)
+==289036== 
+==289036== LEAK SUMMARY:
+==289036==    definitely lost: 0 bytes in 0 blocks
+==289036==    indirectly lost: 0 bytes in 0 blocks
+==289036==      possibly lost: 0 bytes in 0 blocks
+==289036==    still reachable: 5,016 bytes in 74 blocks
+==289036==         suppressed: 4,090 bytes in 4 blocks
+==289036== 
+==289036== ERROR SUMMARY: 14 errors from 14 contexts (suppressed: 4 from 4)
+--289036-- 
+--289036-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,090 bytes in 4 blocks
+==289036== 
+==289036== ERROR SUMMARY: 14 errors from 14 contexts (suppressed: 4 from 4)
+==289035== Conditional jump or move depends on uninitialised value(s)
+==289035==    at 0x44DB0C: free_cmdtable (testing.c:149)
+==289035==    by 0x43DD3A: free_exit (builtins.c:175)
+==289035==    by 0x42F272: child_parent_execution (pipes_processes.c:83)
+==289035==    by 0x42F394: single_pipe_exe (pipes_processes.c:104)
+==289035==    by 0x434027: executor (executor.c:102)
+==289035==    by 0x4262CC: main (main.c:113)
+==289035==  Uninitialised value was created by a heap allocation
+==289035==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289035==    by 0x45FED6: copy_args (copy_exec_args.c:24)
+==289035==    by 0x454EE0: process_redir (prep_exec.c:34)
+==289035==    by 0x455222: process_tokens (prep_exec.c:56)
+==289035==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289035==    by 0x454BA1: parse (parse.c:120)
+==289035==    by 0x4261F7: main (main.c:111)
+==289035== 
+==289035== 
+==289035== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==289035== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==289035==    <inherited from parent>
+==289035== 
+==289035== 
+==289035== HEAP SUMMARY:
+==289035==     in use at exit: 4,090 bytes in 4 blocks
+==289035==   total heap usage: 116 allocs, 112 frees, 13,934 bytes allocated
+==289035== 
+==289035== LEAK SUMMARY:
+==289035==    definitely lost: 0 bytes in 0 blocks
+==289035==    indirectly lost: 0 bytes in 0 blocks
+==289035==      possibly lost: 0 bytes in 0 blocks
+==289035==    still reachable: 0 bytes in 0 blocks
+==289035==         suppressed: 4,090 bytes in 4 blocks
+==289035== 
+==289035== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+==289035== 
+==289035== 1 errors in context 1 of 1:
+==289035== Conditional jump or move depends on uninitialised value(s)
+==289035==    at 0x44DB0C: free_cmdtable (testing.c:149)
+==289035==    by 0x43DD3A: free_exit (builtins.c:175)
+==289035==    by 0x42F272: child_parent_execution (pipes_processes.c:83)
+==289035==    by 0x42F394: single_pipe_exe (pipes_processes.c:104)
+==289035==    by 0x434027: executor (executor.c:102)
+==289035==    by 0x4262CC: main (main.c:113)
+==289035==  Uninitialised value was created by a heap allocation
+==289035==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289035==    by 0x45FED6: copy_args (copy_exec_args.c:24)
+==289035==    by 0x454EE0: process_redir (prep_exec.c:34)
+==289035==    by 0x455222: process_tokens (prep_exec.c:56)
+==289035==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289035==    by 0x454BA1: parse (parse.c:120)
+==289035==    by 0x4261F7: main (main.c:111)
+==289035== 
+--289035-- 
+--289035-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,090 bytes in 4 blocks
+==289035== 
+==289035== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+==289034== Conditional jump or move depends on uninitialised value(s)
+==289034==    at 0x44DB0C: free_cmdtable (testing.c:149)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Uninitialised value was created by a heap allocation
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45FED6: copy_args (copy_exec_args.c:24)
+==289034==    by 0x454EE0: process_redir (prep_exec.c:34)
+==289034==    by 0x455222: process_tokens (prep_exec.c:56)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid read of size 8
+==289034==    at 0x44D972: free_cmdtable (testing.c:145)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36270 is 32 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid read of size 8
+==289034==    at 0x44D9E7: free_cmdtable (testing.c:147)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36250 is 0 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid read of size 8
+==289034==    at 0x44DA66: free_cmdtable (testing.c:149)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36250 is 0 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid read of size 8
+==289034==    at 0x44DB08: free_cmdtable (testing.c:149)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c362c0 is 0 bytes inside a block of size 24 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DCF8: free_cmdtable (testing.c:151)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x455809: get_args (prep_exec2.c:46)
+==289034==    by 0x455264: process_tokens (prep_exec.c:60)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid read of size 8
+==289034==    at 0x44DB80: free_cmdtable (testing.c:150)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36250 is 0 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid read of size 8
+==289034==    at 0x44DC22: free_cmdtable (testing.c:150)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c362c0 is 0 bytes inside a block of size 24 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DCF8: free_cmdtable (testing.c:151)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x455809: get_args (prep_exec2.c:46)
+==289034==    by 0x455264: process_tokens (prep_exec.c:60)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid free() / delete / delete[] / realloc()
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DC29: free_cmdtable (testing.c:150)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36320 is 0 bytes inside a block of size 10 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DC29: free_cmdtable (testing.c:150)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==289034==    by 0x455A47: get_args (prep_exec2.c:53)
+==289034==    by 0x455264: process_tokens (prep_exec.c:60)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid read of size 8
+==289034==    at 0x44DCF1: free_cmdtable (testing.c:151)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36250 is 0 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid free() / delete / delete[] / realloc()
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DCF8: free_cmdtable (testing.c:151)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c362c0 is 0 bytes inside a block of size 24 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DCF8: free_cmdtable (testing.c:151)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x455809: get_args (prep_exec2.c:46)
+==289034==    by 0x455264: process_tokens (prep_exec.c:60)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid read of size 8
+==289034==    at 0x44DD81: free_cmdtable (testing.c:154)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36260 is 16 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid read of size 8
+==289034==    at 0x44DE13: free_cmdtable (testing.c:155)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36260 is 16 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid free() / delete / delete[] / realloc()
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE1A: free_cmdtable (testing.c:155)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c363c0 is 0 bytes inside a block of size 4 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE1A: free_cmdtable (testing.c:155)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==289034==    by 0x456523: add_redir (prep_exec2.c:75)
+==289034==    by 0x454F27: process_redir (prep_exec.c:36)
+==289034==    by 0x455222: process_tokens (prep_exec.c:56)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== Invalid free() / delete / delete[] / realloc()
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36250 is 0 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==289034== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==289034==    <inherited from parent>
+==289034== 
+==289034== 
+==289034== HEAP SUMMARY:
+==289034==     in use at exit: 4,090 bytes in 4 blocks
+==289034==   total heap usage: 117 allocs, 127 frees, 14,054 bytes allocated
+==289034== 
+==289034== LEAK SUMMARY:
+==289034==    definitely lost: 0 bytes in 0 blocks
+==289034==    indirectly lost: 0 bytes in 0 blocks
+==289034==      possibly lost: 0 bytes in 0 blocks
+==289034==    still reachable: 0 bytes in 0 blocks
+==289034==         suppressed: 4,090 bytes in 4 blocks
+==289034== 
+==289034== ERROR SUMMARY: 59 errors from 14 contexts (suppressed: 4 from 4)
+==289034== 
+==289034== 1 errors in context 1 of 14:
+==289034== Conditional jump or move depends on uninitialised value(s)
+==289034==    at 0x44DB0C: free_cmdtable (testing.c:149)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Uninitialised value was created by a heap allocation
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45FED6: copy_args (copy_exec_args.c:24)
+==289034==    by 0x454EE0: process_redir (prep_exec.c:34)
+==289034==    by 0x455222: process_tokens (prep_exec.c:56)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 2 errors in context 2 of 14:
+==289034== Invalid free() / delete / delete[] / realloc()
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE1A: free_cmdtable (testing.c:155)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c363c0 is 0 bytes inside a block of size 4 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE1A: free_cmdtable (testing.c:155)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==289034==    by 0x456523: add_redir (prep_exec2.c:75)
+==289034==    by 0x454F27: process_redir (prep_exec.c:36)
+==289034==    by 0x455222: process_tokens (prep_exec.c:56)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 2 errors in context 3 of 14:
+==289034== Invalid read of size 8
+==289034==    at 0x44DE13: free_cmdtable (testing.c:155)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36260 is 16 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 3 errors in context 4 of 14:
+==289034== Invalid free() / delete / delete[] / realloc()
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36250 is 0 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 3 errors in context 5 of 14:
+==289034== Invalid read of size 8
+==289034==    at 0x44DD81: free_cmdtable (testing.c:154)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36260 is 16 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 3 errors in context 6 of 14:
+==289034== Invalid free() / delete / delete[] / realloc()
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DCF8: free_cmdtable (testing.c:151)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c362c0 is 0 bytes inside a block of size 24 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DCF8: free_cmdtable (testing.c:151)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x455809: get_args (prep_exec2.c:46)
+==289034==    by 0x455264: process_tokens (prep_exec.c:60)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 3 errors in context 7 of 14:
+==289034== Invalid read of size 8
+==289034==    at 0x44DCF1: free_cmdtable (testing.c:151)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36250 is 0 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 3 errors in context 8 of 14:
+==289034== Invalid read of size 8
+==289034==    at 0x44D9E7: free_cmdtable (testing.c:147)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36250 is 0 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 3 errors in context 9 of 14:
+==289034== Invalid read of size 8
+==289034==    at 0x44D972: free_cmdtable (testing.c:145)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36270 is 32 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 6 errors in context 10 of 14:
+==289034== Invalid free() / delete / delete[] / realloc()
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DC29: free_cmdtable (testing.c:150)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36320 is 0 bytes inside a block of size 10 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DC29: free_cmdtable (testing.c:150)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x460E61: ft_strdup (ft_strdup.c:42)
+==289034==    by 0x455A47: get_args (prep_exec2.c:53)
+==289034==    by 0x455264: process_tokens (prep_exec.c:60)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 6 errors in context 11 of 14:
+==289034== Invalid read of size 8
+==289034==    at 0x44DC22: free_cmdtable (testing.c:150)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c362c0 is 0 bytes inside a block of size 24 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DCF8: free_cmdtable (testing.c:151)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x455809: get_args (prep_exec2.c:46)
+==289034==    by 0x455264: process_tokens (prep_exec.c:60)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 6 errors in context 12 of 14:
+==289034== Invalid read of size 8
+==289034==    at 0x44DB80: free_cmdtable (testing.c:150)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36250 is 0 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 9 errors in context 13 of 14:
+==289034== Invalid read of size 8
+==289034==    at 0x44DB08: free_cmdtable (testing.c:149)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c362c0 is 0 bytes inside a block of size 24 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DCF8: free_cmdtable (testing.c:151)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x455809: get_args (prep_exec2.c:46)
+==289034==    by 0x455264: process_tokens (prep_exec.c:60)
+==289034==    by 0x4552D5: prep_nodes_for_exec (prep_exec.c:74)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+==289034== 
+==289034== 9 errors in context 14 of 14:
+==289034== Invalid read of size 8
+==289034==    at 0x44DA66: free_cmdtable (testing.c:149)
+==289034==    by 0x43DD3A: free_exit (builtins.c:175)
+==289034==    by 0x4262EE: main (main.c:117)
+==289034==  Address 0x4c36250 is 0 bytes inside a block of size 48 free'd
+==289034==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x44DE23: free_cmdtable (testing.c:157)
+==289034==    by 0x42F47C: single_pipe_exe (pipes_processes.c:111)
+==289034==    by 0x434027: executor (executor.c:102)
+==289034==    by 0x4262CC: main (main.c:113)
+==289034==  Block was alloc'd at
+==289034==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==289034==    by 0x45A9BB: ft_lstnew_cmd (cmd_lst.c:19)
+==289034==    by 0x454BCE: initialize_cmd_table (prep_exec.c:21)
+==289034==    by 0x4552C4: prep_nodes_for_exec (prep_exec.c:73)
+==289034==    by 0x454BA1: parse (parse.c:120)
+==289034==    by 0x4261F7: main (main.c:111)
+==289034== 
+--289034-- 
+--289034-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,090 bytes in 4 blocks
+==289034== 
+==289034== ERROR SUMMARY: 59 errors from 14 contexts (suppressed: 4 from 4)

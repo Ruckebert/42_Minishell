@@ -1,0 +1,18 @@
+123: No such file or directory
+tokenizer/testing.c:149:25: runtime error: load of misaligned address 0x00000003a97a for type 'char *', which requires 8 byte alignment
+0x00000003a97a: note: pointer points here
+<memory cannot be printed>
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior tokenizer/testing.c:149:25 in 
+UndefinedBehaviorSanitizer:DEADLYSIGNAL
+==289042==ERROR: UndefinedBehaviorSanitizer: SEGV on unknown address 0x00000003a97a (pc 0x00000044db08 bp 0x7ffdc81904c0 sp 0x7ffdc8190400 T289042)
+==289042==The signal is caused by a READ memory access.
+    #0 0x44db08 in free_cmdtable /home/marsenij/Documents/minishell/tokenizer/testing.c:149:13
+    #1 0x43dd3a in free_exit /home/marsenij/Documents/minishell/builtins/builtins.c:175:3
+    #2 0x4262ee in main /home/marsenij/Documents/minishell/main.c:117:4
+    #3 0x7f37b262cd8f in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+    #4 0x7f37b262ce3f in __libc_start_main csu/../csu/libc-start.c:392:3
+    #5 0x404494 in _start (/home/marsenij/Documents/minishell/minishell+0x404494)
+
+UndefinedBehaviorSanitizer can not provide additional info.
+SUMMARY: UndefinedBehaviorSanitizer: SEGV /home/marsenij/Documents/minishell/tokenizer/testing.c:149:13 in free_cmdtable
+==289042==ABORTING

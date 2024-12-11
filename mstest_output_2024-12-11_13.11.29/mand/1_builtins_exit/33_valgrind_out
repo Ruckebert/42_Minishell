@@ -1,0 +1,37 @@
+==310387== Memcheck, a memory error detector
+==310387== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==310387== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==310387== Command: /home/marsenij/Documents/minishell/minishell
+==310387== Parent PID: 310386
+==310387== 
+==310387== 
+==310387== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==310387== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==310387==    <inherited from parent>
+==310387== 
+==310387== 
+==310387== HEAP SUMMARY:
+==310387==     in use at exit: 4,067 bytes in 5 blocks
+==310387==   total heap usage: 87 allocs, 82 frees, 13,451 bytes allocated
+==310387== 
+==310387== 5 bytes in 1 blocks are definitely lost in loss record 1 of 5
+==310387==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==310387==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==310387==    by 0x455A87: get_args (prep_exec2.c:53)
+==310387==    by 0x4552A4: process_tokens (prep_exec.c:60)
+==310387==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==310387==    by 0x454BE1: parse (parse.c:120)
+==310387==    by 0x4261F7: main (main.c:111)
+==310387== 
+==310387== LEAK SUMMARY:
+==310387==    definitely lost: 5 bytes in 1 blocks
+==310387==    indirectly lost: 0 bytes in 0 blocks
+==310387==      possibly lost: 0 bytes in 0 blocks
+==310387==    still reachable: 0 bytes in 0 blocks
+==310387==         suppressed: 4,062 bytes in 4 blocks
+==310387== 
+==310387== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+--310387-- 
+--310387-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,062 bytes in 4 blocks
+==310387== 
+==310387== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)

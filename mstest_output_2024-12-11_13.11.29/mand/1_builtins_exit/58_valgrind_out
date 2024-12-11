@@ -1,0 +1,48 @@
+==311873== Memcheck, a memory error detector
+==311873== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==311873== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==311873== Command: /home/marsenij/Documents/minishell/minishell
+==311873== Parent PID: 311872
+==311873== 
+==311873== 
+==311873== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==311873== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==311873==    <inherited from parent>
+==311873== 
+==311873== 
+==311873== HEAP SUMMARY:
+==311873==     in use at exit: 4,119 bytes in 6 blocks
+==311873==   total heap usage: 88 allocs, 82 frees, 13,567 bytes allocated
+==311873== 
+==311873== 20 bytes in 1 blocks are definitely lost in loss record 2 of 6
+==311873==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==311873==    by 0x461CEE: ft_strtrim (ft_strtrim.c:67)
+==311873==    by 0x44250D: ft_strtoull (builtin_utils.c:112)
+==311873==    by 0x445ED2: exit_loop (exit_cmds.c:64)
+==311873==    by 0x43F29B: exit_com (builtins.c:196)
+==311873==    by 0x4334E4: builtin_cmds (executor.c:30)
+==311873==    by 0x42A7BC: no_pipe_exe (pipes_processes2.c:89)
+==311873==    by 0x43403F: executor (executor.c:100)
+==311873==    by 0x4262CC: main (main.c:113)
+==311873== 
+==311873== 21 bytes in 1 blocks are definitely lost in loss record 3 of 6
+==311873==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==311873==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==311873==    by 0x455A87: get_args (prep_exec2.c:53)
+==311873==    by 0x4552A4: process_tokens (prep_exec.c:60)
+==311873==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==311873==    by 0x454BE1: parse (parse.c:120)
+==311873==    by 0x4261F7: main (main.c:111)
+==311873== 
+==311873== LEAK SUMMARY:
+==311873==    definitely lost: 41 bytes in 2 blocks
+==311873==    indirectly lost: 0 bytes in 0 blocks
+==311873==      possibly lost: 0 bytes in 0 blocks
+==311873==    still reachable: 0 bytes in 0 blocks
+==311873==         suppressed: 4,078 bytes in 4 blocks
+==311873== 
+==311873== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+--311873-- 
+--311873-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,078 bytes in 4 blocks
+==311873== 
+==311873== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)

@@ -1,0 +1,839 @@
+==324177== Memcheck, a memory error detector
+==324177== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==324177== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==324177== Command: /home/marsenij/Documents/minishell/minishell
+==324177== Parent PID: 324176
+==324177== 
+==324178== Conditional jump or move depends on uninitialised value(s)
+==324178==    at 0x4322DA: input_redirections (file_redirections2.c:58)
+==324178==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==324178==    by 0x42E14E: multi_pipe (multi_pipe.c:110)
+==324178==    by 0x4340B9: executor (executor.c:109)
+==324178==    by 0x4262CC: main (main.c:113)
+==324178==  Uninitialised value was created by a stack allocation
+==324178==    at 0x434000: executor (executor.c:93)
+==324178== 
+==324178== Conditional jump or move depends on uninitialised value(s)
+==324178==    at 0x432376: input_redirections (file_redirections2.c:59)
+==324178==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==324178==    by 0x42E14E: multi_pipe (multi_pipe.c:110)
+==324178==    by 0x4340B9: executor (executor.c:109)
+==324178==    by 0x4262CC: main (main.c:113)
+==324178==  Uninitialised value was created by a stack allocation
+==324178==    at 0x434000: executor (executor.c:93)
+==324178== 
+==324178== Syscall param unlink(pathname) contains uninitialised byte(s)
+==324178==    at 0x4AE90AB: unlink (syscall-template.S:120)
+==324178==    by 0x432396: input_redirections (file_redirections2.c:59)
+==324178==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==324178==    by 0x42E14E: multi_pipe (multi_pipe.c:110)
+==324178==    by 0x4340B9: executor (executor.c:109)
+==324178==    by 0x4262CC: main (main.c:113)
+==324178==  Uninitialised value was created by a stack allocation
+==324178==    at 0x434000: executor (executor.c:93)
+==324178== 
+==324178== Syscall param unlink(pathname) points to unaddressable byte(s)
+==324178==    at 0x4AE90AB: unlink (syscall-template.S:120)
+==324178==    by 0x432396: input_redirections (file_redirections2.c:59)
+==324178==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==324178==    by 0x42E14E: multi_pipe (multi_pipe.c:110)
+==324178==    by 0x4340B9: executor (executor.c:109)
+==324178==    by 0x4262CC: main (main.c:113)
+==324178==  Address 0x4c35820 is 0 bytes inside a block of size 32 free'd
+==324178==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324178==    by 0x44D8C7: free_token_list (testing.c:131)
+==324178==    by 0x455332: prep_nodes_for_exec (prep_exec.c:77)
+==324178==    by 0x454BE1: parse (parse.c:120)
+==324178==    by 0x4261F7: main (main.c:111)
+==324178==  Block was alloc'd at
+==324178==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324178==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324178==    by 0x45336E: make_start_token (tokenhelper2.c:41)
+==324178==    by 0x450A77: tokenize (token.c:110)
+==324178==    by 0x4261DB: main (main.c:108)
+==324178== 
+==324178== 
+==324178== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324178== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324178==    <inherited from parent>
+==324178== 
+==324178== 
+==324178== HEAP SUMMARY:
+==324178==     in use at exit: 4,228 bytes in 13 blocks
+==324178==   total heap usage: 246 allocs, 233 frees, 17,692 bytes allocated
+==324178== 
+==324178== 8 bytes in 4 blocks are definitely lost in loss record 1 of 7
+==324178==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324178==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324178==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324178==    by 0x4504CE: make_tokens (token.c:85)
+==324178==    by 0x450A87: tokenize (token.c:111)
+==324178==    by 0x4261DB: main (main.c:108)
+==324178== 
+==324178== 11 bytes in 4 blocks are definitely lost in loss record 2 of 7
+==324178==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324178==    by 0x461B6F: ft_strjoin (ft_strjoin.c:29)
+==324178==    by 0x42654C: main_exanpder_env (here_doc.c:22)
+==324178==    by 0x4275DA: expander_env (here_doc.c:55)
+==324178==    by 0x427EFE: here_doc_main (here_doc.c:103)
+==324178==    by 0x4289B1: here_doc_tempfile (here_doc.c:136)
+==324178==    by 0x43383A: here_doc_creator (executor.c:55)
+==324178==    by 0x42E01C: multi_pipe (multi_pipe.c:104)
+==324178==    by 0x4340B9: executor (executor.c:109)
+==324178==    by 0x4262CC: main (main.c:113)
+==324178== 
+==324178== 72 bytes in 1 blocks are still reachable in loss record 5 of 7
+==324178==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324178==    by 0x460C9E: ft_calloc (ft_calloc.c:21)
+==324178==    by 0x42DF72: multi_pipe (multi_pipe.c:99)
+==324178==    by 0x4340B9: executor (executor.c:109)
+==324178==    by 0x4262CC: main (main.c:113)
+==324178== 
+==324178== LEAK SUMMARY:
+==324178==    definitely lost: 19 bytes in 8 blocks
+==324178==    indirectly lost: 0 bytes in 0 blocks
+==324178==      possibly lost: 0 bytes in 0 blocks
+==324178==    still reachable: 72 bytes in 1 blocks
+==324178==         suppressed: 4,137 bytes in 4 blocks
+==324178== 
+==324178== ERROR SUMMARY: 19 errors from 7 contexts (suppressed: 4 from 4)
+==324178== 
+==324178== 4 errors in context 1 of 7:
+==324178== Syscall param unlink(pathname) points to unaddressable byte(s)
+==324178==    at 0x4AE90AB: unlink (syscall-template.S:120)
+==324178==    by 0x432396: input_redirections (file_redirections2.c:59)
+==324178==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==324178==    by 0x42E14E: multi_pipe (multi_pipe.c:110)
+==324178==    by 0x4340B9: executor (executor.c:109)
+==324178==    by 0x4262CC: main (main.c:113)
+==324178==  Address 0x4c35820 is 0 bytes inside a block of size 32 free'd
+==324178==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324178==    by 0x44D8C7: free_token_list (testing.c:131)
+==324178==    by 0x455332: prep_nodes_for_exec (prep_exec.c:77)
+==324178==    by 0x454BE1: parse (parse.c:120)
+==324178==    by 0x4261F7: main (main.c:111)
+==324178==  Block was alloc'd at
+==324178==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324178==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324178==    by 0x45336E: make_start_token (tokenhelper2.c:41)
+==324178==    by 0x450A77: tokenize (token.c:110)
+==324178==    by 0x4261DB: main (main.c:108)
+==324178== 
+==324178== 
+==324178== 4 errors in context 2 of 7:
+==324178== Syscall param unlink(pathname) contains uninitialised byte(s)
+==324178==    at 0x4AE90AB: unlink (syscall-template.S:120)
+==324178==    by 0x432396: input_redirections (file_redirections2.c:59)
+==324178==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==324178==    by 0x42E14E: multi_pipe (multi_pipe.c:110)
+==324178==    by 0x4340B9: executor (executor.c:109)
+==324178==    by 0x4262CC: main (main.c:113)
+==324178==  Uninitialised value was created by a stack allocation
+==324178==    at 0x434000: executor (executor.c:93)
+==324178== 
+==324178== 
+==324178== 4 errors in context 3 of 7:
+==324178== Conditional jump or move depends on uninitialised value(s)
+==324178==    at 0x432376: input_redirections (file_redirections2.c:59)
+==324178==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==324178==    by 0x42E14E: multi_pipe (multi_pipe.c:110)
+==324178==    by 0x4340B9: executor (executor.c:109)
+==324178==    by 0x4262CC: main (main.c:113)
+==324178==  Uninitialised value was created by a stack allocation
+==324178==    at 0x434000: executor (executor.c:93)
+==324178== 
+==324178== 
+==324178== 4 errors in context 4 of 7:
+==324178== Conditional jump or move depends on uninitialised value(s)
+==324178==    at 0x4322DA: input_redirections (file_redirections2.c:58)
+==324178==    by 0x433015: multi_redirections (file_redirections2.c:127)
+==324178==    by 0x42E14E: multi_pipe (multi_pipe.c:110)
+==324178==    by 0x4340B9: executor (executor.c:109)
+==324178==    by 0x4262CC: main (main.c:113)
+==324178==  Uninitialised value was created by a stack allocation
+==324178==    at 0x434000: executor (executor.c:93)
+==324178== 
+--324178-- 
+--324178-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,137 bytes in 4 blocks
+==324178== 
+==324178== ERROR SUMMARY: 19 errors from 7 contexts (suppressed: 4 from 4)
+==324197== 
+==324197== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324197== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324197==    <inherited from parent>
+==324197== 
+==324197== 
+==324197== HEAP SUMMARY:
+==324197==     in use at exit: 4,187 bytes in 11 blocks
+==324197==   total heap usage: 261 allocs, 250 frees, 16,350 bytes allocated
+==324197== 
+==324197== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324197==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324197==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324197==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324197==    by 0x4504CE: make_tokens (token.c:85)
+==324197==    by 0x450A87: tokenize (token.c:111)
+==324197==    by 0x4261DB: main (main.c:108)
+==324197== 
+==324197== LEAK SUMMARY:
+==324197==    definitely lost: 8 bytes in 4 blocks
+==324197==    indirectly lost: 0 bytes in 0 blocks
+==324197==      possibly lost: 0 bytes in 0 blocks
+==324197==    still reachable: 0 bytes in 0 blocks
+==324197==         suppressed: 4,179 bytes in 7 blocks
+==324197== 
+==324197== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+--324197-- 
+--324197-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,179 bytes in 7 blocks
+==324197== 
+==324197== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+==324198== 
+==324198== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324198== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324198==    <inherited from parent>
+==324198== 
+==324198== 
+==324198== HEAP SUMMARY:
+==324198==     in use at exit: 4,226 bytes in 14 blocks
+==324198==   total heap usage: 275 allocs, 261 frees, 16,598 bytes allocated
+==324198== 
+==324198== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324198==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324198==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324198==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324198==    by 0x4504CE: make_tokens (token.c:85)
+==324198==    by 0x450A87: tokenize (token.c:111)
+==324198==    by 0x4261DB: main (main.c:108)
+==324198== 
+==324198== LEAK SUMMARY:
+==324198==    definitely lost: 8 bytes in 4 blocks
+==324198==    indirectly lost: 0 bytes in 0 blocks
+==324198==      possibly lost: 0 bytes in 0 blocks
+==324198==    still reachable: 0 bytes in 0 blocks
+==324198==         suppressed: 4,218 bytes in 10 blocks
+==324198== 
+==324198== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+--324198-- 
+--324198-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,218 bytes in 10 blocks
+==324198== 
+==324198== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+==324200== 
+==324200== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324200== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324200==    <inherited from parent>
+==324200== 
+==324200== 
+==324200== HEAP SUMMARY:
+==324200==     in use at exit: 4,312 bytes in 20 blocks
+==324200==   total heap usage: 312 allocs, 292 frees, 17,449 bytes allocated
+==324200== 
+==324200== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324200==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324200==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324200==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324200==    by 0x4504CE: make_tokens (token.c:85)
+==324200==    by 0x450A87: tokenize (token.c:111)
+==324200==    by 0x4261DB: main (main.c:108)
+==324200== 
+==324200== LEAK SUMMARY:
+==324200==    definitely lost: 8 bytes in 4 blocks
+==324200==    indirectly lost: 0 bytes in 0 blocks
+==324200==      possibly lost: 0 bytes in 0 blocks
+==324200==    still reachable: 0 bytes in 0 blocks
+==324200==         suppressed: 4,304 bytes in 16 blocks
+==324200== 
+==324200== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+--324200-- 
+--324200-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,304 bytes in 16 blocks
+==324200== 
+==324200== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+==324201== 
+==324201== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324201== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324201==    <inherited from parent>
+==324201== 
+==324201== 
+==324201== HEAP SUMMARY:
+==324201==     in use at exit: 4,352 bytes in 23 blocks
+==324201==   total heap usage: 326 allocs, 303 frees, 17,776 bytes allocated
+==324201== 
+==324201== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324201==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324201==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324201==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324201==    by 0x4504CE: make_tokens (token.c:85)
+==324201==    by 0x450A87: tokenize (token.c:111)
+==324201==    by 0x4261DB: main (main.c:108)
+==324201== 
+==324201== LEAK SUMMARY:
+==324201==    definitely lost: 8 bytes in 4 blocks
+==324201==    indirectly lost: 0 bytes in 0 blocks
+==324201==      possibly lost: 0 bytes in 0 blocks
+==324201==    still reachable: 0 bytes in 0 blocks
+==324201==         suppressed: 4,344 bytes in 19 blocks
+==324201== 
+==324201== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+--324201-- 
+--324201-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,344 bytes in 19 blocks
+==324201== 
+==324201== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+==324177== Invalid read of size 8
+==324177==    at 0x458BD6: expand_var (expand.c:66)
+==324177==    by 0x454AF2: parse (parse.c:99)
+==324177==    by 0x4261F7: main (main.c:111)
+==324177==  Address 0x4c3a4a0 is 16 bytes inside a block of size 32 free'd
+==324177==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324177==    by 0x451A15: ft_lstdelone (lsthelper.c:97)
+==324177==    by 0x459949: handle_non_expandable_var (expand.c:44)
+==324177==    by 0x458B43: expand_var (expand.c:64)
+==324177==    by 0x454AF2: parse (parse.c:99)
+==324177==    by 0x4261F7: main (main.c:111)
+==324177==  Block was alloc'd at
+==324177==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324177==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324177==    by 0x4504CE: make_tokens (token.c:85)
+==324177==    by 0x450A87: tokenize (token.c:111)
+==324177==    by 0x4261DB: main (main.c:108)
+==324177== 
+==324202== 
+==324202== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324202== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324202==    <inherited from parent>
+==324202== 
+==324202== 
+==324202== HEAP SUMMARY:
+==324202==     in use at exit: 4,402 bytes in 26 blocks
+==324202==   total heap usage: 346 allocs, 320 frees, 18,200 bytes allocated
+==324202== 
+==324202== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324202==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324202==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324202==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324202==    by 0x4504CE: make_tokens (token.c:85)
+==324202==    by 0x450A87: tokenize (token.c:111)
+==324202==    by 0x4261DB: main (main.c:108)
+==324202== 
+==324202== LEAK SUMMARY:
+==324202==    definitely lost: 8 bytes in 4 blocks
+==324202==    indirectly lost: 0 bytes in 0 blocks
+==324202==      possibly lost: 0 bytes in 0 blocks
+==324202==    still reachable: 0 bytes in 0 blocks
+==324202==         suppressed: 4,394 bytes in 22 blocks
+==324202== 
+==324202== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324202== 
+==324202== 1 errors in context 1 of 2:
+==324202== Invalid read of size 8
+==324202==    at 0x458BD6: expand_var (expand.c:66)
+==324202==    by 0x454AF2: parse (parse.c:99)
+==324202==    by 0x4261F7: main (main.c:111)
+==324202==  Address 0x4c3a4a0 is 16 bytes inside a block of size 32 free'd
+==324202==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324202==    by 0x451A15: ft_lstdelone (lsthelper.c:97)
+==324202==    by 0x459949: handle_non_expandable_var (expand.c:44)
+==324202==    by 0x458B43: expand_var (expand.c:64)
+==324202==    by 0x454AF2: parse (parse.c:99)
+==324202==    by 0x4261F7: main (main.c:111)
+==324202==  Block was alloc'd at
+==324202==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324202==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324202==    by 0x4504CE: make_tokens (token.c:85)
+==324202==    by 0x450A87: tokenize (token.c:111)
+==324202==    by 0x4261DB: main (main.c:108)
+==324202== 
+--324202-- 
+--324202-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,394 bytes in 22 blocks
+==324202== 
+==324202== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324203== 
+==324203== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324203== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324203==    <inherited from parent>
+==324203== 
+==324203== 
+==324203== HEAP SUMMARY:
+==324203==     in use at exit: 4,444 bytes in 29 blocks
+==324203==   total heap usage: 360 allocs, 331 frees, 18,595 bytes allocated
+==324203== 
+==324203== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324203==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324203==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324203==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324203==    by 0x4504CE: make_tokens (token.c:85)
+==324203==    by 0x450A87: tokenize (token.c:111)
+==324203==    by 0x4261DB: main (main.c:108)
+==324203== 
+==324203== LEAK SUMMARY:
+==324203==    definitely lost: 8 bytes in 4 blocks
+==324203==    indirectly lost: 0 bytes in 0 blocks
+==324203==      possibly lost: 0 bytes in 0 blocks
+==324203==    still reachable: 0 bytes in 0 blocks
+==324203==         suppressed: 4,436 bytes in 25 blocks
+==324203== 
+==324203== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324203== 
+==324203== 1 errors in context 1 of 2:
+==324203== Invalid read of size 8
+==324203==    at 0x458BD6: expand_var (expand.c:66)
+==324203==    by 0x454AF2: parse (parse.c:99)
+==324203==    by 0x4261F7: main (main.c:111)
+==324203==  Address 0x4c3a4a0 is 16 bytes inside a block of size 32 free'd
+==324203==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324203==    by 0x451A15: ft_lstdelone (lsthelper.c:97)
+==324203==    by 0x459949: handle_non_expandable_var (expand.c:44)
+==324203==    by 0x458B43: expand_var (expand.c:64)
+==324203==    by 0x454AF2: parse (parse.c:99)
+==324203==    by 0x4261F7: main (main.c:111)
+==324203==  Block was alloc'd at
+==324203==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324203==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324203==    by 0x4504CE: make_tokens (token.c:85)
+==324203==    by 0x450A87: tokenize (token.c:111)
+==324203==    by 0x4261DB: main (main.c:108)
+==324203== 
+--324203-- 
+--324203-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,436 bytes in 25 blocks
+==324203== 
+==324203== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324204== 
+==324204== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324204== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324204==    <inherited from parent>
+==324204== 
+==324204== 
+==324204== HEAP SUMMARY:
+==324204==     in use at exit: 4,484 bytes in 32 blocks
+==324204==   total heap usage: 374 allocs, 342 frees, 18,907 bytes allocated
+==324204== 
+==324204== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324204==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324204==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324204==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324204==    by 0x4504CE: make_tokens (token.c:85)
+==324204==    by 0x450A87: tokenize (token.c:111)
+==324204==    by 0x4261DB: main (main.c:108)
+==324204== 
+==324204== LEAK SUMMARY:
+==324204==    definitely lost: 8 bytes in 4 blocks
+==324204==    indirectly lost: 0 bytes in 0 blocks
+==324204==      possibly lost: 0 bytes in 0 blocks
+==324204==    still reachable: 0 bytes in 0 blocks
+==324204==         suppressed: 4,476 bytes in 28 blocks
+==324204== 
+==324204== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324204== 
+==324204== 1 errors in context 1 of 2:
+==324204== Invalid read of size 8
+==324204==    at 0x458BD6: expand_var (expand.c:66)
+==324204==    by 0x454AF2: parse (parse.c:99)
+==324204==    by 0x4261F7: main (main.c:111)
+==324204==  Address 0x4c3a4a0 is 16 bytes inside a block of size 32 free'd
+==324204==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324204==    by 0x451A15: ft_lstdelone (lsthelper.c:97)
+==324204==    by 0x459949: handle_non_expandable_var (expand.c:44)
+==324204==    by 0x458B43: expand_var (expand.c:64)
+==324204==    by 0x454AF2: parse (parse.c:99)
+==324204==    by 0x4261F7: main (main.c:111)
+==324204==  Block was alloc'd at
+==324204==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324204==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324204==    by 0x4504CE: make_tokens (token.c:85)
+==324204==    by 0x450A87: tokenize (token.c:111)
+==324204==    by 0x4261DB: main (main.c:108)
+==324204== 
+--324204-- 
+--324204-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,476 bytes in 28 blocks
+==324204== 
+==324204== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324205== 
+==324205== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324205== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324205==    <inherited from parent>
+==324205== 
+==324205== 
+==324205== HEAP SUMMARY:
+==324205==     in use at exit: 4,524 bytes in 35 blocks
+==324205==   total heap usage: 388 allocs, 353 frees, 19,249 bytes allocated
+==324205== 
+==324205== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324205==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324205==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324205==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324205==    by 0x4504CE: make_tokens (token.c:85)
+==324205==    by 0x450A87: tokenize (token.c:111)
+==324205==    by 0x4261DB: main (main.c:108)
+==324205== 
+==324205== LEAK SUMMARY:
+==324205==    definitely lost: 8 bytes in 4 blocks
+==324205==    indirectly lost: 0 bytes in 0 blocks
+==324205==      possibly lost: 0 bytes in 0 blocks
+==324205==    still reachable: 0 bytes in 0 blocks
+==324205==         suppressed: 4,516 bytes in 31 blocks
+==324205== 
+==324205== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324205== 
+==324205== 1 errors in context 1 of 2:
+==324205== Invalid read of size 8
+==324205==    at 0x458BD6: expand_var (expand.c:66)
+==324205==    by 0x454AF2: parse (parse.c:99)
+==324205==    by 0x4261F7: main (main.c:111)
+==324205==  Address 0x4c3a4a0 is 16 bytes inside a block of size 32 free'd
+==324205==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324205==    by 0x451A15: ft_lstdelone (lsthelper.c:97)
+==324205==    by 0x459949: handle_non_expandable_var (expand.c:44)
+==324205==    by 0x458B43: expand_var (expand.c:64)
+==324205==    by 0x454AF2: parse (parse.c:99)
+==324205==    by 0x4261F7: main (main.c:111)
+==324205==  Block was alloc'd at
+==324205==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324205==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324205==    by 0x4504CE: make_tokens (token.c:85)
+==324205==    by 0x450A87: tokenize (token.c:111)
+==324205==    by 0x4261DB: main (main.c:108)
+==324205== 
+--324205-- 
+--324205-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,516 bytes in 31 blocks
+==324205== 
+==324205== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324206== 
+==324206== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324206== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324206==    <inherited from parent>
+==324206== 
+==324206== 
+==324206== HEAP SUMMARY:
+==324206==     in use at exit: 4,566 bytes in 38 blocks
+==324206==   total heap usage: 402 allocs, 364 frees, 19,629 bytes allocated
+==324206== 
+==324206== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324206==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324206==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324206==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324206==    by 0x4504CE: make_tokens (token.c:85)
+==324206==    by 0x450A87: tokenize (token.c:111)
+==324206==    by 0x4261DB: main (main.c:108)
+==324206== 
+==324206== LEAK SUMMARY:
+==324206==    definitely lost: 8 bytes in 4 blocks
+==324206==    indirectly lost: 0 bytes in 0 blocks
+==324206==      possibly lost: 0 bytes in 0 blocks
+==324206==    still reachable: 0 bytes in 0 blocks
+==324206==         suppressed: 4,558 bytes in 34 blocks
+==324206== 
+==324206== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324206== 
+==324206== 1 errors in context 1 of 2:
+==324206== Invalid read of size 8
+==324206==    at 0x458BD6: expand_var (expand.c:66)
+==324206==    by 0x454AF2: parse (parse.c:99)
+==324206==    by 0x4261F7: main (main.c:111)
+==324206==  Address 0x4c3a4a0 is 16 bytes inside a block of size 32 free'd
+==324206==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324206==    by 0x451A15: ft_lstdelone (lsthelper.c:97)
+==324206==    by 0x459949: handle_non_expandable_var (expand.c:44)
+==324206==    by 0x458B43: expand_var (expand.c:64)
+==324206==    by 0x454AF2: parse (parse.c:99)
+==324206==    by 0x4261F7: main (main.c:111)
+==324206==  Block was alloc'd at
+==324206==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324206==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324206==    by 0x4504CE: make_tokens (token.c:85)
+==324206==    by 0x450A87: tokenize (token.c:111)
+==324206==    by 0x4261DB: main (main.c:108)
+==324206== 
+--324206-- 
+--324206-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,558 bytes in 34 blocks
+==324206== 
+==324206== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324207== 
+==324207== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324207== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324207==    <inherited from parent>
+==324207== 
+==324207== 
+==324207== HEAP SUMMARY:
+==324207==     in use at exit: 4,606 bytes in 41 blocks
+==324207==   total heap usage: 416 allocs, 375 frees, 19,941 bytes allocated
+==324207== 
+==324207== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324207==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324207==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324207==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324207==    by 0x4504CE: make_tokens (token.c:85)
+==324207==    by 0x450A87: tokenize (token.c:111)
+==324207==    by 0x4261DB: main (main.c:108)
+==324207== 
+==324207== LEAK SUMMARY:
+==324207==    definitely lost: 8 bytes in 4 blocks
+==324207==    indirectly lost: 0 bytes in 0 blocks
+==324207==      possibly lost: 0 bytes in 0 blocks
+==324207==    still reachable: 0 bytes in 0 blocks
+==324207==         suppressed: 4,598 bytes in 37 blocks
+==324207== 
+==324207== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324207== 
+==324207== 1 errors in context 1 of 2:
+==324207== Invalid read of size 8
+==324207==    at 0x458BD6: expand_var (expand.c:66)
+==324207==    by 0x454AF2: parse (parse.c:99)
+==324207==    by 0x4261F7: main (main.c:111)
+==324207==  Address 0x4c3a4a0 is 16 bytes inside a block of size 32 free'd
+==324207==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324207==    by 0x451A15: ft_lstdelone (lsthelper.c:97)
+==324207==    by 0x459949: handle_non_expandable_var (expand.c:44)
+==324207==    by 0x458B43: expand_var (expand.c:64)
+==324207==    by 0x454AF2: parse (parse.c:99)
+==324207==    by 0x4261F7: main (main.c:111)
+==324207==  Block was alloc'd at
+==324207==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324207==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324207==    by 0x4504CE: make_tokens (token.c:85)
+==324207==    by 0x450A87: tokenize (token.c:111)
+==324207==    by 0x4261DB: main (main.c:108)
+==324207== 
+--324207-- 
+--324207-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,598 bytes in 37 blocks
+==324207== 
+==324207== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324208== 
+==324208== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324208== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324208==    <inherited from parent>
+==324208== 
+==324208== 
+==324208== HEAP SUMMARY:
+==324208==     in use at exit: 4,645 bytes in 44 blocks
+==324208==   total heap usage: 430 allocs, 386 frees, 20,264 bytes allocated
+==324208== 
+==324208== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324208==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324208==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324208==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324208==    by 0x4504CE: make_tokens (token.c:85)
+==324208==    by 0x450A87: tokenize (token.c:111)
+==324208==    by 0x4261DB: main (main.c:108)
+==324208== 
+==324208== LEAK SUMMARY:
+==324208==    definitely lost: 8 bytes in 4 blocks
+==324208==    indirectly lost: 0 bytes in 0 blocks
+==324208==      possibly lost: 0 bytes in 0 blocks
+==324208==    still reachable: 0 bytes in 0 blocks
+==324208==         suppressed: 4,637 bytes in 40 blocks
+==324208== 
+==324208== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324208== 
+==324208== 1 errors in context 1 of 2:
+==324208== Invalid read of size 8
+==324208==    at 0x458BD6: expand_var (expand.c:66)
+==324208==    by 0x454AF2: parse (parse.c:99)
+==324208==    by 0x4261F7: main (main.c:111)
+==324208==  Address 0x4c3a4a0 is 16 bytes inside a block of size 32 free'd
+==324208==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324208==    by 0x451A15: ft_lstdelone (lsthelper.c:97)
+==324208==    by 0x459949: handle_non_expandable_var (expand.c:44)
+==324208==    by 0x458B43: expand_var (expand.c:64)
+==324208==    by 0x454AF2: parse (parse.c:99)
+==324208==    by 0x4261F7: main (main.c:111)
+==324208==  Block was alloc'd at
+==324208==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324208==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324208==    by 0x4504CE: make_tokens (token.c:85)
+==324208==    by 0x450A87: tokenize (token.c:111)
+==324208==    by 0x4261DB: main (main.c:108)
+==324208== 
+--324208-- 
+--324208-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,637 bytes in 40 blocks
+==324208== 
+==324208== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 4 from 4)
+==324209== 
+==324209== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324209== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324209==    <inherited from parent>
+==324209== 
+==324209== 
+==324209== HEAP SUMMARY:
+==324209==     in use at exit: 4,695 bytes in 47 blocks
+==324209==   total heap usage: 450 allocs, 403 frees, 20,703 bytes allocated
+==324209== 
+==324209== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324209==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324209==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324209==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324209==    by 0x4504CE: make_tokens (token.c:85)
+==324209==    by 0x450A87: tokenize (token.c:111)
+==324209==    by 0x4261DB: main (main.c:108)
+==324209== 
+==324209== LEAK SUMMARY:
+==324209==    definitely lost: 8 bytes in 4 blocks
+==324209==    indirectly lost: 0 bytes in 0 blocks
+==324209==      possibly lost: 0 bytes in 0 blocks
+==324209==    still reachable: 0 bytes in 0 blocks
+==324209==         suppressed: 4,687 bytes in 43 blocks
+==324209== 
+==324209== ERROR SUMMARY: 3 errors from 2 contexts (suppressed: 4 from 4)
+==324209== 
+==324209== 2 errors in context 1 of 2:
+==324209== Invalid read of size 8
+==324209==    at 0x458BD6: expand_var (expand.c:66)
+==324209==    by 0x454AF2: parse (parse.c:99)
+==324209==    by 0x4261F7: main (main.c:111)
+==324209==  Address 0x4c3a4a0 is 16 bytes inside a block of size 32 free'd
+==324209==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324209==    by 0x451A15: ft_lstdelone (lsthelper.c:97)
+==324209==    by 0x459949: handle_non_expandable_var (expand.c:44)
+==324209==    by 0x458B43: expand_var (expand.c:64)
+==324209==    by 0x454AF2: parse (parse.c:99)
+==324209==    by 0x4261F7: main (main.c:111)
+==324209==  Block was alloc'd at
+==324209==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324209==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324209==    by 0x4504CE: make_tokens (token.c:85)
+==324209==    by 0x450A87: tokenize (token.c:111)
+==324209==    by 0x4261DB: main (main.c:108)
+==324209== 
+--324209-- 
+--324209-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,687 bytes in 43 blocks
+==324209== 
+==324209== ERROR SUMMARY: 3 errors from 2 contexts (suppressed: 4 from 4)
+==324210== 
+==324210== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==324210== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324210==    <inherited from parent>
+==324210== 
+==324210== 
+==324210== HEAP SUMMARY:
+==324210==     in use at exit: 4,737 bytes in 50 blocks
+==324210==   total heap usage: 464 allocs, 414 frees, 21,098 bytes allocated
+==324210== 
+==324210== 8 bytes in 4 blocks are definitely lost in loss record 1 of 5
+==324210==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324210==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324210==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324210==    by 0x4504CE: make_tokens (token.c:85)
+==324210==    by 0x450A87: tokenize (token.c:111)
+==324210==    by 0x4261DB: main (main.c:108)
+==324210== 
+==324210== LEAK SUMMARY:
+==324210==    definitely lost: 8 bytes in 4 blocks
+==324210==    indirectly lost: 0 bytes in 0 blocks
+==324210==      possibly lost: 0 bytes in 0 blocks
+==324210==    still reachable: 0 bytes in 0 blocks
+==324210==         suppressed: 4,729 bytes in 46 blocks
+==324210== 
+==324210== ERROR SUMMARY: 3 errors from 2 contexts (suppressed: 4 from 4)
+==324210== 
+==324210== 2 errors in context 1 of 2:
+==324210== Invalid read of size 8
+==324210==    at 0x458BD6: expand_var (expand.c:66)
+==324210==    by 0x454AF2: parse (parse.c:99)
+==324210==    by 0x4261F7: main (main.c:111)
+==324210==  Address 0x4c3a4a0 is 16 bytes inside a block of size 32 free'd
+==324210==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324210==    by 0x451A15: ft_lstdelone (lsthelper.c:97)
+==324210==    by 0x459949: handle_non_expandable_var (expand.c:44)
+==324210==    by 0x458B43: expand_var (expand.c:64)
+==324210==    by 0x454AF2: parse (parse.c:99)
+==324210==    by 0x4261F7: main (main.c:111)
+==324210==  Block was alloc'd at
+==324210==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324210==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324210==    by 0x4504CE: make_tokens (token.c:85)
+==324210==    by 0x450A87: tokenize (token.c:111)
+==324210==    by 0x4261DB: main (main.c:108)
+==324210== 
+--324210-- 
+--324210-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,729 bytes in 46 blocks
+==324210== 
+==324210== ERROR SUMMARY: 3 errors from 2 contexts (suppressed: 4 from 4)
+==324177== 
+==324177== FILE DESCRIPTORS: 4 open (3 std) at exit.
+==324177== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==324177==    <inherited from parent>
+==324177== 
+==324177== Open file descriptor 2: /dev/null
+==324177==    <inherited from parent>
+==324177== 
+==324177== Open file descriptor 1: /dev/null
+==324177==    <inherited from parent>
+==324177== 
+==324177== Open file descriptor 0:
+==324177==    <inherited from parent>
+==324177== 
+==324177== 
+==324177== HEAP SUMMARY:
+==324177==     in use at exit: 9,370 bytes in 109 blocks
+==324177==   total heap usage: 419 allocs, 310 frees, 20,373 bytes allocated
+==324177== 
+==324177== 8 bytes in 1 blocks are still reachable in loss record 1 of 10
+==324177==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324177==    by 0x461B6F: ft_strjoin (ft_strjoin.c:29)
+==324177==    by 0x435730: shellvl (environment.c:34)
+==324177==    by 0x435D2F: environment_copy (environment.c:65)
+==324177==    by 0x436436: copy_env (environment.c:101)
+==324177==    by 0x425E61: main (main.c:84)
+==324177== 
+==324177== 8 bytes in 4 blocks are definitely lost in loss record 2 of 10
+==324177==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324177==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324177==    by 0x450B32: ft_lstnew (lsthelper.c:24)
+==324177==    by 0x4504CE: make_tokens (token.c:85)
+==324177==    by 0x450A87: tokenize (token.c:111)
+==324177==    by 0x4261DB: main (main.c:108)
+==324177== 
+==324177== 15 bytes in 1 blocks are still reachable in loss record 3 of 10
+==324177==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324177==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324177==    by 0x435AF5: core_direct_user (environment.c:47)
+==324177==    by 0x435F91: environment_copy (environment.c:74)
+==324177==    by 0x436436: copy_env (environment.c:101)
+==324177==    by 0x425E61: main (main.c:84)
+==324177== 
+==324177== 456 bytes in 1 blocks are still reachable in loss record 7 of 10
+==324177==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324177==    by 0x436281: copy_env (environment.c:92)
+==324177==    by 0x425E61: main (main.c:84)
+==324177== 
+==324177== 456 bytes in 1 blocks are still reachable in loss record 8 of 10
+==324177==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324177==    by 0x4362F5: copy_env (environment.c:95)
+==324177==    by 0x425E61: main (main.c:84)
+==324177== 
+==324177== 3,698 bytes in 55 blocks are still reachable in loss record 9 of 10
+==324177==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324177==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==324177==    by 0x435DF6: environment_copy (environment.c:70)
+==324177==    by 0x436436: copy_env (environment.c:101)
+==324177==    by 0x425E61: main (main.c:84)
+==324177== 
+==324177== LEAK SUMMARY:
+==324177==    definitely lost: 8 bytes in 4 blocks
+==324177==    indirectly lost: 0 bytes in 0 blocks
+==324177==      possibly lost: 0 bytes in 0 blocks
+==324177==    still reachable: 4,633 bytes in 59 blocks
+==324177==         suppressed: 4,729 bytes in 46 blocks
+==324177== 
+==324177== ERROR SUMMARY: 8 errors from 7 contexts (suppressed: 4 from 4)
+==324177== 
+==324177== 2 errors in context 1 of 7:
+==324177== Invalid read of size 8
+==324177==    at 0x458BD6: expand_var (expand.c:66)
+==324177==    by 0x454AF2: parse (parse.c:99)
+==324177==    by 0x4261F7: main (main.c:111)
+==324177==  Address 0x4c3a4a0 is 16 bytes inside a block of size 32 free'd
+==324177==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324177==    by 0x451A15: ft_lstdelone (lsthelper.c:97)
+==324177==    by 0x459949: handle_non_expandable_var (expand.c:44)
+==324177==    by 0x458B43: expand_var (expand.c:64)
+==324177==    by 0x454AF2: parse (parse.c:99)
+==324177==    by 0x4261F7: main (main.c:111)
+==324177==  Block was alloc'd at
+==324177==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==324177==    by 0x450B0D: ft_lstnew (lsthelper.c:21)
+==324177==    by 0x4504CE: make_tokens (token.c:85)
+==324177==    by 0x450A87: tokenize (token.c:111)
+==324177==    by 0x4261DB: main (main.c:108)
+==324177== 
+--324177-- 
+--324177-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,729 bytes in 46 blocks
+==324177== 
+==324177== ERROR SUMMARY: 8 errors from 7 contexts (suppressed: 4 from 4)

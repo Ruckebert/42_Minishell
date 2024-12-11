@@ -1,0 +1,64 @@
+==292321== Memcheck, a memory error detector
+==292321== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==292321== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==292321== Command: /home/marsenij/Documents/minishell/minishell
+==292321== Parent PID: 292320
+==292321== 
+==292321== Invalid read of size 8
+==292321==    at 0x45CB7F: fuse_all_0space_nodes (fuse_nodes.c:48)
+==292321==    by 0x454B52: parse (parse.c:111)
+==292321==    by 0x4261F7: main (main.c:111)
+==292321==  Address 0x4c35cf8 is 24 bytes inside a block of size 32 free'd
+==292321==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==292321==    by 0x45C69B: fuse_node_with_next (fuse_nodes.c:32)
+==292321==    by 0x45CAF6: fuse_all_0space_nodes (fuse_nodes.c:47)
+==292321==    by 0x454B52: parse (parse.c:111)
+==292321==    by 0x4261F7: main (main.c:111)
+==292321==  Block was alloc'd at
+==292321==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==292321==    by 0x450ACD: ft_lstnew (lsthelper.c:21)
+==292321==    by 0x45048E: make_tokens (token.c:85)
+==292321==    by 0x450A47: tokenize (token.c:111)
+==292321==    by 0x4261DB: main (main.c:108)
+==292321== 
+==292321== 
+==292321== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==292321== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==292321==    <inherited from parent>
+==292321== 
+==292321== 
+==292321== HEAP SUMMARY:
+==292321==     in use at exit: 4,082 bytes in 4 blocks
+==292321==   total heap usage: 100 allocs, 96 frees, 13,763 bytes allocated
+==292321== 
+==292321== LEAK SUMMARY:
+==292321==    definitely lost: 0 bytes in 0 blocks
+==292321==    indirectly lost: 0 bytes in 0 blocks
+==292321==      possibly lost: 0 bytes in 0 blocks
+==292321==    still reachable: 0 bytes in 0 blocks
+==292321==         suppressed: 4,082 bytes in 4 blocks
+==292321== 
+==292321== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
+==292321== 
+==292321== 1 errors in context 1 of 1:
+==292321== Invalid read of size 8
+==292321==    at 0x45CB7F: fuse_all_0space_nodes (fuse_nodes.c:48)
+==292321==    by 0x454B52: parse (parse.c:111)
+==292321==    by 0x4261F7: main (main.c:111)
+==292321==  Address 0x4c35cf8 is 24 bytes inside a block of size 32 free'd
+==292321==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==292321==    by 0x45C69B: fuse_node_with_next (fuse_nodes.c:32)
+==292321==    by 0x45CAF6: fuse_all_0space_nodes (fuse_nodes.c:47)
+==292321==    by 0x454B52: parse (parse.c:111)
+==292321==    by 0x4261F7: main (main.c:111)
+==292321==  Block was alloc'd at
+==292321==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==292321==    by 0x450ACD: ft_lstnew (lsthelper.c:21)
+==292321==    by 0x45048E: make_tokens (token.c:85)
+==292321==    by 0x450A47: tokenize (token.c:111)
+==292321==    by 0x4261DB: main (main.c:108)
+==292321== 
+--292321-- 
+--292321-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,082 bytes in 4 blocks
+==292321== 
+==292321== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)

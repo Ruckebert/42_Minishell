@@ -1,0 +1,175 @@
+==326156== Memcheck, a memory error detector
+==326156== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==326156== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==326156== Command: /home/marsenij/Documents/minishell/minishell
+==326156== Parent PID: 326155
+==326156== 
+==326157== 
+==326157== FILE DESCRIPTORS: 4 open (3 std) at exit.
+==326157== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==326157==    <inherited from parent>
+==326157== 
+==326157== Open file descriptor 2: /dev/null
+==326157==    <inherited from parent>
+==326157== 
+==326157== Open file descriptor 1: /dev/null
+==326157==    <inherited from parent>
+==326157== 
+==326157== Open file descriptor 0:
+==326157==    <inherited from parent>
+==326157== 
+==326157== 
+==326157== HEAP SUMMARY:
+==326157==     in use at exit: 8,974 bytes in 69 blocks
+==326157==   total heap usage: 92 allocs, 23 frees, 13,662 bytes allocated
+==326157== 
+==326157== 8 bytes in 1 blocks are still reachable in loss record 1 of 14
+==326157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326157==    by 0x461B6F: ft_strjoin (ft_strjoin.c:29)
+==326157==    by 0x435730: shellvl (environment.c:34)
+==326157==    by 0x435D2F: environment_copy (environment.c:65)
+==326157==    by 0x436436: copy_env (environment.c:101)
+==326157==    by 0x425E61: main (main.c:84)
+==326157== 
+==326157== 15 bytes in 1 blocks are still reachable in loss record 3 of 14
+==326157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326157==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==326157==    by 0x435AF5: core_direct_user (environment.c:47)
+==326157==    by 0x435F91: environment_copy (environment.c:74)
+==326157==    by 0x436436: copy_env (environment.c:101)
+==326157==    by 0x425E61: main (main.c:84)
+==326157== 
+==326157== 24 bytes in 1 blocks are still reachable in loss record 5 of 14
+==326157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326157==    by 0x455849: get_args (prep_exec2.c:46)
+==326157==    by 0x4552A4: process_tokens (prep_exec.c:60)
+==326157==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==326157==    by 0x454BE1: parse (parse.c:120)
+==326157==    by 0x4261F7: main (main.c:111)
+==326157== 
+==326157== 24 bytes in 1 blocks are still reachable in loss record 6 of 14
+==326157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326157==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==326157==    by 0x456563: add_redir (prep_exec2.c:75)
+==326157==    by 0x454F67: process_redir (prep_exec.c:36)
+==326157==    by 0x455262: process_tokens (prep_exec.c:56)
+==326157==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==326157==    by 0x454BE1: parse (parse.c:120)
+==326157==    by 0x4261F7: main (main.c:111)
+==326157== 
+==326157== 24 bytes in 2 blocks are still reachable in loss record 7 of 14
+==326157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326157==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==326157==    by 0x455A87: get_args (prep_exec2.c:53)
+==326157==    by 0x4552A4: process_tokens (prep_exec.c:60)
+==326157==    by 0x455315: prep_nodes_for_exec (prep_exec.c:74)
+==326157==    by 0x454BE1: parse (parse.c:120)
+==326157==    by 0x4261F7: main (main.c:111)
+==326157== 
+==326157== 48 bytes in 1 blocks are still reachable in loss record 8 of 14
+==326157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326157==    by 0x45A9FB: ft_lstnew_cmd (cmd_lst.c:19)
+==326157==    by 0x454C0E: initialize_cmd_table (prep_exec.c:21)
+==326157==    by 0x455304: prep_nodes_for_exec (prep_exec.c:73)
+==326157==    by 0x454BE1: parse (parse.c:120)
+==326157==    by 0x4261F7: main (main.c:111)
+==326157== 
+==326157== 120 bytes in 1 blocks are still reachable in loss record 10 of 14
+==326157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326157==    by 0x4A53122: getdelim (iogetdelim.c:62)
+==326157==    by 0x485C410: readline (in /home/marsenij/42_minishell_tester/utils/libintercept/libintercept.so)
+==326157==    by 0x42607E: main (main.c:100)
+==326157== 
+==326157== 456 bytes in 1 blocks are still reachable in loss record 11 of 14
+==326157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326157==    by 0x436281: copy_env (environment.c:92)
+==326157==    by 0x425E61: main (main.c:84)
+==326157== 
+==326157== 456 bytes in 1 blocks are still reachable in loss record 12 of 14
+==326157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326157==    by 0x4362F5: copy_env (environment.c:95)
+==326157==    by 0x425E61: main (main.c:84)
+==326157== 
+==326157== 3,698 bytes in 55 blocks are still reachable in loss record 13 of 14
+==326157==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326157==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==326157==    by 0x435DF6: environment_copy (environment.c:70)
+==326157==    by 0x436436: copy_env (environment.c:101)
+==326157==    by 0x425E61: main (main.c:84)
+==326157== 
+==326157== LEAK SUMMARY:
+==326157==    definitely lost: 0 bytes in 0 blocks
+==326157==    indirectly lost: 0 bytes in 0 blocks
+==326157==      possibly lost: 0 bytes in 0 blocks
+==326157==    still reachable: 4,873 bytes in 65 blocks
+==326157==         suppressed: 4,101 bytes in 4 blocks
+==326157== 
+==326157== ERROR SUMMARY: 10 errors from 10 contexts (suppressed: 4 from 4)
+--326157-- 
+--326157-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,101 bytes in 4 blocks
+==326157== 
+==326157== ERROR SUMMARY: 10 errors from 10 contexts (suppressed: 4 from 4)
+==326156== 
+==326156== FILE DESCRIPTORS: 4 open (3 std) at exit.
+==326156== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==326156==    <inherited from parent>
+==326156== 
+==326156== Open file descriptor 2: /dev/null
+==326156==    <inherited from parent>
+==326156== 
+==326156== Open file descriptor 1: /dev/null
+==326156==    <inherited from parent>
+==326156== 
+==326156== Open file descriptor 0:
+==326156==    <inherited from parent>
+==326156== 
+==326156== 
+==326156== HEAP SUMMARY:
+==326156==     in use at exit: 8,734 bytes in 63 blocks
+==326156==   total heap usage: 93 allocs, 30 frees, 13,782 bytes allocated
+==326156== 
+==326156== 8 bytes in 1 blocks are still reachable in loss record 1 of 9
+==326156==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326156==    by 0x461B6F: ft_strjoin (ft_strjoin.c:29)
+==326156==    by 0x435730: shellvl (environment.c:34)
+==326156==    by 0x435D2F: environment_copy (environment.c:65)
+==326156==    by 0x436436: copy_env (environment.c:101)
+==326156==    by 0x425E61: main (main.c:84)
+==326156== 
+==326156== 15 bytes in 1 blocks are still reachable in loss record 3 of 9
+==326156==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326156==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==326156==    by 0x435AF5: core_direct_user (environment.c:47)
+==326156==    by 0x435F91: environment_copy (environment.c:74)
+==326156==    by 0x436436: copy_env (environment.c:101)
+==326156==    by 0x425E61: main (main.c:84)
+==326156== 
+==326156== 456 bytes in 1 blocks are still reachable in loss record 6 of 9
+==326156==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326156==    by 0x436281: copy_env (environment.c:92)
+==326156==    by 0x425E61: main (main.c:84)
+==326156== 
+==326156== 456 bytes in 1 blocks are still reachable in loss record 7 of 9
+==326156==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326156==    by 0x4362F5: copy_env (environment.c:95)
+==326156==    by 0x425E61: main (main.c:84)
+==326156== 
+==326156== 3,698 bytes in 55 blocks are still reachable in loss record 8 of 9
+==326156==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==326156==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==326156==    by 0x435DF6: environment_copy (environment.c:70)
+==326156==    by 0x436436: copy_env (environment.c:101)
+==326156==    by 0x425E61: main (main.c:84)
+==326156== 
+==326156== LEAK SUMMARY:
+==326156==    definitely lost: 0 bytes in 0 blocks
+==326156==    indirectly lost: 0 bytes in 0 blocks
+==326156==      possibly lost: 0 bytes in 0 blocks
+==326156==    still reachable: 4,633 bytes in 59 blocks
+==326156==         suppressed: 4,101 bytes in 4 blocks
+==326156== 
+==326156== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 4 from 4)
+--326156-- 
+--326156-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,101 bytes in 4 blocks
+==326156== 
+==326156== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 4 from 4)

@@ -1,0 +1,92 @@
+==307708== Memcheck, a memory error detector
+==307708== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==307708== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==307708== Command: /home/marsenij/Documents/minishell/minishell
+==307708== Parent PID: 307707
+==307708== 
+==307721== 
+==307721== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==307721== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==307721==    <inherited from parent>
+==307721== 
+==307721== 
+==307721== HEAP SUMMARY:
+==307721==     in use at exit: 4,079 bytes in 4 blocks
+==307721==   total heap usage: 96 allocs, 92 frees, 13,621 bytes allocated
+==307721== 
+==307721== LEAK SUMMARY:
+==307721==    definitely lost: 0 bytes in 0 blocks
+==307721==    indirectly lost: 0 bytes in 0 blocks
+==307721==      possibly lost: 0 bytes in 0 blocks
+==307721==    still reachable: 0 bytes in 0 blocks
+==307721==         suppressed: 4,079 bytes in 4 blocks
+==307721== 
+==307721== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
+--307721-- 
+--307721-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,079 bytes in 4 blocks
+==307721== 
+==307721== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
+==307708== 
+==307708== FILE DESCRIPTORS: 4 open (3 std) at exit.
+==307708== Open file descriptor 3: /tmp/tmp.2XiJDvuNm3/tmp_valgrind_out
+==307708==    <inherited from parent>
+==307708== 
+==307708== Open file descriptor 2: /dev/null
+==307708==    <inherited from parent>
+==307708== 
+==307708== Open file descriptor 1: /dev/null
+==307708==    <inherited from parent>
+==307708== 
+==307708== Open file descriptor 0:
+==307708==    <inherited from parent>
+==307708== 
+==307708== 
+==307708== HEAP SUMMARY:
+==307708==     in use at exit: 8,712 bytes in 63 blocks
+==307708==   total heap usage: 97 allocs, 34 frees, 13,741 bytes allocated
+==307708== 
+==307708== 8 bytes in 1 blocks are still reachable in loss record 1 of 9
+==307708==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==307708==    by 0x461B6F: ft_strjoin (ft_strjoin.c:29)
+==307708==    by 0x435730: shellvl (environment.c:34)
+==307708==    by 0x435D2F: environment_copy (environment.c:65)
+==307708==    by 0x436436: copy_env (environment.c:101)
+==307708==    by 0x425E61: main (main.c:84)
+==307708== 
+==307708== 15 bytes in 1 blocks are still reachable in loss record 3 of 9
+==307708==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==307708==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==307708==    by 0x435AF5: core_direct_user (environment.c:47)
+==307708==    by 0x435F91: environment_copy (environment.c:74)
+==307708==    by 0x436436: copy_env (environment.c:101)
+==307708==    by 0x425E61: main (main.c:84)
+==307708== 
+==307708== 456 bytes in 1 blocks are still reachable in loss record 6 of 9
+==307708==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==307708==    by 0x436281: copy_env (environment.c:92)
+==307708==    by 0x425E61: main (main.c:84)
+==307708== 
+==307708== 456 bytes in 1 blocks are still reachable in loss record 7 of 9
+==307708==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==307708==    by 0x4362F5: copy_env (environment.c:95)
+==307708==    by 0x425E61: main (main.c:84)
+==307708== 
+==307708== 3,698 bytes in 55 blocks are still reachable in loss record 8 of 9
+==307708==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==307708==    by 0x460EA1: ft_strdup (ft_strdup.c:42)
+==307708==    by 0x435DF6: environment_copy (environment.c:70)
+==307708==    by 0x436436: copy_env (environment.c:101)
+==307708==    by 0x425E61: main (main.c:84)
+==307708== 
+==307708== LEAK SUMMARY:
+==307708==    definitely lost: 0 bytes in 0 blocks
+==307708==    indirectly lost: 0 bytes in 0 blocks
+==307708==      possibly lost: 0 bytes in 0 blocks
+==307708==    still reachable: 4,633 bytes in 59 blocks
+==307708==         suppressed: 4,079 bytes in 4 blocks
+==307708== 
+==307708== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 4 from 4)
+--307708-- 
+--307708-- used_suppression:      4 libreadline /home/marsenij/42_minishell_tester/utils/minishell.supp:2 suppressed: 4,079 bytes in 4 blocks
+==307708== 
+==307708== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 4 from 4)

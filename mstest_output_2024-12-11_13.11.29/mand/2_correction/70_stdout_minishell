@@ -1,0 +1,101 @@
+LD_PRELOAD=/home/marsenij/42_minishell_tester/utils/libintercept/libintercept.so
+LOGNAME=marsenij
+XAUTHORITY=/home/marsenij/.Xauthority
+XDG_GREETER_DATA_DIR=/var/lib/lightdm-data/marsenij
+HOME=/home/marsenij
+USER=marsenij
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/home/marsenij/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+PATH=/bin:/usr/bin:/usr/sbin:/home/marsenij/.local/funcheck/host:/home/marsenij/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/share/rust/cargo/bin
+OLDPWD=/home/marsenij/Documents/minishell
+_=/home/marsenij/Documents/minishell/minishell
+[0;31m 1 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+env                  | 0    | 0
+|                    | 3    | 1
+grep                 | 0    | 1
+$                    | 8    | 1
+USER                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+env                  | 0    | 0
+|                    | 3    | 1
+grep                 | 0    | 1
+$                    | 8    | 1
+USER                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2b [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+env                  | 0    | 0
+|                    | 3    | 1
+grep                 | 0    | 1
+$                    | 8    | 1
+USER                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 3 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+env                  | 0    | 0
+|                    | 3    | 1
+grep                 | 0    | 1
+marsenij             | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 4 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+env                  | 0    | 0
+|                    | 3    | 1
+grep                 | 0    | 1
+marsenij             | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 5 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+env                  | 0    | 0
+|                    | 3    | 1
+grep                 | 0    | 1
+marsenij             | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 6 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+env                  | 0    | 0
+|                    | 3    | 1
+grep                 | 0    | 1
+marsenij             | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31mAFTER parse.c[0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+env                  | 0    | 0
+|                    | 3    | 1
+grep                 | 0    | 1
+marsenij             | 8    | 1
+END                  | 9999 | 20
+
+

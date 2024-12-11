@@ -1,0 +1,374 @@
+/bin:/usr/bin:/usr/sbin:/home/marsenij/.local/funcheck/host:/home/marsenij/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/share/rust/cargo/bin
+[0;31m 1 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+PATH                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+PATH                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2b [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+PATH                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 3 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+/bin:/usr/bin:/usr/sbin:/home/marsenij/.local/funcheck/host:/home/marsenij/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/share/rust/cargo/bin | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 4 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+/bin:/usr/bin:/usr/sbin:/home/marsenij/.local/funcheck/host:/home/marsenij/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/share/rust/cargo/bin | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 5 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+/bin:/usr/bin:/usr/sbin:/home/marsenij/.local/funcheck/host:/home/marsenij/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/share/rust/cargo/bin | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 6 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+/bin:/usr/bin:/usr/sbin:/home/marsenij/.local/funcheck/host:/home/marsenij/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/share/rust/cargo/bin | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31mAFTER parse.c[0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+/bin:/usr/bin:/usr/sbin:/home/marsenij/.local/funcheck/host:/home/marsenij/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/share/rust/cargo/bin | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 1 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+HOME                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+HOME                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2b [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+HOME                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 3 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+/home/marsenij       | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 4 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo    /home/marsenij
+             | 0    | 0
+/home/marsenij       | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 5 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+/home/marsenij       | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 6 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+/home/marsenij       | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31mAFTER parse.c[0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+/home/marsenij       | 8    | 1
+END                  | 9999 | 20
+
+
+[0;31m 1 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+HOME                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 2 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+HOME                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 2b [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+HOME                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 3 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+HOME                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 4 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+HOME                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 5 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+HOME                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 6 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+HOME                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31mAFTER parse.c[0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+unset                | 0    | 0
+PATH                 | 0    | 1
+HOME                 | 0    | 1
+END                  | 9999 | 20
+
+
+[0;31m 1 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+PATH                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+PATH                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2b [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+PATH                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 3 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 4 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START              
+
+  | 9999 | 20
+echo                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 5 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 6 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31mAFTER parse.c[0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 1 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+HOME                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+HOME                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 2b [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+$                    | 8    | 1
+HOME                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 3 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 4 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 5 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31m 6 [0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+END                  | 9999 | 20
+
+
+[0;31mAFTER parse.c[0m
+WORD                 | TYPE | LEADING_SPACE
+----------------------|------|--------------
+START                | 9999 | 20
+echo                 | 0    | 0
+END                  | 9999 | 20
+
+
