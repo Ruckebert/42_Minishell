@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 12:23:21 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:42:40 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 			waitpid(second, &status, 0);
 			if (WIFEXITED(status))
 				core->exit_status = WEXITSTATUS(status);
+			free_cmdtable(&cmd);
 		}
 	}
 	return (0);

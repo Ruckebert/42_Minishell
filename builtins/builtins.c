@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 15:07:17 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:12:04 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,6 @@ void	free_exit(t_data *core)
 		simple_free(core->env);
 	if (core->export_env != NULL)
 		simple_free(core->export_env);
-	free(core->user);
 	free(core->direct);
 	free(core->line);
 	if (core->cmd != NULL)

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 12:45:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:41:49 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core,
 	simple_free(core->env);
 	if (core->export_env != NULL)
 		simple_free(core->export_env);
-	free(core->user);
 	free(core->direct);
 	free(core->line);
 	/*Freeing Part*/
@@ -115,5 +114,6 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 		if (WIFEXITED(status))
 			core->exit_status = WEXITSTATUS(status);
 		here_doc_file_del(files);
+		free_cmdtable(&cmd);
 	}
 }

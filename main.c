@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 12:57:42 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:12:21 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ int main(int argc, char *argv[], char **env)
 		
 	int status = -1;
 	core = (t_data){0};
+	//ft_bzero(&core, sizeof(t_data));
 	token = NULL;
+	//core.user = NULL;
+	//core.direct = NULL;
 	core.exit_status = 0;
 	if (argc == -1)
 		exit(2);
