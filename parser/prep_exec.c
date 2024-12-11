@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/10 15:58:01 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:14:15 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ t_cmdtable	*prep_nodes_for_exec(t_token *token)
 	cmd = initialize_cmd_table(&curr);
 	process_tokens(&cmd, curr);
 	find_builtins(cmd);
-	if (token)
-		free_token_list(token);
+//	if (token)
+//		free_token_list(token);
 //	print_cmdtable(cmd);
 	return (cmd);
 }
