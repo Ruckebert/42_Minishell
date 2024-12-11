@@ -6,13 +6,13 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/11 12:23:57 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:44:17 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*build_variable_result(char *beforevar, char *varvalue, char *aftervar)
+char	*build_variable_result(char *beforevar, char *varvalue, char *aftervar, t_parse_context *ctx)
 {
 	char	*res;
 	char	*temp;
@@ -21,6 +21,7 @@ char	*build_variable_result(char *beforevar, char *varvalue, char *aftervar)
 	if (!temp)
 		return (NULL);
 	res = ft_strjoin(temp, aftervar);
+	ctx->freethis = res;
 	free(temp);
 	return (res);
 }
@@ -33,7 +34,7 @@ void	handle_special_var(t_token *curr, t_parse_context *ctx, t_data *core)
 	varvalue = ft_itoa(core->exit_status);
 	if (!varvalue)
 		return ;
-	res = build_variable_result(ctx->beforevar, varvalue, ctx->aftervar);
+	res = build_variable_result(ctx->beforevar, varvalue, ctx->aftervar, ctx);
 	free(varvalue);
 	free(ctx->beforevar);
 	free(ctx->aftervar);
@@ -62,12 +63,17 @@ void	handle_expandable_var(t_token *curr, t_parse_context *ctx, char **env)
 	char	*res;
 
 	varvalue = get_env_var(ctx->var, env);
-	res = build_variable_result(ctx->beforevar, varvalue, ctx->aftervar);
+	res = build_variable_result(ctx->beforevar, varvalue, ctx->aftervar, ctx);
 	free(varvalue);
 	free(ctx->beforevar);
 	free(ctx->aftervar);
+	
 	if (res)
+	{	
+//		if (curr->word != ctx->freethis) fix this
+//			free (curr->word);
 		curr->word = res;
+	}
 }
 
 void	parsearound_var(t_token *curr, char **env, char *var, t_data *core)

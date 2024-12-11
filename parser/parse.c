@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/11 12:26:11 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:06:11 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void	split_to_token(t_token *curr)
 
 t_cmdtable  *parse(t_data *core, t_token *token)
 {
-	//printf("\033[0;31m 1 \033[0m\n");
-	//printlist(token);
+	printf("\033[0;31m 1 \033[0m\n");
+	printlist(token);
 
 	handle_heredoc_delimiter(token);
 	//printf("\033[0;31m 2 \033[0m\n");
@@ -97,12 +97,12 @@ t_cmdtable  *parse(t_data *core, t_token *token)
 		return (NULL);
 
 	expand_var(token, core->env, core);
-	//printf("\033[0;31m 3 \033[0m\n");
-	//printlist(token);
+	printf("\033[0;31m 3 \033[0m\n");
+	printlist(token);
 
 	expand_var_in_doublequote(token, core->env, core);
-	//printf("\033[0;31m 4 \033[0m\n");
-	//printlist(token);
+	printf("\033[0;31m 4 \033[0m\n");
+	printlist(token);
 
 	remove_singlequotes(token);
 	//printf("\033[0;31m 5 \033[0m\n");

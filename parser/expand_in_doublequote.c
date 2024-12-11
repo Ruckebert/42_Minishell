@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/06 13:11:50 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:49:23 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,18 @@ static void	expand_variables(t_token *curr, char **env, t_data *core)
 		if (*(temp + 1) != ' ' && (*(temp + 1) == '_'
 				|| ft_isalpha(*(temp + 1)) || *(temp + 1) == '?'))
 		{
+			if (curr->freethis == NULL)
+				curr->freethis = curr->word;
 			var = extract_var_name(temp, curr);
 			parsearound_var(curr, env, var, core);
 		}
 		temp = ft_strchr(temp + 1, '$');
+	}
+	//make curr->freethis a 2d array put a null right here and add every string that needs to be gone into that 2d array and free it here
+	if (curr->freethis)//fix this
+	{
+		free(curr->freethis);
+		curr->freethis = NULL;
 	}
 }
 

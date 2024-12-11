@@ -1,1 +1,0 @@
-/home/marsenij/42_minishell_tester/tester.sh: line 635: 293605 Aborted                 (core dumped) LD_PRELOAD=/home/marsenij/42_minishell_tester/utils/libintercept/libintercept.so /home/marsenij/Documents/minishell/minishell

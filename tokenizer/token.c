@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/11 12:13:17 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:06:28 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,11 @@ t_token	*tokenize(t_data *core)
 //	printlist(token);
 	make_start_token(&token, core);
 	make_tokens(core, token, pos);
-
+	printlist(token);
 	make_end_token(&token, core);
-
+	printlist(token);
 	combine_double_redirect(token, core);
-
+	printlist(token);
 	remove_empty_quotes(token);
 
 	if (synthax_check(token, core) != 0)
