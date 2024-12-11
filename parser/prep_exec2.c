@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/11 10:26:43 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:03:50 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_token	*add_redir(t_cmdtable *cmd, t_token *curr)
 	cmd->redir_type = curr->type;
 	if (curr->next->type == 30)
 		cmd->redir_type = 30;
-	cmd->redir = curr->next->word;
+	cmd->redir = ft_strdup(curr->next->word);
 	curr = curr->next->next;
 	return (curr);
 }
