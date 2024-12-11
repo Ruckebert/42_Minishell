@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/10 13:36:17 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:26:43 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,29 @@ t_token	*get_args(t_cmdtable *cmd, t_token *token)
 	i = 0;
 	curr = token;
 	strnum = get_strnum(curr);
-	cmd->args = malloc (sizeof(char *) * (strnum + 1));
-	while (i < strnum)
+	cmd->args = malloc(sizeof(char *) * (strnum + 1));
+	if (!cmd->args)
+		return NULL;
+	while (i < strnum && curr)
 	{
-		if (!is_redir(curr) &&!is_redir(curr->prev))
+		if (!is_redir(curr) && !is_redir(curr->prev))
 		{
-			cmd->args[i] = strdup(curr->word);
+			cmd->args[i] = ft_strdup(curr->word);
+			if (!cmd->args[i]) {
+				while (--i >= 0)
+					free(cmd->args[i]);
+				free(cmd->args);
+				return NULL;
+			}
 			i++;
 		}
-		if (!(curr->next))
-			break ;
 		curr = curr->next;
 	}
 	cmd->args[i] = NULL;
 	cmd->has_pipe_after = 0;
-	return (token);
+	return token;
 }
+
 
 t_token	*add_redir(t_cmdtable *cmd, t_token *curr)
 {
