@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/06 13:02:22 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:23:57 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	handle_non_expandable(t_token *curr, t_parse_context *ctx)
 {
 	char	*res;
 
+	if (curr->leading_space == 1 && curr->next->type != 9999)
+		curr->next->leading_space = 1;
 	res = ft_strjoin(ctx->beforevar, ctx->aftervar);
 	free(ctx->beforevar);
 	free(ctx->aftervar);
