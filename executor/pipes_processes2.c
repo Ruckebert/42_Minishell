@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 16:01:51 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:41:33 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	no_pipe_status(char **files, int status, t_data *core, pid_t second)
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
 	here_doc_file_del(files);
+	free_cmdtable(&core->cmd);
 }
 
 void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)

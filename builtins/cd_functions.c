@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:22:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 15:10:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:32:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	cd_oldpwd(char *old_pwd, t_data *core)
 	if (core->env[i] == NULL)
 	{
 		ft_putstr_fd("cd: OLDPWD not set\n", 2);
-		core->empty_cd = 2;
 		return ;
 	}
 	ft_printf("%s\n", core->direct);
