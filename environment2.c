@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 10:36:49 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:12:20 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,29 +34,80 @@ void	pwd_update(t_data *core)
 	return ;
 }
 
-void	create_pwd(t_data *core, int num, char *old_pwd)
+
+void	dup_pwd_env(t_data *core, char **temp, char *argv)
 {
-	char	*argv[3];
-	char	**temp;
-	int		i;
+	int	i;
 
 	i = 0;
-
-	write(1, "1", 1);
-	if (core->empty_cd == 1 || core->empty_cd == 0)
-	{
-		argv[i] = ft_strjoin("OLDPWD=", old_pwd);
-		i++;
-	}
 	if (core->empty_cd == 2 || core->empty_cd == 0)
+		argv = ft_strjoin("PWD=", core->direct);
+	while (core->env[i])
 	{
-		argv[i] = ft_strjoin("PWD=", core->direct);
+		temp[i] = ft_strdup(core->env[i]);
+		if (!temp[i])
+			reverse_free(i, temp);
 		i++;
 	}
-	argv[i] = NULL;
-	temp = new_exo_env(core->env, argv, num, i);
+	temp[i] = ft_strdup(argv);
+	if (core->empty_cd == 0)
+	{
+		temp[i] = ft_strdup(argv);
+		i++;
+		free(argv);
+		argv = ft_strjoin("OLDPWD=", core->direct);
+		temp[i] = ft_strdup(argv);
+	}
+	temp[++i] = NULL;
 	simple_free(core->env);
+	free(argv);
 	core->env = temp;
+}
+
+void	other_pwd_type(int num, t_data *core)
+{
+	char	**temp;
+	char	*argv;
+
+	temp = NULL;
+	argv = NULL;
+	if (core->empty_cd == 2)
+	{
+		temp = ft_calloc(num + 1, sizeof(char *));
+		if (!temp)
+			export_malloc_error(core, NULL);
+		dup_pwd_env(core, temp, argv);
+	}
+	else if (core->empty_cd == 0)
+	{
+		temp = ft_calloc(num + 2, sizeof(char *));
+		if (!temp)
+			export_malloc_error(core, NULL);
+		dup_pwd_env(core, temp, argv);
+	}
+}
+
+void	create_pwd(t_data *core, char *old_pwd)
+{
+	char	*argv;
+	char	**temp;
+	int		i;
+	int		num;
+
+	i = 0;
+	num = 0;
+	temp = NULL;
+	while (core->env[num])
+		num++;
+	if (core->empty_cd == 1)
+	{
+		temp = ft_calloc(num + 1, sizeof(char *));
+		if (!temp)
+			export_malloc_error(core, NULL);
+		argv = ft_strjoin("OLDPWD=", old_pwd);
+		dup_pwd_env(core, temp, argv);
+	}
+	other_pwd_type(num, core);
 }
 
 void	envi_update(char *old_pwd, t_data *core)
@@ -89,6 +140,5 @@ void	envi_update(char *old_pwd, t_data *core)
 		i++;
 	}
 	if (core->empty_cd != 3)
-		create_pwd(core, i, old_pwd);
-	return ;
+		create_pwd(core, old_pwd);
 }

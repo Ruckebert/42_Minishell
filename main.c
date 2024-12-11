@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 16:12:21 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:13:38 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,7 @@ int main(int argc, char *argv[], char **env)
 		
 	int status = -1;
 	core = (t_data){0};
-	//ft_bzero(&core, sizeof(t_data));
 	token = NULL;
-	//core.user = NULL;
-	//core.direct = NULL;
 	core.exit_status = 0;
 	if (argc == -1)
 		exit(2);
@@ -101,7 +98,7 @@ int main(int argc, char *argv[], char **env)
 				g_interrupt_received = 0;
 			}
 			core.line = readline("PeePeeShell$ > ");
-			if (core.line == NULL)
+			if (core.line == NULL) //DOnt we have to fix this
 			{
 				if (isatty(STDIN_FILENO))
 					write(2,"exit\n",5);
@@ -109,7 +106,7 @@ int main(int argc, char *argv[], char **env)
 			}
 			add_history(core.line);
 			token = tokenize(&core);
-			if(token)
+			if (token)
 			{
 				core.cmd = parse(&core, token);
 				if (core.cmd)
