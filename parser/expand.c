@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/06 13:11:42 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:45:05 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void	handle_expandable_var(t_token *curr, char **env)
 			|| value[ft_strlen(value) - 1] == '\t'))
 		curr->next->next->leading_space = 1;
 	substitute_node_word(curr, value);
+	free(value);
 	if (ft_strchr(curr->word, ' ') != NULL)
 		split_to_token(curr);
 }
