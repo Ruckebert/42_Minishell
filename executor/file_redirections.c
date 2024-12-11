@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:34:33 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 14:54:05 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:06:09 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		ft_putstr_fd(cmd->redir, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 		core->exit_status = 1;
+		free_exit(core);
 		exit(core->exit_status);
 	}
 	vars->fdin = open(cmd->redir, O_RDONLY);
@@ -26,6 +27,7 @@ void	file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 	{
 		error_handler_fd(fd[1], cmd);
 		core->exit_status = 1;
+		free_exit(core);
 		exit(core->exit_status);
 	}
 	if (cmd->args != NULL)
@@ -35,6 +37,7 @@ void	file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			close(vars->fdin);
 			error_handler_fd(fd[1], cmd);
 			core->exit_status = 1;
+			free_exit(core);
 			exit (core->exit_status);
 		}
 	}
@@ -48,6 +51,7 @@ void	file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 	{
 		error_handler_fd(fd[0], cmd);
 		core->exit_status = 1;
+		free_exit(core);
 		exit (core->exit_status);
 	}
 	if (cmd->args && vars->file_error != 1)
@@ -57,6 +61,7 @@ void	file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			close(vars->fdout);
 			error_handler_fd(fd[0], cmd);
 			core->exit_status = 1;
+			free_exit(core);
 			exit(core->exit_status);
 		}
 	}
@@ -70,6 +75,7 @@ void	file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 	{
 		error_handler_fd(fd[0], cmd);
 		core->exit_status = 1;
+		free_exit(core);
 		exit (core->exit_status);
 	}
 	if (cmd->args && vars->file_error != 1)
@@ -79,6 +85,7 @@ void	file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			close(vars->fdout);
 			error_handler_fd(fd[0], cmd);
 			core->exit_status = 1;
+			free_exit(core);
 			exit (core->exit_status);
 		}
 	}

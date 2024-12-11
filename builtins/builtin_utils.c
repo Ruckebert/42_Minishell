@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:34:16 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 10:26:59 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:36:38 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,16 @@ void	simple_free(char **str)
 	int	i;
 
 	i = 0;
-	while (str[i])
+	if (str)
 	{
-		free(str[i]);
-		i++;
+		while (str[i])
+		{
+			if (str[i])
+				free(str[i]);
+			i++;
+		}
+		free(str);
 	}
-	free(str);
 }
 
 int	strtoull_loop(const char *temp,
@@ -112,6 +116,7 @@ unsigned long long	ft_strtoull(const char *str, int *j)
 		temp2 = ft_strtrim(temp, "0");
 		if (ft_strcmp(temp2, "9223372036854775809") == 0)
 			*j = -1;
+		free(temp2);
 	}
 	if (result > 9223372036854775807)
 		*j = -1;

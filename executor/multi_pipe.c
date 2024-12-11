@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 12:07:38 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:58:41 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ void	multi_pipe_end(int i, int *childids, t_data *core, char **files)
 	int	j;
 	int	status;
 
+	childids[i] = 0;
 	status = 0;
 	j = 0;
-	while (j < i)
+	while (j <= i)
 	{
 		waitpid(childids[j], &status, 0);
 		j++;
@@ -41,6 +42,7 @@ void	multi_pipe_end(int i, int *childids, t_data *core, char **files)
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
 	here_doc_file_del(files);
+	free(childids);
 	free_exit(core);
 	exit(core->exit_status);
 }
@@ -76,6 +78,7 @@ void	multi_pipe_process(int *fd, t_var *vars,
 		if (current_cmd->isbuiltin > 1)
 		{
 			builtin_cmds(current_cmd, core);
+			free_exit(core);
 			exit(1);
 		}
 		execution_pro(current_cmd, core, vars, fd);

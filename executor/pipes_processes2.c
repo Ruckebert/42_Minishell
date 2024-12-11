@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_processes2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 12:05:03 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:02:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	execution_pro(t_cmdtable *cmd, t_data *core, t_var *vars, int fd[2])
 		absolute_path_finder(core, core->env, cmd->args);
 	else
 		path_finder(vars, core, core->env, cmd->args, 0);
+	free_exit(core);
 	exit(core->exit_status);
 }
 
@@ -74,7 +75,6 @@ void	no_pipe_status(char **files, int status, t_data *core, pid_t second)
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
 	here_doc_file_del(files);
-	free_cmdtable(&core->cmd);
 }
 
 void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
@@ -101,5 +101,6 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 		else
 			no_pipe_status(files, status, core, second);
 	}
+	free_cmdtable(&core->cmd);
 	return ;
 }

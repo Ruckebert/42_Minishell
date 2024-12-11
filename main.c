@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 12:13:38 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:13:29 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int main(int argc, char *argv[], char **env)
 			}
 			setup_signal_handler(SIGINT, sig_handleINT_parent);
 			free(core.line);
+			//free_exit(&core);
 			if (status >= 0)
 				exit(core.exit_status);
 		}
