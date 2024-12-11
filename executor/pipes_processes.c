@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 16:12:15 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:41:49 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,6 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 		if (WIFEXITED(status))
 			core->exit_status = WEXITSTATUS(status);
 		here_doc_file_del(files);
+		free_cmdtable(&cmd);
 	}
 }
