@@ -69,7 +69,7 @@ t_cmdtable	*prep_nodes_for_exec(t_token *token)
 	cmd = (t_cmdtable *){0};
 	if (!token)
 		return (NULL);
-	//printlist(token);
+//	printlist(token);
 	curr = token;
 	cmd = initialize_cmd_table(&curr);
 	process_tokens(&cmd, curr);

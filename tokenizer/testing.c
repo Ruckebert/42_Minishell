@@ -132,35 +132,30 @@ void    free_token_list(t_token *head)
 void free_cmdtable(t_cmdtable **head)
 {
     t_cmdtable *tmp;
+    t_cmdtable *next;
     int i;
 
-    tmp = NULL;
     tmp = *head;
     while (tmp != NULL)
     {
+        next = tmp->next;
 
-        i = 0;
-        if (tmp == NULL)
-            return ;
-        if (tmp->args != NULL)
+        if (tmp->args)
         {
-            while (tmp->args[i])
-            {
+            for (i = 0; tmp->args[i]; i++)
                 free(tmp->args[i]);
-                i++;
-            }
+            free(tmp->args);
         }
-        if (tmp->redir != NULL)
-            free(tmp->redir);
-        free(tmp->args);
 
         if (tmp->redir)
             free(tmp->redir);
 
         free(tmp);
-        tmp = tmp->next;
+        tmp = next;
     }
+    *head = NULL;
 }
+
 
 void print_cmdtable(t_cmdtable *cmd)
 {
