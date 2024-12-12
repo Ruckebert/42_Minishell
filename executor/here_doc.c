@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 13:14:04 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:33:21 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	main_exanpder_env(char *line, int i, t_exp *doc)
 	int	j;
 
 	doc->before_var = ft_substr(line, 0, i);
+	//if (doc->expanded_line)
+	//	free(doc->expanded_line);
 	doc->expanded_line = ft_strjoin(doc->expanded_line, doc->before_var);
 	free(doc->before_var);
 	doc->var_start = &line[i + 1];
@@ -33,6 +35,8 @@ int	main_exanpder_env(char *line, int i, t_exp *doc)
 	free(doc->var_name);
 	if (!doc->env_value)
 		doc->env_value = "";
+	//if (doc->expanded_line)
+	//	free(doc->expanded_line);
 	doc->expanded_line = ft_strjoin(doc->expanded_line, doc->env_value);
 	if (!doc->expanded_line)
 		expander_freer(doc);

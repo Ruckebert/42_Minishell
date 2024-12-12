@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 12:50:28 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:58:36 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ void	exit_com(t_data *core)
 	if (core->cmd->args[1])
 	{
 		temp = ft_strtrim(core->cmd->args[1], " ");
+		free(core->cmd->args[1]);
 		core->cmd->args[1] = ft_strdup(temp);
 		free(temp);
 	}
