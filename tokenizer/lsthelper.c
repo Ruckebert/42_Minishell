@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lsthelper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/12 13:57:23 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:07:52 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_token	*ft_lstnew(char *word)
 	elem->freethis = NULL;
 	elem->freethis_num = 0;
 	elem->freethis = NULL;
+	elem->type = 7777;
+	elem->leading_space = 7777;
 	return (elem);
 }
 
