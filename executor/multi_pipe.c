@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 12:07:38 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/12 11:19:51 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	multi_pipe_end(int i, int *childids, t_data *core, char **files)
 
 	status = 0;
 	j = 0;
-	while (j < i)
+	while (j <= i)
 	{
 		waitpid(childids[j], &status, 0);
 		j++;
@@ -41,6 +41,7 @@ void	multi_pipe_end(int i, int *childids, t_data *core, char **files)
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
 	here_doc_file_del(files);
+	free(childids);
 	free_exit(core);
 	exit(core->exit_status);
 }
@@ -76,8 +77,11 @@ void	multi_pipe_process(int *fd, t_var *vars,
 		if (current_cmd->isbuiltin > 1)
 		{
 			builtin_cmds(current_cmd, core);
+			free(vars->childids);
+			free_exit(core);
 			exit(1);
 		}
+		free(vars->childids);
 		execution_pro(current_cmd, core, vars, fd);
 	}
 	if (vars->prev_fd != -1)
@@ -96,7 +100,7 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, int i)
 	int			*childids;
 	t_cmdtable	*current_cmd;
 
-	childids = ft_calloc((cmd_count(cmd) + 1), sizeof(int *));
+	childids = ft_calloc((cmd_count(cmd)), sizeof(int *));
 	vars->prev_fd = -1;
 	current_cmd = cmd;
 	files = NULL;
@@ -109,6 +113,7 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, int i)
 		if (current_cmd->redir_type != 0)
 			current_cmd = multi_redirections(current_cmd, core, vars);
 		vars->childid = fork();
+		vars->childids = childids;
 		multi_pipe_process(fd, vars, current_cmd, core);
 		childids[i++] = vars->childid;
 		current_cmd = current_cmd->next;

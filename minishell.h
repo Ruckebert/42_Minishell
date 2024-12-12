@@ -92,9 +92,11 @@ typedef struct s_var
 	int		fdout;
 	int		prev_fd;
 
-	/*Single Pipe Forks*/
+	/*Child IDS*/
 	int		childid;
 	int		childid2;
+	int		*childids;
+
 }	t_var;
 
 
@@ -182,7 +184,7 @@ void		child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd);
 void		parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd);
 int			here_doc_counter(t_cmdtable *cmd);
 int			pipe_checker(t_cmdtable *cmd);
-void		pipe_error(int *fd);
+void		pipe_error(int *fd,  t_data *core);
 int			executor(t_cmdtable *cmd, t_data *core);
 void		error_handler(void);
 void		error_handler_split(char **split);

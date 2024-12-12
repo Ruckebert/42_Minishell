@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   lsthelper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
 /*   Updated: 2024/12/12 13:57:23 by marsenij         ###   ########.fr       */

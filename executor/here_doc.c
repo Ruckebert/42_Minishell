@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/09 10:03:07 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:14:04 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 	{
 		doc.line = readline("> ");
 		if (g_interrupt_received != 0)
-			return (close(doc.tmp_fd), doc.filename);
+			return (close(doc.tmp_fd), free(doc.line), doc.filename);
 		if (!doc.line)
 		{
 			here_doc_null_msg(cmd);
