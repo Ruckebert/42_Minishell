@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 14:02:07 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:23:48 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 	char	**files;
 
 	files = NULL;
+	vars->file_error = 0;
 	here_doc_creator(cmd, core, &files, 0);
 	if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
 		builtin_cmds(cmd, core);
@@ -91,7 +92,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 	{
 		second = fork();
 		if (second == -1)
-			pipe_error(fd);
+			pipe_error(fd, core);
 		if (second == 0)
 		{
 			if (cmd->next != NULL)
@@ -101,6 +102,6 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 		else
 			no_pipe_status(files, status, core, second);
 	}
-	free_cmdtable(&core->cmd);
+	free_cmdtable(&cmd);
 	return ;
 }

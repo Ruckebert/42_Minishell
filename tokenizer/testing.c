@@ -144,7 +144,7 @@ void free_cmdtable(t_cmdtable **head)
     {
         next = tmp->next;
 
-        if (tmp->args)
+        if (tmp->args != NULL)
         {
             for (i = 0; tmp->args[i]; i++)
                 free(tmp->args[i]);

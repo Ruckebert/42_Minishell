@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_exec_args.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/06 13:02:41 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/12 12:26:46 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ void	copy_args(t_cmdtable *cmd)
 			cmd->args[strnum] = ft_strdup(cmd->prev->args[strnum]);
 			strnum++;
 		}
+		cmd->args[strnum] = NULL;
 	}
 }

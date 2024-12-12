@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 15:13:29 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:09:52 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,17 @@ int main(int argc, char *argv[], char **env)
 			{
 				if (isatty(STDIN_FILENO))
 					write(2,"exit\n",5);
+				/*Free With out cmdtable*/
+				if(core.env != NULL)
+					simple_free(core.env);
+				if (core.export_env != NULL)
+					simple_free(core.export_env);
+				free(core.direct);
+				free(core.line);
+				close(STDERR_FILENO);
+				close(STDIN_FILENO);
+				close(STDOUT_FILENO);
+				/*Free With out cmdtable*/
 				exit (core.exit_status);
 			}
 			add_history(core.line);
@@ -114,7 +125,6 @@ int main(int argc, char *argv[], char **env)
 			}
 			setup_signal_handler(SIGINT, sig_handleINT_parent);
 			free(core.line);
-			//free_exit(&core);
 			if (status >= 0)
 				exit(core.exit_status);
 		}

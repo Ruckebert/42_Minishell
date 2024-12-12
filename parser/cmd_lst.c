@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_lst.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/11 11:59:15 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/12 12:19:19 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_cmdtable	*ft_lstnew_cmd(char *redir, int type)
 		return (NULL);
 	elem->redir = redir;
 	elem->redir_type = type;
+	elem->has_pipe_after = 0;
+	elem->isbuiltin = 0;
 	elem->args = NULL;
 	elem->next = NULL;
 	elem->prev = NULL;
