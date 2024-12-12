@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/12 13:58:25 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:42:34 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ void	handle_special_var(t_token *curr, t_parse_context *ctx, t_data *core)
 	free(varvalue);
 	free(ctx->beforevar);
 	free(ctx->aftervar);
+	if (!is_string_in_array(curr->freethis, curr->word))
+		add_string_to_double_array(&curr->freethis, &curr->freethis_num, curr->word);
+
 	if (res)
 		curr->word = res;
 }

@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 13:59:37 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:43:32 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,6 +278,7 @@ t_token	*add_redir(t_cmdtable *cmd, t_token *curr);
 t_token	*get_args(t_cmdtable *cmd, t_token *token);
 void	find_builtins(t_cmdtable *cmd);
 void add_string_to_double_array(char ***array,int	*num_elements, char *new_string);
+int is_string_in_array(char **array, char *str);
 //for testing
 void 	printlist_both(t_token *head);
 void 	printCharPointerArray(char **arr);

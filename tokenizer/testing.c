@@ -147,14 +147,21 @@ void free_cmdtable(t_cmdtable **head)
         if (tmp->args != NULL)
         {
             for (i = 0; tmp->args[i]; i++)
+            {
                 free(tmp->args[i]);
+                tmp->args[i] = NULL;
+            }
             free(tmp->args);
+            tmp->args = NULL;
         }
 
         if (tmp->redir)
+        {
             free(tmp->redir);
+        }
 
         free(tmp);
+        tmp = NULL;
         tmp = next;
     }
     *head = NULL;
