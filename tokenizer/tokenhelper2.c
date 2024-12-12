@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/10 14:14:50 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:30:00 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	substitute_redir(t_token *curr, char str[3],
 	{
 		free(curr->next->word);
 		discard = curr->next;
+		free(curr->word);
 		curr->next = newnext;
 		free(discard);
 	}
