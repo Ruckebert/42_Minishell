@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/11 12:45:05 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:55:11 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ static void	handle_expandable_var(t_token *curr, char **env)
 		split_to_token(curr);
 }
 
-static void	handle_non_expandable_var(t_token *curr)
+t_token	*handle_non_expandable_var(t_token *curr)
 {
 	if (curr->next->next->type != 9999)
 		curr->next->next->leading_space = curr->leading_space;
 	ft_lstdelone(curr->next);
 	curr = curr->prev;
 	ft_lstdelone(curr->next);
+	return (curr);
 }
 
 void	expand_var(t_token *token, char **env, t_data *core)
@@ -61,8 +62,10 @@ void	expand_var(t_token *token, char **env, t_data *core)
 			else if (is_expandable(curr->next->word, env))
 				handle_expandable_var(curr, env);
 			else
-				handle_non_expandable_var(curr);
+				curr = handle_non_expandable_var(curr);
 		}
+		if (curr->next->type == 9999)
+			break ;
 		curr = curr->next;
 	}
 }
