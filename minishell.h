@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 14:22:17 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:59:37 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ typedef struct s_token
 	char			*word;
 	int				type;
 	int				leading_space;
+	char			**freethis;
+	int				freethis_num;
 	struct s_token	*next;
 	struct s_token	*prev;
 
@@ -122,6 +124,7 @@ typedef struct s_parse_context
 	char	*beforevar;
 	char	*aftervar;
 	char	*var;
+	char	*freethis;
 }	t_parse_context;
 
 
@@ -274,6 +277,7 @@ void	copy_args(t_cmdtable *cmd);
 t_token	*add_redir(t_cmdtable *cmd, t_token *curr);
 t_token	*get_args(t_cmdtable *cmd, t_token *token);
 void	find_builtins(t_cmdtable *cmd);
+void add_string_to_double_array(char ***array,int	*num_elements, char *new_string);
 //for testing
 void 	printlist_both(t_token *head);
 void 	printCharPointerArray(char **arr);

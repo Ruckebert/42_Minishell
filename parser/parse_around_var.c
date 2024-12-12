@@ -6,13 +6,13 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/11 12:23:57 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:58:25 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*build_variable_result(char *beforevar, char *varvalue, char *aftervar)
+char	*build_variable_result(char *beforevar, char *varvalue, char *aftervar, t_parse_context *ctx)
 {
 	char	*res;
 	char	*temp;
@@ -21,6 +21,7 @@ char	*build_variable_result(char *beforevar, char *varvalue, char *aftervar)
 	if (!temp)
 		return (NULL);
 	res = ft_strjoin(temp, aftervar);
+	ctx->freethis = res;
 	free(temp);
 	return (res);
 }
@@ -33,7 +34,7 @@ void	handle_special_var(t_token *curr, t_parse_context *ctx, t_data *core)
 	varvalue = ft_itoa(core->exit_status);
 	if (!varvalue)
 		return ;
-	res = build_variable_result(ctx->beforevar, varvalue, ctx->aftervar);
+	res = build_variable_result(ctx->beforevar, varvalue, ctx->aftervar, ctx);
 	free(varvalue);
 	free(ctx->beforevar);
 	free(ctx->aftervar);
@@ -56,18 +57,57 @@ void	handle_non_expandable(t_token *curr, t_parse_context *ctx)
 		ft_lstdelone(curr);
 }
 
+void add_string_to_double_array(char ***array, int *num_elements, char *new_string)
+{
+    char **new_array = malloc((*num_elements + 2) * sizeof(char *));
+    if (new_array == NULL) {
+        perror("Failed to allocate memory");
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i < *num_elements; i++)
+    {
+        new_array[i] = (*array)[i];
+    }
+    new_array[*num_elements] = new_string;
+    new_array[*num_elements + 1] = NULL;
+
+    free(*array);
+    *array = new_array;
+    (*num_elements)++;
+}
+
+
+int is_string_in_array(char **array, char *str)
+{
+    if (array == NULL)
+        return 0;
+
+    for (int i = 0; array[i] != NULL; i++)
+    {
+        if (array[i] == str)
+            return 1;
+    }
+    return 0;
+}
+
 void	handle_expandable_var(t_token *curr, t_parse_context *ctx, char **env)
 {
 	char	*varvalue;
 	char	*res;
 
 	varvalue = get_env_var(ctx->var, env);
-	res = build_variable_result(ctx->beforevar, varvalue, ctx->aftervar);
+	res = build_variable_result(ctx->beforevar, varvalue, ctx->aftervar, ctx);
 	free(varvalue);
 	free(ctx->beforevar);
 	free(ctx->aftervar);
+	
 	if (res)
+	{
+		if (!is_string_in_array(curr->freethis, curr->word))
+			add_string_to_double_array(&curr->freethis, &curr->freethis_num, curr->word);
 		curr->word = res;
+	}
 }
 
 void	parsearound_var(t_token *curr, char **env, char *var, t_data *core)
