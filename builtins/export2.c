@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:02:08 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 12:15:30 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:45:33 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	argv_env_loop(int *equal, int *error, char **argv, int i)
 		if (argv[i][j] == '=' && first == 0)
 		{
 			(*equal)++;
-			if (argv[i][j - 1] == '\0')
+			if (j == 0)
 				(*equal)++;
 		}
 		if ((argv[i][j] == '+' | argv[i][j] == '?' || argv[i][j] == '^'
@@ -100,11 +100,11 @@ char	**creating_new_exo(int i, char **temp, char **env, char **argv)
 		if (found != 1)
 			found = check_dup(argv, temp, i, j);
 		if (found == -1)
-			return (NULL);
+			return (simple_free(temp), NULL);
 		if (!found)
 		{
 			if (argv_checker(argv, 1, 0) == 1)
-				return (NULL);
+				return (simple_free(temp), NULL);
 			temp[i] = ft_strdup(argv[j]);
 			if (!temp[i])
 				reverse_free(i, temp);
@@ -125,6 +125,12 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 	temp = malloc((argc + count) * sizeof(char *));
 	if (!temp)
 		return (NULL);
+	i = 0;
+	while (i < argc + count)
+	{
+		temp[i] = NULL;
+		i++;
+	}
 	i = 0;
 	while (env[i])
 	{

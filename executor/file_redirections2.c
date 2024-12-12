@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:45:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 12:32:33 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:34:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,6 @@ t_cmdtable	*input_redirections(t_cmdtable *cmd, t_data *core,
 	{
 		input->redir = ft_strdup(vars->filename);
 		input->redir_type = 1;
-	}
-	else
-	{
-		if (vars->filename != NULL)
-			unlink(vars->filename);
 	}
 	vars->file_error = 0;
 	return (input);

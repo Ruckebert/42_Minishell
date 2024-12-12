@@ -6,11 +6,21 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 12:44:32 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/12 12:50:28 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	multi_array_counter(char **argc)
+{
+	int	i;
+
+	i = 0;
+	while (argc[i])
+		i++;
+	return (i);
+}
 
 void	cd_com(t_cmdtable *cmd, t_data *core)
 {
@@ -19,7 +29,7 @@ void	cd_com(t_cmdtable *cmd, t_data *core)
 	core->exit_status = 0;
 	old_pwd = NULL;
 	old_pwd = getcwd(NULL, 0);
-	if (cmd->args[2] != NULL)
+	if (multi_array_counter(cmd->args) >= 3)
 	{
 		write(2, "cd: too many arguments\n", 23);
 		core->exit_status = 1;
