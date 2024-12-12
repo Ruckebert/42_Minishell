@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fuse_nodes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/12 12:57:32 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:02:14 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	fuse_all_0space_nodes(t_token *token)
 			&& !is_redir(curr) && !is_redir(curr->prev))
 		{
 			curr->prev->type = curr->type;
-			fuse_node_with_next(curr->prev);
 			curr = curr->prev;
+			fuse_node_with_next(curr);
 		}
 		if (is_fusable(curr) && curr->next->type != 9999
 			&& curr->next->leading_space == 0
