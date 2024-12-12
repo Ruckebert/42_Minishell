@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/11 15:44:17 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:58:25 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,40 @@ void	handle_non_expandable(t_token *curr, t_parse_context *ctx)
 		ft_lstdelone(curr);
 }
 
+void add_string_to_double_array(char ***array, int *num_elements, char *new_string)
+{
+    char **new_array = malloc((*num_elements + 2) * sizeof(char *));
+    if (new_array == NULL) {
+        perror("Failed to allocate memory");
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i < *num_elements; i++)
+    {
+        new_array[i] = (*array)[i];
+    }
+    new_array[*num_elements] = new_string;
+    new_array[*num_elements + 1] = NULL;
+
+    free(*array);
+    *array = new_array;
+    (*num_elements)++;
+}
+
+
+int is_string_in_array(char **array, char *str)
+{
+    if (array == NULL)
+        return 0;
+
+    for (int i = 0; array[i] != NULL; i++)
+    {
+        if (array[i] == str)
+            return 1;
+    }
+    return 0;
+}
+
 void	handle_expandable_var(t_token *curr, t_parse_context *ctx, char **env)
 {
 	char	*varvalue;
@@ -69,9 +103,9 @@ void	handle_expandable_var(t_token *curr, t_parse_context *ctx, char **env)
 	free(ctx->aftervar);
 	
 	if (res)
-	{	
-//		if (curr->word != ctx->freethis) fix this
-//			free (curr->word);
+	{
+		if (!is_string_in_array(curr->freethis, curr->word))
+			add_string_to_double_array(&curr->freethis, &curr->freethis_num, curr->word);
 		curr->word = res;
 	}
 }

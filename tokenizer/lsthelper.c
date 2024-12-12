@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/11 15:17:46 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:57:23 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_token	*ft_lstnew(char *word)
 		return (NULL);
 	elem->next = NULL;
 	elem->prev = NULL;
+	elem->freethis = NULL;
+	elem->freethis_num = 0;
 	elem->freethis = NULL;
 	return (elem);
 }
