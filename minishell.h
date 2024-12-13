@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 14:43:32 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:10:17 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_token
 	int				leading_space;
 	char			**freethis;
 	int				freethis_num;
+	int				endloop;
 	struct s_token	*next;
 	struct s_token	*prev;
 

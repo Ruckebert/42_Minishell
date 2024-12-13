@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/12 14:42:34 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:11:05 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ void	handle_non_expandable(t_token *curr, t_parse_context *ctx)
 	free(curr->word);
 	curr->word = res;
 	if (ft_strlen(res) == 0)
-		ft_lstdelone(curr);
+		curr->endloop = 1;
 }
 
-void add_string_to_double_array(char ***array, int *num_elements, char *new_string)
+void	add_string_to_double_array(char ***array, int *num_elements, char *new_string)
 {
     char **new_array = malloc((*num_elements + 2) * sizeof(char *));
     if (new_array == NULL) {

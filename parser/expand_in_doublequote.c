@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/12 14:17:12 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:26:58 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,14 @@ void free_double_array(char **array) {
     free(array);
 }
 
-static void	expand_variables(t_token *curr, char **env, t_data *core)
+t_token	*expand_variables(t_token *curr, char **env, t_data *core)
 {
 	char	*temp;
 	char	*var;
-	int		i;
+	t_token	*tmp;
 
-	i = 0;
+	tmp = curr->prev;
 	temp = ft_strchr(curr->word, '$');
-
 	while (temp != NULL)
 	{
 		if (*(temp + 1) != ' ' && (*(temp + 1) == '_'
@@ -55,9 +54,17 @@ static void	expand_variables(t_token *curr, char **env, t_data *core)
 			}
 			parsearound_var(curr, env, var, core);
 		}
+		if (curr->endloop == 1)
+			break;
 		temp = ft_strchr(temp + 1, '$');
 	}
 	free_double_array(curr->freethis);
+	if (curr->endloop == 1)
+	{
+		ft_lstdelone(curr);
+		return (tmp);
+	}
+	return (curr);
 }
 
 void	expand_var_in_doublequote(t_token *token, char **env, t_data *core)
@@ -70,7 +77,7 @@ void	expand_var_in_doublequote(t_token *token, char **env, t_data *core)
 		if (curr->type == 4)
 		{
 			remove_quotes(curr);
-			expand_variables(curr, env, core);
+			curr = expand_variables(curr, env, core);
 		}
 		curr = curr->next;
 	}
