@@ -67,6 +67,7 @@ typedef struct s_token
 	int				leading_space;
 	char			**freethis;
 	int				freethis_num;
+	int				endloop;
 	struct s_token	*next;
 	struct s_token	*prev;
 
