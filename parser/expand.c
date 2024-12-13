@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/12 15:55:11 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:07:54 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ void	expand_var(t_token *token, char **env, t_data *core)
 			else
 				curr = handle_non_expandable_var(curr);
 		}
-		if (curr->next->type == 9999)
-			break ;
 		curr = curr->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/13 13:44:19 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:06:04 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	split_to_token(t_token *curr)
 		i++;
 		curr = curr->next;
 	}
-	free (arr);
+	free_double_array(arr);
 }
 
 t_cmdtable  *parse(t_data *core, t_token *token)

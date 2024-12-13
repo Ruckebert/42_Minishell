@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 13:33:58 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:20:19 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,8 +279,9 @@ void	copy_args(t_cmdtable *cmd);
 t_token	*add_redir(t_cmdtable *cmd, t_token *curr);
 t_token	*get_args(t_cmdtable *cmd, t_token *token);
 void	find_builtins(t_cmdtable *cmd);
-void add_string_to_double_array(char ***array,int	*num_elements, char *new_string);
-int is_string_in_array(char **array, char *str);
+void	add_string_to_double_array(char ***array,int	*num_elements, char *new_string);
+int		is_string_in_array(char **array, char *str);
+void	free_double_array(char **array);
 //for testing
 void 	printlist_both(t_token *head);
 void 	printCharPointerArray(char **arr);
