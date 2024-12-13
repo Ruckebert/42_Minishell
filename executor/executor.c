@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 14:25:56 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:32:19 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	here_doc_creator(t_cmdtable *cmd, t_data *core, char ***files, int i)
 				if (g_interrupt_received != 0)
 				{
 					(*files)[i] = ft_strdup(cmd->redir);
-					here_doc_file_del(*files);
+					free(temp);
 					return ;
 				}
 				cmd->redir_type = 1;
