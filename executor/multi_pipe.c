@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 11:19:51 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:13:52 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	multi_pipe_end(int i, int *childids, t_data *core, char **files)
 void	multi_pipe_fd(int *fd, t_var *vars,
 	t_cmdtable *current_cmd, t_data *core)
 {
+	if (vars->del_files)
+		simple_free(vars->del_files);
 	if (vars->prev_fd != -1)
 	{
 		if (dup2(vars->prev_fd, STDIN_FILENO) == -1)
@@ -106,8 +108,10 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, int i)
 	files = NULL;
 	i = 0;
 	here_doc_creator(current_cmd, core, &files, 0);
-	while (current_cmd)
+	vars->del_files = files;
+	while (current_cmd && cmd->isprinted != 2)
 	{
+		cmd->isprinted = 0;
 		if (current_cmd->next && pipe(fd) == -1)
 			error_handler();
 		if (current_cmd->redir_type != 0)
@@ -120,5 +124,7 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, int i)
 	}
 	if (vars->prev_fd != -1)
 		close(vars->prev_fd);
+	if (cmd->isprinted == 2)
+		multi_pipe_end(i, childids, core, NULL);
 	multi_pipe_end(i, childids, core, files);
 }

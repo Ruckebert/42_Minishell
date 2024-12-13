@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:45:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 13:34:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:16:16 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,6 @@ t_cmdtable	*input_redirections(t_cmdtable *cmd, t_data *core,
 		if (cmd->has_pipe_after == 1)
 			break ;
 		cmd = cmd->next;
-	}
-	if (input->redir_type == 10 || input->redir_type == 30)
-	{
-		input->redir = ft_strdup(vars->filename);
-		input->redir_type = 1;
 	}
 	vars->file_error = 0;
 	return (input);

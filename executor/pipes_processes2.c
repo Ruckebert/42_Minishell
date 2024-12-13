@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 14:23:48 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:05:06 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 		redirctions(cmd, core, vars, fd);
 	if (cmd->isbuiltin == 1)
 		echo_cmd(cmd, core, 0);
-	else if (cmd->isbuiltin > 1)
+	else if (cmd->isbuiltin > 1 )
 		builtin_cmds(cmd, core);
 	else if (cmd->args && ft_strchr(cmd->args[0], '/'))
 		absolute_path_finder(core, core->env, cmd->args);
@@ -86,7 +86,8 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 	files = NULL;
 	vars->file_error = 0;
 	here_doc_creator(cmd, core, &files, 0);
-	if (cmd->isbuiltin != 0 && cmd->isbuiltin != 1)
+	vars->del_files = files;
+	if ((cmd->isbuiltin != 0 && cmd->isbuiltin != 1) || cmd->isprinted == 2)
 		builtin_cmds(cmd, core);
 	else
 	{
@@ -95,6 +96,8 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 			pipe_error(fd, core);
 		if (second == 0)
 		{
+			if (vars->del_files)
+				simple_free(vars->del_files);
 			if (cmd->next != NULL)
 				cmd = multi_redirections(cmd, core, vars);
 			execution_pro(cmd, core, vars, fd);
