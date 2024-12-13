@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/13 16:57:40 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:31:04 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	split_word(t_token *curr, int sep_index)
 	free(curr->next->word);
 	curr->next->word = str1;
 	newtoken = ft_lstnew(str2);
-//	newtoken->leading_space = 0;
+	newtoken->leading_space = 0;
 	free(str2);
 	ft_lstadd_next(&curr->next, newtoken);
 }
