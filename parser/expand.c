@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/13 16:07:54 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:33:04 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,24 @@ static void	handle_exit_status(t_token *curr, t_data *core)
 	curr->word = ft_itoa(core->exit_status);
 }
 
-static void	handle_expandable_var(t_token *curr, char **env)
+static void	handle_expandable_var(t_token **curr, char **env)
 {
 	char	*value;
+	t_token	*tmp;
 
-	value = get_env_var(curr->next->word, env);
+	tmp = (*curr)->prev;
+	value = get_env_var((*curr)->next->word, env);
 	if (value[0] == ' ' || value[0] == '\t')
-		curr->leading_space = 1;
+		(*curr)->leading_space = 1;
 	if ((ft_strlen(value) > 0) && (value[ft_strlen(value) - 1] == ' '
 			|| value[ft_strlen(value) - 1] == '\t'))
-		curr->next->next->leading_space = 1;
-	substitute_node_word(curr, value);
+		(*curr)->next->next->leading_space = 1;
+	substitute_node_word(*curr, value);
 	free(value);
-	if (ft_strchr(curr->word, ' ') != NULL)
-		split_to_token(curr);
+	if (ft_strchr((*curr)->word, ' ') != NULL)
+		split_to_token(*curr);
+	*curr = tmp;
+	
 }
 
 t_token	*handle_non_expandable_var(t_token *curr)
@@ -60,7 +64,7 @@ void	expand_var(t_token *token, char **env, t_data *core)
 			if (!ft_strcmp(curr->next->word, "?"))
 				handle_exit_status(curr, core);
 			else if (is_expandable(curr->next->word, env))
-				handle_expandable_var(curr, env);
+				handle_expandable_var(&curr, env);
 			else
 				curr = handle_non_expandable_var(curr);
 		}
