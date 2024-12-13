@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:08:59 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 14:10:01 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:28:41 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	exit_loop(t_data *core, int i, int j)
 	{
 		j = 0;
 		sign = ft_strtoull(core->cmd->args[1], &j);
+		if (j < 0)
+			return (-1);
 		while (core->cmd->args[i][j])
 		{
 			if (exit_condition_checker(core, i, j) == 1)

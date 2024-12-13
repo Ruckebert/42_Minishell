@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 16:33:21 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:31:13 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@ extern volatile sig_atomic_t g_interrupt_received;
 
 int	main_exanpder_env(char *line, int i, t_exp *doc)
 {
-	int	j;
+	int		j;
+	char	*temp;
 
 	doc->before_var = ft_substr(line, 0, i);
-	//if (doc->expanded_line)
-	//	free(doc->expanded_line);
+	temp = doc->expanded_line;
 	doc->expanded_line = ft_strjoin(doc->expanded_line, doc->before_var);
+	free(temp);
 	free(doc->before_var);
 	doc->var_start = &line[i + 1];
 	j = 0;
@@ -35,13 +36,12 @@ int	main_exanpder_env(char *line, int i, t_exp *doc)
 	free(doc->var_name);
 	if (!doc->env_value)
 		doc->env_value = "";
-	//if (doc->expanded_line)
-	//	free(doc->expanded_line);
+	temp = doc->expanded_line;
 	doc->expanded_line = ft_strjoin(doc->expanded_line, doc->env_value);
 	if (!doc->expanded_line)
 		expander_freer(doc);
 	i += j + 1;
-	return (i);
+	return (free(temp), i);
 }
 
 char	*expander_env(t_data *core, char *line)
@@ -98,6 +98,8 @@ char	*ft_nbr_pointhex(intptr_t num)
 
 int	here_doc_main(t_exp *doc, t_cmdtable *cmd, t_data *core)
 {
+	if (doc->expand_line && cmd->redir_type == 30)
+		free(doc->expand_line);
 	if (ft_strncmp(doc->line, cmd->redir, ft_strlen(cmd->redir)) == 0
 		&& ft_strlen(doc->line) == ft_strlen(cmd->redir))
 	{
