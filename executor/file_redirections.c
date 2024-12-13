@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:34:33 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 15:30:47 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:41:09 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ void	file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
 	if (access(cmd->redir, R_OK) != 0)
 	{
-		ft_putstr_fd(cmd->redir, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		cmd->isprinted = 1;
+		if (cmd->isprinted != 1)
+		{
+			ft_putstr_fd(cmd->redir, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+		}
 		core->exit_status = 1;
 		free_exit(core);
 		exit(core->exit_status);

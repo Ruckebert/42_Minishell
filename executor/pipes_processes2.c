@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 16:05:06 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:36:20 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 {
 	close(fd[0]);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
+	{
+		cmd->isprinted = 1;
 		error_handler_fd(fd[1], cmd);
+	}
 	close(fd[1]);
 	if (cmd->redir_type != 0 && cmd->redir_type != 10 && cmd->redir_type != 30)
 		redirctions(cmd, core, vars, fd);
