@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 16:20:19 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:20:41 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_cmdtable
 	int		redir_type;
 	char	*redir;
 	int		isbuiltin;
+	int		isprinted;
 	struct s_cmdtable	*next;
 	struct s_cmdtable	*prev;
 

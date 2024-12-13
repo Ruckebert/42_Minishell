@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 14:24:17 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:47:17 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int main(int argc, char *argv[], char **env)
 	core = (t_data){0};
 	token = NULL;
 	core.exit_status = 0;
+	//core.fd_pipe = 0;
 	if (argc == -1)
 		exit(2);
 	core.env = copy_env(env, &core);

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:36:24 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 11:07:35 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:59:05 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ void	path_finder_end_checker(t_var *vars, t_data *core,
 	char **envp, char **argv)
 {
 	if (ft_strlen(envp[vars->store_env]) <= 5)
+	{
+		free_split(vars->store);
 		absolute_path_finder(core, envp, argv);
+	}
 	else if (path_checker(envp) == 1 && (access(argv[0], R_OK) == 0))
 		execve(argv[0], argv, envp);
 	else
@@ -62,7 +65,7 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 		absolute_path_finder(core, envp, argv);
 	vars->store = ft_split(envp[i] + 5, ':');
 	if (!vars->store)
-		error_handler();
+		error_handler_split(vars->store);
 	vars->store_env = i;
 	i = -1;
 	while (vars->store[++i])

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 14:24:34 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:08:35 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,13 @@ void	child_pipe(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		pipe_error(fd, core);
 	if (vars->childid == 0)
 	{
+		cmd->isprinted = 0;
 		if (cmd->redir_type != 0)
+		{
+			close(fd[0]);
+			close(fd[1]);
 			cmd = multi_redirections(cmd, core, vars);
+		}
 		vars->file_error = 0;
 		child_pros(cmd, vars, core, fd);
 		free_exit(core);
@@ -46,6 +51,7 @@ void	parent_pipe(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		pipe_error(fd, core);
 	if (vars->childid2 == 0)
 	{
+		cmd->isprinted = 0;
 		cmd = return_pipe(cmd);
 		if (cmd->redir_type != 0)
 			cmd = multi_redirections(cmd, core, vars);
@@ -62,6 +68,8 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core,
 	int	status;
 
 	status = 0;
+	if (vars->del_files)
+		simple_free(vars->del_files);
 	if (pipe(fd) == -1)
 		pipe_error(fd, core);
 	vars->childid = fork();
@@ -88,6 +96,12 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
 	status = 0;
 	files = NULL;
 	here_doc_creator(cmd, core, &files, 0);
+	vars->del_files = files;
+	if (cmd->isprinted == 2)
+	{
+		free_cmdtable(&cmd);
+		return ;
+	}
 	second = fork();
 	if (second == -1)
 		pipe_error(fd, core);

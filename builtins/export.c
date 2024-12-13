@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 14:27:16 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:25:10 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ int	check_dup_exo(char **env, char **argv, char **temp, int j)
 		{
 			if (ft_strncmp(temp[k], argv[j], var_len) == 0)
 			{
+				if (temp[k])
+					free(temp[k]);
 				temp[k] = ft_strdup(argv[j]);
 				found = 1;
 			}
