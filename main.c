@@ -3,70 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 12:08:28 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 18:25:51 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t	g_interrupt_received = 0;
-
-void	sig_handleINT_parent(int signal)
-{
-	if (signal == SIGINT)
-	{
-		write (1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-		g_interrupt_received = signal;
-	}
-}
-
-void	sig_handleINT_child(int signal)
-{
-	if (signal == SIGINT)
-	{
-		(void)signal;
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-
-void	sig_handleINT_heredoc(int signal)
-{
-	if (signal == SIGINT)
-	{
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		g_interrupt_received = signal;
-	}
-}
-
-void sig_handleINT_parent2(int signal)
-{
-	write (1, "\n", 1);
-	(void)signal;
-}
-
-void setup_signal_handler(int signal, void (*handler)(int)) 
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = handler;
-	sa.sa_flags = SA_RESTART;
-	sigemptyset(&sa.sa_mask);
-	if (sigaction(signal, &sa, NULL) == -1)
-	{
-		perror("sigaction");
-		exit(1);
-	}
-}
 
 int	main_exit(t_data *core)
 {
@@ -102,7 +48,8 @@ void	main_core(t_data *core, t_token	*token, int status)
 		if (core->cmd)
 			executor(core->cmd, core);
 	}
-	setup_signal_handler(SIGINT, sig_handleINT_parent);
+	setup_signal_handler(SIGINT, sig_int_parent);
+	setup_signal_handler(SIGQUIT, SIG_IGN);
 	free(core->line);
 	if (status >= 0)
 		exit(core->exit_status);
@@ -114,7 +61,8 @@ int	main(int argc, char *argv[], char **env)
 	t_token	*token;
 	int		status;
 
-	setup_signal_handler(SIGINT, sig_handleINT_parent);
+	setup_signal_handler(SIGQUIT, SIG_IGN);
+	setup_signal_handler(SIGINT, sig_int_parent);
 	status = -1;
 	core = (t_data){0};
 	token = NULL;

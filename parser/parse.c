@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/13 16:06:04 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/15 17:25:07 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,46 +80,19 @@ void	split_to_token(t_token *curr)
 	free_double_array(arr);
 }
 
-t_cmdtable  *parse(t_data *core, t_token *token)
+t_cmdtable	*parse(t_data *core, t_token *token)
 {
-//	printf("\033[0;31m 1 \033[0m\n");
-//	printlist(token);
-
 	handle_heredoc_delimiter(token);
-//	printf("\033[0;31m 2 \033[0m\n");
-//	printlist(token);
-	
 	split_vars_by_sep(token);
-//	printf("\033[0;31m 2b \033[0m\n");
-//	printlist(token);
-
 	if (redir_before_nonexpandable(token, core) != 0)
 		return (NULL);
-
 	expand_var(token, core->env, core);
-//	printf("\033[0;31m 3 \033[0m\n");
-//	printlist(token);
-
 	expand_var_in_doublequote(token, core->env, core);
-//	printf("\033[0;31m 4 \033[0m\n");
-//	printlist(token);
-
 	remove_singlequotes(token);
-//	printf("\033[0;31m 5 \033[0m\n");
-//	printlist(token);
-
 	fuse_all_0space_nodes(token);
-//	printf("\033[0;31m 6 \033[0m\n");
-//	printlist(token);
 	if (first_token_directory(token, core) != 0)
-		return(NULL);
+		return (NULL);
 	if (outredir_to_directory(token, core) != 0)
-		return(NULL);
-//	printf("\033[0;31mAFTER parse.c\033[0m\n");
-//	printlist(token);
-	return (prep_nodes_for_exec(token));
-
-//	printlist(token);
-//	handle_singlequote();
-	
+		return (NULL);
+	return (prep_nodes_for_exec(token, core));
 }
