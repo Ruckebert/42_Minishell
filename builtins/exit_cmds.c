@@ -6,25 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:08:59 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 13:28:41 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 11:33:36 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	while ((*s1 != '\0') && (*s2 != '\0'))
-	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		s1++;
-		s2++;
-	}
-	if ((*s1 != *s2))
-		return (*s1 - *s2);
-	return (0);
-}
 
 int	exit_return_checker(t_data *core, int i, int j)
 {
@@ -61,7 +47,7 @@ int	exit_loop(t_data *core, int i, int j)
 	while (core->cmd->args[i] && i != 2)
 	{
 		j = 0;
-		sign = ft_strtoull(core->cmd->args[1], &j);
+		sign = ft_strtoull(core->cmd->args[1], &j, 0);
 		if (j < 0)
 			return (-1);
 		while (core->cmd->args[i][j])
@@ -108,4 +94,29 @@ int	exit_error_handler(int j, t_data *core)
 		core->exit_status = 2;
 	}
 	return (0);
+}
+
+void	exit_com(t_data *core)
+{
+	int		i;
+	int		j;
+	char	*temp;
+
+	i = 1;
+	j = 0;
+	temp = NULL;
+	if (core->cmd->args[1])
+	{
+		temp = ft_strtrim(core->cmd->args[1], " ");
+		if (!temp)
+			export_malloc_error(core, NULL);
+		free(core->cmd->args[1]);
+		core->cmd->args[1] = ft_strdup(temp);
+		free(temp);
+	}
+	j = exit_loop(core, i, j);
+	if (exit_error_handler(j, core) == 1)
+		return ;
+	free_exit(core);
+	exit(core->exit_status);
 }

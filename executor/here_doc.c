@@ -6,17 +6,16 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 13:31:13 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 11:08:04 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-extern volatile sig_atomic_t g_interrupt_received;
+extern volatile sig_atomic_t	g_interrupt_received;
 
-int	main_exanpder_env(char *line, int i, t_exp *doc)
+int	main_exanpder_env(char *line, int i, t_exp *doc, int j)
 {
-	int		j;
 	char	*temp;
 
 	doc->before_var = ft_substr(line, 0, i);
@@ -56,7 +55,7 @@ char	*expander_env(t_data *core, char *line)
 	{
 		if (line[i] == '$')
 		{
-			i = main_exanpder_env(line, i, &doc);
+			i = main_exanpder_env(line, i, &doc, 0);
 			line = &line[i];
 			i = 0;
 		}
@@ -71,7 +70,6 @@ char	*expander_env(t_data *core, char *line)
 	}
 	return (doc.expanded_line);
 }
-
 
 char	*ft_nbr_pointhex(intptr_t num)
 {

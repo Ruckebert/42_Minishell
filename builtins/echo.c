@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:07:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 11:05:38 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 09:57:06 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,33 @@ void	echo_exit(int i, int no, t_cmdtable *cmd, t_data *core)
 		ft_printf("\n");
 	free_exit(core);
 	exit(core->exit_status);
+}
+
+void	echo_cmd(t_cmdtable *cmd, t_data *core, int i)
+{
+	int	no;
+	int	j;
+
+	i = 1;
+	j = 1;
+	no = 0;
+	if (cmd->args[i] == NULL)
+		no = 0;
+	else if (ft_strncmp(cmd->args[i], "-n", 2) == 0)
+	{
+		while (cmd->args[i][j])
+		{
+			if (cmd->args[i][j] == 'n')
+				no = 1;
+			else
+			{
+				no = 0;
+				break ;
+			}
+			j++;
+		}
+		if (no == 1)
+			i = second_no(&no, i, cmd);
+	}
+	echo_exit(i, no, cmd, core);
 }

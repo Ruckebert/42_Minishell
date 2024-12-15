@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:36:24 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 15:59:05 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 11:00:50 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,24 @@ void	path_finder_end_checker(t_var *vars, t_data *core,
 	exit(core->exit_status);
 }
 
-void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
+void	path_finder_exe_lop(t_var *vars, char **envp, char **argv, int i)
 {
+	vars->comm = ft_strjoin(vars->store[i], "/");
+	if (vars->comm == NULL)
+		error_handler();
+	vars->full_comm = ft_strjoin(vars->comm, argv[0]);
+	if (vars->full_comm == NULL)
+		error_handler();
+	free(vars->comm);
+	execve(vars->full_comm, argv, envp);
+	free(vars->full_comm);
+}
+
+void	path_finder(t_var *vars, t_data *core, char **envp, char **argv)
+{
+	int	i;
+
+	i = 0;
 	if (argv == NULL)
 		return ;
 	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
@@ -69,17 +85,7 @@ void	path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i)
 	vars->store_env = i;
 	i = -1;
 	while (vars->store[++i])
-	{
-		vars->comm = ft_strjoin(vars->store[i], "/");
-		if (vars->comm == NULL)
-			error_handler();
-		vars->full_comm = ft_strjoin(vars->comm, argv[0]);
-		if (vars->full_comm == NULL)
-			error_handler();
-		free(vars->comm);
-		execve(vars->full_comm, argv, envp);
-		free(vars->full_comm);
-	}
+		path_finder_exe_lop(vars, envp, argv, i);
 	path_finder_end_checker(vars, core, envp, argv);
 }
 

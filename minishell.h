@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 15:20:41 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 12:03:09 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
-
-// All allowed functions are in these headers 
 # include <unistd.h>
 # include <stdio.h>
 # include <readline/readline.h>
@@ -32,15 +30,15 @@
 # include <termios.h>
 # include <curses.h>
 
-//Cmd Parser Table
+/*Cmd Parser Table*/
 typedef struct s_cmdtable
 {
-	char	**args;
-	int		has_pipe_after;
-	int		redir_type;
-	char	*redir;
-	int		isbuiltin;
-	int		isprinted;
+	char				**args;
+	int					has_pipe_after;
+	int					redir_type;
+	char				*redir;
+	int					isbuiltin;
+	int					isprinted;
 	struct s_cmdtable	*next;
 	struct s_cmdtable	*prev;
 
@@ -49,14 +47,14 @@ typedef struct s_cmdtable
 /*Core Data Struct*/
 typedef struct s_data
 {
-	char	*user;
-	char	*direct;
-	char	*line;
-	char	**env;
-	char	**export_env;
-	int		exit_status;
-	int		empty_cd;
-	t_cmdtable *cmd;
+	char		*user;
+	char		*direct;
+	char		*line;
+	char		**env;
+	char		**export_env;
+	int			exit_status;
+	int			empty_cd;
+	t_cmdtable	*cmd;
 
 }	t_data;
 
@@ -75,7 +73,7 @@ typedef struct s_token
 }	t_token;
 
 
-//Piping
+/*Piping Struct*/
 typedef struct s_var
 {
 	/*Executioner Commands*/
@@ -103,7 +101,7 @@ typedef struct s_var
 }	t_var;
 
 
-//Here_doc Expander
+/*Here_doc Expander*/
 typedef struct s_exp
 {
 	/*Here Doc Expander*/
@@ -122,6 +120,16 @@ typedef struct s_exp
 
 }	t_exp;
 
+/*Reducing Space Struct*/
+typedef struct s_int_struct
+{
+	int	k;
+	int	found;
+	int	var_len;
+	int	env_len;
+
+}	t_int_struct;
+
 typedef struct s_parse_context
 {
 	char	*beforevar;
@@ -129,7 +137,6 @@ typedef struct s_parse_context
 	char	*var;
 	char	*freethis;
 }	t_parse_context;
-
 
 /*Environment Functions*/
 char	**copy_env(char **env, t_data *core);
@@ -142,13 +149,15 @@ void	free_exit(t_data *core);
 int		ft_strcmp(char *s1, char *s2);
 int		len_env_var(char **argv, int j);
 int		environment_export(t_data *core);
-unsigned long long	ft_strtoull(const char *str, int *j);
+unsigned long long	ft_strtoull(const char *str, int *j,
+			unsigned long long result);
 void	simple_free(char **str);
 void	expander_freer(t_exp *doc);
 void	here_doc_null_msg(t_cmdtable *cmd);
 void	closing_cmds_parent(int cmds, int fd[cmds - 1][2]);
 int		cmd_count(t_cmdtable *cmd);
 void	export_malloc_error(t_data *core, char **temp);
+int		multi_array_counter(char **argc);
 
 /*Builtin Functions*/
 int		exit_loop(t_data *core, int i, int j);
@@ -166,6 +175,8 @@ int		check_dup_exo(char **env, char **argv, char **temp, int j);
 int		finder(int found, int i, char **argv, char **env);
 char	**unset_exo(t_data *core, char **env, int i, char **argv);
 char	**unset_env(t_data *core, char **env, int i, char **argv);
+void	insert_new_env(t_data *core, char **temp, char **temp_env);
+
 
 /*Builtins*/
 void	env(t_data *core);
@@ -181,37 +192,38 @@ void	exit_com(t_data *core);
 void	builtin_cmds(t_cmdtable *cmd, t_data *core);
 
 /*Executor Functions*/
-int			redirection_checker(t_cmdtable *cmd, t_var *vars);
+void	fd_exit(int fd, t_cmdtable *cmd, t_data *core);
+int		redirection_checker(t_cmdtable *cmd, t_var *vars);
 t_cmdtable	*return_pipe(t_cmdtable *cmd);
-void		child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd);
-void		parent_pros(t_cmdtable *cmd, t_var *vars,  t_data *core, int *fd);
-int			here_doc_counter(t_cmdtable *cmd);
-int			pipe_checker(t_cmdtable *cmd);
-void		pipe_error(int *fd,  t_data *core);
-int			executor(t_cmdtable *cmd, t_data *core);
-void		error_handler(void);
-void		error_handler_split(char **split);
-void		free_split(char **split);
-void		error_handler_fd(int fd, t_cmdtable *cmd);
-void		file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
-void		file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
-void		file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
-void		here_doc_file_del(char **files);
-void		here_doc_creator(t_cmdtable *cmd, t_data *core, char ***files, int i);
-char		*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd);
-void		redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
+void	child_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd);
+void	parent_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd);
+int		here_doc_counter(t_cmdtable *cmd);
+int		pipe_checker(t_cmdtable *cmd);
+void	pipe_error(int *fd, t_data *core);
+int		executor(t_cmdtable *cmd, t_data *core);
+void	error_handler(void);
+void	error_handler_split(char **split);
+void	free_split(char **split);
+void	error_handler_fd(int fd, t_cmdtable *cmd);
+void	file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
+void	file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
+void	file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
+void	here_doc_file_del(char **files);
+void	here_doc_creator(t_cmdtable *cmd, t_data *core, char ***files, int i);
+char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd);
+void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd);
 t_cmdtable	*multi_redirections(t_cmdtable *cmd, t_data *core, t_var *vars);
-void		execution_pro(t_cmdtable *cmd, t_data *core, t_var *vars, int fd[2]);
-void		multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, int i);
-void		no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status);
-void		single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars);
-void		absolute_path_finder(t_data *core, char **envp, char **argv);
-void		path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i);
+void	execution_pro(t_cmdtable *cmd, t_data *core, t_var *vars, int fd[2]);
+void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, int i);
+void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status);
+void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status);
+void	absolute_path_finder(t_data *core, char **envp, char **argv);
+void	path_finder(t_var *vars, t_data *core, char **envp, char **argv);
 
 //all parser functions!
-t_cmdtable 	*parse(t_data *core, t_token * token);
-t_cmdtable 	*prep_nodes_for_exec(t_token *token);
-void		ft_lstadd_next(t_token **lst, t_token *new);
+t_cmdtable	*parse(t_data *core, t_token * token);
+t_cmdtable	*prep_nodes_for_exec(t_token *token);
+void	ft_lstadd_next(t_token **lst, t_token *new);
 
 //all tokenizer functions!
 t_token	*tokenize(t_data *core);
@@ -284,12 +296,12 @@ void	add_string_to_double_array(char ***array,int	*num_elements, char *new_strin
 int		is_string_in_array(char **array, char *str);
 void	free_double_array(char **array);
 //for testing
-void 	printlist_both(t_token *head);
-void 	printCharPointerArray(char **arr);
+void	printlist_both(t_token *head);
+void	printCharPointerArray(char **arr);
 void	printlist_type(t_token *head);
 void	printlist(t_token *head);
 void	free_token_list(t_token *head);
-void 	print_cmdtable(t_cmdtable *cmd);
-void 	free_cmdtable(t_cmdtable **head);
+void	print_cmdtable(t_cmdtable *cmd);
+void	free_cmdtable(t_cmdtable **head);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:34:16 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 14:36:38 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 11:28:42 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,17 @@ int	environment_export(t_data *core)
 			core->export_env[count] = ft_strdup(core->env[count]);
 			count++;
 		}
-		core->export_env[count] = NULL;
 	}
 	else
 	{
 		while (core->env[count])
+		{
+			free(core->export_env[count]);
+			core->export_env[count] = ft_strdup(core->env[count]);
 			count++;
+		}
 	}
+	core->export_env[count] = NULL;
 	return (count);
 }
 
@@ -93,14 +97,13 @@ int	strtoull_loop(const char *temp,
 	return (0);
 }
 
-unsigned long long	ft_strtoull(const char *str, int *j)
+unsigned long long	ft_strtoull(const char *str, int *j,
+	unsigned long long result)
 {
-	unsigned long long	result;
 	const char			*temp;
 	char				*temp2;
 
 	temp = str;
-	result = 0;
 	while (*temp == ' ' || *temp == '\t' || *temp == '\n'
 		|| *temp == '\r' || *temp == '\v' || *temp == '\f')
 		temp++;
