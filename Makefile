@@ -1,9 +1,9 @@
 
 NAME = minishell
 
-SOURCE = main.c executor/here_doc.c executor/pipes_processes2.c executor/path_finders.c executor/multi_pipe.c executor/pipes_processes.c executor/file_redirections.c executor/file_redirections2.c executor/executor.c executor/executor_utils.c executor/executor_utils2.c environment.c environment2.c synthax/synthax.c synthax/synthax2.c 
+SOURCE = main.c executor/here_doc.c executor/pipes_processes2.c executor/path_finders.c executor/multi_pipe.c executor/pipes_processes.c executor/file_redirections.c executor/file_redirections2.c executor/executor.c executor/executor_utils.c executor/executor_utils2.c executor/executor_utils3.c environment.c environment2.c synthax/synthax.c synthax/synthax2.c
 
-SOURCEBUILTINS = builtins/builtins.c builtins/cd_functions.c builtins/builtin_utils.c  builtins/echo.c builtins/export3.c builtins/exit_cmds.c builtins/export2.c builtins/export.c  builtins/unset.c
+SOURCEBUILTINS = builtins/builtins.c builtins/cd_functions.c builtins/builtin_utils.c builtins/builtin_utils2.c builtins/echo.c builtins/export3.c builtins/exit_cmds.c builtins/export2.c builtins/export.c  builtins/unset.c
 
 SOURCETOK = ./tokenizer/testing.c ./tokenizer/token.c ./tokenizer/lsthelper.c ./tokenizer/tokenhelper.c ./tokenizer/tokenhelper2.c ./tokenizer/get_tokenparts.c free_funcs.c
 

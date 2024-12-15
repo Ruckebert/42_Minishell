@@ -6,34 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 12:12:20 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 10:53:13 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	pwd_update(t_data *core)
-{
-	int		i;
-	char	*temp;
-
-	i = 0;
-	while (core->env[i])
-	{
-		if (ft_strncmp(core->env[i], "PWD=", 4) == 0)
-		{
-			temp = ft_substr(core->env[i], 0, 4);
-			free(core->env[i]);
-			core->env[i] = ft_strjoin(temp, core->direct);
-			if (!core->env[i])
-				free_environment(core->env, i);
-			free(temp);
-		}
-		i++;
-	}
-	return ;
-}
-
 
 void	dup_pwd_env(t_data *core, char **temp, char *argv)
 {
@@ -110,6 +87,26 @@ void	create_pwd(t_data *core, char *old_pwd)
 	other_pwd_type(num, core);
 }
 
+void	pwd_checker(char **temp, char *old_pwd, t_data *core, int i)
+{
+	if (ft_strncmp(core->env[i], "PWD=", 4) == 0)
+	{
+		(*temp) = ft_substr(core->env[i], 0, 4);
+		free(core->env[i]);
+		core->env[i] = ft_strjoin(*temp, core->direct);
+		free(*temp);
+		core->empty_cd++;
+	}
+	else if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
+	{
+		(*temp) = ft_substr(core->env[i], 0, 7);
+		free(core->env[i]);
+		core->env[i] = ft_strjoin(*temp, old_pwd);
+		free(*temp);
+		core->empty_cd += 2;
+	}
+}
+
 void	envi_update(char *old_pwd, t_data *core)
 {
 	int		i;
@@ -121,22 +118,7 @@ void	envi_update(char *old_pwd, t_data *core)
 	core->direct = getcwd(NULL, 0);
 	while (core->env[i])
 	{
-		if (ft_strncmp(core->env[i], "PWD=", 4) == 0)
-		{
-			temp = ft_substr(core->env[i], 0, 4);
-			free(core->env[i]);
-			core->env[i] = ft_strjoin(temp, core->direct);
-			free(temp);
-			core->empty_cd++;
-		}
-		else if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
-		{
-			temp = ft_substr(core->env[i], 0, 7);
-			free(core->env[i]);
-			core->env[i] = ft_strjoin(temp, old_pwd);
-			free(temp);
-			core->empty_cd += 2;
-		}
+		pwd_checker(&temp, old_pwd, core, i);
 		i++;
 	}
 	if (core->empty_cd != 3)

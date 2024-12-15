@@ -6,21 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/12 14:58:36 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 09:56:53 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	multi_array_counter(char **argc)
-{
-	int	i;
-
-	i = 0;
-	while (argc[i])
-		i++;
-	return (i);
-}
 
 void	cd_com(t_cmdtable *cmd, t_data *core)
 {
@@ -83,22 +73,6 @@ void	env(t_data *core)
 	return ;
 }
 
-void	insert_new_env(t_data *core, char **temp, char **temp_env)
-{
-	simple_free(core->export_env);
-	core->export_env = temp;
-	simple_free(core->env);
-	core->env = temp_env;
-}
-
-void	export_malloc_error(t_data *core, char **temp)
-{
-	if (temp)
-		simple_free(temp);
-	write(2, "Error: Failed Malloc\n", 21);
-	free_exit(core);
-	exit(1);
-}
 void	export(t_cmdtable *cmd, t_data *core)
 {
 	int		i;
@@ -142,71 +116,4 @@ void	unset(t_cmdtable *cmd, t_data *core)
 	core->export_env = temp;
 	simple_free(core->env);
 	core->env = temp_env;
-}
-
-void	echo_cmd(t_cmdtable *cmd, t_data *core, int i)
-{
-	int	no;
-	int	j;
-
-	i = 1;
-	j = 1;
-	no = 0;
-	if (cmd->args[i] == NULL)
-		no = 0;
-	else if (ft_strncmp(cmd->args[i], "-n", 2) == 0)
-	{
-		while (cmd->args[i][j])
-		{
-			if (cmd->args[i][j] == 'n')
-				no = 1;
-			else
-			{
-				no = 0;
-				break ;
-			}
-			j++;
-		}
-		if (no == 1)
-			i = second_no(&no, i, cmd);
-	}
-	echo_exit(i, no, cmd, core);
-}
-
-void	free_exit(t_data *core)
-{
-	if(core->env != NULL)
-		simple_free(core->env);
-	if (core->export_env != NULL)
-		simple_free(core->export_env);
-	free(core->direct);
-	free(core->line);
-	if (core->cmd != NULL)
-		free_cmdtable(&core->cmd);
-	close(STDERR_FILENO);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-}
-
-void	exit_com(t_data *core)
-{
-	int		i;
-	int		j;
-	char	*temp;
-
-	i = 1;
-	j = 0;
-	temp = NULL;
-	if (core->cmd->args[1])
-	{
-		temp = ft_strtrim(core->cmd->args[1], " ");
-		free(core->cmd->args[1]);
-		core->cmd->args[1] = ft_strdup(temp);
-		free(temp);
-	}
-	j = exit_loop(core, i, j);
-	if (exit_error_handler(j, core) == 1)
-		return ;
-	free_exit(core);
-	exit(core->exit_status);
 }

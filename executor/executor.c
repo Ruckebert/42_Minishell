@@ -6,13 +6,13 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 16:01:57 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 11:07:52 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-extern volatile sig_atomic_t g_interrupt_received;
+extern volatile sig_atomic_t	g_interrupt_received;
 
 void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 {
@@ -39,6 +39,21 @@ void	pipe_error(int *fd, t_data *core)
 	exit(1);
 }
 
+int	hdoc_dup_and_return(char *temp, t_cmdtable *cmd, char ***files, int i)
+{
+	cmd->redir = ft_strdup(temp);
+	if (g_interrupt_received != 0)
+	{
+		(*files)[i] = ft_strdup(cmd->redir);
+		free(temp);
+		cmd->isprinted = 2;
+		here_doc_file_del(*files);
+		return (1);
+	}
+	cmd->redir_type = 1;
+	return (0);
+}
+
 void	here_doc_creator(t_cmdtable *cmd, t_data *core, char ***files, int i)
 {
 	t_cmdtable	*current_cmd;
@@ -54,16 +69,8 @@ void	here_doc_creator(t_cmdtable *cmd, t_data *core, char ***files, int i)
 			{
 				temp = here_doc_tempfile(cmd, core, 0);
 				free(cmd->redir);
-				cmd->redir = ft_strdup(temp);
-				if (g_interrupt_received != 0)
-				{
-					(*files)[i] = ft_strdup(cmd->redir);
-					free(temp);
-					cmd->isprinted = 2;
-					here_doc_file_del(*files);
+				if (hdoc_dup_and_return(temp, cmd, files, i) == 1)
 					return ;
-				}
-				cmd->redir_type = 1;
 				(*files)[i] = ft_strdup(cmd->redir);
 				free(temp);
 				i++;
@@ -72,23 +79,6 @@ void	here_doc_creator(t_cmdtable *cmd, t_data *core, char ***files, int i)
 		}
 		cmd = current_cmd;
 	}
-}
-
-int	pipe_checker(t_cmdtable *cmd)
-{
-	t_cmdtable	*tmp;
-	int			i;
-
-	i = 0;
-	tmp = cmd;
-	while (cmd)
-	{
-		if (cmd->has_pipe_after == 1)
-			i++;
-		cmd = cmd->next;
-	}
-	cmd = tmp;
-	return (i);
 }
 
 int	executor(t_cmdtable *cmd, t_data *core)
@@ -101,7 +91,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 	if (pipe_checker(cmd) == 0)
 		no_pipe_exe(cmd, core, &vars, status);
 	else if (pipe_checker(cmd) == 1)
-		single_pipe_exe(cmd, core, &vars);
+		single_pipe_exe(cmd, core, &vars, status);
 	else if (pipe_checker(cmd) > 1)
 	{
 		second = fork();
