@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 15:20:41 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 13:14:14 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ void		path_finder(t_var *vars, t_data *core, char **envp, char **argv, int i);
 
 //all parser functions!
 t_cmdtable 	*parse(t_data *core, t_token * token);
-t_cmdtable 	*prep_nodes_for_exec(t_token *token);
+t_cmdtable 	*prep_nodes_for_exec(t_token *token, t_data * core);
 void		ft_lstadd_next(t_token **lst, t_token *new);
 
 //all tokenizer functions!
@@ -280,9 +280,15 @@ void	copy_args(t_cmdtable *cmd);
 t_token	*add_redir(t_cmdtable *cmd, t_token *curr);
 t_token	*get_args(t_cmdtable *cmd, t_token *token);
 void	find_builtins(t_cmdtable *cmd);
-void	add_string_to_double_array(char ***array,int	*num_elements, char *new_string);
+void	add_string_to_double_array(char ***array, int *num_elements,
+			char *new_string);
 int		is_string_in_array(char **array, char *str);
 void	free_double_array(char **array);
+char	*getword(int *pos, int *oldpos, t_data *core, t_token *token);
+char	*getsep(int *pos, t_data *core, t_token *token);
+char	*getquote(int *pos, int *oldpos, t_data *core, t_token *token);
+int	get_strnum(t_token *curr);
+
 //for testing
 void 	printlist_both(t_token *head);
 void 	printCharPointerArray(char **arr);

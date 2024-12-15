@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/13 17:05:15 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/15 13:16:38 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,35 +19,35 @@ static char	*extract_var_name(char *temp, t_token *curr)
 	return (parse_var_name(curr));
 }
 
-void free_double_array(char **array) {
-    if (array == NULL) return;
-    int i = 0;
-    while (array[i] != NULL) {
-        free(array[i]);
-        i++;
-    }
-    free(array);
+void	free_double_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	if (array == NULL)
+		return ;
+	while (array[i] != NULL)
+	{
+		free(array[i]);
+		i++;
+	}
+	free (array);
 }
 
-t_token	*expand_variables(t_token *curr, char **env, t_data *core)
+t_token	*handle_variable_expansion(t_token *curr, char **env,
+	t_data *core, char *temp)
 {
-	char	*temp;
 	char	*var;
-	t_token	*tmp;
 
-	tmp = curr->prev;
-	temp = ft_strchr(curr->word, '$');
 	while (temp != NULL)
 	{
 		if (*(temp + 1) != ' ' && (*(temp + 1) == '_'
 				|| ft_isalpha(*(temp + 1)) || *(temp + 1) == '?'))
 		{
-
-//			add_string_to_double_array(&curr->freethis, curr->word);
 			var = extract_var_name(temp, curr);
-			if(curr->freethis == NULL && is_expandable(var,env))
+			if (curr->freethis == NULL && is_expandable(var, env))
 			{
-				curr->freethis = malloc (2 *sizeof(char *));
+				curr->freethis = malloc(2 * sizeof(char *));
 				curr->freethis[0] = curr->word;
 				curr->freethis[1] = NULL;
 				curr->freethis_num = 1;
@@ -55,9 +55,20 @@ t_token	*expand_variables(t_token *curr, char **env, t_data *core)
 			parsearound_var(curr, env, var, core);
 		}
 		if (curr->endloop == 1)
-			break;
+			break ;
 		temp = ft_strchr(temp + 1, '$');
 	}
+	return (curr);
+}
+
+t_token	*expand_variables(t_token *curr, char **env, t_data *core)
+{
+	t_token	*tmp;
+	char	*temp;
+
+	tmp = curr->prev;
+	temp = ft_strchr(curr->word, '$');
+	curr = handle_variable_expansion(curr, env, core, temp);
 	free_double_array(curr->freethis);
 	if (curr->endloop == 1)
 	{
