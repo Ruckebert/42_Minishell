@@ -6,25 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 17:31:27 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 11:05:59 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	here_doc_counter(t_cmdtable *cmd)
-{
-	int	total;
-
-	total = 0;
-	while (cmd)
-	{
-		if (cmd->redir_type == 10 || cmd->redir_type == 30)
-			total++;
-		cmd = cmd->next;
-	}
-	return (total);
-}
 
 void	multi_pipe_end(int i, int *childids, t_data *core, char **files)
 {
@@ -95,23 +81,16 @@ void	multi_pipe_process(int *fd, t_var *vars,
 	}
 }
 
-void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, int i)
+int	multi_pipe_loop(t_var *vars, t_cmdtable *current_cmd,
+	t_data *core, int	*childids)
 {
-	char		**files;
+	int			i;
 	int			fd[2];
-	int			*childids;
-	t_cmdtable	*current_cmd;
 
-	childids = ft_calloc((cmd_count(cmd)), sizeof(int *));
-	vars->prev_fd = -1;
-	current_cmd = cmd;
-	files = NULL;
 	i = 0;
-	here_doc_creator(current_cmd, core, &files, 0);
-	vars->del_files = files;
-	while (current_cmd && cmd->isprinted != 2)
+	while (current_cmd && current_cmd->isprinted != 2)
 	{
-		cmd->isprinted = 0;
+		current_cmd->isprinted = 0;
 		if (current_cmd->next && pipe(fd) == -1)
 			error_handler();
 		if (current_cmd->redir_type != 0)
@@ -122,6 +101,22 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, int i)
 		childids[i++] = vars->childid;
 		current_cmd = current_cmd->next;
 	}
+	return (i);
+}
+
+void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, int i)
+{
+	char		**files;
+	int			*childids;
+	t_cmdtable	*current_cmd;
+
+	childids = ft_calloc((cmd_count(cmd)), sizeof(int *));
+	vars->prev_fd = -1;
+	current_cmd = cmd;
+	files = NULL;
+	here_doc_creator(current_cmd, core, &files, 0);
+	vars->del_files = files;
+	i = multi_pipe_loop(vars, current_cmd, core, childids);
 	if (vars->prev_fd != -1)
 		close(vars->prev_fd);
 	if (cmd->isprinted == 2)

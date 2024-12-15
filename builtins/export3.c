@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:05:35 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/06 14:06:12 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 10:29:46 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,28 @@ int	cmd_args_count(t_cmdtable *cmd)
 	while (cmd->args[count])
 		count++;
 	return (count);
+}
+
+void	insert_new_env(t_data *core, char **temp, char **temp_env)
+{
+	simple_free(core->export_env);
+	core->export_env = temp;
+	simple_free(core->env);
+	core->env = temp_env;
+}
+
+void	export_malloc_error(t_data *core, char **temp)
+{
+	if (temp)
+		simple_free(temp);
+	write(2, "Error: Failed Malloc\n", 21);
+	free_exit(core);
+	exit(1);
+}
+
+void	exp_error_msg(char *argv)
+{
+	ft_putstr_fd("export: `", 2);
+	ft_putstr_fd(argv, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
 }

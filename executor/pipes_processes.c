@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 17:17:13 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 10:48:40 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,12 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core,
 	exit(core->exit_status);
 }
 
-void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars)
+void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 {
 	char	**files;
 	int		fd[2];
 	pid_t	second;
-	int		status;
 
-	status = 0;
 	files = NULL;
 	here_doc_creator(cmd, core, &files, 0);
 	vars->del_files = files;

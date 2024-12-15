@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:09:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 18:43:24 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 10:30:29 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,15 @@ void	error_handler(void)
 
 void	error_handler_fd(int fd, t_cmdtable *cmd)
 {
-	fd = 0;
-
 	struct stat	filestat;
 
+	fd = 0;
 	if (stat(cmd->redir, &filestat) == -1)
 	{
 		if (cmd->isprinted == 1)
 			cmd->isprinted = 0;
 	}
-	else if (S_ISDIR(filestat.st_mode)) 
+	else if (S_ISDIR(filestat.st_mode))
 		cmd->isprinted = 1;
 	if (cmd->isprinted != 1)
 	{

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/13 14:25:10 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 11:03:48 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,65 +39,71 @@ void	bubble_sort(t_data *core)
 	}
 }
 
-void	print_exo_env(t_data *core, int	i)
+void	print_exo_env_loop(t_data *core, int i, int has_equal)
 {
 	int	j;
+
+	j = 0;
+	while (core->export_env[i][j])
+	{
+		if (core->export_env[i][j] == '=')
+		{
+			ft_printf("%c\"", core->export_env[i][j]);
+			has_equal = 1;
+		}
+		else
+			ft_printf("%c", core->export_env[i][j]);
+		j++;
+	}
+	if (has_equal == 1)
+		ft_printf("\"");
+	ft_printf("\n");
+}
+
+void	print_exo_env(t_data *core, int i)
+{
 	int	has_equal;
 
 	i = 0;
 	while (core->export_env[i])
 	{
 		if (core->export_env[i][0] == '_')
+			i++;
+		if (core->export_env[i] == NULL)
 			break ;
 		ft_printf("declare -x ");
-		j = 0;
 		has_equal = 0;
-		while (core->export_env[i][j])
-		{
-			if (core->export_env[i][j] == '=')
-			{
-				ft_printf("%c\"", core->export_env[i][j]);
-				has_equal = 1;
-			}
-			else
-				ft_printf("%c", core->export_env[i][j]);
-			j++;
-		}
-		if (has_equal == 1)
-			ft_printf("\"");
-		ft_printf("\n");
+		print_exo_env_loop(core, i, has_equal);
 		i++;
 	}
 }
 
 int	check_dup_exo(char **env, char **argv, char **temp, int j)
 {
-	int	k;
-	int	found;
-	int	var_len;
-	int	env_len;
+	t_int_struct	num;
 
-	k = 0;
-	found = 0;
-	var_len = 0;
-	env_len = 0;
-	while (env[k])
+	num = (t_int_struct){0};
+	num.k = 0;
+	num.found = 0;
+	num.var_len = 0;
+	num.env_len = 0;
+	while (env[num.k])
 	{
-		var_len = len_env_var(argv, j);
-		env_len = len_env_var(temp, k);
-		if (var_len == env_len)
+		num.var_len = len_env_var(argv, j);
+		num.env_len = len_env_var(temp, num.k);
+		if (num.var_len == num.env_len)
 		{
-			if (ft_strncmp(temp[k], argv[j], var_len) == 0)
+			if (ft_strncmp(temp[num.k], argv[j], num.var_len) == 0)
 			{
-				if (temp[k])
-					free(temp[k]);
-				temp[k] = ft_strdup(argv[j]);
-				found = 1;
+				if (temp[num.k])
+					free(temp[num.k]);
+				temp[num.k] = ft_strdup(argv[j]);
+				num.found = 1;
 			}
 		}
-		k++;
+		num.k++;
 	}
-	return (found);
+	return (num.found);
 }
 
 void	reverse_free(int i, char **temp)
@@ -109,11 +115,4 @@ void	reverse_free(int i, char **temp)
 	}
 	free(temp);
 	exit(2);
-}
-
-void	exp_error_msg(char *argv)
-{
-	ft_putstr_fd("export: `", 2);
-	ft_putstr_fd(argv, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
 }
