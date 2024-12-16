@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   multi_pipe.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
 /*   Updated: 2024/12/16 12:58:29 by aruckenb         ###   ########.fr       */
@@ -21,6 +21,7 @@ void	multi_pipe_end(int i, int *childids, t_data *core, char **files)
 	j = 0;
 	while (j <= i)
 	{
+		setup_signal_handler(SIGINT, sig_int_parent3);
 		waitpid(childids[j], &status, 0);
 		j++;
 	}

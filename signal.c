@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 10:58:45 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:26:24 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,21 @@ void	sig_int_parent(int signal)
 	}
 }
 
-void	sig_int_child(int signal)
+void	sig_quit_child(int signal)
 {
+	if (signal == SIGQUIT)
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+
+		g_interrupt_received = signal;
+	}
 	if (signal == SIGINT)
 	{
 		(void)signal;
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_on_new_line();
 		rl_redisplay();
-	}
-}
-
-void	sig_quit_child(int signal)
-{
-	if (signal == SIGINT)
-	{
-		ioctl(STDIN_FILENO, TIOCSTI, "Quit (core dumped)\n");
-		write(1, "Quit (core dumped)\n", 19);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-		g_interrupt_received = signal;
 	}
 }
 
@@ -59,12 +53,6 @@ void	sig_int_heredoc(int signal)
 		rl_replace_line("", 0);
 		g_interrupt_received = signal;
 	}
-}
-
-void	sig_int_parent2(int signal)
-{
-	write (1, "\n", 1);
-	(void)signal;
 }
 
 void	setup_signal_handler(int signal, void (*handler)(int))

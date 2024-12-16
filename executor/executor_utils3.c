@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 10:39:09 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 11:06:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:29:10 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,15 @@ void	execution_pro(t_cmdtable *cmd, t_data *core, t_var *vars, int fd[2])
 		path_finder(vars, core, core->env, cmd->args);
 	free_exit(core);
 	exit(core->exit_status);
+}
+
+void	sig_int_parent3(int signal)
+{
+	(void)signal;
+}
+
+void	sig_int_parent2(int signal)
+{
+	write (1, "\n", 1);
+	(void)signal;
 }

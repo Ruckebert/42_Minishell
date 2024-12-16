@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/15 17:22:53 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 13:37:58 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,20 @@ void	init_freethis(t_token *curr)
 	curr->freethis_num = 1;
 }
 
+int	ft_only_squote(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '\'')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 t_token	*expand_variables(t_token *curr, char **env,
 	t_data *core)
 {
@@ -66,7 +80,7 @@ t_token	*expand_variables(t_token *curr, char **env,
 		temp = ft_strchr(temp + 1, '$');
 	}
 	free_double_array(curr->freethis);
-	if (curr->endloop == 1)
+	if (curr->endloop == 1 && ft_strlen(curr->word) == 0)
 		return (ft_lstdelone(curr), tmp);
 	return (curr);
 }
