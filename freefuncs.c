@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 10:27:49 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 10:50:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	free_cmdtable(t_cmdtable **head)
 			while (tmp->args[i])
 			{
 				free(tmp->args[i]);
-				tmp->args[i] = NULL;
 				i++;
 			}
 			free(tmp->args);
@@ -55,7 +54,6 @@ void	free_cmdtable(t_cmdtable **head)
 		if (tmp->redir)
 			free(tmp->redir);
 		free(tmp);
-		tmp = NULL;
 		tmp = next;
 	}
 	*head = NULL;
