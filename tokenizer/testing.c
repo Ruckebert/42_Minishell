@@ -114,60 +114,6 @@ void printlist_both(t_token *head)
     printf("\n\n");
 }
 
-
-void    free_token_list(t_token *head)
-{
-	t_token	*tmp;
-
-	while (head != NULL)
-	{
-		tmp = head;
-		head = head->next;
-        if (tmp->word)
-        {
-		    free (tmp->word);
-            tmp->word = NULL;
-        }
-        free (tmp);
-        tmp = NULL;
-	}
-}
-
-void free_cmdtable(t_cmdtable **head)
-{
-    t_cmdtable *tmp;
-    t_cmdtable *next;
-    int i;
-
-    tmp = *head;
-    while (tmp != NULL)
-    {
-        next = tmp->next;
-
-        if (tmp->args != NULL)
-        {
-            for (i = 0; tmp->args[i]; i++)
-            {
-                free(tmp->args[i]);
-                tmp->args[i] = NULL;
-            }
-            free(tmp->args);
-            tmp->args = NULL;
-        }
-
-        if (tmp->redir)
-        {
-            free(tmp->redir);
-        }
-
-        free(tmp);
-        tmp = NULL;
-        tmp = next;
-    }
-    *head = NULL;
-}
-
-
 void print_cmdtable(t_cmdtable *cmd)
 {
     int i;
