@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 18:23:05 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 09:54:38 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ void	export_malloc_error(t_data *core, char **temp);
 int		multi_array_counter(char **argc);
 
 /*Builtin Functions*/
+int		checker_dup(char **argv, char **temp, int j, int k);
 int		exit_loop(t_data *core, int i, int j);
 int		exit_error_handler(int j, t_data *core);
 int		second_no(int *no, int i, t_cmdtable *cmd);

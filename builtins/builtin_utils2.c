@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 09:46:50 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 11:30:13 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 09:54:23 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,15 @@ int	multi_array_counter(char **argc)
 	while (argc[i])
 		i++;
 	return (i);
+}
+
+int	checker_dup(char **argv, char **temp, int j, int k)
+{
+	if (check_dup_exo(temp, argv, temp, j) == 1)
+		return (1);
+	if (argv_checker(argv, 1, 0) == 1)
+		return (-1);
+	free(temp[k - j]);
+	temp[k - j] = ft_strdup(argv[j]);
+	return (1);
 }

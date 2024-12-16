@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   freefuncs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 16:06:01 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 09:56:42 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    free_token_list(t_token *head)
+void	free_token_list(t_token *head)
 {
 	t_token	*tmp;
 
@@ -30,7 +30,7 @@ void    free_token_list(t_token *head)
 	}
 }
 
-void free_cmdtable(t_cmdtable **head)
+void	free_cmdtable(t_cmdtable **head)
 {
 	t_cmdtable	*tmp;
 	t_cmdtable	*next;
@@ -40,7 +40,6 @@ void free_cmdtable(t_cmdtable **head)
 	while (tmp != NULL)
 	{
 		next = tmp->next;
-
 		if (tmp->args != NULL)
 		{
 			for (i = 0; tmp->args[i]; i++)
@@ -52,9 +51,7 @@ void free_cmdtable(t_cmdtable **head)
 			tmp->args = NULL;
 		}
 		if (tmp->redir)
-		{
 			free(tmp->redir);
-		}
 		free(tmp);
 		tmp = NULL;
 		tmp = next;

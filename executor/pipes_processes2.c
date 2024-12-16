@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_processes2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 18:26:44 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 09:55:50 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	no_pipe_status(char **files, int status, t_data *core, pid_t second)
 
 void	no_pipe_child_proc(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
+	//setup_signal_handler(SIGQUIT, sig_quit_child); I think here
 	if (vars->del_files)
 		simple_free(vars->del_files);
 	if (cmd->next != NULL)
