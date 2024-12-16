@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:36:24 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 11:00:50 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 11:12:14 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ void	path_finder_exe_lop(t_var *vars, char **envp, char **argv, int i)
 {
 	vars->comm = ft_strjoin(vars->store[i], "/");
 	if (vars->comm == NULL)
-		error_handler();
+		error_handler(NULL);
 	vars->full_comm = ft_strjoin(vars->comm, argv[0]);
 	if (vars->full_comm == NULL)
-		error_handler();
+		error_handler(NULL);
 	free(vars->comm);
 	execve(vars->full_comm, argv, envp);
 	free(vars->full_comm);

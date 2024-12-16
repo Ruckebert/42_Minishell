@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 11:05:59 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:22:07 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	multi_pipe_process(int *fd, t_var *vars,
 	t_cmdtable *current_cmd, t_data *core)
 {
 	if (vars->childid == -1)
-		error_handler();
+		error_handler(core);
 	if (vars->childid == 0)
 	{
 		multi_pipe_fd(fd, vars, current_cmd, core);
@@ -79,6 +79,7 @@ void	multi_pipe_process(int *fd, t_var *vars,
 		close(fd[1]);
 		vars->prev_fd = fd[0];
 	}
+	close(fd[0]);
 }
 
 int	multi_pipe_loop(t_var *vars, t_cmdtable *current_cmd,
@@ -92,7 +93,7 @@ int	multi_pipe_loop(t_var *vars, t_cmdtable *current_cmd,
 	{
 		current_cmd->isprinted = 0;
 		if (current_cmd->next && pipe(fd) == -1)
-			error_handler();
+			error_handler(core);
 		if (current_cmd->redir_type != 0)
 			current_cmd = multi_redirections(current_cmd, core, vars);
 		vars->childid = fork();
