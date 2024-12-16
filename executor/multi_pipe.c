@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 12:22:07 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:58:29 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	multi_pipe_process(int *fd, t_var *vars,
 		close(fd[1]);
 		vars->prev_fd = fd[0];
 	}
-	close(fd[0]);
 }
 
 int	multi_pipe_loop(t_var *vars, t_cmdtable *current_cmd,

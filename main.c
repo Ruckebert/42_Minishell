@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 11:44:24 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:57:34 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	main(int argc, char *argv[], char **env)
 	core.env = copy_env(env, &core);
 	if (core.env == NULL)
 		return (2);
-	//core.env = NULL; //Testing
 	(void)argc;
 	(void)argv;
 	core.export_env[0] = NULL;
