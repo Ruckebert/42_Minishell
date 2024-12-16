@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_pipe.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 11:05:59 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:33:52 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	multi_pipe_end(int i, int *childids, t_data *core, char **files)
 	}
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
+	sig_quit_print(core->exit_status);
 	here_doc_file_del(files);
 	free(childids);
 	free_exit(core);

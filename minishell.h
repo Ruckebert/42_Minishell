@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 10:18:20 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:33:15 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,7 +315,8 @@ void				frexit(t_token *newtoken, t_token *token, t_data *core);
 void				init_leading_space(t_token *newtoken, t_token *token,
 						t_data *core, int oldpos);
 void				sig_quit_child(int signal);
-
+void				sig_quit_parent(int signal);
+void				sig_quit_print(int status);
 /*for testing*/
 void				printlist_both(t_token *head);
 void				printCharPointerArray(char **arr);
