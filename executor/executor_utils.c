@@ -6,15 +6,17 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:09:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 10:30:29 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 11:12:49 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	error_handler(void)
+void	error_handler(t_data *core)
 {
 	perror("A Error Has occured");
+	if (core != NULL)
+		free_exit(core);
 	exit(1);
 }
 

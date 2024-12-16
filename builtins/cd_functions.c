@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:22:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/11 10:32:07 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:31:11 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	cd_oldpwd(char *old_pwd, t_data *core)
 	if (core->env[i] == NULL)
 	{
 		ft_putstr_fd("cd: OLDPWD not set\n", 2);
+		free(old_pwd);
 		return ;
 	}
 	ft_printf("%s\n", core->direct);
@@ -56,7 +57,13 @@ void	cd_empty(char *old_pwd, t_data *core)
 		}
 		i++;
 	}
-	if (chdir(core->direct) == -1)
+	if (core->env[i] == NULL)
+	{
+		ft_putstr_fd("cd: HOME not set\n", 2);
+		free(old_pwd);
+		return ;
+	}
+	else if (chdir(core->direct) == -1)
 		core->exit_status = 1;
 	envi_update(old_pwd, core);
 	free(old_pwd);

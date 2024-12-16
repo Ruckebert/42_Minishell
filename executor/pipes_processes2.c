@@ -85,7 +85,6 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 		builtin_cmds(cmd, core);
 	else
 	{
-		setup_signal_handler(SIGQUIT, sig_quit_child);
 		second = fork();
 		if (second == -1)
 			pipe_error(fd, core);
