@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 10:58:04 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:57:51 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 void	no_pipe_status(char **files, int status, t_data *core, pid_t second)
 {
 	setup_signal_handler(SIGINT, sig_int_parent2);
-
 	waitpid(second, &status, 0);
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
@@ -65,7 +64,6 @@ void	no_pipe_status(char **files, int status, t_data *core, pid_t second)
 
 void	no_pipe_child_proc(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
-	//setup_signal_handler(SIGQUIT, sig_quit_child);// I think here
 	if (vars->del_files)
 		simple_free(vars->del_files);
 	if (cmd->next != NULL)
@@ -87,7 +85,6 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 		builtin_cmds(cmd, core);
 	else
 	{
-		setup_signal_handler(SIGQUIT, sig_quit_child);
 		second = fork();
 		if (second == -1)
 			pipe_error(fd, core);

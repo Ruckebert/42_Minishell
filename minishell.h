@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 10:18:20 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 11:23:20 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,6 @@ typedef struct s_parse_context
 
 /*Environment Functions*/
 char				**copy_env(char **env, t_data *core);
-void				pwd_update(t_data *core);
 void				envi_update(char *old_pwd, t_data *core);
 char				**free_environment(char **new_env, int i);
 
@@ -151,7 +150,6 @@ unsigned long long	ft_strtoull(const char *str, int *j,
 void				simple_free(char **str);
 void				expander_freer(t_exp *doc);
 void				here_doc_null_msg(t_cmdtable *cmd);
-void				closing_cmds_parent(int cmds, int fd[cmds - 1][2]);
 int					cmd_count(t_cmdtable *cmd);
 void				export_malloc_error(t_data *core, char **temp);
 int					multi_array_counter(char **argc);
@@ -172,7 +170,6 @@ void				print_exo_env(t_data *core, int i);
 char				**new_exo_env(char **env, char **argv, int argc, int count);
 int					check_dup_exo(char **env, char **argv, char **temp, int j);
 int					finder(int found, int i, char **argv, char **env);
-char				**unset_exo(t_data *core, char **env, int i, char **argv);
 char				**unset_env(t_data *core, char **env, int i, char **argv);
 void				insert_new_env(t_data *core, char **temp, char **temp_env);
 
@@ -201,7 +198,7 @@ int					here_doc_counter(t_cmdtable *cmd);
 int					pipe_checker(t_cmdtable *cmd);
 void				pipe_error(int *fd, t_data *core);
 int					executor(t_cmdtable *cmd, t_data *core);
-void				error_handler(void);
+void				error_handler(t_data *core);
 void				error_handler_split(char **split);
 void				free_split(char **split);
 void				error_handler_fd(int fd, t_cmdtable *cmd);
@@ -315,14 +312,7 @@ void				frexit(t_token *newtoken, t_token *token, t_data *core);
 void				init_leading_space(t_token *newtoken, t_token *token,
 						t_data *core, int oldpos);
 void				sig_quit_child(int signal);
-
-/*for testing*/
-void				printlist_both(t_token *head);
-void				printCharPointerArray(char **arr);
-void				printlist_type(t_token *head);
-void				printlist(t_token *head);
 void				free_token_list(t_token *head);
-void				print_cmdtable(t_cmdtable *cmd);
 void				free_cmdtable(t_cmdtable **head);
 
 #endif

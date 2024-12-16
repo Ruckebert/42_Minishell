@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:56:10 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 10:38:36 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 11:03:33 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,6 @@ void	expander_freer(t_exp *doc)
 	if (doc->env_value)
 		free(doc->env_value);
 	exit(1);
-}
-
-void	closing_cmds_parent(int cmds, int fd[cmds - 1][2])
-{
-	int	j;
-
-	j = 0;
-	while (j < cmds - 1)
-	{
-		close(fd[j][0]);
-		close(fd[j][1]);
-		j++;
-	}
 }
 
 int	cmd_count(t_cmdtable *cmd)

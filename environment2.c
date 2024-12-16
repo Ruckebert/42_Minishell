@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 10:53:13 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:56:38 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ void	other_pwd_type(int num, t_data *core)
 	argv = NULL;
 	if (core->empty_cd == 2)
 	{
-		temp = ft_calloc(num + 1, sizeof(char *));
+		temp = ft_calloc(num + 2, sizeof(char *));
 		if (!temp)
 			export_malloc_error(core, NULL);
 		dup_pwd_env(core, temp, argv);
 	}
 	else if (core->empty_cd == 0)
 	{
-		temp = ft_calloc(num + 2, sizeof(char *));
+		temp = ft_calloc(num + 3, sizeof(char *));
 		if (!temp)
 			export_malloc_error(core, NULL);
 		dup_pwd_env(core, temp, argv);
@@ -78,7 +78,7 @@ void	create_pwd(t_data *core, char *old_pwd)
 		num++;
 	if (core->empty_cd == 1)
 	{
-		temp = ft_calloc(num + 1, sizeof(char *));
+		temp = ft_calloc(num + 2, sizeof(char *));
 		if (!temp)
 			export_malloc_error(core, NULL);
 		argv = ft_strjoin("OLDPWD=", old_pwd);

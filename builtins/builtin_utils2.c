@@ -6,33 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 09:46:50 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 09:54:23 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 11:01:47 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	pwd_update(t_data *core)
-{
-	int		i;
-	char	*temp;
-
-	i = 0;
-	while (core->env[i])
-	{
-		if (ft_strncmp(core->env[i], "PWD=", 4) == 0)
-		{
-			temp = ft_substr(core->env[i], 0, 4);
-			free(core->env[i]);
-			core->env[i] = ft_strjoin(temp, core->direct);
-			if (!core->env[i] || !temp)
-				free_environment(core->env, i);
-			free(temp);
-		}
-		i++;
-	}
-	return ;
-}
 
 int	ft_strcmp(char *s1, char *s2)
 {
