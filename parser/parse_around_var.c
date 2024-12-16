@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_around_var.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/16 13:46:36 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:58:01 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	handle_non_expandable(t_token *curr, t_parse_context *ctx)
 		free(tmp);
 	}
 	curr->word = res;
-
 }
 
 void	handle_expandable_var(t_token *curr, t_parse_context *ctx, char **env)

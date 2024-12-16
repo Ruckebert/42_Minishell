@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/16 13:49:01 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:50:22 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,13 @@ void	split_to_token(t_token *curr)
 t_cmdtable	*parse(t_data *core, t_token *token)
 {
 	handle_heredoc_delimiter(token);
-//	printlist(token);
 	split_vars_by_sep(token);
-//	printlist(token);
 	if (redir_before_nonexpandable(token, core) != 0)
 		return (NULL);
 	expand_var(token, core->env, core);
-//	printlist(token);
 	expand_var_in_doublequote(token, core->env, core);
-//	printlist(token);
 	remove_singlequotes(token);
-//	printlist(token);
 	fuse_all_0space_nodes(token);
-//	printlist(token);
 	if (first_token_directory(token, core) != 0)
 		return (NULL);
 	if (outredir_to_directory(token, core) != 0)
