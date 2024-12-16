@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 11:23:20 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/16 15:19:00 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,8 @@ void				exit_com(t_data *core);
 void				builtin_cmds(t_cmdtable *cmd, t_data *core);
 
 /*Executor Functions*/
+void				pipe_wait(int status, pid_t second,
+						t_cmdtable *cmd, t_data *core);
 void				fd_exit(int fd, t_cmdtable *cmd, t_data *core);
 int					redirection_checker(t_cmdtable *cmd, t_var *vars);
 t_cmdtable			*return_pipe(t_cmdtable *cmd);
@@ -316,11 +318,6 @@ void				sig_quit_parent(int signal);
 void				sig_int_parent3(int signal);
 void				free_token_list(t_token *head);
 void				free_cmdtable(t_cmdtable **head);
-
-/*for testing*/
-void				printlist_both(t_token *head);
-void				printCharPointerArray(char **arr);
-void				printlist_type(t_token *head);
-void				printlist(t_token *head);
+void				init_freethis(t_token *curr);
 
 #endif

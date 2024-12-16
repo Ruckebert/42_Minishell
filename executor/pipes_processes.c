@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_processes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 14:30:16 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:57:29 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,7 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 		child_parent_execution(cmd, core, vars, fd);
 	else
 	{
-		setup_signal_handler(SIGINT, sig_int_parent2);
-		waitpid(second, &status, 0);
-		if (WIFEXITED(status))
-			core->exit_status = WEXITSTATUS(status);
+		pipe_wait(status, second, cmd, core);
 		here_doc_file_del(files);
-		free_cmdtable(&cmd);
 	}
 }

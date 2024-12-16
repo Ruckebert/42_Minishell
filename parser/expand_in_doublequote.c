@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_in_doublequote.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/16 13:37:58 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 15:16:46 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,6 @@ void	free_double_array(char **array)
 		i++;
 	}
 	free(array);
-}
-
-void	init_freethis(t_token *curr)
-{
-	curr->freethis = malloc (2 * sizeof(char *));
-	curr->freethis[0] = curr->word;
-	curr->freethis[1] = NULL;
-	curr->freethis_num = 1;
 }
 
 int	ft_only_squote(char *str)
