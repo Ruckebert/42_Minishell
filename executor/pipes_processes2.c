@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 12:33:57 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:28:54 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,9 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 void	no_pipe_status(char **files, int status, t_data *core, pid_t second)
 {
 	setup_signal_handler(SIGINT, sig_int_parent2);
-
 	waitpid(second, &status, 0);
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
-	sig_quit_print(core->exit_status);
 	here_doc_file_del(files);
 }
 

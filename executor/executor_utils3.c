@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 10:39:09 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 12:34:56 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:29:10 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,9 @@ void	execution_pro(t_cmdtable *cmd, t_data *core, t_var *vars, int fd[2])
 	exit(core->exit_status);
 }
 
-void	sig_quit_print(int status)
+void	sig_int_parent3(int signal)
 {
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-	{
-		if (__WCOREDUMP(status))
-			write(1, "Quit (core dumped)\n", 19);
-		else
-			write(1, "Quit\n", 5);
-	}
+	(void)signal;
 }
 
 void	sig_int_parent2(int signal)

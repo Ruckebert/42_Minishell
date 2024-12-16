@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 12:33:42 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:30:16 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,11 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core,
 	parent_pipe(cmd, core, vars, fd);
 	close(fd[0]);
 	close(fd[1]);
+	setup_signal_handler(SIGINT, sig_int_parent3);
 	waitpid(vars->childid, &status, 0);
 	waitpid(vars->childid2, &status, 0);
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
-	sig_quit_print(core->exit_status);
 	free_exit(core);
 	exit(core->exit_status);
 }
@@ -101,6 +101,7 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 		free_cmdtable(&cmd);
 		return ;
 	}
+	setup_signal_handler(SIGQUIT, sig_quit_child);
 	second = fork();
 	if (second == -1)
 		pipe_error(fd, core);
@@ -108,6 +109,7 @@ void	single_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 		child_parent_execution(cmd, core, vars, fd);
 	else
 	{
+		setup_signal_handler(SIGINT, sig_int_parent2);
 		waitpid(second, &status, 0);
 		if (WIFEXITED(status))
 			core->exit_status = WEXITSTATUS(status);

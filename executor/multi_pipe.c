@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 12:33:52 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:29:58 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void	multi_pipe_end(int i, int *childids, t_data *core, char **files)
 	j = 0;
 	while (j <= i)
 	{
+		setup_signal_handler(SIGINT, sig_int_parent3);
 		waitpid(childids[j], &status, 0);
 		j++;
 	}
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
-	sig_quit_print(core->exit_status);
 	here_doc_file_del(files);
 	free(childids);
 	free_exit(core);
