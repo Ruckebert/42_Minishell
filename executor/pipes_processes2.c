@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_processes2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 11:08:24 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 18:26:44 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	parent_pros(t_cmdtable *cmd, t_var *vars, t_data *core, int *fd)
 
 void	no_pipe_status(char **files, int status, t_data *core, pid_t second)
 {
-	setup_signal_handler(SIGINT, sig_handleINT_parent2);
+	setup_signal_handler(SIGINT, sig_int_parent2);
 	waitpid(second, &status, 0);
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
@@ -85,6 +85,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 		builtin_cmds(cmd, core);
 	else
 	{
+		setup_signal_handler(SIGQUIT, sig_quit_child); // bruh where should this go
 		second = fork();
 		if (second == -1)
 			pipe_error(fd, core);

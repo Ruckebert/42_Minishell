@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/13 16:33:04 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/15 17:23:55 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static void	handle_expandable_var(t_token **curr, char **env)
 	if (ft_strchr((*curr)->word, ' ') != NULL)
 		split_to_token(*curr);
 	*curr = tmp;
-	
 }
 
 t_token	*handle_non_expandable_var(t_token *curr)

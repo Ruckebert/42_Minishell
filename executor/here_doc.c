@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 11:08:04 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/15 17:50:39 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ char	*here_doc_tempfile(t_cmdtable *cmd, t_data *core, int fd)
 	t_exp	doc;
 
 	doc = (t_exp){0};
-	setup_signal_handler(SIGINT, sig_handleINT_heredoc);
+	setup_signal_handler(SIGINT, sig_int_heredoc);
 	doc.filename = ft_nbr_pointhex((intptr_t)cmd->redir);
 	doc.tmp_fd = open(doc.filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (doc.tmp_fd == -1)

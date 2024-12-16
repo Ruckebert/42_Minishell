@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/12 14:25:18 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/15 16:21:59 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,8 @@ void	make_tokens(t_data *core, t_token *token, int pos)
 			word = getquote(&pos, &oldpos, core, token);
 		newtoken = ft_lstnew(word);
 		free(word);
-		if (!newtoken)
-		{
-			free_token_list(token);
-			free_exit(core);
-			exit(1);
-		}
-		if (token->next != NULL && core->line[oldpos - 1] == ' ')
-			newtoken->leading_space = 1;
-		else
-			newtoken->leading_space = 0;
+		frexit (newtoken, token, core);
+		init_leading_space(newtoken, token, core, oldpos);
 		ft_lstadd_back(&token, newtoken);
 		newtoken->type = whichtoken(core->line[oldpos]);
 	}
@@ -106,17 +98,12 @@ t_token	*tokenize(t_data *core)
 
 	pos = 0;
 	token = NULL;
-//	printlist(token);
 	make_start_token(&token, core);
 	make_tokens(core, token, pos);
-//	printlist(token);
 	make_end_token(&token, core);
-//	printlist(token);
 	combine_double_redirect(token, core);
-//	printlist(token);
 	remove_empty_quotes(token);
-
 	if (synthax_check(token, core) != 0)
-		return (free_token_list(token),NULL);
+		return (free_token_list(token), NULL);
 	return (token);
 }
