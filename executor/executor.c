@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 09:05:41 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:30:31 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 	else if (cmd->isbuiltin == 6)
 		env(core);
 	else if (cmd->isbuiltin == 7)
-		exit_com(core);
+		exit_com(core, cmd);
 	return ;
 }
 

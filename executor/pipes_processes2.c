@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_processes2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 14:28:54 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:52:27 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 	vars->file_error = 0;
 	here_doc_creator(cmd, core, &files, 0);
 	vars->del_files = files;
+	core->empty_cd = 3;
 	if ((cmd->isbuiltin != 0 && cmd->isbuiltin != 1) || cmd->isprinted == 2)
 		builtin_cmds(cmd, core);
 	else

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:09:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 11:12:49 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 09:58:26 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void	error_handler_fd(int fd, t_cmdtable *cmd)
 	if (cmd->isprinted != 1)
 	{
 		ft_putstr_fd(cmd->redir, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		if ((stat(cmd->redir, &filestat) == 0))
+			ft_putstr_fd(": Permission denied\n", 2);
+		else
+			ft_putstr_fd(": No such file or directory\n", 2);
 		cmd->isprinted = 1;
 	}
 	return ;

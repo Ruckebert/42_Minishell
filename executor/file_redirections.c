@@ -6,25 +6,26 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:34:33 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 10:38:29 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:01:37 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	close_fail(t_data *core, int *fd)
+{
+	if (fd[0] != -1)
+		close(fd[0]);
+	if (fd[1] != -1)
+		close(fd[1]);
+	free_exit(core);
+	exit(1);
+}
+
 void	file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
 	if (access(cmd->redir, R_OK) != 0)
-	{
-		if (cmd->isprinted != 1)
-		{
-			ft_putstr_fd(cmd->redir, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-		}
-		core->exit_status = 1;
-		free_exit(core);
-		exit(core->exit_status);
-	}
+		fd_exit(0, cmd, core);
 	vars->fdin = open(cmd->redir, O_RDONLY);
 	if (vars->fdin == -1)
 		fd_exit(fd[1], cmd, core);
@@ -34,6 +35,8 @@ void	file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			fd_exit(fd[1], cmd, core);
 	}
 	close(vars->fdin);
+	//if (close(vars->fdin) == -1)
+	//	close_fail(core, fd);
 }
 
 void	file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
@@ -47,6 +50,8 @@ void	file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			fd_exit(fd[0], cmd, core);
 	}
 	close(vars->fdout);
+	//if (close(vars->fdout) == -1)
+	//	close_fail(core, fd);
 }
 
 void	file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
@@ -60,6 +65,8 @@ void	file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			fd_exit(fd[0], cmd, core);
 	}
 	close(vars->fdout);
+	//if (close(vars->fdout) == -1)
+	//	close_fail(core, fd);
 }
 
 void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
