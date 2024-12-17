@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 11:08:28 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:37:19 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	main_exit(t_data *core)
 
 void	main_core(t_data *core, t_token	*token, int status)
 {
+	core->empty_cd = 0;
 	if (g_interrupt_received == 3)
-		write(1, "Quit (core dumped)\n", 19);
-//	printf("HERE:%d", g_interrupt_received);
+		ft_putstr_fd(2, "Quit (core dumped)\n");
 	core->line = readline("PeePeeShell$ > ");
 	if (core->line == NULL)
 		main_exit(core);
