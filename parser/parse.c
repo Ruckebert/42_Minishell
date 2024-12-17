@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/16 14:50:22 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:32:37 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,63 @@ void	split_to_token(t_token *curr)
 	free_double_array(arr);
 }
 
+void printlist(t_token *head)
+{
+    t_token *curr;
+
+    if (!head)
+        return;
+
+    // Print table header
+    printf("%-20s | %-4s | %s\n", "WORD", "TYPE", "LEADING_SPACE");
+    printf("----------------------|------|--------------\n");
+
+    // Traverse and print each token in table format
+    curr = head;
+    while (curr)
+    {
+        // %-20s ensures the word is left-aligned with 20 characters space
+        // %-4d ensures the type is left-aligned with 4 characters space
+        // %d prints the leading_space value
+        printf("%-20s | %-4i | %i\n", curr->word, curr->type, curr->leading_space);
+        curr = curr->next;
+    }
+    printf("\n\n");
+}
+
+int	checkquotes(t_token *token, t_data *core)
+{
+	t_token	*curr;
+	int		len;
+
+	len = 0;
+	curr = token;
+	while (curr)
+	{
+		if (curr->type == 4 || curr->type == 5)
+		{
+			len = strlen(curr->word);
+			if ((len < 2)
+				|| ((curr->word[0] == '\'' && curr->word[len - 1] != '\'')
+					|| (curr->word[0] == '\"' && curr->word[len - 1] != '\"')))
+			{
+				printf("missing quote\n");
+				core->exit_status = 1;
+				free_token_list(token);
+				return (1);
+			}
+		}
+		curr = curr->next;
+	}
+	return (0);
+}
+
+
 t_cmdtable	*parse(t_data *core, t_token *token)
 {
+//	printlist(token);
+	if (checkquotes(token, core))
+		return (NULL);
 	handle_heredoc_delimiter(token);
 	split_vars_by_sep(token);
 	if (redir_before_nonexpandable(token, core) != 0)
