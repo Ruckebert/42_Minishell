@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:08:59 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 11:33:36 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 09:07:54 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void	exit_com(t_data *core)
 	j = exit_loop(core, i, j);
 	if (exit_error_handler(j, core) == 1)
 		return ;
+	//write(1, "exit\n", 6); i dont know if i should include this
 	free_exit(core);
 	exit(core->exit_status);
 }

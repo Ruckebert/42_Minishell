@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 14:57:29 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 09:08:25 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	parent_pipe(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 	{
 		cmd->isprinted = 0;
 		cmd = return_pipe(cmd);
+		core->cmd = cmd;
 		if (cmd->redir_type != 0)
 			cmd = multi_redirections(cmd, core, vars);
 		vars->file_error = 0;
