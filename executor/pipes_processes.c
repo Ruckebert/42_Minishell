@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_processes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
 /*   Updated: 2024/12/17 12:38:10 by aruckenb         ###   ########.fr       */

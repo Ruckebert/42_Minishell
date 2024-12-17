@@ -17,7 +17,7 @@ OBJECTSTOK = $(SOURCETOK:.c=.o)
 
 OBJECTSPARSE = $(SOURCEPARSE:.c=.o)
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 
 COMP = cc -lreadline
 

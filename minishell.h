@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 12:29:26 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:30:21 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,6 @@ int					is_redir(t_token	*token);
 void				ft_lstdelone(t_token *lst);
 void				remove_empty_quotes(t_token *token);
 void				setup_signal_handler(int signal, void (*handler)(int));
-void				sig_int_child(int signal);
 void				sig_int_parent(int signal);
 void				sig_int_parent2(int signal);
 void				sig_int_heredoc(int signal);

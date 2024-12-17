@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:46:34 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 11:52:27 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 10:43:37 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	no_pipe_exe(t_cmdtable *cmd, t_data *core, t_var *vars, int status)
 		builtin_cmds(cmd, core);
 	else
 	{
+		setup_signal_handler(SIGQUIT, sig_quit_child);
 		second = fork();
 		if (second == -1)
 			pipe_error(fd, core);
