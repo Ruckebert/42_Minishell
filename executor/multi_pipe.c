@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_pipe.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 12:35:56 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:42:40 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	multi_pipe_process(int *fd, t_var *vars,
 		multi_pipe_fd(fd, vars, current_cmd, core);
 		if (current_cmd->isbuiltin > 1)
 		{
-			builtin_cmds(current_cmd, core);
 			free(vars->childids);
+			builtin_cmds(current_cmd, core);
 			free_exit(core);
 			exit(1);
 		}

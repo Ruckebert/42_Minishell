@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:08:59 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 12:28:12 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:42:56 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	exit_com(t_data *core, t_cmdtable *cmd)
 	if (exit_error_handler(j, core, cmd) == 1)
 		return ;
 	if (core->empty_cd == 3)
-		write(1, "exit\n", 5);
+		write(2, "exit\n", 5);
 	free_exit(core);
 	exit(core->exit_status);
 }

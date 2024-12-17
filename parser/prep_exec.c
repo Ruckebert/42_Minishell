@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/16 15:01:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:32:48 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,98 @@ void	*process_tokens(t_cmdtable **cmd, t_token *curr)
 	return ((void *)1);
 }
 
+void print_cmdtable(t_cmdtable *cmd)
+{
+    int i;
+    t_cmdtable *current = cmd;
+
+    printf("-------------------------------------------------------------------------------------------\n");
+    printf("| %-5s | %-20s | %-10s | %-15s | %-10s | %-10s |\n", 
+           "Node", "Arguments", "Builtin", "Redir Type", "Redir", "Pipe After");
+    printf("-------------------------------------------------------------------------------------------\n");
+
+    int node_num = 1;
+    while (current != NULL)
+    {
+        // Print node number
+        printf("| %-5d | ", node_num);
+
+        // Print arguments
+        if (current->args)
+        {
+            printf("[");
+            for (i = 0; current->args[i] != NULL; i++)
+            {
+                if (current->args[i] == NULL )  // Safety check for NULL values
+                {
+                    printf("NULL");
+                    break;
+                }
+                printf("%s", current->args[i]);
+                if (current->args[i + 1] != NULL)
+                    printf(", ");
+            }
+            printf("] ");
+        }
+        else
+        {
+            printf("No Args           ");
+        }
+
+        // Print whether it is a built-in command
+        printf("| %-10d | ", current->isbuiltin);
+
+        // Print redir_type and redir values
+        printf("| %-15d | %-10s | ", current->redir_type, current->redir ? current->redir : "No Redir");
+
+        // Print whether it has a pipe after
+        printf("%-10s |\n", current->has_pipe_after ? "Yes" : "No");
+
+        // Print divider line
+        printf("-------------------------------------------------------------------------------------------\n");
+
+        // Safety check before moving to the next node
+        if (current->next == current)  // Prevent self-referencing nodes
+        {
+            printf("Error: Self-referencing node detected. Aborting to prevent infinite loop.\n");
+            break;
+        }
+
+        current = current->next;
+        node_num++;
+    }
+}
+
+void printlist(t_token *head)
+{
+    t_token *curr;
+
+    if (!head)
+        return;
+
+    // Print table header
+    printf("%-20s | %-4s | %s\n", "WORD", "TYPE", "LEADING_SPACE");
+    printf("----------------------|------|--------------\n");
+
+    // Traverse and print each token in table format
+    curr = head;
+    while (curr)
+    {
+        // %-20s ensures the word is left-aligned with 20 characters space
+        // %-4d ensures the type is left-aligned with 4 characters space
+        // %d prints the leading_space value
+        printf("%-20s | %-4i | %i\n", curr->word, curr->type, curr->leading_space);
+        curr = curr->next;
+    }
+    printf("\n\n");
+}
+
 t_cmdtable	*prep_nodes_for_exec(t_token *token, t_data *core)
 {
 	t_cmdtable	*cmd;
 	t_token		*curr;
 
-	cmd = (t_cmdtable *){0};
+//	cmd = (t_cmdtable *){0};
 	if (!token)
 		return (NULL);
 	curr = token;
@@ -77,10 +163,13 @@ t_cmdtable	*prep_nodes_for_exec(t_token *token, t_data *core)
 	{
 		free_token_list(token);
 		free_exit(core);
+		if (cmd->redir)
+			free(cmd->redir);
+		free(cmd);
 		exit(core->exit_status);
 	}
 	find_builtins(cmd);
 	if (token)
-		free_token_list(token);
+		free_token_list(token);		
 	return (cmd);
 }

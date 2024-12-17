@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/17 12:32:37 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:26:33 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,30 +80,6 @@ void	split_to_token(t_token *curr)
 	free_double_array(arr);
 }
 
-void printlist(t_token *head)
-{
-    t_token *curr;
-
-    if (!head)
-        return;
-
-    // Print table header
-    printf("%-20s | %-4s | %s\n", "WORD", "TYPE", "LEADING_SPACE");
-    printf("----------------------|------|--------------\n");
-
-    // Traverse and print each token in table format
-    curr = head;
-    while (curr)
-    {
-        // %-20s ensures the word is left-aligned with 20 characters space
-        // %-4d ensures the type is left-aligned with 4 characters space
-        // %d prints the leading_space value
-        printf("%-20s | %-4i | %i\n", curr->word, curr->type, curr->leading_space);
-        curr = curr->next;
-    }
-    printf("\n\n");
-}
-
 int	checkquotes(t_token *token, t_data *core)
 {
 	t_token	*curr;
@@ -134,7 +110,6 @@ int	checkquotes(t_token *token, t_data *core)
 
 t_cmdtable	*parse(t_data *core, t_token *token)
 {
-//	printlist(token);
 	if (checkquotes(token, core))
 		return (NULL);
 	handle_heredoc_delimiter(token);
