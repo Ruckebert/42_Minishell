@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:08:59 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 09:07:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:28:12 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,19 @@ int	exit_loop(t_data *core, int i, int j)
 	return (0);
 }
 
-int	exit_error_handler(int j, t_data *core)
+int	exit_error_handler(int j, t_data *core, t_cmdtable *cmd)
 {
-	if (j != -1 && core->cmd->args[1] == NULL)
+	if (j != -1 && cmd->args[1] == NULL)
 	{
 	}
-	else if (j != -1 && core->cmd->args[2] == NULL)
+	else if (j != -1 && cmd->args[2] == NULL)
 	{
-		if (ft_atoi(core->cmd->args[1]) < 0)
-			core->exit_status = 256 - (ft_atoi(core->cmd->args[1]) * -1);
+		if (ft_atoi(cmd->args[1]) < 0)
+			core->exit_status = 256 - (ft_atoi(cmd->args[1]) * -1);
 		else
-			core->exit_status = ft_atoi(core->cmd->args[1]) % 256;
+			core->exit_status = ft_atoi(cmd->args[1]) % 256;
 	}
-	else if (j != -1 && core->cmd->args[2] != NULL)
+	else if (j != -1 && cmd->args[2] != NULL)
 	{
 		core->exit_status = 1;
 		ft_putstr_fd("exit: too many arguments\n", 2);
@@ -89,14 +89,14 @@ int	exit_error_handler(int j, t_data *core)
 	else if (j == -1)
 	{
 		ft_putstr_fd("exit: ", 2);
-		ft_putstr_fd(core->cmd->args[1], 2);
+		ft_putstr_fd(cmd->args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		core->exit_status = 2;
 	}
 	return (0);
 }
 
-void	exit_com(t_data *core)
+void	exit_com(t_data *core, t_cmdtable *cmd)
 {
 	int		i;
 	int		j;
@@ -105,19 +105,20 @@ void	exit_com(t_data *core)
 	i = 1;
 	j = 0;
 	temp = NULL;
-	if (core->cmd->args[1])
+	if (cmd->args[1])
 	{
-		temp = ft_strtrim(core->cmd->args[1], " ");
+		temp = ft_strtrim(cmd->args[1], " ");
 		if (!temp)
 			export_malloc_error(core, NULL);
-		free(core->cmd->args[1]);
-		core->cmd->args[1] = ft_strdup(temp);
+		free(cmd->args[1]);
+		cmd->args[1] = ft_strdup(temp);
 		free(temp);
 	}
 	j = exit_loop(core, i, j);
-	if (exit_error_handler(j, core) == 1)
+	if (exit_error_handler(j, core, cmd) == 1)
 		return ;
-	//write(1, "exit\n", 6); i dont know if i should include this
+	if (core->empty_cd == 3)
+		write(1, "exit\n", 5);
 	free_exit(core);
 	exit(core->exit_status);
 }

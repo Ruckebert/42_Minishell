@@ -141,6 +141,8 @@ void				envi_update(char *old_pwd, t_data *core);
 char				**free_environment(char **new_env, int i);
 
 /*Utils/Free*/
+void				close_fail(t_data *core, int *fd);
+void				type_close(int fd, t_data *core);
 void				free_exit(t_data *core);
 int					ft_strcmp(char *s1, char *s2);
 int					len_env_var(char **argv, int j);
@@ -158,7 +160,7 @@ int					multi_array_counter(char **argc);
 int					argv_checker(char **argv, int i, int error);
 int					checker_dup(char **argv, char **temp, int j, int k);
 int					exit_loop(t_data *core, int i, int j);
-int					exit_error_handler(int j, t_data *core);
+int					exit_error_handler(int j, t_data *core, t_cmdtable *cmd);
 int					second_no(int *no, int i, t_cmdtable *cmd);
 void				echo_exit(int i, int no, t_cmdtable *cmd, t_data *core);
 void				bubble_sort(t_data *core);
@@ -183,7 +185,7 @@ void				pwd(t_data *core);
 void				export(t_cmdtable *cmd, t_data *core);
 void				unset(t_cmdtable *cmd, t_data *core);
 void				echo_cmd(t_cmdtable *cmd, t_data *core, int i);
-void				exit_com(t_data *core);
+void				exit_com(t_data *core, t_cmdtable *cmd);
 void				builtin_cmds(t_cmdtable *cmd, t_data *core);
 
 /*Executor Functions*/
