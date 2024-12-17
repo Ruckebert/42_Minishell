@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:53:00 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 14:58:31 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:34:10 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,10 @@ void	pipe_wait(int status, pid_t second, t_cmdtable *cmd, t_data *core)
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
 	free_cmdtable(&cmd);
+}
+
+void	type_close(int fd, t_data *core)
+{
+	if (close(fd) == -1)
+		close_fail(core, 0);
 }

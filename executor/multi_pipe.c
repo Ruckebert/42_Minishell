@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 09:05:52 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:35:56 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,17 @@ void	multi_pipe_process(int *fd, t_var *vars,
 		multi_pipe_fd(fd, vars, current_cmd, core);
 		if (current_cmd->isbuiltin > 1)
 		{
-			core->cmd = current_cmd;
 			builtin_cmds(current_cmd, core);
 			free(vars->childids);
 			free_exit(core);
-			exit(core->exit_status);
+			exit(1);
 		}
 		free(vars->childids);
 		execution_pro(current_cmd, core, vars, fd);
 	}
 	if (vars->prev_fd != -1)
 		close(vars->prev_fd);
+	//type_close(vars->prev_fd, core);
 	if (current_cmd->next)
 	{
 		close(fd[1]);
@@ -121,6 +121,7 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, int i)
 	i = multi_pipe_loop(vars, current_cmd, core, childids);
 	if (vars->prev_fd != -1)
 		close(vars->prev_fd);
+	//type_close(vars->prev_fd, core);
 	if (cmd->isprinted == 2)
 		multi_pipe_end(i, childids, core, NULL);
 	multi_pipe_end(i, childids, core, files);
