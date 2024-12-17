@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 14:51:49 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:33:42 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,18 @@ void	sig_quit_child(int signal)
 {
 	if (signal == SIGQUIT)
 	{
+		(void) signal;
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		g_interrupt_received = signal;
 	}
 	if (signal == SIGINT)
 	{
-		(void)signal;
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		(void) signal;
+//		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_on_new_line();
 		rl_redisplay();
+		g_interrupt_received = signal;
 	}
 }
 

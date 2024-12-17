@@ -6,11 +6,13 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 10:39:09 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 14:29:10 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:31:40 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern volatile sig_atomic_t	g_interrupt_received;
 
 void	fd_exit(int fd, t_cmdtable *cmd, t_data *core)
 {
@@ -50,11 +52,13 @@ void	execution_pro(t_cmdtable *cmd, t_data *core, t_var *vars, int fd[2])
 
 void	sig_int_parent3(int signal)
 {
+	g_interrupt_received = signal;
 	(void)signal;
 }
 
 void	sig_int_parent2(int signal)
 {
+	g_interrupt_received = signal;
 	write (1, "\n", 1);
 	(void)signal;
 }

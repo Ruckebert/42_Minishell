@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 15:00:09 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:08:28 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,17 @@ int	main_exit(t_data *core)
 
 void	main_core(t_data *core, t_token	*token, int status)
 {
-	if (g_interrupt_received != 0)
-	{
-		core->exit_status = 128 + g_interrupt_received;
-		if (g_interrupt_received != 2)
-			write(1, "Quit (core dumped)\n", 19);
-		g_interrupt_received = 0;
-	}
+	if (g_interrupt_received == 3)
+		write(1, "Quit (core dumped)\n", 19);
+//	printf("HERE:%d", g_interrupt_received);
 	core->line = readline("PeePeeShell$ > ");
 	if (core->line == NULL)
 		main_exit(core);
+	if (g_interrupt_received != 0)
+	{
+		core->exit_status = 128 + g_interrupt_received;
+		g_interrupt_received = 0;
+	}
 	add_history(core->line);
 	token = tokenize(core);
 	if (token)
