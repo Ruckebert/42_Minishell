@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/17 13:21:03 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:32:48 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,12 +125,36 @@ void print_cmdtable(t_cmdtable *cmd)
     }
 }
 
+void printlist(t_token *head)
+{
+    t_token *curr;
+
+    if (!head)
+        return;
+
+    // Print table header
+    printf("%-20s | %-4s | %s\n", "WORD", "TYPE", "LEADING_SPACE");
+    printf("----------------------|------|--------------\n");
+
+    // Traverse and print each token in table format
+    curr = head;
+    while (curr)
+    {
+        // %-20s ensures the word is left-aligned with 20 characters space
+        // %-4d ensures the type is left-aligned with 4 characters space
+        // %d prints the leading_space value
+        printf("%-20s | %-4i | %i\n", curr->word, curr->type, curr->leading_space);
+        curr = curr->next;
+    }
+    printf("\n\n");
+}
+
 t_cmdtable	*prep_nodes_for_exec(t_token *token, t_data *core)
 {
 	t_cmdtable	*cmd;
 	t_token		*curr;
 
-	cmd = (t_cmdtable *){0};
+//	cmd = (t_cmdtable *){0};
 	if (!token)
 		return (NULL);
 	curr = token;
@@ -139,11 +163,13 @@ t_cmdtable	*prep_nodes_for_exec(t_token *token, t_data *core)
 	{
 		free_token_list(token);
 		free_exit(core);
+		if (cmd->redir)
+			free(cmd->redir);
+		free(cmd);
 		exit(core->exit_status);
 	}
 	find_builtins(cmd);
 	if (token)
-		free_token_list(token);
-	//print_cmdtable(cmd);
+		free_token_list(token);		
 	return (cmd);
 }
