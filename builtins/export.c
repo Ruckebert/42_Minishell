@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 11:03:48 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 12:27:42 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	print_exo_env(t_data *core, int i)
 			i++;
 		if (core->export_env[i] == NULL)
 			break ;
-		ft_printf("declare -x ");
+		write(1, "declare -x ", 12);
 		has_equal = 0;
 		print_exo_env_loop(core, i, has_equal);
 		i++;
