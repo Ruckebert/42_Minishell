@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_processes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 11:18:29 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 12:38:10 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 12:28:22 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	child_pipe(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		pipe_error(fd, core);
 	if (vars->childid == 0)
 	{
+		close(fd[0]);
 		cmd->isprinted = 0;
 		if (cmd->redir_type != 0)
 		{
@@ -55,6 +56,7 @@ void	parent_pipe(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		pipe_error(fd, core);
 	if (vars->childid2 == 0)
 	{
+		close(fd[1]);
 		cmd->isprinted = 0;
 		cmd = return_pipe(cmd);
 		if (cmd->redir_type != 0)
@@ -80,13 +82,18 @@ void	child_parent_execution(t_cmdtable *cmd, t_data *core,
 	child_pipe(cmd, core, vars, fd);
 	vars->childid2 = fork();
 	parent_pipe(cmd, core, vars, fd);
-	close(fd[0]);
-	close(fd[1]);
+	if (!(cmd->next->isbuiltin >= 1))
+	{
+		close(fd[0]);
+		close(fd[1]);
+	}
 	setup_signal_handler(SIGINT, sig_int_parent3);
 	waitpid(vars->childid, &status, 0);
 	waitpid(vars->childid2, &status, 0);
 	if (WIFEXITED(status))
 		core->exit_status = WEXITSTATUS(status);
+	close(fd[0]);
+	close(fd[1]);
 	free_exit(core);
 	exit(core->exit_status);
 }
