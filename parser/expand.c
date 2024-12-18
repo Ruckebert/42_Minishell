@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/17 17:20:49 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:07:05 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,6 @@ void	substitute_node_word(t_token *curr, char *new_word)
 	free(discard);
 	free(curr->word);
 	curr->word = ft_strdup(new_word);
+	if (!curr->word)
+		free_all();
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   freefuncs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 10:50:54 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:10:53 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ void	free_token_list(t_token *head)
 {
 	t_token	*tmp;
 
+
+	while (head && head->prev != NULL)
+	{
+		head = head->prev;
+	}
 	while (head != NULL)
 	{
 		tmp = head;
@@ -36,24 +41,27 @@ void	free_cmdtable(t_cmdtable **head)
 	t_cmdtable	*next;
 	int			i;
 
+	if (!head)
+		return;
 	tmp = *head;
 	while (tmp != NULL)
 	{
 		next = tmp->next;
 		if (tmp->args != NULL)
 		{
-			i = 0;
-			while (tmp->args[i])
-			{
+			i = -1;
+			while (tmp->args[++i])
 				free(tmp->args[i]);
-				i++;
-			}
 			free(tmp->args);
 			tmp->args = NULL;
 		}
 		if (tmp->redir)
+		{
 			free(tmp->redir);
+			tmp->redir = NULL;
+		}
 		free(tmp);
+		tmp = NULL;
 		tmp = next;
 	}
 	*head = NULL;

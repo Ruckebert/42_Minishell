@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/18 14:02:01 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:20:59 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,7 +281,7 @@ void				split_to_token(t_token *curr);
 char				*get_env_var(char *var, char **env);
 char				*parse_var_name(t_token *curr);
 void				substitute_node_word(t_token *curr, char *new_word);
-void				parsearound_var(t_token *curr, char **env,
+int					parsearound_var(t_token *curr, char **env,
 						char *var, t_data *core);
 int					is_fusable(t_token *curr);
 t_cmdtable			*ft_lstnew_cmd(char *redir, int type);
@@ -321,5 +321,8 @@ void				sig_int_parent3(int signal);
 void				free_token_list(t_token *head);
 void				free_cmdtable(t_cmdtable **head);
 void				init_freethis(t_token *curr);
-
+t_token				*address_getter_token(t_token *token);
+t_cmdtable			**address_getter_cmd(t_cmdtable **cmd);
+void				free_all(void);
+t_parse_context		*address_getter_ctx(t_parse_context *ctx);
 #endif

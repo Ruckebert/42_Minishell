@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/12 15:02:14 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:06:30 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	remove_empty_quotes(t_token *token)
 		{
 			free(curr->word);
 			curr->word = ft_strdup("");
+			if (!curr->word)
+				free_all();
 			curr->type = 9;
 		}
 		curr = curr->next;
@@ -90,6 +92,8 @@ char	*parse_var_name(t_token *curr)
 			!= '\0' && start[len] != '\'' && start[len] != '/')
 			len++;
 		res = malloc(len + 1);
+		if (!res)
+			free_all();
 		ft_strlcpy(res, start, len + 1);
 		return (res);
 	}

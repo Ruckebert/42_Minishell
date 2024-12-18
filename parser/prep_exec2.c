@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/15 17:23:08 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:05:36 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	get_args_loop(t_cmdtable *cmd, t_token *curr, int strnum)
 				while (--i >= 0)
 					free(cmd->args[i]);
 				free(cmd->args);
-				return (-1);
+				free_all();
 			}
 			i++;
 		}
@@ -83,6 +83,8 @@ t_token	*add_redir(t_cmdtable *cmd, t_token *curr)
 	if (curr->next->type == 30)
 		cmd->redir_type = 30;
 	cmd->redir = ft_strdup(curr->next->word);
+	if (!cmd->redir)
+		free_all();
 	curr = curr->next->next;
 	return (curr);
 }

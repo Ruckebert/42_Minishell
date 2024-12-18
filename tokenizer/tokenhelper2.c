@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/12 16:30:00 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/18 15:06:14 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	make_start_token(t_token **token, t_data *core)
 		exit(1);
 	}
 	ft_lstadd_back(token, newtoken);
+	address_getter_token(*token);
 	newtoken->type = 9999;
 	newtoken->leading_space = 20;
 }

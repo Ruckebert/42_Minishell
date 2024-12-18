@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_in_doublequote.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/16 15:16:46 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:08:19 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 static char	*extract_var_name(char *temp, t_token *curr)
 {
+	char	*tmp;
+
 	if (*(temp + 1) == '?')
-		return (ft_strdup("?"));
+	{
+		tmp = ft_strdup("?");
+		if (!tmp)
+			free_all();
+		return (tmp);
+	}
 	return (parse_var_name(curr));
 }
 
@@ -65,7 +72,8 @@ t_token	*expand_variables(t_token *curr, char **env,
 			var = extract_var_name(temp, curr);
 			if (curr->freethis == NULL && is_expandable(var, env))
 				init_freethis(curr);
-			parsearound_var(curr, env, var, core);
+			if (parsearound_var(curr, env, var, core) == -1)
+				free_all();
 		}
 		if (curr->endloop == 1)
 			break ;

@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/17 17:09:42 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:53:36 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,22 +82,23 @@ void	handle_expandable_var(t_token *curr, t_parse_context *ctx, char **env)
 	}
 }
 
-void	parsearound_var(t_token *curr, char **env,
+int	parsearound_var(t_token *curr, char **env,
 	char *var, t_data *core)
 {
 	t_parse_context	ctx;
 	int				i;
 
+	address_getter_ctx(&ctx);
 	i = 0;
 	while (curr->word[i] != '$')
 		i++;
 	ctx.beforevar = malloc(i + 1);
 	if (!ctx.beforevar)
-		return ;
+		return (free(var), -1);
 	ft_strlcpy(ctx.beforevar, curr->word, i + 1);
 	ctx.aftervar = malloc(ft_strlen(&curr->word[i + ft_strlen(var) + 1]) + 1);
 	if (!ctx.aftervar)
-		return (free(ctx.beforevar));
+		return (free(var), -1);
 	ft_strlcpy(ctx.aftervar, &curr->word[i + ft_strlen(var) + 1],
 		ft_strlen(&curr->word[i + ft_strlen(var) + 1]) + 1);
 	ctx.var = var;
@@ -107,5 +108,5 @@ void	parsearound_var(t_token *curr, char **env,
 		handle_non_expandable(curr, &ctx);
 	else
 		handle_expandable_var(curr, &ctx, env);
-	free(var);
+	return (free(var), 0);
 }
