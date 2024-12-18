@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 12:30:31 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:57:30 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	executor(t_cmdtable *cmd, t_data *core)
 		setup_signal_handler(SIGQUIT, sig_quit_child);
 		second = fork();
 		if (second == -1)
-			return (1);
+			pipe_error(0, core);
 		if (second == 0)
 			multi_pipe(&vars, cmd, core, 0);
 		else

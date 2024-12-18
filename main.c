@@ -3,16 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 17:53:49 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:04:00 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t	g_interrupt_received = 0;
+
+
+t_data	*address_getter(t_data *core)
+{
+	static t_data *new_core;
+
+	if (core == NULL)
+		return (new_core);
+	else
+	{
+		new_core = core;
+		return (new_core);
+	}
+}
 
 int	main_exit(t_data *core)
 {
@@ -48,6 +62,7 @@ void	main_core(t_data *core, t_token	*token, int status)
 	if (token)
 	{
 		core->cmd = parse(core, token);
+		address_getter(core);
 		if (core->cmd)
 			executor(core->cmd, core);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_finders.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:36:24 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 10:27:40 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:55:27 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	path_finder_exe_lop(t_var *vars, char **envp, char **argv, int i)
 		error_handler(NULL);
 	free(vars->comm);
 	execve(vars->full_comm, argv, envp);
-
 	free(vars->full_comm);
 }
 
