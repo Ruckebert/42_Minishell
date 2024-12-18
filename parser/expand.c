@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/15 17:23:55 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:20:49 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ static void	handle_expandable_var(t_token **curr, char **env)
 	if (ft_strchr((*curr)->word, ' ') != NULL)
 		split_to_token(*curr);
 	*curr = tmp;
+	if (tmp->type == 0)
+		tmp->type = 70;
+//	printf("--------------------------------%s",(*curr)->word);
 }
 
 t_token	*handle_non_expandable_var(t_token *curr)

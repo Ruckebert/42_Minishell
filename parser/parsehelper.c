@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/06 12:50:27 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:10:12 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ void	remove_singlequotes(t_token *token)
 int	is_fusable(t_token *curr)
 {
 	if (curr->type == 8 || curr->type == 4
-		|| curr->type == 5 || curr->type == 7 || curr->type == 9)
+		|| curr->type == 5 || curr->type == 7
+		|| curr->type == 9 || curr->type == 70)
 		return (1);
 	else
 		return (0);
