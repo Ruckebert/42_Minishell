@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 09:35:29 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:36:22 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,12 @@ char	**copy_env(char **env, t_data *core)
 		count++;
 	new_env = malloc((count + 1) * sizeof(char *));
 	if (!new_env)
-		exit(2);
+		exit(1);
 	core->export_env = malloc((count + 1) * sizeof(char *));
 	if (!core->export_env)
 	{
 		free(new_env);
-		exit(2);
+		exit(1);
 	}
 	return (environment_copy(env, new_env, core, count));
 }
