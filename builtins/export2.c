@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:02:08 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/18 12:46:03 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:02:34 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,10 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 	temp = NULL;
 	temp = malloc((argc + count) * sizeof(char *));
 	if (!temp)
+	{
+		free_exit(address_getter(NULL));
 		exit(1);
+	}
 	i = 0;
 	while (i < argc + count)
 	{
