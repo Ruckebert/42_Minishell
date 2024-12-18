@@ -2,3 +2,7 @@ valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./
 
 Valgrind Child Suppressor 
 valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp --trace-children=yes --track-fds=yes ./minishell
+
+(ulimit -v 110000;valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp --trace-children-skip="/bin/* /usr/bin/* /usr/sbin/*" --track-fds=yes ./minishell)
+
+(ulimit -u 70; valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp --trace-children-skip="/bin/* /usr/bin/* /usr/sbin/*" --track-fds=yes ./minishell)
