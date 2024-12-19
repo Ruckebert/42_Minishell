@@ -16,11 +16,14 @@ t_cmdtable	*initialize_cmd_table(t_token **curr)
 {
 	t_cmdtable	*cmd;
 	t_cmdtable	*newcmd;
+	t_data		*core;
 
 	cmd = NULL;
 	newcmd = ft_lstnew_cmd(NULL, 0);
 	ft_lstadd_back_cmd(&cmd, newcmd);
 	address_getter_cmd(&cmd);
+	core = address_getter(NULL);
+	core->cmd = cmd;
 	if (is_start(*curr))
 		*curr = (*curr)->next;
 	return (cmd);
@@ -138,8 +141,7 @@ t_cmdtable	*prep_nodes_for_exec(t_token *token, t_data *core)
 	if (process_tokens(&cmd, curr) == NULL)
 	{
 		free_token_list(address_getter_token(NULL));
-		core->cmd = cmd;
-		free_exit(core);
+		free_exit_no_cmd(core);
 		if (cmd->redir)
 			free(cmd->redir);
 		free(cmd);

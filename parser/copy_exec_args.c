@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_exec_args.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/19 15:24:01 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:22:44 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	free_all(void)
 {
 	free_token_list(address_getter_token(NULL));
-	free_exit(address_getter(NULL));
+	free_exit_no_cmd(address_getter(NULL));
 	exit(1);
 }
 
