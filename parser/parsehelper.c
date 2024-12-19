@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsehelper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/18 14:57:54 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:40:45 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	remove_quotes(t_token *curr)
 		ft_strlcpy(temp, &curr->word[1], ft_strlen(curr->word) - 1);
 		free(curr->word);
 		curr->word = temp;
-
 	}
 }
 

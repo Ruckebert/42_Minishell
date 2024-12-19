@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 09:59:03 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:38:46 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ int	check_dup_exo(char **env, char **argv, char **temp, int j)
 	num = (t_int_struct){0};
 	num.k = 0;
 	num.found = 0;
-	num.var_len = 0;
-	num.env_len = 0;
 	while (env[num.k])
 	{
 		num.var_len = len_env_var(argv, j);

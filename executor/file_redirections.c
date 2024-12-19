@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:34:33 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 09:21:14 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:25:17 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		if (dup2(vars->fdin, STDIN_FILENO) == -1)
 			fd_exit(fd[1], cmd, core);
 	}
-	close(vars->fdin);
+	closing(vars->fdin, core);
 }
 
 void	file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
@@ -37,7 +37,7 @@ void	file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		if (dup2(vars->fdout, STDOUT_FILENO) == -1)
 			fd_exit(fd[0], cmd, core);
 	}
-	close(vars->fdout);
+	closing(vars->fdout, core);
 }
 
 void	file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
@@ -50,7 +50,7 @@ void	file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 		if (dup2(vars->fdout, STDOUT_FILENO) == -1)
 			fd_exit(fd[0], cmd, core);
 	}
-	close(vars->fdout);
+	closing(vars->fdout, core);
 }
 
 void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 09:58:25 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:57:12 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,20 @@ void	pwd_checker(char **temp, char *old_pwd, t_data *core, int i)
 			export_malloc_error(core, NULL);
 		free(core->env[i]);
 		core->env[i] = ft_strjoin(*temp, core->direct);
+		if (!core->env)
+			export_malloc_error(core, NULL);
 		free(*temp);
 		core->empty_cd++;
 	}
 	else if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
 	{
 		(*temp) = ft_substr(core->env[i], 0, 7);
+		if (!(*temp))
+			export_malloc_error(core, NULL);
 		free(core->env[i]);
 		core->env[i] = ft_strjoin(*temp, old_pwd);
+		if (!core->env)
+			export_malloc_error(core, NULL);
 		free(*temp);
 		core->empty_cd += 2;
 	}
@@ -118,6 +124,8 @@ void	envi_update(char *old_pwd, t_data *core)
 	core->empty_cd = 0;
 	free(core->direct);
 	core->direct = getcwd(NULL, 0);
+	if (!core->direct)
+		export_malloc_error(core, NULL);
 	while (core->env[i])
 	{
 		pwd_checker(&temp, old_pwd, core, i);

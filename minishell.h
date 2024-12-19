@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 09:58:09 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 10:59:21 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ void				export_malloc_error(t_data *core, char **temp);
 int					multi_array_counter(char **argc);
 
 /*Builtin Functions*/
+void				exit_pipe(int *fd, t_cmdtable *cmd);
 int					argv_checker(char **argv, int i, int error);
 int					checker_dup(char **argv, char **temp, int j, int k);
 int					exit_loop(t_data *core, int i, int j);

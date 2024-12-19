@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:34:16 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 09:58:35 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:40:00 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,14 @@ void	simple_free(char **str)
 		while (str[i])
 		{
 			if (str[i])
+			{
 				free(str[i]);
+				str[i] = NULL;
+			}
 			i++;
 		}
 		free(str);
+		str = NULL;
 	}
 }
 

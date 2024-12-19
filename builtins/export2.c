@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:02:08 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 09:59:10 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:15:03 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char	**creating_new_exo(int i, char **temp, char **env, char **argv)
 				return (simple_free(temp), NULL);
 			temp[i] = ft_strdup(argv[j]);
 			if (!temp[i])
-				reverse_free(i, temp);
+				export_malloc_error(address_getter(NULL), temp);
 			i++;
 		}
 		j++;
@@ -139,7 +139,7 @@ char	**new_exo_env(char **env, char **argv, int argc, int count)
 	{
 		temp[i] = ft_strdup(env[i]);
 		if (!temp[i])
-			reverse_free(i, temp);
+			export_malloc_error(address_getter(NULL), temp);
 		i++;
 	}
 	return (creating_new_exo(i, temp, env, argv));

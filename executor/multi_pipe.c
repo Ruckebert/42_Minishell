@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 09:28:26 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:09:39 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,11 @@ void	multi_pipe_fd(int *fd, t_var *vars,
 		if (!(current_cmd->isbuiltin >= 1))
 			close(fd[1]);
 	}
-	close(fd[0]);
-	close(fd[1]);
+	if (!(current_cmd->isbuiltin > 1))
+	{
+		close(fd[0]);
+		close(fd[1]);
+	}
 }
 
 void	multi_pipe_process(int *fd, t_var *vars,
@@ -70,6 +73,7 @@ void	multi_pipe_process(int *fd, t_var *vars,
 		if (current_cmd->isbuiltin > 1)
 		{
 			free(vars->childids);
+			exit_pipe(fd, current_cmd);
 			builtin_cmds(current_cmd, core);
 			close(fd[0]);
 			close(fd[1]);
