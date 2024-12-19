@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:40:28 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/18 12:57:58 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:43:03 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ void	multi_pipe(t_var *vars, t_cmdtable *cmd, t_data *core, int i)
 	t_cmdtable	*current_cmd;
 
 	childids = ft_calloc((cmd_count(cmd)), sizeof(int *));
+	if (!childids)
+		export_malloc_error(core, NULL);
 	vars->prev_fd = -1;
 	current_cmd = cmd;
 	files = NULL;

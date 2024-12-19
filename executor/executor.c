@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/18 13:57:30 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:40:53 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	here_doc_creator(t_cmdtable *cmd, t_data *core, char ***files, int i)
 	if (here_doc_counter(cmd) != 0)
 	{
 		*files = ft_calloc(here_doc_counter(cmd) + 1, sizeof(char *));
+		if (!*files)
+			export_malloc_error(core, NULL);
 		while (cmd)
 		{
 			if (cmd->redir_type == 10 || cmd->redir_type == 30)

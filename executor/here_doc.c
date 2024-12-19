@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:41:30 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 12:06:52 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:41:38 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ char	*ft_nbr_pointhex(intptr_t num)
 	char				*character;
 
 	character = ft_calloc(21, sizeof(char *));
+	if (!character)
+		export_malloc_error(address_getter(NULL), NULL);
 	nb = num;
 	count = 0;
 	while (nb > 0)
