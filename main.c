@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/18 14:04:00 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:20:45 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,48 @@
 
 volatile sig_atomic_t	g_interrupt_received = 0;
 
+t_parse_context	*address_getter_ctx(t_parse_context *ctx)
+{
+	static t_parse_context	*new_ctx;
+
+	if (ctx == NULL)
+		return (new_ctx);
+	else
+	{
+		new_ctx = ctx;
+		return (new_ctx);
+	}
+}
+
+t_cmdtable	**address_getter_cmd(t_cmdtable **cmd)
+{
+	static t_cmdtable	**new_cmd;
+
+	if (cmd == NULL)
+		return (new_cmd);
+	else
+	{
+		new_cmd = cmd;
+		return (new_cmd);
+	}
+}
+
+t_token	*address_getter_token(t_token *token)
+{
+	static t_token	*new_token;
+
+	if (token == NULL)
+		return (new_token);
+	else
+	{
+		new_token = token;
+		return (new_token);
+	}
+}
 
 t_data	*address_getter(t_data *core)
 {
-	static t_data *new_core;
+	static t_data	*new_core;
 
 	if (core == NULL)
 		return (new_core);
@@ -62,7 +100,6 @@ void	main_core(t_data *core, t_token	*token, int status)
 	if (token)
 	{
 		core->cmd = parse(core, token);
-		address_getter(core);
 		if (core->cmd)
 			executor(core->cmd, core);
 	}
@@ -83,6 +120,7 @@ int	main(int argc, char *argv[], char **env)
 	setup_signal_handler(SIGINT, sig_int_parent);
 	status = -1;
 	core = (t_data){0};
+	address_getter(&core);
 	token = NULL;
 	core.exit_status = 0;
 	if (argc == -1)

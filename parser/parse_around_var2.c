@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_around_var2.c                               :+:      :+:    :+:   */
+/*   parse_around_var2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/15 17:45:28 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:55:44 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ void	add_string_to_double_array(char ***array,
 	i = 0;
 	new_array = malloc((*num_elements + 2) * sizeof(char *));
 	if (new_array == NULL)
-	{
-		perror("Failed to allocate memory");
-		exit(EXIT_FAILURE);
-	}
+		free_all();
 	while (i < *num_elements)
 	{
 		new_array[i] = (*array)[i];

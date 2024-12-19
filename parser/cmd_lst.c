@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_lst.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/13 15:24:23 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/18 15:06:29 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ t_cmdtable	*ft_lstnew_cmd(char *redir, int type)
 
 	elem = malloc(sizeof(t_cmdtable));
 	if (!elem)
-		return (NULL);
+	{
+		free_token_list(address_getter_token(NULL));
+		free_exit(address_getter(NULL));
+		exit(1);
+	}
 	elem->redir = redir;
 	elem->redir_type = type;
 	elem->has_pipe_after = 0;
