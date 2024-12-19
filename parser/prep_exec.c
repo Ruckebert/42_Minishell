@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/18 15:27:58 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:43:02 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_cmdtable	*initialize_cmd_table(t_token **curr)
 	cmd = NULL;
 	newcmd = ft_lstnew_cmd(NULL, 0);
 	ft_lstadd_back_cmd(&cmd, newcmd);
-	address_getter_cmd(cmd);
+	address_getter_cmd(&cmd);
 	if (is_start(*curr))
 		*curr = (*curr)->next;
 	return (cmd);
