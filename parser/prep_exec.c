@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/19 17:19:31 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:19:09 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	*process_tokens(t_cmdtable **cmd, t_token *curr)
 			curr = process_pipe(&newcmd, cmd, curr);
 		else
 			curr = get_args(newcmd, curr);
-		if (curr == NULL)
+		if (curr == NULL || curr->word == NULL)
 			return (NULL);
 	}
 	return ((void *)1);
@@ -128,8 +128,6 @@ void print_cmdtable(t_cmdtable *cmd)
         node_num++;
     }
 }
-
-
 
 t_cmdtable	*prep_nodes_for_exec(t_token *token, t_data *core)
 {

@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/18 18:06:30 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:23:32 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	fuse_node_with_next(t_token *curr)
 	free(oldword);
 	free(discard->word);
 	free(discard);
+	if (!curr->word)
+		free_all();
 }
 
 void	fuse_all_0space_nodes(t_token *token)
