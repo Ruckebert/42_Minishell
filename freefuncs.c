@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   freefuncs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/18 16:10:53 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:01:18 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	free_token_list(t_token *head)
 {
 	t_token	*tmp;
-
 
 	while (head && head->prev != NULL)
 	{
@@ -41,7 +40,7 @@ void	free_cmdtable(t_cmdtable **head)
 	t_cmdtable	*next;
 	int			i;
 
-	if (!head)
+	if (!*head)
 		return;
 	tmp = *head;
 	while (tmp != NULL)

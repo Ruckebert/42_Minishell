@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 12:56:38 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:57:12 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ void	dup_pwd_env(t_data *core, char **temp, char *argv)
 			reverse_free(i, temp);
 		i++;
 	}
-	temp[i] = ft_strdup(argv);
+	temp[i] = ft_strdup2(argv);
 	if (core->empty_cd == 0)
 	{
-		temp[i] = ft_strdup(argv);
+		temp[i] = ft_strdup2(argv);
 		i++;
 		free(argv);
 		argv = ft_strjoin("OLDPWD=", core->direct);
-		temp[i] = ft_strdup(argv);
+		temp[i] = ft_strdup2(argv);
 	}
 	temp[++i] = NULL;
 	simple_free(core->env);
@@ -92,16 +92,24 @@ void	pwd_checker(char **temp, char *old_pwd, t_data *core, int i)
 	if (ft_strncmp(core->env[i], "PWD=", 4) == 0)
 	{
 		(*temp) = ft_substr(core->env[i], 0, 4);
+		if (!(*temp))
+			export_malloc_error(core, NULL);
 		free(core->env[i]);
 		core->env[i] = ft_strjoin(*temp, core->direct);
+		if (!core->env)
+			export_malloc_error(core, NULL);
 		free(*temp);
 		core->empty_cd++;
 	}
 	else if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
 	{
 		(*temp) = ft_substr(core->env[i], 0, 7);
+		if (!(*temp))
+			export_malloc_error(core, NULL);
 		free(core->env[i]);
 		core->env[i] = ft_strjoin(*temp, old_pwd);
+		if (!core->env)
+			export_malloc_error(core, NULL);
 		free(*temp);
 		core->empty_cd += 2;
 	}
@@ -116,6 +124,8 @@ void	envi_update(char *old_pwd, t_data *core)
 	core->empty_cd = 0;
 	free(core->direct);
 	core->direct = getcwd(NULL, 0);
+	if (!core->direct)
+		export_malloc_error(core, NULL);
 	while (core->env[i])
 	{
 		pwd_checker(&temp, old_pwd, core, i);
