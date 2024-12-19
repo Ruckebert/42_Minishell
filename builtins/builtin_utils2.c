@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 09:46:50 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 13:28:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:20:34 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,7 @@ int	checker_dup(char **argv, char **temp, int j, int k)
 	free(temp[k - j]);
 	temp[k - j] = ft_strdup(argv[j]);
 	if (!temp[k - j])
-	{
-		simple_free(temp);
-		free_exit(address_getter(NULL));
-		exit(1);
-	}
+		export_malloc_error(address_getter(NULL), temp);
 	return (1);
 }
 
