@@ -6,21 +6,11 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:34:33 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 12:01:37 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 09:21:14 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	close_fail(t_data *core, int *fd)
-{
-	if (fd[0] != -1)
-		close(fd[0]);
-	if (fd[1] != -1)
-		close(fd[1]);
-	free_exit(core);
-	exit(1);
-}
 
 void	file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 {
@@ -35,8 +25,6 @@ void	file_input(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			fd_exit(fd[1], cmd, core);
 	}
 	close(vars->fdin);
-	//if (close(vars->fdin) == -1)
-	//	close_fail(core, fd);
 }
 
 void	file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
@@ -50,8 +38,6 @@ void	file_output(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			fd_exit(fd[0], cmd, core);
 	}
 	close(vars->fdout);
-	//if (close(vars->fdout) == -1)
-	//	close_fail(core, fd);
 }
 
 void	file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
@@ -65,8 +51,6 @@ void	file_append(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)
 			fd_exit(fd[0], cmd, core);
 	}
 	close(vars->fdout);
-	//if (close(vars->fdout) == -1)
-	//	close_fail(core, fd);
 }
 
 void	redirctions(t_cmdtable *cmd, t_data *core, t_var *vars, int *fd)

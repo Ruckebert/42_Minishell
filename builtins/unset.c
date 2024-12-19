@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:31:08 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/10 12:16:28 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 09:59:22 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	**unset_env(t_data *core, char **env, int i, char **argv)
 		found = finder(found, i, argv, env);
 		if (!found)
 		{
-			temp[new_env] = ft_strdup(env[i]);
+			temp[new_env] = ft_strdup2(env[i]);
 			new_env++;
 		}
 		i++;

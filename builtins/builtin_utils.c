@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:34:16 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 11:28:42 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 09:58:35 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	environment_export(t_data *core)
 	{
 		while (core->env[count])
 		{
-			core->export_env[count] = ft_strdup(core->env[count]);
+			core->export_env[count] = ft_strdup2(core->env[count]);
 			count++;
 		}
 	}
@@ -44,7 +44,7 @@ int	environment_export(t_data *core)
 		while (core->env[count])
 		{
 			free(core->export_env[count]);
-			core->export_env[count] = ft_strdup(core->env[count]);
+			core->export_env[count] = ft_strdup2(core->env[count]);
 			count++;
 		}
 	}

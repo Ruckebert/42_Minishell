@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/18 14:36:22 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 09:52:06 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ char	**shellvl(int i, char **env, char **new_env)
 	if (!temp)
 		return (free_environment(new_env, i));
 	sub_temp = ft_substr(env[i], 0, 6);
+	if (!sub_temp)
+		return (free(temp), free_environment(new_env, i), NULL);
 	new_env[i] = ft_strjoin(sub_temp, temp);
 	if (!new_env[i])
 		return (free(temp), free(sub_temp),

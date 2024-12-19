@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/18 17:20:59 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 09:58:09 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,9 +141,9 @@ void				envi_update(char *old_pwd, t_data *core);
 char				**free_environment(char **new_env, int i);
 
 /*Utils/Free*/
+char				*ft_strdup2(const char *src);
 t_data				*address_getter(t_data *core);
-void				close_fail(t_data *core, int *fd);
-void				type_close(int fd, t_data *core);
+void				closing(int fd, t_data *core);
 void				free_exit(t_data *core);
 int					ft_strcmp(char *s1, char *s2);
 int					len_env_var(char **argv, int j);

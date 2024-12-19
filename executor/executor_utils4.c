@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils4.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:53:00 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 11:34:10 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 10:00:47 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,49 @@ void	pipe_wait(int status, pid_t second, t_cmdtable *cmd, t_data *core)
 	free_cmdtable(&cmd);
 }
 
-void	type_close(int fd, t_data *core)
+static char	*ft_strcpy(char *dest, const char *src)
+{
+	char	*start;
+
+	start = dest;
+	while (*src != '\0')
+	{
+		*dest = *src;
+		src++;
+		dest++;
+	}
+	*dest = *src;
+	return (start);
+}
+
+char	*ft_strdup2(const char *src)
+{
+	char	*characterstring;
+	char	*temp;
+	int		len;
+
+	characterstring = NULL;
+	temp = NULL;
+	if (!src)
+		return (NULL);
+	len = ft_strlen(src);
+	len++;
+	characterstring = (char *)malloc(len);
+	if (characterstring == NULL)
+	{
+		free_exit(address_getter(NULL));
+		exit(1);
+	}
+	temp = ft_strcpy(characterstring, src);
+	return (temp);
+}
+
+void	closing(int fd, t_data *core)
 {
 	if (close(fd) == -1)
-		close_fail(core, 0);
+	{
+		ft_putstr_fd("Closing Error\n", 2);
+		free_exit(core);
+		exit(1);
+	}
 }

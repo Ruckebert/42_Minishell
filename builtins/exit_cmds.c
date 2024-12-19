@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:08:59 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 13:42:56 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 09:58:59 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	exit_com(t_data *core, t_cmdtable *cmd)
 		if (!temp)
 			export_malloc_error(core, NULL);
 		free(cmd->args[1]);
-		cmd->args[1] = ft_strdup(temp);
+		cmd->args[1] = ft_strdup2(temp);
 		free(temp);
 	}
 	j = exit_loop(core, i, j);

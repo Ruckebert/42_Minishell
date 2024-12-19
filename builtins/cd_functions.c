@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:22:11 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/16 12:31:11 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 09:58:50 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	cd_oldpwd(char *old_pwd, t_data *core)
 		if (ft_strncmp(core->env[i], "OLDPWD=", 7) == 0)
 		{
 			free(core->direct);
-			core->direct = ft_strdup(core->env[i] + 7);
+			core->direct = ft_strdup2(core->env[i] + 7);
 			break ;
 		}
 		i++;
@@ -50,7 +50,7 @@ void	cd_empty(char *old_pwd, t_data *core)
 		if (ft_strncmp(core->env[i], "HOME=", 5) == 0)
 		{
 			free(core->direct);
-			core->direct = ft_strdup(core->env[i] + 5);
+			core->direct = ft_strdup2(core->env[i] + 5);
 			if (!core->direct)
 				return ;
 			break ;
@@ -90,7 +90,7 @@ void	print_cd_error_msg(t_cmdtable *cmd, t_data *core)
 void	normal_cd(char *old_pwd, t_cmdtable *cmd, t_data *core)
 {
 	free(core->direct);
-	core->direct = ft_strdup(cmd->args[1]);
+	core->direct = ft_strdup2(cmd->args[1]);
 	if (access(core->direct, sizeof(char)) == 0)
 	{
 		if (chdir(core->direct) == -1)
