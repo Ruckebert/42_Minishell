@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:58:57 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/17 16:04:21 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:42:24 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	sig_quit_child(int signal)
 	if (signal == SIGINT)
 	{
 		(void) signal;
-//		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_on_new_line();
 		rl_redisplay();
 		g_interrupt_received = signal;
