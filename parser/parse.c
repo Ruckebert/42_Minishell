@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/19 17:39:18 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:08:25 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char	*get_env_var(char *var, char **env)
 			valuestart = ft_strlen(var) + 1;
 			res = malloc(ft_strlen(&env[i][valuestart]) + 1);
 			if (!res)
+			
 				free_all();
 			ft_strlcpy(res, &env[i][valuestart],
 				ft_strlen(&env[i][valuestart]) + 1);
