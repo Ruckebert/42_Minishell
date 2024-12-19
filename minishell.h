@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/18 17:20:59 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:06:22 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,8 +297,7 @@ void				fuse_all_0space_nodes(t_token *token);
 void				handle_heredoc_delimiter(t_token *token);
 void				fuse_node_with_next(t_token *curr);
 int					whichtoken(char c);
-void				substitute_redir(t_token *curr, char str[3],
-						t_token *token, t_data *core);
+void				substitute_redir(t_token *curr, char str[3], t_data *core);
 void				make_end_token(t_token **token, t_data *core);
 void				make_start_token(t_token **token, t_data *core);
 void				combine_double_redirect(t_token	*token, t_data *core);

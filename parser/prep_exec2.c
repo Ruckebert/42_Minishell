@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/18 18:05:36 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:58:34 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	get_args_loop(t_cmdtable *cmd, t_token *curr, int strnum)
 				while (--i >= 0)
 					free(cmd->args[i]);
 				free(cmd->args);
-				free_all();
+				return (-1);
 			}
 			i++;
 		}
@@ -73,7 +73,9 @@ t_token	*get_args(t_cmdtable *cmd, t_token *token)
 		return (NULL);
 	error = get_args_loop(cmd, curr, strnum);
 	if (error == -1)
+	{
 		return (NULL);
+	}
 	return (token);
 }
 

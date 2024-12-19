@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/19 14:43:02 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:36:15 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,14 +133,14 @@ t_cmdtable	*prep_nodes_for_exec(t_token *token, t_data *core)
 	t_cmdtable	*cmd;
 	t_token		*curr;
 
-//	cmd = (t_cmdtable *){0};
 	if (!token)
 		return (NULL);
 	curr = token;
 	cmd = initialize_cmd_table(&curr);
 	if (process_tokens(&cmd, curr) == NULL)
 	{
-		free_token_list(token);
+		free_token_list(address_getter_token(NULL));
+		core->cmd = cmd;
 		free_exit(core);
 		if (cmd->redir)
 			free(cmd->redir);
@@ -149,6 +149,6 @@ t_cmdtable	*prep_nodes_for_exec(t_token *token, t_data *core)
 	}
 	find_builtins(cmd);
 	if (token)
-		free_token_list(token);		
+		free_token_list(address_getter_token(NULL));
 	return (cmd);
 }

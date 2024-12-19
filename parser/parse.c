@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/18 18:03:43 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:16:52 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	checkquotes(t_token *token, t_data *core)
 			{
 				printf("missing quote\n");
 				core->exit_status = 1;
-				free_token_list(token);
+				free_token_list(address_getter_token(NULL));
 				return (1);
 			}
 		}
@@ -137,6 +137,7 @@ t_cmdtable	*parse(t_data *core, t_token *token)
 		return (NULL);
 	handle_heredoc_delimiter(token);
 	split_vars_by_sep(token);
+//	printlist(token);
 	if (redir_before_nonexpandable(token, core) != 0)
 		return (NULL);
 	expand_var(token, core->env, core);

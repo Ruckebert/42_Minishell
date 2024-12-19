@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/12 16:23:25 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:04:19 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	first_token_directory(t_token *token, t_data *core)
 			ft_putstr_fd(curr->word, 2);
 			ft_putstr_fd(": Is a directory\n", 2);
 			core->exit_status = 126;
-			free_token_list(token);
+			free_token_list(address_getter_token(NULL));
 			return (1);
 		}
 		else
@@ -86,7 +86,7 @@ int	outredir_to_directory(t_token *token, t_data *core)
 				ft_putstr_fd(curr->word, 2);
 				ft_putstr_fd(": Is a directory\n", 2);
 				core->exit_status = 1;
-				free_token_list(token);
+				free_token_list(address_getter_token(NULL));
 				return (1);
 			}
 		}
@@ -121,7 +121,7 @@ int	redir_before_nonexpandable(t_token *token, t_data *core)
 	while (curr && curr->next)
 	{
 		if (is_redir(curr) && curr->type != 10
-			&& curr->next->type == 8
+			&& (curr->next->type == 8)
 			&& !is_expandable(curr->next->next->word, core->env))
 		{
 			ft_putstr_fd(curr->next->word, 2);
@@ -129,7 +129,7 @@ int	redir_before_nonexpandable(t_token *token, t_data *core)
 			ft_putstr_fd(": ", 2);
 			ft_putstr_fd("ambiguous redirect\n", 2);
 			core->exit_status = 1;
-			free_token_list(token);
+			free_token_list(address_getter_token(NULL));
 			return (1);
 		}
 		curr = curr->next;

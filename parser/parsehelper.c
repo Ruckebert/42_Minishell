@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 08:24:10 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/18 14:57:54 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:03:58 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	remove_quotes(t_token *curr)
 		if (!temp)
 		{
 			core = address_getter(NULL);
-			free_token_list(curr);
+			free_token_list(address_getter_token(NULL));
 			free_exit(core);
 			exit(1);
 		}

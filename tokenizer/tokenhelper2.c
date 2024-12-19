@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/18 15:06:14 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:06:40 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void	combine_double_redirect(t_token	*token, t_data *core)
 			if (!ft_strncmp(curr->word, "<\0", 2)
 				&& !ft_strncmp(curr->next->word, "<\0", 2)
 				&& (curr->next->leading_space == 0))
-				substitute_redir(curr, "<<\0", token, core);
+				substitute_redir(curr, "<<\0", core);
 			else if (!ft_strncmp(curr->word, ">\0", 2)
 				&& !ft_strncmp(curr->next->word, ">\0", 2)
 				&& (curr->next->leading_space == 0))
-				substitute_redir(curr, ">>\0", token, core);
+				substitute_redir(curr, ">>\0", core);
 		}
 		curr = curr->next;
 	}
@@ -41,7 +41,7 @@ void	make_start_token(t_token **token, t_data *core)
 	newtoken = ft_lstnew("START");
 	if (!newtoken)
 	{
-		free_token_list(*token);
+		free_token_list(address_getter_token(NULL));
 		free_exit(core);
 		exit(1);
 	}
@@ -58,7 +58,7 @@ void	make_end_token(t_token **token, t_data *core)
 	newtoken = ft_lstnew("END");
 	if (!newtoken)
 	{
-		free_token_list(*token);
+		free_token_list(address_getter_token(NULL));
 		free_exit(core);
 		exit(1);
 	}
@@ -67,8 +67,7 @@ void	make_end_token(t_token **token, t_data *core)
 	newtoken->leading_space = 20;
 }
 
-void	substitute_redir(t_token *curr, char str[3],
-	t_token *token, t_data *core)
+void	substitute_redir(t_token *curr, char str[3], t_data *core)
 {
 	t_token	*newnext;
 	t_token	*discard;
@@ -85,7 +84,7 @@ void	substitute_redir(t_token *curr, char str[3],
 	curr->word = malloc(3);
 	if (curr->word == NULL)
 	{
-		free_token_list(token);
+		free_token_list(address_getter_token(NULL));
 		free_exit(core);
 		exit(1);
 	}

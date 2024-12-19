@@ -6,13 +6,13 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:29:23 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/15 16:21:59 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:08:06 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*getword(int *pos, int *oldpos, t_data *core, t_token *token)
+char	*getword(int *pos, int *oldpos, t_data *core)
 {
 	char	*word;
 
@@ -20,7 +20,7 @@ char	*getword(int *pos, int *oldpos, t_data *core, t_token *token)
 	word = malloc (*pos - *oldpos + 1);
 	if (word == NULL)
 	{
-		free_token_list(token);
+		free_token_list(address_getter_token(NULL));
 		free_exit(core);
 		exit (EXIT_FAILURE);
 	}
@@ -29,14 +29,14 @@ char	*getword(int *pos, int *oldpos, t_data *core, t_token *token)
 	return (word);
 }
 
-char	*getsep(int *pos, t_data *core, t_token *token)
+char	*getsep(int *pos, t_data *core)
 {
 	char	*word;
 
 	word = malloc(2);
 	if (word == NULL)
 	{
-		free_token_list(token);
+		free_token_list(address_getter_token(NULL));
 		free_exit(core);
 		exit (EXIT_FAILURE);
 	}
@@ -46,7 +46,7 @@ char	*getsep(int *pos, t_data *core, t_token *token)
 	return (word);
 }
 
-char	*getquote(int *pos, int *oldpos, t_data *core, t_token *token)
+char	*getquote(int *pos, int *oldpos, t_data *core)
 {
 	char	*word;
 
@@ -54,7 +54,7 @@ char	*getquote(int *pos, int *oldpos, t_data *core, t_token *token)
 	word = malloc (*pos - *oldpos + 1);
 	if (word == NULL)
 	{
-		free_token_list(token);
+		free_token_list(address_getter_token(NULL));
 		free_exit(core);
 		exit (EXIT_FAILURE);
 	}
@@ -77,14 +77,15 @@ void	make_tokens(t_data *core, t_token *token, int pos)
 			break ;
 		oldpos = pos;
 		if (!(issep(&core->line[pos])) && !(isquote(&core->line[pos])))
-			word = getword(&pos, &oldpos, core, token);
+			word = getword(&pos, &oldpos, core);
 		else if (issep(&core->line[pos]))
-			word = getsep(&pos, core, token);
+			word = getsep(&pos, core);
 		else if (isquote(&core->line[pos]))
-			word = getquote(&pos, &oldpos, core, token);
+			word = getquote(&pos, &oldpos, core);
 		newtoken = ft_lstnew(word);
 		free(word);
-		frexit (newtoken, token, core);
+		if (!newtoken)
+			free_all();
 		init_leading_space(newtoken, token, core, oldpos);
 		ft_lstadd_back(&token, newtoken);
 		newtoken->type = whichtoken(core->line[oldpos]);
@@ -104,6 +105,6 @@ t_token	*tokenize(t_data *core)
 	combine_double_redirect(token, core);
 	remove_empty_quotes(token);
 	if (synthax_check(token, core) != 0)
-		return (free_token_list(token), NULL);
+		return (free_token_list(address_getter_token(NULL)), NULL);
 	return (token);
 }
