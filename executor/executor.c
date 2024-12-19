@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/18 13:57:30 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:10:57 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,25 @@ void	pipe_error(int *fd, t_data *core)
 
 int	hdoc_dup_and_return(char *temp, t_cmdtable *cmd, char ***files, int i)
 {
-	cmd->redir = ft_strdup(temp);
+	free(cmd->redir);
+	cmd->redir = ft_strdup2(temp);
 	if (g_interrupt_received != 0)
 	{
-		(*files)[i] = ft_strdup(cmd->redir);
+		(*files)[i] = ft_strdup2(cmd->redir);
 		free(temp);
 		cmd->isprinted = 2;
 		here_doc_file_del(*files);
 		return (1);
 	}
 	cmd->redir_type = 1;
+	(*files)[i] = ft_strdup(cmd->redir);
+	if (!((*files)[i]))
+	{
+		free(temp);
+		unlink(cmd->redir);
+		export_malloc_error(address_getter(NULL), (*files));
+		exit(1);
+	}
 	return (0);
 }
 
@@ -63,15 +72,15 @@ void	here_doc_creator(t_cmdtable *cmd, t_data *core, char ***files, int i)
 	if (here_doc_counter(cmd) != 0)
 	{
 		*files = ft_calloc(here_doc_counter(cmd) + 1, sizeof(char *));
+		if (!*files)
+			export_malloc_error(core, NULL);
 		while (cmd)
 		{
 			if (cmd->redir_type == 10 || cmd->redir_type == 30)
 			{
 				temp = here_doc_tempfile(cmd, core, 0);
-				free(cmd->redir);
 				if (hdoc_dup_and_return(temp, cmd, files, i) == 1)
 					return ;
-				(*files)[i] = ft_strdup(cmd->redir);
 				free(temp);
 				i++;
 			}

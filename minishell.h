@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
 /*   Updated: 2024/12/19 15:06:22 by marsenij         ###   ########.fr       */
@@ -141,9 +141,9 @@ void				envi_update(char *old_pwd, t_data *core);
 char				**free_environment(char **new_env, int i);
 
 /*Utils/Free*/
+char				*ft_strdup2(const char *src);
 t_data				*address_getter(t_data *core);
-void				close_fail(t_data *core, int *fd);
-void				type_close(int fd, t_data *core);
+void				closing(int fd, t_data *core);
 void				free_exit(t_data *core);
 int					ft_strcmp(char *s1, char *s2);
 int					len_env_var(char **argv, int j);
@@ -158,6 +158,7 @@ void				export_malloc_error(t_data *core, char **temp);
 int					multi_array_counter(char **argc);
 
 /*Builtin Functions*/
+void				exit_pipe(int *fd, t_cmdtable *cmd);
 int					argv_checker(char **argv, int i, int error);
 int					checker_dup(char **argv, char **temp, int j, int k);
 int					exit_loop(t_data *core, int i, int j);
