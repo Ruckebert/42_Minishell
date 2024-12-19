@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:26:46 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 10:37:17 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:08:57 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	export(t_cmdtable *cmd, t_data *core)
 			return ;
 		}
 		temp_env = new_exo_env(core->env, cmd->args, i, count);
-		if (!core->env)
+		if (!temp_env)
 			export_malloc_error(core, temp);
 		insert_new_env(core, temp, temp_env);
 	}

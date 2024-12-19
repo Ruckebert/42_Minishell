@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 13:57:46 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:05:39 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	**copy_env(char **env, t_data *core)
 	count = 0;
 	while (env[count] != NULL)
 		count++;
-	new_env = malloc((count + 1) * sizeof(char *));
+	new_env = ft_calloc((count + 1), sizeof(char *));
 	if (!new_env)
 		exit(1);
 	core->export_env = malloc((count + 1) * sizeof(char *));
