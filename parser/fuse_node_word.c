@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/18 15:51:30 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:23:01 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static void	handle_space_case(t_token *curr, char *oldword, char *new_word)
 		free_all();
 	ft_strlcpy(trimmed_part, new_word, firstspace_len + 1);
 	curr->word = ft_strjoin(oldword, trimmed_part);
+	if (!curr->word)
+		free_all();
 	free(trimmed_part);
 }
 
@@ -51,6 +53,10 @@ void	fuse_node_word(t_token *curr, char *new_word)
 	if (ft_strchr(new_word, ' '))
 		handle_space_case(curr, oldword, new_word);
 	else
+	{
 		curr->word = ft_strjoin(oldword, new_word);
+		if (!curr->word)
+			free_all();
+	}
 	free(oldword);
 }
