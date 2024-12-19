@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 15:01:18 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:20:03 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,20 @@ void	free_cmdtable(t_cmdtable **head)
 	t_cmdtable	*next;
 	int			i;
 
-	if (!*head)
-		return;
+	if (!head && !*head)
+		return ;
 	tmp = *head;
 	while (tmp != NULL)
 	{
 		next = tmp->next;
 		if (tmp->args != NULL)
 		{
-			i = -1;
-			while (tmp->args[++i])
+			i = 0;
+			while (tmp->args[i])
+			{
 				free(tmp->args[i]);
+				i++;
+			}
 			free(tmp->args);
 			tmp->args = NULL;
 		}

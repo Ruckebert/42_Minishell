@@ -6,7 +6,7 @@
 /*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:43:26 by marsenij          #+#    #+#             */
-/*   Updated: 2024/12/18 18:08:59 by marsenij         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:24:01 by marsenij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	free_all(void)
 {
-	free_cmdtable(address_getter_cmd(NULL));
 	free_token_list(address_getter_token(NULL));
 	free_exit(address_getter(NULL));
 	exit(1);
