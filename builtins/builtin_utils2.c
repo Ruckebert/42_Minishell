@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 09:46:50 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 17:15:34 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:43:14 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,6 @@ int	ft_strcmp(char *s1, char *s2)
 	if ((*s1 != *s2))
 		return (*s1 - *s2);
 	return (0);
-}
-
-void	free_exit_no_cmd(t_data *core)
-{
-	if (core->env != NULL)
-		simple_free(core->env);
-	if (core->export_env != NULL)
-		simple_free(core->export_env);
-	free(core->direct);
-	free(core->line);
-	close(STDERR_FILENO);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
 }
 
 void	free_exit(t_data *core)

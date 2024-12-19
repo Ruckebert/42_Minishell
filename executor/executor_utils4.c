@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:53:00 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 12:10:48 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:43:43 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,17 @@ void	closing(int fd, t_data *core)
 		free_exit(core);
 		exit(1);
 	}
+}
+
+void	free_exit_no_cmd(t_data *core)
+{
+	if (core->env != NULL)
+		simple_free(core->env);
+	if (core->export_env != NULL)
+		simple_free(core->export_env);
+	free(core->direct);
+	free(core->line);
+	close(STDERR_FILENO);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
 }
