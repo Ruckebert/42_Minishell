@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:02:08 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/20 11:09:26 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:44:43 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,8 @@ void	argv_env_loop(int *equal, int *error, char **argv, int i)
 int	argv_checker(char **argv, int i, int error)
 {
 	int		equal;
-	int		first;
 	t_data	*core;
 
-	first = 0;
 	core = address_getter(NULL);
 	if ((argv[i][0] >= '0' && argv[i][0] <= '9') || argv[i][0] == '+')
 		return (exp_error_msg(argv[i], core), 1);

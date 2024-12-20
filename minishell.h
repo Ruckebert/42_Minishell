@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/20 10:11:00 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:48:45 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ typedef struct s_parse_context
 /*Environment Functions*/
 char				**copy_env(char **env, t_data *core);
 void				envi_update(char *old_pwd, t_data *core);
-char				**free_environment(char **new_env, int i);
+char				**free_environment(char **new_env);
 
 /*Utils/Free*/
 void				free_exit_no_cmd(t_data *core);

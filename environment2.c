@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/20 11:42:17 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:44:17 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,8 @@ void	create_pwd(t_data *core, char *old_pwd)
 {
 	char	*argv;
 	char	**temp;
-	int		i;
 	int		num;
 
-	i = 0;
 	num = 0;
 	temp = NULL;
 	while (core->env[num])

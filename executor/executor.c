@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:03:51 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 13:10:57 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:46:08 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	builtin_cmds(t_cmdtable *cmd, t_data *core)
 void	pipe_error(int *fd, t_data *core)
 {
 	fd = 0;
-	ft_putstr_fd("Error: Forking Issue", 2);
+	fd[0] = 2;
+	ft_putstr_fd("Error: Forking Issue", fd[0]);
 	free_exit(core);
 	exit(1);
 }
