@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 14:17:33 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 08:55:57 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,17 @@ void	bubble_sort(t_data *core)
 void	print_exo_env_loop(t_data *core, int i, int has_equal)
 {
 	int	j;
+	int	count;
 
 	j = 0;
+	count = 0;
 	while (core->export_env[i][j])
 	{
-		if (core->export_env[i][j] == '=')
+		if (core->export_env[i][j] == '=' && count != 1)
 		{
 			ft_printf("%c\"", core->export_env[i][j]);
 			has_equal = 1;
+			count++;
 		}
 		else
 			ft_printf("%c", core->export_env[i][j]);

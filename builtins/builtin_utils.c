@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:34:16 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 12:40:00 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 09:38:01 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,11 @@ void	simple_free(char **str)
 	}
 }
 
-int	strtoull_loop(const char *temp,
-	unsigned long long *result, unsigned long long prev_result)
+int	strtoull_loop(const char *temp, long long *result, long long prev_result)
 {
 	int	digit;
 
-	if (*temp == '+')
+	if (*temp == '+' || *temp == '-')
 		temp++;
 	while (*temp)
 	{
@@ -101,8 +100,30 @@ int	strtoull_loop(const char *temp,
 	return (0);
 }
 
-unsigned long long	ft_strtoull(const char *str, int *j,
-	unsigned long long result)
+
+int	zero_min(const char *str)
+{
+	char	*temp2;
+	char	*temp;
+	
+	if (ft_strcmp((char *)str, "-9223372036854775808") == 0)
+		return (1);
+	else
+	{
+		temp = (char *)str;
+		if (temp[0] == '-')
+		{
+				temp++;
+			temp2 = ft_strtrim(temp, "0");
+			if (ft_strcmp(temp2, "9223372036854775808") == 0)
+				return (free(temp2), 1);
+			free(temp2);
+		}
+	}
+	return (0);	
+}
+
+long long	ft_strtoull(const char *str, int *j, long long result)
 {
 	const char			*temp;
 	char				*temp2;
@@ -113,8 +134,11 @@ unsigned long long	ft_strtoull(const char *str, int *j,
 		temp++;
 	if (strtoull_loop(temp, &result, 0) == 1)
 		*j = -1;
-	if (ft_strcmp((char *)str, "-9223372036854775809") == 0)
-		*j = -1;
+	if (zero_min(str) == 1)
+	{
+		*j = 0;
+		return (result);
+	}
 	if (result == 0 && ft_strlen(str) != 0 && *j != -1)
 	{
 		temp = str;
@@ -125,7 +149,7 @@ unsigned long long	ft_strtoull(const char *str, int *j,
 			*j = -1;
 		free(temp2);
 	}
-	if (result > 9223372036854775807)
+	if (result > 9223372036854775807 || result < -9223372036854775807)
 		*j = -1;
 	return (result);
 }

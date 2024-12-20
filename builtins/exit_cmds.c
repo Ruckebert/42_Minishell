@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:08:59 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 09:58:59 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 08:56:58 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	exit_condition_checker(t_data *core, int i, int j)
 
 int	exit_loop(t_data *core, int i, int j)
 {
-	unsigned long long	sign;
+	long long	sign;
 
 	while (core->cmd->args[i] && i != 2)
 	{

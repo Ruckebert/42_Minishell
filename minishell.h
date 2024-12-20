@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 17:15:52 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 10:11:00 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,8 +149,7 @@ void				free_exit(t_data *core);
 int					ft_strcmp(char *s1, char *s2);
 int					len_env_var(char **argv, int j);
 int					environment_export(t_data *core);
-unsigned long long	ft_strtoull(const char *str, int *j,
-						unsigned long long result);
+long long			ft_strtoull(const char *str, int *j, long long result);
 void				simple_free(char **str);
 void				expander_freer(t_exp *doc);
 void				here_doc_null_msg(t_cmdtable *cmd);
@@ -167,7 +166,7 @@ int					exit_error_handler(int j, t_data *core, t_cmdtable *cmd);
 int					second_no(int *no, int i, t_cmdtable *cmd);
 void				echo_exit(int i, int no, t_cmdtable *cmd, t_data *core);
 void				bubble_sort(t_data *core);
-void				exp_error_msg(char *argv);
+void				exp_error_msg(char *argv, t_data *core);
 void				reverse_free(int i, char **temp);
 int					dup_malloc_count(t_cmdtable *cmd, int j, int k, int sub);
 int					cmd_args_count(t_cmdtable *cmd);
