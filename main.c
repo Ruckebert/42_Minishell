@@ -16,6 +16,11 @@ volatile sig_atomic_t	g_interrupt_received = 0;
 
 int	main_exit(t_data *core)
 {
+	if (g_interrupt_received != 0)
+	{
+		core->exit_status = 128 + g_interrupt_received;
+		g_interrupt_received = 0;
+	}
 	if (isatty(STDIN_FILENO))
 		write (2, "exit\n", 5);
 	if (core->env != NULL)
