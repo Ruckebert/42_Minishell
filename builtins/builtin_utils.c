@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:34:16 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/20 09:38:01 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 11:09:31 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,6 @@ int	len_env_var(char **argv, int j)
 		i++;
 	}
 	return (i);
-}
-
-int	environment_export(t_data *core)
-{
-	int		count;
-
-	count = 0;
-	if (core->export_env[0] == NULL)
-	{
-		while (core->env[count])
-		{
-			core->export_env[count] = ft_strdup2(core->env[count]);
-			count++;
-		}
-	}
-	else
-	{
-		while (core->env[count])
-		{
-			free(core->export_env[count]);
-			core->export_env[count] = ft_strdup2(core->env[count]);
-			count++;
-		}
-	}
-	core->export_env[count] = NULL;
-	return (count);
 }
 
 void	simple_free(char **str)
@@ -100,27 +74,32 @@ int	strtoull_loop(const char *temp, long long *result, long long prev_result)
 	return (0);
 }
 
-
-int	zero_min(const char *str)
+int	zero_min(const char *str, int *j)
 {
 	char	*temp2;
 	char	*temp;
-	
+
 	if (ft_strcmp((char *)str, "-9223372036854775808") == 0)
+	{
+		*j = 0;
 		return (1);
+	}
 	else
 	{
 		temp = (char *)str;
 		if (temp[0] == '-')
 		{
-				temp++;
+			temp++;
 			temp2 = ft_strtrim(temp, "0");
 			if (ft_strcmp(temp2, "9223372036854775808") == 0)
+			{
+				*j = 0;
 				return (free(temp2), 1);
+			}
 			free(temp2);
 		}
 	}
-	return (0);	
+	return (0);
 }
 
 long long	ft_strtoull(const char *str, int *j, long long result)
@@ -134,11 +113,8 @@ long long	ft_strtoull(const char *str, int *j, long long result)
 		temp++;
 	if (strtoull_loop(temp, &result, 0) == 1)
 		*j = -1;
-	if (zero_min(str) == 1)
-	{
-		*j = 0;
+	if (zero_min(str, j) == 1)
 		return (result);
-	}
 	if (result == 0 && ft_strlen(str) != 0 && *j != -1)
 	{
 		temp = str;

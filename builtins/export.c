@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:32:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/20 08:55:57 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 11:04:44 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,31 @@ void	print_exo_env(t_data *core, int i)
 	}
 }
 
+int	check_equal_exo(char **argv, int j)
+{
+	int	i;
+	int	equal;
+
+	i = 0;
+	equal = 0;
+	while (argv[j][i])
+	{
+		if (argv[j][i] == '=')
+			equal++;
+		i++;
+	}
+	if (equal == 0)
+		return (1);
+	else
+		return (0);
+}
+
 int	check_dup_exo(char **env, char **argv, char **temp, int j)
 {
 	t_int_struct	num;
 
 	num = (t_int_struct){0};
 	num.k = 0;
-	num.found = 0;
 	while (env[num.k])
 	{
 		num.var_len = len_env_var(argv, j);
@@ -96,6 +114,8 @@ int	check_dup_exo(char **env, char **argv, char **temp, int j)
 		{
 			if (ft_strncmp(temp[num.k], argv[j], num.var_len) == 0)
 			{
+				if (check_equal_exo(argv, j) == 1)
+					return (1);
 				if (temp[num.k])
 					free(temp[num.k]);
 				temp[num.k] = ft_strdup(argv[j]);
@@ -107,15 +127,4 @@ int	check_dup_exo(char **env, char **argv, char **temp, int j)
 		num.k++;
 	}
 	return (num.found);
-}
-
-void	reverse_free(int i, char **temp)
-{
-	while (i >= 0)
-	{
-		free(temp[i]);
-		i--;
-	}
-	free(temp);
-	exit(2);
 }

@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 11:57:12 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 11:42:17 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	dup_pwd_env(t_data *core, char **temp, char *argv)
 	temp[i] = ft_strdup2(argv);
 	if (core->empty_cd == 0)
 	{
-		temp[i] = ft_strdup2(argv);
 		i++;
 		free(argv);
 		argv = ft_strjoin("OLDPWD=", core->direct);
@@ -40,6 +39,36 @@ void	dup_pwd_env(t_data *core, char **temp, char *argv)
 	free(argv);
 	core->env = temp;
 }
+/*
+void	temp_exo_env(t_data *core, char *argv, int num)
+{
+	char **temp;
+
+	temp = ft_calloc(num + 2, sizeof(char *));
+	if (!temp)
+		export_malloc_error(core, NULL);
+	num = 0;
+	if (core->empty_cd == 2 || core->empty_cd == 0)
+		argv = ft_strjoin("PWD=", core->direct);
+	while (core->export_env[num])
+	{
+		temp[num] = ft_strdup(core->export_env[num]);
+		if (!temp[num])
+			reverse_free(num, temp);
+		num++;
+	}
+	temp[num] = ft_strdup2(argv);
+	if (core->empty_cd == 0)
+	{
+		num++;
+		free(argv);
+		argv = ft_strjoin("OLDPWD=", core->direct);
+		temp[num] = ft_strdup2(argv);
+	}
+	temp[++num] = NULL;
+	simple_free(core->export_env);
+	core->env = temp;
+}*/
 
 void	other_pwd_type(int num, t_data *core)
 {
