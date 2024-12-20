@@ -6,15 +6,14 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 15:05:39 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:48:39 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**free_environment(char **new_env, int i)
+char	**free_environment(char **new_env)
 {
-	i = 0;
 	simple_free(new_env);
 	return (NULL);
 }
@@ -47,7 +46,7 @@ void	core_direct_user(t_data *core, char **new_env, char **env, int i)
 		core->direct = ft_strdup(env[i] + 5);
 		if (!core->direct)
 		{
-			free_environment(new_env, i);
+			free_environment(new_env);
 			return ;
 		}
 	}
@@ -63,13 +62,13 @@ char	**environment_copy(char **env, char **new_env, t_data *core, int count)
 		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
 		{
 			if (shellvl(i, env, new_env) == NULL)
-				return (free(core->export_env), free_environment(new_env, i));
+				return (free(core->export_env), free_environment(new_env));
 		}
 		else
 		{
 			new_env[i] = ft_strdup(env[i]);
 			if (!new_env[i])
-				return (free(core->export_env), free_environment(new_env, i));
+				return (free(core->export_env), free_environment(new_env));
 		}
 		core_direct_user(core, new_env, env, i);
 		i++;
@@ -92,7 +91,7 @@ char	**copy_env(char **env, t_data *core)
 	new_env = ft_calloc((count + 1), sizeof(char *));
 	if (!new_env)
 		exit(1);
-	core->export_env = malloc((count + 1) * sizeof(char *));
+	core->export_env = ft_calloc((count + 1), sizeof(char *));
 	if (!core->export_env)
 	{
 		free(new_env);

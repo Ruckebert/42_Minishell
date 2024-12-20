@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:05:35 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/15 10:29:46 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 10:10:46 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,13 @@ void	export_malloc_error(t_data *core, char **temp)
 	exit(1);
 }
 
-void	exp_error_msg(char *argv)
+void	exp_error_msg(char *argv, t_data *core)
 {
-	ft_putstr_fd("export: `", 2);
-	ft_putstr_fd(argv, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
+	if (core->exit_status != 1)
+	{
+		ft_putstr_fd("export: `", 2);
+		ft_putstr_fd(argv, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+	}
+	core->exit_status = 1;
 }

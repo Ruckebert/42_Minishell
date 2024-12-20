@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:02:08 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 13:15:03 by aruckenb         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:44:43 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,15 @@ void	argv_env_loop(int *equal, int *error, char **argv, int i)
 
 int	argv_checker(char **argv, int i, int error)
 {
-	int	equal;
-	int	first;
+	int		equal;
+	t_data	*core;
 
-	first = 0;
+	core = address_getter(NULL);
 	if ((argv[i][0] >= '0' && argv[i][0] <= '9') || argv[i][0] == '+')
-		return (exp_error_msg(argv[i]), 1);
-	while (argv[i])
-	{
-		argv_env_loop(&equal, &error, argv, i);
-		if (equal > 1 || error >= 1)
-			return (exp_error_msg(argv[i]), 1);
-		i++;
-	}
+		return (exp_error_msg(argv[i], core), 1);
+	argv_env_loop(&equal, &error, argv, i);
+	if (equal > 1 || error >= 1)
+		return (exp_error_msg(argv[i], core), 1);
 	return (0);
 }
 
@@ -101,10 +97,8 @@ char	**creating_new_exo(int i, char **temp, char **env, char **argv)
 			found = check_dup(argv, temp, i, j);
 		if (found == -1)
 			return (simple_free(temp), NULL);
-		if (!found)
+		if (!found && argv_checker(argv, j, 0) != 1)
 		{
-			if (argv_checker(argv, 1, 0) == 1)
-				return (simple_free(temp), NULL);
 			temp[i] = ft_strdup(argv[j]);
 			if (!temp[i])
 				export_malloc_error(address_getter(NULL), temp);
