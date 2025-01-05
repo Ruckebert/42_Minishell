@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:14:32 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/20 12:48:45 by aruckenb         ###   ########.fr       */
+/*   Updated: 2025/01/05 09:28:25 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,9 @@ void				envi_update(char *old_pwd, t_data *core);
 char				**free_environment(char **new_env);
 
 /*Utils/Free*/
+void				pwd_checker(char **temp, char *old_pwd,
+						t_data *core, int i);
+void				create_pwd(t_data *core, char *old_pwd);
 void				free_exit_no_cmd(t_data *core);
 char				*ft_strdup2(const char *src);
 t_data				*address_getter(t_data *core);

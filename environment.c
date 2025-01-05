@@ -6,16 +6,30 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:25:49 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/20 12:48:39 by aruckenb         ###   ########.fr       */
+/*   Updated: 2025/01/05 09:26:37 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**free_environment(char **new_env)
+void	envi_update(char *old_pwd, t_data *core)
 {
-	simple_free(new_env);
-	return (NULL);
+	int		i;
+	char	*temp;
+
+	i = 0;
+	core->empty_cd = 0;
+	free(core->direct);
+	core->direct = getcwd(NULL, 0);
+	if (!core->direct)
+		export_malloc_error(core, NULL);
+	while (core->env[i])
+	{
+		pwd_checker(&temp, old_pwd, core, i);
+		i++;
+	}
+	if (core->empty_cd != 3)
+		create_pwd(core, old_pwd);
 }
 
 char	**shellvl(int i, char **env, char **new_env)

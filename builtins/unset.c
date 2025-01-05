@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:31:08 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 15:06:34 by aruckenb         ###   ########.fr       */
+/*   Updated: 2025/01/05 09:12:00 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**unset_env(t_data *core, char **env, int i, char **argv)
 	int		found;
 	char	**temp;
 
-	temp = malloc(((environment_export(core) - i) + 2) * sizeof(char *));
+	temp = ft_calloc(((environment_export(core) - i) + 2), sizeof(char *));
 	if (!temp)
 		export_malloc_error(core, NULL);
 	new_env = 0;

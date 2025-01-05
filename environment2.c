@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/20 12:44:17 by aruckenb         ###   ########.fr       */
+/*   Updated: 2025/01/05 09:28:34 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,36 +39,31 @@ void	dup_pwd_env(t_data *core, char **temp, char *argv)
 	free(argv);
 	core->env = temp;
 }
-/*
-void	temp_exo_env(t_data *core, char *argv, int num)
-{
-	char **temp;
 
-	temp = ft_calloc(num + 2, sizeof(char *));
-	if (!temp)
-		export_malloc_error(core, NULL);
-	num = 0;
-	if (core->empty_cd == 2 || core->empty_cd == 0)
-		argv = ft_strjoin("PWD=", core->direct);
-	while (core->export_env[num])
+void	temp_exo_env(t_data *core, int num)
+{
+	char	**temp_exo;
+
+	temp_exo = NULL;
+	if (core->empty_cd == 2 || core->empty_cd == 1)
 	{
-		temp[num] = ft_strdup(core->export_env[num]);
-		if (!temp[num])
-			reverse_free(num, temp);
-		num++;
+		temp_exo = ft_calloc(num + 2, sizeof(char *));
+		if (!temp_exo)
+			export_malloc_error(core, NULL);
+		simple_free(core->export_env);
+		core->export_env = temp_exo;
+		core->export_env[0] = NULL;
 	}
-	temp[num] = ft_strdup2(argv);
-	if (core->empty_cd == 0)
+	else if (core->empty_cd == 3)
 	{
-		num++;
-		free(argv);
-		argv = ft_strjoin("OLDPWD=", core->direct);
-		temp[num] = ft_strdup2(argv);
+		temp_exo = ft_calloc(num + 3, sizeof(char *));
+		if (!temp_exo)
+			export_malloc_error(core, NULL);
+		simple_free(core->export_env);
+		core->export_env = temp_exo;
+		core->export_env[0] = NULL;
 	}
-	temp[++num] = NULL;
-	simple_free(core->export_env);
-	core->env = temp;
-}*/
+}
 
 void	other_pwd_type(int num, t_data *core)
 {
@@ -103,6 +98,7 @@ void	create_pwd(t_data *core, char *old_pwd)
 	temp = NULL;
 	while (core->env[num])
 		num++;
+	temp_exo_env(core, num);
 	if (core->empty_cd == 1)
 	{
 		temp = ft_calloc(num + 2, sizeof(char *));
@@ -140,24 +136,4 @@ void	pwd_checker(char **temp, char *old_pwd, t_data *core, int i)
 		free(*temp);
 		core->empty_cd += 2;
 	}
-}
-
-void	envi_update(char *old_pwd, t_data *core)
-{
-	int		i;
-	char	*temp;
-
-	i = 0;
-	core->empty_cd = 0;
-	free(core->direct);
-	core->direct = getcwd(NULL, 0);
-	if (!core->direct)
-		export_malloc_error(core, NULL);
-	while (core->env[i])
-	{
-		pwd_checker(&temp, old_pwd, core, i);
-		i++;
-	}
-	if (core->empty_cd != 3)
-		create_pwd(core, old_pwd);
 }
