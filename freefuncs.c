@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   freefuncs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marsenij <marsenij@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:07:58 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/19 17:44:17 by marsenij         ###   ########.fr       */
+/*   Updated: 2025/01/05 09:26:27 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,10 @@ void	free_cmdtable(t_cmdtable **head)
 		tmp = next;
 	}
 	*head = NULL;
+}
+
+char	**free_environment(char **new_env)
+{
+	simple_free(new_env);
+	return (NULL);
 }

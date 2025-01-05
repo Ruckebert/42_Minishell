@@ -6,7 +6,7 @@
 /*   By: aruckenb <aruckenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:04:17 by aruckenb          #+#    #+#             */
-/*   Updated: 2024/12/20 11:08:02 by aruckenb         ###   ########.fr       */
+/*   Updated: 2025/01/05 09:10:14 by aruckenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	environment_export(t_data *core)
 	{
 		while (core->env[count])
 		{
-			free(core->export_env[count]);
+			if (core->export_env[count])
+				free(core->export_env[count]);
 			core->export_env[count] = ft_strdup2(core->env[count]);
 			count++;
 		}
